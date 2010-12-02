@@ -15,18 +15,24 @@ $english = array(
 	'ubertags' => 'Ubertags',
 	
 	// Page titles 
-
+	'ubertags:title:search' => 'Ubertags Search',
+	'ubertags:title:adminsettings' => 'Ubertags Settings',
 	
 	// Menu items
 
 
 	// Labels 
-
+	'ubertags:label:submitsearch' => 'GO',
+	'ubertags:label:subtypesheading' => 'Select Ubertags Subtypes',
+	'ubertags:label:subtype_heading' => 'Entity Subtype',
+	'ubertags:label:enabled_heading' => 'Enabled',
+	'ubertags:label:subtypes_settings_submit' => 'Submit Subtype Settings',
 
 	// River
 
 	
 	// Messages
+	'ubertags:success:setenabledsubtypes' => 'Enabled subtypes set',
 
 	
 	// Other content
