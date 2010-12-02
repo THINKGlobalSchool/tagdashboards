@@ -15,9 +15,9 @@ echo elgg_view('ubertags/forms/search');
 
 $subtypes = ubertags_get_enabled_subtypes();
 
-if (get_input('ubertags_search', NULL)) {
+if ($search = get_input('ubertags_search', NULL)) {
 	foreach ($subtypes as $subtype) {
-		echo elgg_view('ubertags/ubertags_generic_container', array('subtype' => $subtype));
+		echo elgg_view('ubertags/ubertags_generic_container', array('subtype' => $subtype, 'search' => $search));
 	}
 }
 

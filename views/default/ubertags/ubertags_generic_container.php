@@ -19,9 +19,12 @@ $params = array(
 	'full_view' => FALSE,
 	'view_type_toggle' => FALSE,
 	'pagination' => TRUE,
+	'metadata_name_value_pairs' => array(	'name' => 'tags', 
+											'value' => $vars['search'], 
+											'operands' => 'contains')
 );
 
-$entity_list = elgg_list_entities($params);
+$entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');
 
 ?>
 <div class='ubertags_subtype_container'>
