@@ -10,7 +10,6 @@
  * 
  */
 
-
 echo elgg_view('ubertags/forms/search');
 
 $subtypes = ubertags_get_enabled_subtypes();

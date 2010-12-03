@@ -29,20 +29,36 @@ function ubertags_init() {
 	add_menu(elgg_echo("ubertags"), $CONFIG->wwwroot . 'pg/ubertags/search');
 
 	// Add submenus
-	register_elgg_event_handler('pagesetup','system','ubertags_submenus');
+	elgg_register_event_handler('pagesetup','system','ubertags_submenus');
 					
 	// Set up url handlers
-	register_entity_url_handler('ubertag_url','object', 'ubertag');
+	elgg_register_event_handler('ubertag_url','object', 'ubertag');
 
 	// Register actions
 	register_action('ubertags/create', false, $CONFIG->pluginspath . 'ubertags/actions/create.php');
 	register_action('ubertags/admin_enable_subtypes', false, $CONFIG->pluginspath . 'ubertags/actions/admin_enable_subtypes.php');
+	
+	// Test.. for exceptions
+	elgg_register_plugin_hook_handler('ubertags', 'exceptions', 'testhook');
+	elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'testhook2');
 
 	// Register type
 	register_entity_type('object', 'ubertag');		
 
 	return true;
 	
+}
+
+/* Test for exceptions */
+function testhook($hook, $type, $returnvalue, $params) {
+	unset($returnvalue[array_search('plugin', $returnvalue)]);
+	$returnvalue[] = 'todo';
+	return $returnvalue;
+}
+
+/* Test for subtypes */
+function testhook2($hook, $type, $returnvalue, $params) {
+	return "Test";
 }
 
 /* Ubertags page handler */

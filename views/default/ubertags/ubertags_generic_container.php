@@ -11,6 +11,12 @@
  * 
  */
 
+/* 
+	Setting up a pile of default params. metadata_name_value_pairs
+	is what makes the tag magic happen. This might even work 
+	for multiple tags. (2 Minutes later..) No it doesn't but 
+	that'd be cool.
+*/
 $params = array(
 	'type' => 'object',
 	'subtype' => $vars['subtype'],
@@ -24,7 +30,11 @@ $params = array(
 											'operands' => 'contains')
 );
 
-$entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');
+// See if anyone has registered a hook to display their subtype appropriately
+if (!$entity_list = trigger_plugin_hook('ubertags:subtype', $vars['subtype'], array('search' => $vars['search'], 'params' => $params), false)) {
+	// Fine, be that way, I'll just dump out this grossness.
+	$entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');
+} 
 
 ?>
 <div class='ubertags_subtype_container'>

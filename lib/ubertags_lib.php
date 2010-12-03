@@ -35,7 +35,8 @@ function ubertags_get_enabled_subtypes() {
 /* Get all registered subtypes (for admins) */
 function ubertags_get_site_subtypes() {
 	
-	// Some exceptions, don't really want these in the list
+	
+	// Set up some exceptions
 	$exceptions = array(
 		'plugin', 
 		'widget', 
@@ -45,6 +46,9 @@ function ubertags_get_site_subtypes() {
 		'site'
 	);
 	
+	// Allow exceptions to be modified
+	$exceptions = trigger_plugin_hook('ubertags','exceptions', array(), $exceptions);
+		
 	// Query to grab subtypes
 	$query = "SELECT subtype FROM elgg_entity_subtypes WHERE type = 'object';";
 	
