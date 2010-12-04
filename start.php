@@ -1,6 +1,6 @@
 <?php
 /**
- * Ubertags start.pjp
+ * Ubertags start.php
  * 
  * @package Ubertags
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -8,6 +8,10 @@
  * @copyright THINK Global School 2010
  * @link http://www.thinkglobalschool.com/
  * 
+ * 
+ * /////////// @TODO ///////////////
+ * - River entries
+ * - Select subtypes before saving
  */
 
 function ubertags_init() {
@@ -26,7 +30,7 @@ function ubertags_init() {
 	register_page_handler('ubertags','ubertags_page_handler');
 
 	// Add to tools menu
-	add_menu(elgg_echo("ubertags"), $CONFIG->wwwroot . 'pg/ubertags/search');
+	add_menu(elgg_echo("ubertags"), $CONFIG->wwwroot . 'pg/ubertags');
 
 	// Add submenus
 	elgg_register_event_handler('pagesetup','system','ubertags_submenus');
@@ -35,12 +39,18 @@ function ubertags_init() {
 	elgg_register_event_handler('ubertag_url','object', 'ubertag');
 
 	// Register actions
-	register_action('ubertags/create', false, $CONFIG->pluginspath . 'ubertags/actions/create.php');
+	register_action('ubertags/save', false, $CONFIG->pluginspath . 'ubertags/actions/save.php');
+	register_action('ubertags/delete', false, $CONFIG->pluginspath . 'ubertags/actions/delete.php');
 	register_action('ubertags/admin_enable_subtypes', false, $CONFIG->pluginspath . 'ubertags/actions/admin_enable_subtypes.php');
 	
+	// Setup url handler for ubertags
+	register_entity_url_handler('ubertags_url_handler','object', 'ubertag');
+	
+	elgg_register_plugin_hook_handler('entity:annotate', 'object', 'ubertag_annotate_comments');
+	
 	// Test.. for exceptions
-	elgg_register_plugin_hook_handler('ubertags', 'exceptions', 'testhook');
-	elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'testhook2');
+	//elgg_register_plugin_hook_handler('ubertags', 'exceptions', 'testhook');
+	//elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'testhook2');
 
 	// Register type
 	register_entity_type('object', 'ubertag');		
@@ -66,15 +76,38 @@ function ubertags_page_handler($page) {
 	global $CONFIG;
 	set_context('ubertags');
 	gatekeeper();
-	switch ($page[0]) {
-		case 'search':
-			$content_info = ubertags_get_page_content_search();
-		break;
-		case 'settings':
-			admin_gatekeeper();
-			set_context('admin');
-			$content_info = ubertags_get_page_content_admin_settings();
-		break;
+
+	if (isset($page[0]) && !empty($page[0])) {
+		switch ($page[0]) {
+			case 'friends': 
+				$content_info = ubertags_get_page_content_friends(get_loggedin_userid());
+			break;
+			case 'search':
+				$content_info = ubertags_get_page_content_search();
+			break;
+			case 'settings':
+				admin_gatekeeper();
+				set_context('admin');
+				$content_info = ubertags_get_page_content_admin_settings();
+			break;
+			case 'view': 
+				$content_info = ubertags_get_page_content_view($page[1]);
+			break;
+			default:
+				// Should be a username if we're here
+				if (isset($page[0])) {
+					$owner_name = $page[0];
+					set_input('username', $owner_name);
+				} else {
+					set_page_owner(get_loggedin_userid());
+				}
+				// grab the page owner
+				$owner = elgg_get_page_owner();
+				$content_info = ubertags_get_page_content_list($owner->getGUID());
+			break;
+		}
+	} else {
+		$content_info = ubertags_get_page_content_list();
 	}
 	
 	$sidebar = isset($content_info['sidebar']) ? $content_info['sidebar'] : '';
@@ -108,9 +141,34 @@ function ubertags_submenus() {
  * @param ElggEntity entity
  * @return string request url
  */
-function ubertag_url($entity) {
+function ubertags_url_handler($entity) {
 	global $CONFIG;
 	return $CONFIG->url . "pg/ubertags/view/{$entity->guid}/";
+}
+
+/**
+ * Hook into the framework and provide comments on ubertags
+ *
+ * @param unknown_type $hook
+ * @param unknown_type $entity_type
+ * @param unknown_type $returnvalue
+ * @param unknown_type $params
+ * @return unknown
+ */
+function ubertag_annotate_comments($hook, $entity_type, $returnvalue, $params) {
+	$entity = $params['entity'];
+	$full = $params['full'];
+	
+	if (
+		($entity instanceof ElggEntity) &&	// Is the right type 
+		($entity->getSubtype() == 'ubertag') &&  // Is the right subtype
+		($full) // This is the full view
+	)
+	{
+		// Display comments
+		return elgg_view_comments($entity);
+	}
+	
 }
 
 register_elgg_event_handler('init', 'system', 'ubertags_init');
