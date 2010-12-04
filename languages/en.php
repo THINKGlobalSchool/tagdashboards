@@ -15,6 +15,7 @@ $english = array(
 	'ubertags' => 'Ubertags',
 	'ubertag' => 'Ubertags',
 	'ubertag:new' => 'Create an Ubertag',
+	'item:object:ubertag' => 'Ubertags',
 	
 	// Page titles 
 	'ubertags:title:search' => 'Ubertags Search',
