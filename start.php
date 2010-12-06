@@ -52,6 +52,8 @@ function ubertags_init() {
 	//elgg_register_plugin_hook_handler('ubertags', 'exceptions', 'ubertags_exception_example');
 	//elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'ubertags_subtype_example');
 	
+	elgg_register_plugin_hook_handler('ubertags:subtype:heading', 'album', 'ubertags_subtype_album_handler');
+	
 	// Register blog subtype handler
 	elgg_register_plugin_hook_handler('ubertags:subtype', 'blog', 'ubertags_blog_display');
 

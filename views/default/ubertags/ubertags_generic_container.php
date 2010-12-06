@@ -16,9 +16,16 @@ $uber_id = $vars['subtype'] . '_content';
 // Endpoint url
 $end_url = elgg_get_site_url() . "pg/ubertags/ajax_load_subtype?search={$vars['search']}&subtype={$vars['subtype']}";
 
+// Check if anyone wants to change the heading for their subtype
+$subtype_heading = trigger_plugin_hook('ubertags:subtype:heading', $vars['subtype'], array(), false);
+if (!$subtype_heading) {
+	// Use default item:object:subtype as this is usually defined 
+	$subtype_heading = elgg_echo('item:object:' . $vars['subtype']);
+}
+
 ?>
 <div class='ubertags_subtype_container'>
-	<h3 class='ubertags_subtype_title'><?php echo elgg_echo('item:object:' . $vars['subtype']); ?></h3>
+	<h3 class='ubertags_subtype_title'><?php echo $subtype_heading; ?></h3>
 	<div id='<?php echo $uber_id; ?>'>
 		<div id="ubertags_loading">
 			<img src="<?php echo elgg_get_site_url() . "_graphics/ajax_loader_bw.gif"; ?>" />

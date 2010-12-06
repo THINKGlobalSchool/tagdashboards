@@ -10,6 +10,13 @@
  * 
  */
 
+/* Example for subtypes */
+function ubertags_subtype_album_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'album') {
+		return 'Photos';
+	}
+}
+
 /* Example for exceptions */
 function ubertags_exception_example($hook, $type, $returnvalue, $params) {
 	// Unset a type (includes it in the list)
