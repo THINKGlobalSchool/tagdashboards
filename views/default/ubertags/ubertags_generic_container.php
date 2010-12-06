@@ -14,7 +14,7 @@
 $uber_id = $vars['subtype'] . '_content';
 
 // Endpoint url
-$end_url = elgg_get_site_url() . "pg/ubertags/ajax_load?search={$vars['search']}&subtype={$vars['subtype']}";
+$end_url = elgg_get_site_url() . "pg/ubertags/ajax_load_subtype?search={$vars['search']}&subtype={$vars['subtype']}";
 
 ?>
 <div class='ubertags_subtype_container'>
@@ -28,10 +28,8 @@ $end_url = elgg_get_site_url() . "pg/ubertags/ajax_load?search={$vars['search']}
 <script type='text/javascript'>
 	$(document).ready(function() {
 		function load_ubertags_subtype_content() {
-			console.log('stuff');
 			$("#<?php echo $uber_id; ?>").load("<?php echo $end_url; ?>");
 		}
-		
 		load_ubertags_subtype_content();
 	});
 </script>

@@ -11,6 +11,7 @@
  * 
  * /////////// @TODO ///////////////
  * - Select subtypes before saving
+ * - Might need to rethink the JS handling.. kind of everywhere ATM
  */
 
 function ubertags_init() {
@@ -71,12 +72,19 @@ function ubertags_page_handler($page) {
 
 	if (isset($page[0]) && !empty($page[0])) {
 		switch ($page[0]) {
-			case 'ajax_load':
+			case 'ajax_load_subtype':
 				// Get inputs
 				$search = get_input('search');
 				$subtype = get_input('subtype');
 				echo elgg_view('ubertags/ubertags_generic_endpoint', array('subtype' => $subtype, 'search' => $search));
-				// This is an ajax load, so exit;
+				// This is an ajax load, so exit
+				exit;
+			break;
+			case 'ajax_load_results':
+				$search = get_input('search');
+				$subtype = get_input('subtype');
+				echo elgg_view('ubertags/ubertags_results_endpoint', array('subtype' => $subtype, 'search' => $search));
+				// This ia an ajax load, so exit
 				exit;
 			break;
 			case 'friends': 

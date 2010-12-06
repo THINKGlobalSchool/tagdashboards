@@ -16,21 +16,47 @@ $search_input = elgg_view('input/text', array(
 	'value' => get_input('ubertags_search')
 ));
 
-$search_submit = elgg_view('input/submit', array(
-	'internalname' => 'ubertags_search_submit',
-	'internalid' => 'ubertags_search_submit',
-	'value' => elgg_echo('ubertags:label:submitsearch')
-));
+$submit_value = elgg_echo('ubertags:label:submitsearch');
+$search_submit = "<input type='submit' 
+						 name='ubertags_search_submit' 
+						 id='ubertags_search_submit' 
+						 value='$submit_value'
+						  />";
+
 
 $form_body = <<<EOT
 	<div>	
-		$search_input $search_submit
+		$search_input $search_submit<br />
+		<span id='ubertags_search_error'></span>
 	</div>
 EOT;
 
-echo elgg_view('input/form', array(
-	'action' => elgg_get_site_url() . 'pg/ubertags/search', 
-	'body' => $form_body, 
-	'internalid' => 'ubertag_post_form',
-	'method' => 'GET'
-));
+$results_end_url = elgg_get_site_url() . "pg/ubertags/ajax_load_results";
+
+$script = <<<EOT
+	<script type='text/javascript'>
+		$(document).ready(function() {
+			function load_ubertags_results(search) {
+				$('#ubertags_load_results').load('$results_end_url' + '?search=' + search);
+				return false;
+			}
+		
+			$('#ubertags_search_submit').click(function(){
+				var value = $('#ubertags_search_input').val();
+				if (value) {
+					load_ubertags_results(value);
+					$('a#show_hide').show();
+					$('span#ubertags_search_error').html('');
+				} else {
+					$('a#show_hide').hide();
+					$('span#ubertags_search_error').html('Please enter text to search');
+					$('#ubertags_load_results').html('');
+				}
+				
+			});
+		});
+	</script>
+
+EOT;
+
+echo $form_body . $script;

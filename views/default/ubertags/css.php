@@ -31,6 +31,12 @@
 	
 }
 
+span#ubertags_search_error {
+	color: Red;
+	font-size: 12px;
+	font-weight: bold;
+}
+
 .ubertags_subtype_container {
 	width: 46%;
 	float: right;
@@ -63,6 +69,8 @@ div.ubertag_big_title {
 	text-shadow: 1px 1px 3px #000;
 	font-style: italic;
 }
+
+
 
 /** Loading box **/
 

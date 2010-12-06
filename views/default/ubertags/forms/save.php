@@ -39,7 +39,7 @@ $access_input = elgg_view('input/access', array(
 $search_input = elgg_view('input/hidden', array(
 	'internalid' => 'ubertag_search',
 	'internalname' => 'ubertag_search',
-	'value' => $vars['search']
+	'value' => '' // Will be updated by JS
 ));
 
 $ubertags_save_input = elgg_view('input/submit', array(
@@ -74,7 +74,18 @@ $form_body = <<<EOT
 	</div>
 EOT;
 
+$script = <<<EOT
+	<script type='text/javascript'>
+		// Load our hidden input so we can save the search term
+		$(document).ready(function() {
+			$('input#ubertag_search').val($('#ubertags_search_input').val());
+		});
+	</script>
+EOT;
+
 echo elgg_view('input/form', array(
 	'body' => $form_body,
 	'action' => 'action/ubertags/save'
-));
+)) . $script;
+
+
