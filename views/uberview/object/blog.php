@@ -57,7 +57,7 @@ echo <<<___END
 		$owner_icon
 	</div>
 	<div class="entity_listing_info">
-		<div class="entity_metadata">$edit</div>
+		<div class="entity_metadata" style='min-width: 0px;'>$edit</div>
 		<p class="entity_title">$linked_title</p>
 		<p class="entity_subtext">
 			$author_text
