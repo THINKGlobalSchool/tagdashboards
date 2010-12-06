@@ -44,6 +44,7 @@ $english = array(
 	'ubertags:label:submitted_by' => 'Submitted by %s',
 
 	// River
+	'ubertags:river:ubertag:create' => '%s created an Ubertag titled ',
 
 	
 	// Messages

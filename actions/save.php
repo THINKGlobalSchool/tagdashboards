@@ -28,11 +28,16 @@ $ubertag->tags = $tags;
 $ubertag->access_id = $access;
 $ubertag->search = $search;
 
+// If error saving, register error and return
 if (!$ubertag->save()) {
 	register_error(elgg_echo('ubertags:error:save'));
 	forward(REFERER);
 }
 
+// Add to river
+add_to_river('river/object/ubertag/create', 'create', get_loggedin_userid(), $ubertag->getGUID());
+
+// Forward on
 system_message(elgg_echo('ubertags:success:save'));
 forward('pg/ubertags');
 

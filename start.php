@@ -10,7 +10,6 @@
  * 
  * 
  * /////////// @TODO ///////////////
- * - River entries
  * - Select subtypes before saving
  */
 
