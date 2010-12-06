@@ -113,7 +113,7 @@ function ubertags_page_handler($page) {
 
 	$params = array(
 		'content' => elgg_view('navigation/breadcrumbs') . $content_info['content'],
-		'sidebar' => $sidebar,
+		'sidebar' => $sidebar . elgg_view('ubertags/beta'),
 	);
 	$body = elgg_view_layout($content_info['layout'], $params);
 
@@ -125,7 +125,16 @@ function ubertags_page_handler($page) {
  */
 function ubertags_submenus() {
 	global $CONFIG;
-	$page_owner = elgg_get_page_owner();
+
+	// all/yours/friends 
+	elgg_add_submenu_item(array('text' => elgg_echo('ubertags:menu:yourubertags'), 
+								'href' => elgg_get_site_url() . 'pg/ubertags/' . get_loggedin_user()->username), 'ubertags');
+								
+	elgg_add_submenu_item(array('text' => elgg_echo('ubertags:menu:friendsubertags'), 
+								'href' => elgg_get_site_url() . 'pg/ubertags/friends' ), 'ubertags');
+
+	elgg_add_submenu_item(array('text' => elgg_echo('ubertags:menu:allubertags'), 
+								'href' => elgg_get_site_url() . 'pg/ubertags/' ), 'ubertags');
 	
 	// Admin 
 	if (isadminloggedin()) {

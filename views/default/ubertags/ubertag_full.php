@@ -12,6 +12,6 @@
 
 $content = "<div class='ubertag_big_title'>" . $vars['entity']->title . "</div><div style='clear:both;'></div>";
 
-$content .= "<div>" . elgg_view('ubertags/ubertags_list_results', array('search' => $vars['entity']->search)) . "</div>";
+$content .= "<div>" . elgg_view('ubertags/ubertags_list_results', array('search' => $vars['entity']->search, 'subtypes' => $entity->subtypes)) . "</div>";
 echo $content;
 ?>
