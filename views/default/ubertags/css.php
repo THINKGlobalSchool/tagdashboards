@@ -63,3 +63,33 @@ div.ubertag_big_title {
 	text-shadow: 1px 1px 3px #000;
 	font-style: italic;
 }
+
+/** Loading box **/
+
+.ubertags_subtype_container #ubertags_loading {
+	border: 1px solid #666;
+	background: #fff;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	width: 100%;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.45);
+	-moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.45);
+}
+
+.ubertags_subtype_container #ubertags_loading img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 7px;
+	margin-bottom: 7px;
+}
+
+.ubertags_subtype_container #ubertags_loading p {
+	text-align: center;
+	font-weight: bold;
+	color: #333;
+}

@@ -18,6 +18,7 @@ function ubertags_init() {
 	
 	// Include helpers
 	require_once 'lib/ubertags_lib.php';
+	require_once 'lib/ubertags_hooks.php';
 			
 	// Extend CSS
 	elgg_extend_view('css','ubertags/css');
@@ -47,9 +48,11 @@ function ubertags_init() {
 	
 	elgg_register_plugin_hook_handler('entity:annotate', 'object', 'ubertag_annotate_comments');
 	
-	// Test.. for exceptions
-	//elgg_register_plugin_hook_handler('ubertags', 'exceptions', 'testhook');
-	//elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'testhook2');
+	//elgg_register_plugin_hook_handler('ubertags', 'exceptions', 'ubertags_exception_example');
+	//elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'ubertags_subtype_example');
+	
+	// Register blog subtype handler
+	elgg_register_plugin_hook_handler('ubertags:subtype', 'blog', 'ubertags_blog_display');
 
 	// Register type
 	register_entity_type('object', 'ubertag');		
@@ -58,17 +61,7 @@ function ubertags_init() {
 	
 }
 
-/* Test for exceptions */
-function testhook($hook, $type, $returnvalue, $params) {
-	unset($returnvalue[array_search('plugin', $returnvalue)]);
-	$returnvalue[] = 'todo';
-	return $returnvalue;
-}
 
-/* Test for subtypes */
-function testhook2($hook, $type, $returnvalue, $params) {
-	return "Test";
-}
 
 /* Ubertags page handler */
 function ubertags_page_handler($page) {
@@ -78,6 +71,14 @@ function ubertags_page_handler($page) {
 
 	if (isset($page[0]) && !empty($page[0])) {
 		switch ($page[0]) {
+			case 'ajax_load':
+				// Get inputs
+				$search = get_input('search');
+				$subtype = get_input('subtype');
+				echo elgg_view('ubertags/ubertags_generic_endpoint', array('subtype' => $subtype, 'search' => $search));
+				// This is an ajax load, so exit;
+				exit;
+			break;
 			case 'friends': 
 				$content_info = ubertags_get_page_content_friends(get_loggedin_userid());
 			break;
