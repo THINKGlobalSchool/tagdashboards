@@ -20,4 +20,21 @@ foreach ($subtypes as $subtype) {
 	$results .= elgg_view('ubertags/ubertags_generic_container', array('subtype' => $subtype, 'search' => $vars['search']));
 }
 
-echo $results . "<div style='clear: both;'></div>";
+// Endpoint url
+$end_url = elgg_get_site_url() . "pg/ubertags/ajax_load_subtype";
+
+$script = <<<EOT
+	<script type='text/javascript'>
+		function load_ubertags_subtype_content(subtype, search, offset) {
+			var end_url = "$end_url";
+			end_url += "?subtype=" + subtype + "&search=" + search;
+			if (offset) {
+				end_url += "&offset=" + offset;
+			}
+			$("#" + subtype + "_content").load(end_url);
+			return false;
+		}
+	</script>
+EOT;
+
+echo $script . $results . "<div style='clear: both;'></div>";

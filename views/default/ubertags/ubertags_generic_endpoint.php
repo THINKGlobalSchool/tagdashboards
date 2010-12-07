@@ -29,6 +29,7 @@ $params = array(
 	'subtype' => $vars['subtype'],
 	'owner' => ELGG_ENTITIES_ANY_VALUE,
 	'limit' => 10,
+	'offset' => $vars['offset'] ? $vars['offset'] : 0,
 	'full_view' => FALSE,
 	'view_type_toggle' => FALSE,
 	'pagination' => TRUE,
@@ -39,7 +40,6 @@ $params = array(
 
 // See if anyone has registered a hook to display their subtype appropriately
 if (!$entity_list = trigger_plugin_hook('ubertags:subtype', $vars['subtype'], array('search' => $vars['search'], 'params' => $params), false)) {
-	// Fine, be that way, I'll just dump out this grossness.
 	$entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');
 } 
 

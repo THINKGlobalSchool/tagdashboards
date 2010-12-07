@@ -13,9 +13,6 @@
 // Div, JS label
 $uber_id = $vars['subtype'] . '_content';
 
-// Endpoint url
-$end_url = elgg_get_site_url() . "pg/ubertags/ajax_load_subtype?search={$vars['search']}&subtype={$vars['subtype']}";
-
 // Check if anyone wants to change the heading for their subtype
 $subtype_heading = trigger_plugin_hook('ubertags:subtype:heading', $vars['subtype'], array(), false);
 if (!$subtype_heading) {
@@ -34,9 +31,6 @@ if (!$subtype_heading) {
 </div>
 <script type='text/javascript'>
 	$(document).ready(function() {
-		function load_ubertags_subtype_content() {
-			$("#<?php echo $uber_id; ?>").load("<?php echo $end_url; ?>");
-		}
-		load_ubertags_subtype_content();
+		load_ubertags_subtype_content("<?php echo $vars['subtype']; ?>", "<?php echo $vars['search']; ?>", null);
 	});
 </script>

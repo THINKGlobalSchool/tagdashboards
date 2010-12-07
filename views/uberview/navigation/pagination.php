@@ -24,6 +24,10 @@ $baseurl = elgg_get_array_value('baseurl', $vars, current_page_url());
 $totalpages = ceil($count / $limit);
 $currentpage = ceil($offset / $limit) + 1;
 
+// Ubertags customizations
+$search = get_input('search');
+$subtype = get_input('subtype');
+
 //only display if there is content to paginate through or if we already have an offset
 if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 
@@ -41,7 +45,7 @@ if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 
 		$prevurl = elgg_http_add_url_query_elements($baseurl, array($word => $prevoffset));
 
-		echo "<a href=\"{$prevurl}\" class='pagination_previous'>&laquo; ". elgg_echo("previous") ."</a> ";
+		echo "<a onclick='javascript:load_ubertags_subtype_content(\"$subtype\", \"$search\", \"$prevoffset\")' class='pagination_previous'>&laquo; ". elgg_echo("previous") ."</a> ";
 	}
 
 	if ($offset > 0 || $offset < ($count - $limit)) {
@@ -80,9 +84,9 @@ if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 
 			$curoffset = (($i - 1) * $limit);
 			$counturl = elgg_http_add_url_query_elements($baseurl, array($word => $curoffset));
-
+			
 			if ($curoffset != $offset) {
-				echo " <a href=\"{$counturl}\" class='pagination_number'>{$i}</a> ";
+				echo " <a onclick='javascript:load_ubertags_subtype_content(\"$subtype\", \"$search\", \"$curoffset\")' class='pagination_number'>{$i}</a> ";
 			} else {
 				echo "<span class='pagination_currentpage'>{$i}</span>";
 			}
@@ -100,7 +104,7 @@ if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 
 		$nexturl = elgg_http_add_url_query_elements($baseurl, array($word => $nextoffset));
 
-		echo " <a href=\"{$nexturl}\" class='pagination_next'>" . elgg_echo("next") . " &raquo;</a>";
+		echo " <a onclick='javascript:load_ubertags_subtype_content(\"$subtype\", \"$search\", \"$nextoffset\")' class='pagination_next'>" . elgg_echo("next") . " &raquo;</a>";
 
 	}
 

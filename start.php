@@ -78,13 +78,13 @@ function ubertags_page_handler($page) {
 				// Get inputs
 				$search = get_input('search');
 				$subtype = get_input('subtype');
-				echo elgg_view('ubertags/ubertags_generic_endpoint', array('subtype' => $subtype, 'search' => $search));
+				$offset = get_input('offset', NULL);
+				echo elgg_view('ubertags/ubertags_generic_endpoint', array('subtype' => $subtype, 'search' => $search, 'offset' => $offset));
 				// This is an ajax load, so exit
 				exit;
 			break;
 			case 'ajax_load_results':
 				$search = get_input('search');
-				$subtype = get_input('subtype');
 				echo elgg_view('ubertags/ubertags_results_endpoint', array('subtype' => $subtype, 'search' => $search));
 				// This ia an ajax load, so exit
 				exit;
