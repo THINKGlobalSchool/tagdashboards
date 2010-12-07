@@ -43,5 +43,12 @@ if (!$entity_list = trigger_plugin_hook('ubertags:subtype', $vars['subtype'], ar
 	$entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');
 } 
 
+if (!empty($entity_list)) {
+	echo $entity_list; 
+} else {
+	echo elgg_view('ubertags/noresults', array(), false, false, 'default');
+}
+	
+
+
 ?>
-<?php echo $entity_list; ?>
