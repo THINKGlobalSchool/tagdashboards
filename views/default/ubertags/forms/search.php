@@ -43,6 +43,7 @@ $script = <<<EOT
 			
 			function submit_search() {
 				var value = $('#ubertags_search_input').val();
+				value = value.toLowerCase();
 				if (value) {
 					load_ubertags_results(value);
 					$('a#show_hide').show();
