@@ -74,7 +74,7 @@ div.ubertag_big_title {
 
 /** Loading box **/
 
-.ubertags_subtype_container #ubertags_loading {
+.ubertags_subtype_container .ubertags_loading {
 	border: 1px solid #666;
 	background: #fff;
 	padding-top: 10px;
@@ -88,7 +88,7 @@ div.ubertag_big_title {
 	-moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.45);
 }
 
-.ubertags_subtype_container #ubertags_loading img {
+.ubertags_subtype_container .ubertags_loading img {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -96,7 +96,7 @@ div.ubertag_big_title {
 	margin-bottom: 7px;
 }
 
-.ubertags_subtype_container #ubertags_loading p {
+.ubertags_subtype_container .ubertags_loading p {
 	text-align: center;
 	font-weight: bold;
 	color: #333;

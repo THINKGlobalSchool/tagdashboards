@@ -23,10 +23,10 @@ if (!$subtype_heading) {
 ?>
 <div class='ubertags_subtype_container'>
 	<h3 class='ubertags_subtype_title'><?php echo $subtype_heading; ?></h3>
+	<div class="ubertags_loading" id="loading_<?php echo $vars['subtype']; ?>">
+		<img src="<?php echo elgg_get_site_url() . "_graphics/ajax_loader_bw.gif"; ?>" />
+	</div>
 	<div id='<?php echo $uber_id; ?>'>
-		<div id="ubertags_loading">
-			<img src="<?php echo elgg_get_site_url() . "_graphics/ajax_loader_bw.gif"; ?>" />
-		</div>
 	</div>
 </div>
 <script type='text/javascript'>

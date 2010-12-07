@@ -37,7 +37,9 @@ $script = <<<EOT
 	<script type='text/javascript'>
 		$(document).ready(function() {
 			function load_ubertags_results(search) {
-				$('#ubertags_load_results').load('$results_end_url' + '?search=' + search);
+				$('#ubertags_load_results').hide().load('$results_end_url' + '?search=' + search, function() {
+					$('#ubertags_load_results').fadeIn('fast');
+				});
 				return false;
 			}
 			
