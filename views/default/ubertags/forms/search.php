@@ -43,30 +43,42 @@ $script = <<<EOT
 				return false;
 			}
 			
-			function submit_search() {
-				var value = $('#ubertags_search_input').val();
-				value = value.toLowerCase();
+			function submit_search(value) {
 				if (value) {
 					load_ubertags_results(value);
 					$('a#show_hide').show();
 					$('span#ubertags_search_error').html('');
+					window.location.hash = value; // Hash magic for permalinks
 				} else {
 					$('a#show_hide').hide();
 					$('span#ubertags_search_error').html('Please enter text to search');
 					$('#ubertags_load_results').html('');
 				}
+				
+			}
+			
+			function get_ubertag_search_value() {
+				var value = $('#ubertags_search_input').val();
+				value = value.toLowerCase();
+				return value;
+			}
+			
+			// If we have a hash up in the address, search automatically
+			if (window.location.hash) {
+				var hash = window.location.hash.substring(1);
+				var value = $('#ubertags_search_input').val(hash);
+				submit_search(hash);
 			}
 		
 			$('#ubertags_search_submit').click(function(){
-				submit_search();
+				submit_search(get_ubertag_search_value());
 			});
 			
 			$('#ubertags_search_input').keypress(function(e){
 				if(e.which == 13) {
-			    	submit_search();
+			    	submit_search(get_ubertag_search_value());
 					e.preventDefault();
 					return false;
-					
 				}
 			});
 			
