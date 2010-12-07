@@ -46,6 +46,7 @@ if (!$entity_list = trigger_plugin_hook('ubertags:subtype', $vars['subtype'], ar
 if (!empty($entity_list)) {
 	echo $entity_list; 
 } else {
+	// Might be in uberview here, make sure to display default
 	echo elgg_view('ubertags/noresults', array(), false, false, 'default');
 }
 	

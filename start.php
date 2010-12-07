@@ -47,12 +47,17 @@ function ubertags_init() {
 	// Setup url handler for ubertags
 	register_entity_url_handler('ubertags_url_handler','object', 'ubertag');
 	
+	// Comment handler
 	elgg_register_plugin_hook_handler('entity:annotate', 'object', 'ubertag_annotate_comments');
 	
 	//elgg_register_plugin_hook_handler('ubertags', 'exceptions', 'ubertags_exception_example');
 	//elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'ubertags_subtype_example');
 	
-	elgg_register_plugin_hook_handler('ubertags:subtype:heading', 'album', 'ubertags_subtype_album_handler');
+	// Change album subtype heading
+	//elgg_register_plugin_hook_handler('ubertags:subtype:heading', 'album', 'ubertags_subtype_album_handler');
+	
+	// Change display of photos
+	elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'ubertags_photo_override_handler');
 	
 	// Register blog subtype handler
 	elgg_register_plugin_hook_handler('ubertags:subtype', 'blog', 'ubertags_blog_display');

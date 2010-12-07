@@ -57,7 +57,7 @@ if ($viewtype == 'list') {
 }
 
 if ($count) {
-	$html .= $nav;
+	$html .= '<div style="clear: both;"></div>' . $nav;
 }
 
-echo $html;
+echo $nav . $html;

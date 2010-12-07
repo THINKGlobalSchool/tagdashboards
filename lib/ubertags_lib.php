@@ -167,4 +167,19 @@ function ubertags_get_site_subtype_callback($data) {
 	return $data->subtype;
 }
 
+/** 
+ * Helper function to use with array_filter()
+ * to determine if tidypics images are unique
+ */
+function ubertags_image_unique($object) {
+	static $idList = array();
+	
+	if (in_array($object->getGUID(), $idList)) {
+		return false;
+	}
+	
+	$idList[] = $object->getGUID();
+	return true;
+}
+
 ?>
