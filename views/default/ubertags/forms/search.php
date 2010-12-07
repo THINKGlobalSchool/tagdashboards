@@ -40,8 +40,8 @@ $script = <<<EOT
 				$('#ubertags_load_results').load('$results_end_url' + '?search=' + search);
 				return false;
 			}
-		
-			$('#ubertags_search_submit').click(function(){
+			
+			function submit_search() {
 				var value = $('#ubertags_search_input').val();
 				if (value) {
 					load_ubertags_results(value);
@@ -52,8 +52,22 @@ $script = <<<EOT
 					$('span#ubertags_search_error').html('Please enter text to search');
 					$('#ubertags_load_results').html('');
 				}
-				
+			}
+		
+			$('#ubertags_search_submit').click(function(){
+				submit_search();
 			});
+			
+			$('#ubertags_search_input').keypress(function(e){
+				if(e.which == 13) {
+			    	submit_search();
+					e.preventDefault();
+					return false;
+					
+				}
+			});
+			
+			
 		});
 	</script>
 
