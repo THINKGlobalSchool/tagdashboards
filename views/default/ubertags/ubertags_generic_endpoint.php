@@ -12,6 +12,7 @@
 
 // Set custom viewtype
 elgg_set_viewtype('uberview');
+set_input('search_viewtype', 'list');
 
 // If this entity doesn't have a custom uberview, use default
 if (!elgg_view_exists("object/{$vars['subtype']}")) {
@@ -31,7 +32,8 @@ $params = array(
 	'limit' => 10,
 	'offset' => $vars['offset'] ? $vars['offset'] : 0,
 	'full_view' => FALSE,
-	'view_type_toggle' => FALSE,
+	'listtypetoggle' => FALSE,
+	'listtype' => 'list',
 	'pagination' => TRUE,
 	'metadata_name_value_pairs' => array(	'name' => 'tags', 
 											'value' => $vars['search'], 

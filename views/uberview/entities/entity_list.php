@@ -13,7 +13,7 @@ $limit = $vars['limit'];
 $count = $vars['count'];
 $baseurl = $vars['baseurl'];
 $context = $vars['context'];
-$viewtype = $vars['viewtype'];
+$listtype = $vars['listtype'];
 $pagination = $vars['pagination'];
 $fullview = $vars['fullview'];
 
@@ -21,17 +21,17 @@ $html = "";
 $nav = "";
 
 if (isset($vars['viewtypetoggle'])) {
-	$viewtypetoggle = $vars['viewtypetoggle'];
+	$listtypetoggle = $vars['viewtypetoggle'];
 } else {
-	$viewtypetoggle = true;
+	$listtypetoggle = true;
 }
 
-if ($context == "search" && $count > 0 && $viewtypetoggle) {
-	$nav .= elgg_view('navigation/viewtype', array(
+if ($context == "search" && $count > 0 && $listtypetoggle) {
+	$nav .= elgg_view('navigation/listtype', array(
 		'baseurl' => $baseurl,
 		'offset' => $offset,
 		'count' => $count,
-		'viewtype' => $viewtype,
+		'listtype' => $listtype,
 	));
 }
 
@@ -44,7 +44,7 @@ if ($pagination) {
 	));
 }
 
-if ($viewtype == 'list') {
+if ($listtype == 'list') {
 	if (is_array($entities) && sizeof($entities) > 0) {
 		foreach($entities as $entity) {
 			$html .= elgg_view_entity($entity, $fullview);
