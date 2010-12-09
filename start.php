@@ -42,7 +42,7 @@ function ubertags_init() {
 	// Register actions
 	elgg_register_action('ubertags/save', $CONFIG->pluginspath . 'ubertags/actions/save.php');
 	elgg_register_action('ubertags/delete', $CONFIG->pluginspath . 'ubertags/actions/delete.php');
-	elgg_register_action('ubertags/admin_enable_subtypes', $CONFIG->pluginspath . 'ubertags/actions/admin_enable_subtypes.php');
+	elgg_register_action('ubertags/admin_enable_subtypes', $CONFIG->pluginspath . 'ubertags/actions/admin_enable_subtypes.php', 'admin');
 	
 	// Setup url handler for ubertags
 	register_entity_url_handler('ubertags_url_handler','object', 'ubertag');

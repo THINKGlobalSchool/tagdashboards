@@ -9,8 +9,6 @@
  * @link http://www.thinkglobalschool.com/
  * 
  */
-admin_gatekeeper();
-action_gatekeeper();
 
 $enabled_subtypes = get_input('subtypes_enabled');
 
