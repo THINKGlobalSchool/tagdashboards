@@ -31,6 +31,14 @@ $script = <<<EOT
 			if (offset) {
 				end_url += "&offset=" + offset;
 			}
+
+			/* Simple show/hide */
+			$("#" + subtype + "_content").load(end_url, '', function() {
+				$("#loading_" + subtype).hide();
+			});
+			
+			/** This was tricky.. not deleting this ever. 
+			
 			$("#loading_" + subtype).show();
 			$("#" + subtype + "_content").hide();
 			$("#" + subtype + "_content").load(end_url, '', function () {
@@ -38,7 +46,9 @@ $script = <<<EOT
 					$("#" + subtype + "_content").fadeIn('fast');
 				});
 			});
-		
+			
+			**/
+			
 			return false;
 		}
 
