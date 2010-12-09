@@ -16,8 +16,9 @@ $context = $vars['context'];
 $listtype = $vars['listtype'];
 $pagination = $vars['pagination'];
 $fullview = $vars['fullview'];
+$uniqid = 'uberview_entity_list_' . uniqid();
 
-$html = "";
+$html = "<div id='$uniqid' class='hidden'>";
 $nav = "";
 
 if (isset($vars['viewtypetoggle'])) {
@@ -41,6 +42,7 @@ if ($pagination) {
 		'offset' => $offset,
 		'count' => $count,
 		'limit' => $limit,
+		'uniqid' => $uniqid,
 	));
 }
 
@@ -57,7 +59,13 @@ if ($listtype == 'list') {
 }
 
 if ($count) {
-	$html .= '<div style="clear: both;"></div>' . $nav;
+	$html .= '</div><div style="clear: both;"></div>' . $nav;
 }
 
-echo $nav . $html;
+$script .= "<script type='text/javascript'>
+				$(document).ready(function(){
+					$(\"#$uniqid\").fadeIn('fast');
+				});
+			</script>";
+
+echo $nav . $html . $script;
