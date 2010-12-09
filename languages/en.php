@@ -37,11 +37,13 @@ $english = array(
 	'ubertags:label:description' => 'Description',
 	'ubertags:label:tags' => 'Tags',
 	'ubertags:label:save' => 'Save',
+	'ubertags:label:saveform' => 'Save this Ubertag',
 	'ubertags:label:showsave' => 'Show Save Form',
 	'ubertags:label:hidesave' => 'Hide Save Form',
 	'ubertags:label:grouptags' => 'Group Ubertags', 
 	'ubertags:label:deleteconfirm' => 'Are you sure you want to delete this Ubertag?',
 	'ubertags:label:submitted_by' => 'Submitted by %s',
+	'ubertags:label:leaveacomment' => 'Leave a Comment / ',
 
 	// River
 	'ubertags:river:ubertag:create' => '%s created an Ubertag titled ',

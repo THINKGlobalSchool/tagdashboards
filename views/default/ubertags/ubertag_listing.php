@@ -60,7 +60,7 @@ if($vars['entity']->canEdit()){
 
 $info .= "</div>";
 
-$info .= "<p class='entity_title'><a href=\"{$address}\" target=\"_blank\">{$title}</a></p>";
+$info .= "<p class='entity_title'><a href=\"{$address}\">{$title}</a></p>";
 $info .= "<p class='entity_subtext'>" . elgg_echo('ubertags:label:submitted_by', array("<a href=\"".elgg_get_site_url()."pg/ubertags/{$owner->username}\">{$owner->name}</a>")) . " {$friendlytime} {$view_desc}</p>";
 
 $tags = elgg_view('output/tags', array('tags' => $vars['entity']->tags));

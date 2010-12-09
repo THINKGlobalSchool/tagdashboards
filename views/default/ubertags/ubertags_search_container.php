@@ -18,7 +18,7 @@ $results = '';
 
 //$show = elgg_echo('ubertags:label:showsave');
 //$hide = elgg_echo('ubertags:label:hidesave');
-$save_link = "<a id='show_hide' href='#'>Save Form</a>";
+$save_link = "<a id='show_hide' href='#'>" . elgg_echo('ubertags:label:saveform') . "</a>";
 	
 echo <<<EOT
 	<div id='ubertags_search_container'>

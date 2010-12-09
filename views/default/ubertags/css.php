@@ -56,18 +56,33 @@ h3.ubertags_subtype_title {
 }
 
 div.ubertag_big_title {
-	margin-top: 10px;
-	height: 80px;
+	margin-top: 22px;
+	height: 60px;
 	display: block;
-	font-size: 80px;
+	font-size: 50px;
 	color: #9D1520;
-	width: 90%;
+	width: 88%;
 	text-align: left;
 	margin-left: auto;
 	margin-right: auto;
 	font-weight: bold;
 	text-shadow: 1px 1px 3px #000;
 	font-style: italic;
+}
+
+div.ubertag_description {
+	margin-left: auto;
+	margin-right: auto;
+	width: 88%;
+	margin-bottom: 10px;
+	color: #444;
+	font-weight: bold;
+}
+
+div.ubertag_comment_block {
+	float: right;
+	font-size: 11px;
+	color: #666;
 }
 
 

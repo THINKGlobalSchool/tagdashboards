@@ -30,6 +30,7 @@ function ubertags_get_page_content_admin_settings() {
 /* Get ubertags listing content */
 function ubertags_get_page_content_list($user_guid = null) {
 	if ($user_guid) {
+		// Breadcrumbs
 		$user = get_entity($user_guid);
 		if ($user instanceof ElggGroup) {
 			// Got a group
@@ -64,7 +65,11 @@ function ubertags_get_page_content_list($user_guid = null) {
 		'new_link' => elgg_get_site_url() . "pg/ubertags/search" . $container_guid,
 	));
 	
-	
+	if ($user_guid && ($user_guid != $loggedin_userid)) {
+		// do not show content header when viewing other users' posts
+		$header = elgg_view('page_elements/content_header_member', array('type' => 'Ubertags'));
+	}
+		
 	$content_info['content'] = $header . $content;
 	$content_info['layout'] = 'one_column_with_sidebar';
 	return $content_info;
@@ -118,6 +123,11 @@ function ubertags_get_page_content_friends($user_guid) {
 /* View an Ubertag */
 function ubertags_get_page_content_view($guid) {
 	$ubertag = get_entity($guid);
+	$owner = get_entity($ubertag->container_guid);
+	set_page_owner($owner->getGUID());
+	elgg_push_breadcrumb(elgg_echo('ubertags:menu:allubertags'), elgg_get_site_url() . 'pg/ubertags');
+	elgg_push_breadcrumb($owner->name, elgg_get_site_url() . 'pg/ubertags/' . $owner->username);
+	elgg_push_breadcrumb($ubertag->title, $ubertag->getURL());
 	$content_info['title'] = $ubertag->title;
 	$content_info['content'] = elgg_view_entity($ubertag, true);
 	$content_info['layout'] = 'one_column_with_sidebar';
