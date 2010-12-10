@@ -22,7 +22,7 @@ function ubertags_init() {
 	require_once 'lib/ubertags_hooks.php';
 			
 	// Extend CSS
-	elgg_extend_view('css','ubertags/css');
+	elgg_extend_view('css/screen','ubertags/css');
 	
 	// Extend admin view to include some extra styles
 	elgg_extend_view('layouts/administration', 'ubertags/admin/css');
