@@ -20,12 +20,12 @@ if (!$subtype_heading) {
 	$subtype_heading = elgg_echo('item:object:' . $vars['subtype']);
 }
 
+$spinner = elgg_view('ubertags/ubertags_ajax_spinner', array('id' => 'loading_' . $vars['subtype']));
+
 ?>
 <div class='ubertags_subtype_container'>
 	<h3 class='ubertags_subtype_title'><?php echo $subtype_heading; ?></h3>
-	<div class="ubertags_loading" id="loading_<?php echo $vars['subtype']; ?>">
-		<img src="<?php echo elgg_get_site_url() . "_graphics/ajax_loader_bw.gif"; ?>" />
-	</div>
+	<?php echo $spinner; ?>
 	<div id='<?php echo $uber_id; ?>'>
 	</div>
 </div>

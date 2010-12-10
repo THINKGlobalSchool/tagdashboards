@@ -20,7 +20,7 @@ if (!$limit = (int) elgg_get_array_value('limit', $vars, 10)) {
 $count = (int) elgg_get_array_value('count', $vars, 0);
 $word = elgg_get_array_value('word', $vars, 'offset');
 $baseurl = elgg_get_array_value('baseurl', $vars, current_page_url());
-$uniqid = $vars['uniqid'];
+$uid = $vars['uid'];
 
 $totalpages = ceil($count / $limit);
 $currentpage = ceil($offset / $limit) + 1;
@@ -46,7 +46,7 @@ if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 
 		$prevurl = elgg_http_add_url_query_elements($baseurl, array($word => $prevoffset));
 
-		echo "<a onclick='javascript:load_ubertags_subtype_content(\"$subtype\", \"$search\", \"$prevoffset\"); fade_div(\"$uniqid\");' class='pagination_previous'>&laquo; ". elgg_echo("previous") ."</a> ";
+		echo "<a onclick='javascript:load_ubertags_subtype_content(\"$subtype\", \"$search\", \"$prevoffset\"); fade_div(\"$uid\");' class='pagination_previous'>&laquo; ". elgg_echo("previous") ."</a> ";
 	}
 
 	if ($offset > 0 || $offset < ($count - $limit)) {
@@ -87,7 +87,7 @@ if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 			$counturl = elgg_http_add_url_query_elements($baseurl, array($word => $curoffset));
 			
 			if ($curoffset != $offset) {
-				echo " <a onclick='javascript:load_ubertags_subtype_content(\"$subtype\", \"$search\", \"$curoffset\"); fade_div(\"$uniqid\");' class='pagination_number'>{$i}</a> ";
+				echo " <a onclick='javascript:load_ubertags_subtype_content(\"$subtype\", \"$search\", \"$curoffset\"); fade_div(\"$uid\");' class='pagination_number'>{$i}</a> ";
 			} else {
 				echo "<span class='pagination_currentpage'>{$i}</span>";
 			}
@@ -105,7 +105,7 @@ if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 
 		$nexturl = elgg_http_add_url_query_elements($baseurl, array($word => $nextoffset));
 
-		echo " <a onclick='javascript:load_ubertags_subtype_content(\"$subtype\", \"$search\", \"$nextoffset\"); fade_div(\"$uniqid\");' class='pagination_next'>" . elgg_echo("next") . " &raquo;</a>";
+		echo " <a onclick='javascript:load_ubertags_subtype_content(\"$subtype\", \"$search\", \"$nextoffset\"); fade_div(\"$uid\");' class='pagination_next'>" . elgg_echo("next") . " &raquo;</a>";
 
 	}
 
@@ -113,7 +113,9 @@ if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 	</div>
 	<script type='text/javascript'>
 		function fade_div(id) {
-			$("#" + id).fadeOut('fast');
+			$("#uberview_entity_list_" + id).fadeOut('fast', function () {
+				$("#loading_" + id).show();
+			});
 		}
 	</script>
 	<?php

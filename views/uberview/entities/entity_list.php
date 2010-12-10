@@ -16,9 +16,14 @@ $context = $vars['context'];
 $listtype = $vars['listtype'];
 $pagination = $vars['pagination'];
 $fullview = $vars['fullview'];
-$uniqid = 'uberview_entity_list_' . uniqid();
+$uid = uniqid();
 
-$html = "<div id='$uniqid' class='hidden'>";
+$spinner = elgg_view('ubertags/ubertags_ajax_spinner', array(
+	'id' => 'loading_' . $uid,
+	'class' => 'hidden',
+));
+
+$html = $spinner . "<div id='uberview_entity_list_$uid' class='hidden'>";
 $nav = "";
 
 if (isset($vars['viewtypetoggle'])) {
@@ -42,7 +47,7 @@ if ($pagination) {
 		'offset' => $offset,
 		'count' => $count,
 		'limit' => $limit,
-		'uniqid' => $uniqid,
+		'uid' => $uid,
 	));
 }
 
@@ -64,7 +69,7 @@ if ($count) {
 
 $script .= "<script type='text/javascript'>
 				$(document).ready(function(){
-					$(\"#$uniqid\").fadeIn('fast');
+					$(\"#uberview_entity_list_$uid\").fadeIn('fast');
 				});
 			</script>";
 
