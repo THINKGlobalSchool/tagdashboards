@@ -29,7 +29,10 @@ function ubertags_photo_override_handler($hook, $type, $returnvalue, $params) {
 		
 		// Get all images
 		$params['params']['count'] = FALSE;
-		$images = elgg_get_entities_from_metadata($params['params']);
+		
+		if (!$images = elgg_get_entities_from_metadata($params['params'])) {
+			$images = array();
+		}
 		
 		// Get albums matching search
 		$params['params']['subtype'] = 'album';
@@ -54,11 +57,9 @@ function ubertags_photo_override_handler($hook, $type, $returnvalue, $params) {
 		
 		// Image limit a nice round 12
 		$limit = 12;
-		
-		//print_r_html($images);
-		
+	
 		// List out entities
-		return elgg_view_entity_list(
+		$return = elgg_view_entity_list(
 			array_slice($images, $offset, $limit), // Note to self, array_slice is awesome
 			count($images), 
 			$offset,
@@ -67,6 +68,8 @@ function ubertags_photo_override_handler($hook, $type, $returnvalue, $params) {
 			$params['params']['view_type_toggle'], 
 			$params['params']['pagination']
 		);
+				
+		return $return;
 	}
 }
 

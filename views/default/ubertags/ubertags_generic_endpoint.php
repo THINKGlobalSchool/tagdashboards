@@ -19,6 +19,8 @@ if (!elgg_view_exists("object/{$vars['subtype']}")) {
 	elgg_set_viewtype('default');
 }
 
+
+
 /* 
 	Setting up a pile of default params. metadata_name_value_pairs
 	is what makes the tag magic happen. This might even work 
@@ -37,7 +39,8 @@ $params = array(
 	'pagination' => TRUE,
 	'metadata_name_value_pairs' => array(	'name' => 'tags', 
 											'value' => $vars['search'], 
-											'operands' => 'contains')
+											'operand' => '=',
+											'case_sensitive' => FALSE)
 );
 
 // See if anyone has registered a hook to display their subtype appropriately

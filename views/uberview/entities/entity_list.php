@@ -18,6 +18,10 @@ $pagination = $vars['pagination'];
 $fullview = $vars['fullview'];
 $uid = uniqid();
 
+if (!$count) {
+	return NULL;
+}
+
 $spinner = elgg_view('ubertags/ubertags_ajax_spinner', array(
 	'id' => 'loading_' . $uid,
 	'class' => 'hidden',

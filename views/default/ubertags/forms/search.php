@@ -37,7 +37,7 @@ $script = <<<EOT
 	<script type='text/javascript'>
 		$(document).ready(function() {
 			function load_ubertags_results(search) {
-				$('#ubertags_load_results').hide().load('$results_end_url' + '?search=' + search, function() {
+				$('#ubertags_load_results').hide().load('$results_end_url' + '?search=' + escape(search), function() {
 					$('#ubertags_load_results').fadeIn('fast');
 				});
 				return false;
@@ -48,7 +48,7 @@ $script = <<<EOT
 					load_ubertags_results(value);
 					$('a#show_hide').show();
 					$('span#ubertags_search_error').html('');
-					window.location.hash = value; // Hash magic for permalinks
+					window.location.hash = encodeURI(value); // Hash magic for permalinks
 				} else {
 					$('a#show_hide').hide();
 					$('span#ubertags_search_error').html('Please enter text to search');

@@ -27,7 +27,7 @@ $script = <<<EOT
 	<script type='text/javascript'>	
 		function load_ubertags_subtype_content(subtype, search, offset) {
 			var end_url = "$end_url";
-			end_url += "?subtype=" + subtype + "&search=" + search;
+			end_url += "?subtype=" + subtype + "&search=" + escape(search);
 			if (offset) {
 				end_url += "&offset=" + offset;
 			}
