@@ -65,7 +65,7 @@ $script = <<<EOT
 			
 			// If we have a hash up in the address, search automatically
 			if (window.location.hash) {
-				var hash = window.location.hash.substring(1);
+				var hash = decodeURI(window.location.hash.substring(1));
 				var value = $('#ubertags_search_input').val(hash);
 				submit_search(hash);
 			}
