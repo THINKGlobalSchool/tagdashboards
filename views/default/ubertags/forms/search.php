@@ -10,6 +10,15 @@
  * 
  */
 
+// Get site tags
+$site_tags = elgg_get_tags(array(threshold=>0, limit=>100));
+$tags_array = array();
+foreach ($site_tags as $site_tag) {
+	$tags_array[] = $site_tag->tag;
+}
+
+$tags_json = json_encode($tags_array);
+
 $search_input = elgg_view('input/text', array(	
 	'internalname' => 'ubertags_search', 
 	'internalid' => 'ubertags_search_input',
@@ -34,6 +43,7 @@ EOT;
 $results_end_url = elgg_get_site_url() . "pg/ubertags/ajax_load_results";
 
 $script = <<<EOT
+	<script language="javascript" type="text/javascript" src="{$vars['url']}vendors/jquery/jquery.autocomplete.min.js"></script>
 	<script type='text/javascript'>
 		$(document).ready(function() {
 			function load_ubertags_results(search) {
@@ -82,7 +92,15 @@ $script = <<<EOT
 				}
 			});
 			
-			
+			// Typeahead
+			var data = $.parseJSON('$tags_json');
+			$("#ubertags_search_input").autocomplete(data, {
+											highlight: false,
+											multiple: false,
+											multipleSeparator: ", ",
+											scroll: true,
+											scrollHeight: 300
+			});	
 		});
 	</script>
 
