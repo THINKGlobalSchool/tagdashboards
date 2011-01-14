@@ -19,6 +19,25 @@ function ubertags_get_page_content_search() {
 	return $content_info;
 }
 
+/* Build content for editing an ubertag */
+function ubertags_get_page_content_edit($guid) {
+	$ubertag = get_entity($guid);
+	if (elgg_instanceof($ubertag, 'object', 'ubertag') && $ubertag->canEdit()) {
+		elgg_push_breadcrumb(elgg_echo('ubertags:menu:allubertags'), elgg_get_site_url() . 'pg/ubertags');
+		elgg_push_breadcrumb($ubertag->title, $ubertag->getURL());
+		elgg_push_breadcrumb('edit');
+		$content_info['title'] = elgg_echo('ubertags:title:edit');
+		$content_info['layout'] = 'one_column_with_sidebar';
+		$content = elgg_view('ubertags/forms/save', array('entity' => $ubertag));
+		$content_info['content'] = elgg_view_title($content_info['title']) . $content;
+		return $content_info;
+	} else {
+		register_error(elgg_echo('ubertags:error:notfound'));
+		forward(REFERER);
+	}
+}
+
+/* Build content for ubertags admin settings */
 function ubertags_get_page_content_admin_settings() {
 	$content_info['title'] = elgg_echo('ubertags:title:adminsettings');
 	$content_info['layout'] = 'administration';
@@ -34,7 +53,7 @@ function ubertags_get_page_content_list($user_guid = null) {
 		$user = get_entity($user_guid);
 		if ($user instanceof ElggGroup) {
 			// Got a group
-			elgg_push_breadcrumb(elgg_echo('groups'), elgg_get_site_url() . 'pg/groups');
+			elgg_push_breadcrumb(elgg_echo('ubertags:menu:allubertags'), elgg_get_site_url() . 'pg/ubertags');
 			elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'pg/ubertags/' . $user->username);
 			elgg_push_breadcrumb(elgg_echo('ubertags:label:grouptags'));
 			$container_guid = "?container_guid=" .$user->getGUID();

@@ -78,6 +78,7 @@ $script = <<<EOT
 				var hash = decodeURI(window.location.hash.substring(1));
 				var value = $('#ubertags_search_input').val(hash);
 				submit_search(hash);
+				// Show the save link
 			}
 		
 			$('#ubertags_search_submit').click(function(){

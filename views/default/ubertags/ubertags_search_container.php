@@ -30,7 +30,9 @@ echo <<<EOT
 	
 	<script type='text/javascript'>
 		$(document).ready(function() {
-				$('a#show_hide').hide();
+				if (!window.location.hash) {
+					$('a#show_hide').hide();
+				}
 				$('#ubertags_save_container').hide();
 				var on = true;
 				$('#show_hide').click(

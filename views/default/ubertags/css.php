@@ -85,7 +85,18 @@ div.ubertag_comment_block {
 	color: #666;
 }
 
+div.enabled-content-type {
+	float: left;
+	margin-right: 12px;
+	padding: 5px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	background: #cccccc;
+}
 
+div.enabled-content-type label{
+	margin-right: 4px;
+}
 
 /** Loading box **/
 

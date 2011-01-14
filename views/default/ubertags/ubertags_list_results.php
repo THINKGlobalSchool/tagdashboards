@@ -10,8 +10,10 @@
  * 
  */
 
+$subtypes = unserialize($vars['subtypes']);
+
 // If we weren't supplied an array of subtypes, use defaults
-if (!$subtypes = $vars['subtypes']) {
+if (!is_array($subtypes)) {
 	$subtypes = ubertags_get_enabled_subtypes();
 }
 

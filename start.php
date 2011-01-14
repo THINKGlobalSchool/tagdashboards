@@ -41,6 +41,7 @@ function ubertags_init() {
 
 	// Register actions
 	elgg_register_action('ubertags/save', $CONFIG->pluginspath . 'ubertags/actions/save.php');
+	elgg_register_action('ubertags/edit', $CONFIG->pluginspath . 'ubertags/actions/edit.php');
 	elgg_register_action('ubertags/delete', $CONFIG->pluginspath . 'ubertags/actions/delete.php');
 	elgg_register_action('ubertags/admin_enable_subtypes', $CONFIG->pluginspath . 'ubertags/actions/admin_enable_subtypes.php', 'admin');
 	
@@ -104,6 +105,9 @@ function ubertags_page_handler($page) {
 				admin_gatekeeper();
 				set_context('admin');
 				$content_info = ubertags_get_page_content_admin_settings();
+			break;
+			case 'edit':
+				$content_info = ubertags_get_page_content_edit($page[1]);
 			break;
 			case 'view': 
 				$content_info = ubertags_get_page_content_view($page[1]);

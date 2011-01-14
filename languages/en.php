@@ -19,6 +19,7 @@ $english = array(
 	
 	// Page titles 
 	'ubertags:title:search' => 'Ubertags Search',
+	'ubertags:title:edit' => 'Edit Ubertag',
 	'ubertags:title:adminsettings' => 'Ubertags Settings',
 	
 	// Menu items
@@ -30,6 +31,7 @@ $english = array(
 	// Labels 
 	'ubertags:label:submitsearch' => 'GO',
 	'ubertags:label:subtypesheading' => 'Select Ubertags Subtypes',
+	'ubertags:label:contenttypes' => 'Show these content types',
 	'ubertags:label:subtype_heading' => 'Entity Subtype',
 	'ubertags:label:enabled_heading' => 'Enabled',
 	'ubertags:label:subtypes_settings_submit' => 'Submit Subtype Settings',
@@ -56,6 +58,7 @@ $english = array(
 	'ubertags:error:save' => 'Error saving Ubertag',
 	'ubertags:error:delete' => 'There wasn an error deleting the Ubertag',
 	'ubertags:error:notfound' => 'Ubertag not found',
+	'ubertags:error:titlerequired' => 'Title is required',
 
 
 	

@@ -35,13 +35,19 @@ else
 
 $icon = elgg_view("profile/icon", array('entity' => $owner,'size' => 'tiny',));
 
-//delete
+//delete/edit
 if($vars['entity']->canEdit()){
-	$delete .= "<span class='delete_button'>" . elgg_view('output/confirmlink',array(
-				'href' => "action/ubertags/delete?guid=" . $vars['entity']->guid,
+	$delete_url = elgg_get_site_url() . "action/ubertags/delete?guid=" . $vars['entity']->guid;
+	$delete_link .= "<span class='delete_button'>" . elgg_view('output/confirmlink',array(
+				'href' => $delete_url,
 				'text' => elgg_echo("delete"),
 				'confirm' => elgg_echo("ubertags:label:deleteconfirm"),
 				)) . "</span>";
+				
+	$edit_url = elgg_get_site_url()."pg/ubertags/edit/{$vars['entity']->getGUID()}/";
+	$edit_link = "<span class='entity_edit'><a href=\"$edit_url\">" . elgg_echo('edit') . '</a></span>';
+
+	$edit .= "$edit_link $delete_link";
 }
 
 $info = "<div class='entity_metadata'><span {$access_level}>{$object_acl}</span>";
@@ -53,9 +59,9 @@ $info .= elgg_view("ubertags/options",array('entity' => $vars['entity']));
 $info .= elgg_view("favorites/form",array('entity' => $vars['entity']));
 $info .= elgg_view_likes($vars['entity']); // include likes
 
-// include delete
+// include edit
 if($vars['entity']->canEdit()){
-	$info .= $delete;
+	$info .= $edit;
 }
 
 $info .= "</div>";
