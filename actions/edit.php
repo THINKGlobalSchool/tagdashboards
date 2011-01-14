@@ -40,7 +40,7 @@ if (!$ubertag->save()) {
 }
 
 // Clear sticky form
-elgg_make_sticky_form('ubertags_save_form');
+elgg_clear_sticky_form('ubertags_save_form');
 
 // Forward on
 system_message(elgg_echo('ubertags:success:save'));

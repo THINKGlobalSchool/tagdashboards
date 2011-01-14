@@ -27,8 +27,9 @@ if ($vars['entity']) {
 	
 
 } else { // Creating a new ubertag
-	$action = 'action/ubertags/edit';
+	$action = 'action/ubertags/save';
 	$enabled = ubertags_get_enabled_subtypes();
+	$access_id = ACCESS_LOGGED_IN;
 }
 
 $subtypes = ubertags_get_enabled_subtypes();
