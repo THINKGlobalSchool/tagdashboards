@@ -17,8 +17,15 @@ if ($vars['entity']) {
 	$description 	= $vars['entity']->description;
 	$tags 			= $vars['entity']->tags;
 	$access_id 		= $vars['entity']->access_id;
-	$enabled	 	= unserialize($vars['entity']->subtypes);
 	
+	// Make sure metadata is set
+	if ($vars['entity']->subtypes) {
+		$enabled	 	= unserialize($vars['entity']->subtypes);
+	} else {
+		$enabled = ubertags_get_enabled_subtypes();
+	}
+	
+	// Hidden field to identify ubertag
 	$ubertag_guid 	= elgg_view('input/hidden', array(
 		'internalid' => 'ubertag_guid', 
 		'internalname' => 'ubertag_guid',
