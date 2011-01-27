@@ -224,7 +224,7 @@ function ubertags_entity_to_timeline_event_array($entity) {
 	
 	// Optional params
 	if ($description = $entity->description) {
-		$event['description'] = $description;
+		$event['description'] = elgg_get_excerpt($description);
 	}
 	
 	if ($url = $entity->getURL()) { // this should always return something, but checking just in case
