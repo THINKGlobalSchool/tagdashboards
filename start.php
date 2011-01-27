@@ -10,7 +10,6 @@
  * 
  * 
  * /////////// @TODO ///////////////
- * - Select subtypes before saving
  * - Might need to rethink the JS handling.. kind of everywhere ATM
  */
 
@@ -94,6 +93,10 @@ function ubertags_page_handler($page) {
 				echo elgg_view('ubertags/ubertags_results_endpoint', array('subtype' => $subtype, 'search' => $search));
 				// This ia an ajax load, so exit
 				exit;
+			case 'timeline_feed':
+				echo elgg_view('ubertags/timeline_results_endpoint', array('guid' => $page[1]));
+				// This ia an ajax load, so exit
+				exit;
 			break;
 			case 'friends': 
 				$content_info = ubertags_get_page_content_friends(get_loggedin_userid());
@@ -111,6 +114,9 @@ function ubertags_page_handler($page) {
 			break;
 			case 'view': 
 				$content_info = ubertags_get_page_content_view($page[1]);
+			break;
+			case 'timeline':
+				$content_info = ubertags_get_page_content_timeline($page[1]);
 			break;
 			default:
 				// Should be a username if we're here

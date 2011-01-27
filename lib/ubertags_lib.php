@@ -154,6 +154,21 @@ function ubertags_get_page_content_view($guid) {
 	return $content_info;
 }
 
+/* View an Ubertag in timeline mode */
+function ubertags_get_page_content_timeline($guid) {
+	$ubertag = get_entity($guid);
+	$owner = get_entity($ubertag->container_guid);
+	set_page_owner($owner->getGUID());
+	elgg_push_breadcrumb(elgg_echo('ubertags:menu:allubertags'), elgg_get_site_url() . 'pg/ubertags');
+	elgg_push_breadcrumb($owner->name, elgg_get_site_url() . 'pg/ubertags/' . $owner->username);
+	elgg_push_breadcrumb($ubertag->title, $ubertag->getURL());
+	$content_info['title'] = $ubertag->title;
+	$content_info['content'] = elgg_view('ubertags/timeline', array('entity' => $ubertag));
+	$content_info['layout'] = 'one_column_with_sidebar';
+	
+	return $content_info;
+}
+
 /* Helper function tog grab the plugins enabled subtypes */
 function ubertags_get_enabled_subtypes() {
 	return unserialize(get_plugin_setting('enabled_subtypes', 'ubertags'));
@@ -194,6 +209,29 @@ function ubertags_get_site_subtypes() {
  */
 function ubertags_get_site_subtype_callback($data) {
 	return $data->subtype;
+}
+
+/**
+ * Helper function to convert an elgg entity to a timeline compatible
+ * event array
+ */
+function ubertags_entity_to_timeline_event_array($entity) {
+	
+	// These first three are required
+	$event['start'] = date("r", $entity->time_created); // full date format
+	$event['isDuration'] = FALSE; // No entities we're using have a 'duration'
+	$event['title'] = $entity->name ? $entity->name : $entity->title; // Assuming we have a name or a title
+	
+	// Optional params
+	if ($description = $entity->description) {
+		$event['description'] = $description;
+	}
+	
+	if ($url = $entity->getURL()) { // this should always return something, but checking just in case
+		$event['link'] = $url;
+	}
+	
+	return $event;
 }
 
 /** 

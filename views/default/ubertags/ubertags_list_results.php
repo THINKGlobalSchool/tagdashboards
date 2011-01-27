@@ -23,7 +23,7 @@ foreach ($subtypes as $subtype) {
 }
 
 // Endpoint url
-$end_url = elgg_get_site_url() . "pg/ubertags/ajax_load_subtype";
+$end_url = elgg_get_site_url() . "pg/ubertags/ajax_load_subtype/";
 
 $script = <<<EOT
 	<script type='text/javascript'>	
