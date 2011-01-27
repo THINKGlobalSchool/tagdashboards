@@ -30,7 +30,7 @@ $params = array(
 	'owner' => ELGG_ENTITIES_ANY_VALUE,
 	'limit' => 0,
 	'metadata_name_value_pairs' => array(	'name' => 'tags', 
-											'value' => $vars['search'], 
+											'value' => $ubertag->search, 
 											'operand' => '=',
 											'case_sensitive' => FALSE)
 );
@@ -56,12 +56,7 @@ foreach ($subtypes as $subtype) {
 	$count++;
 }
 
-
-
-
 echo json_encode($json);
-
-
 
 /*$items = array(
 	'wiki-url' => 'http://simile.mit.edu/shelf/', 
@@ -86,9 +81,6 @@ echo json_encode($json);
 	)
 );*/
 
-
-
 //echo json_encode($items);
-
 
 ?>
