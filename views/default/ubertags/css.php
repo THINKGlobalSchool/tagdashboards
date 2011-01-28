@@ -127,3 +127,21 @@ div.enabled-content-type label{
 	font-weight: bold;
 	color: #333;
 }
+
+/** Timeline  **/
+#ubertag-timeline {
+	height: 450px;
+	border: 1px solid #aaa;
+	/**overflow-x:hidden; overflow-y:scroll;**/
+}
+
+
+.timeline-event-label {
+	padding-left: 5px;
+	padding-top: 2px;
+}
+
+
+.timeline-event-bubble-image {
+	float: none;
+}

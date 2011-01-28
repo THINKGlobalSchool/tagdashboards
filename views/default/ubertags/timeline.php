@@ -19,9 +19,8 @@ $json_data_url = elgg_get_site_url() . "pg/ubertags/timeline_feed/{$vars['entity
 elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true", 'timeline');
 
 ?>
-<div id="ubertag-timeline" style="height: 400px; border: 1px solid #aaa"></div>
+<div id="ubertag-timeline"></div>
 <script>
-
 	var json_data_url = "<?php echo $json_data_url; ?>";
 
 	$(document).ready(function () {
@@ -38,6 +37,7 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
             var eventSource = new Timeline.DefaultEventSource();
             
             var theme1 = Timeline.ClassicTheme.create();
+			theme1.mouseWheel = 'default';
 
            
             var bandInfos = [
@@ -57,12 +57,12 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
                     theme:          theme1,
                     layout:         'original'  // original, overview, detailed
 		     	}),
-		     	Timeline.createBandInfo({
-					overview: 		true,
-		         	eventSource:    eventSource,
+				Timeline.createBandInfo({
+					overview: 		true, 
+		  			eventSource:    eventSource,
 					width:          "20%", 
-		         	intervalUnit:   Timeline.DateTime.YEAR, 
-		         	intervalPixels: 200, 
+	         		intervalUnit:   Timeline.DateTime.YEAR, 
+	         		intervalPixels: 100, 
                     theme:          theme1,
                     layout:         'original'  // original, overview, detailed
 		     	})
@@ -72,6 +72,7 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 			bandInfos[1].highlight = true;
 			bandInfos[2].syncWith = 1;
 			bandInfos[2].highlight = true;
+
                                                             
             // create the Timeline
             tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);

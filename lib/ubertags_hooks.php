@@ -73,6 +73,63 @@ function ubertags_photo_override_handler($hook, $type, $returnvalue, $params) {
 	}
 }
 
+/* Override default event converstion for blog entities */
+function ubertags_timeline_blog_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'blog') {
+		// These first three are required
+		$event['start'] = date("r", $params['entity']->time_created); // full date format
+		$event['isDuration'] = FALSE;
+		$event['title'] = $params['entity']->title; 
+		$event['description'] = elgg_get_excerpt($params['entity']->description);
+		$event['icon'] = elgg_get_site_url() . "mod/ubertags/images/blog.gif";
+		$event['link'] = $params['entity']->getURL();
+		return $event;
+	} 
+}
+
+/* Override default event converstion for image entities */
+function ubertags_timeline_image_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'image') {
+		// These first three are required
+		$event['start'] = date("r", $params['entity']->time_created); // full date format
+		$event['isDuration'] = FALSE;
+		$event['title'] = $params['entity']->title; 
+		$event['description'] = elgg_get_excerpt($params['entity']->description);
+		$event['image'] = elgg_get_site_url() . "pg/photos/thumbnail/{$params['entity']->getGUID()}/small";
+		$event['icon'] = elgg_get_site_url() . "mod/ubertags/images/image.gif";
+		$event['link'] = $params['entity']->getURL();
+		return $event;
+	} 
+}
+
+/* Override default event converstion for image entities */
+function ubertags_timeline_ubertag_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'ubertag') {
+		// These first three are required
+		$event['start'] = date("r", $params['entity']->time_created); // full date format
+		$event['isDuration'] = FALSE;
+		$event['title'] = $params['entity']->title; 
+		$event['description'] = elgg_get_excerpt($params['entity']->description);
+		$event['icon'] = elgg_get_site_url() . "mod/ubertags/images/ubertag.gif";
+		$event['link'] = $params['entity']->getURL();
+		return $event;
+	} 
+}
+
+/* Override default event converstion for image entities */
+function ubertags_timeline_simplekaltura_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'simplekaltura_video') {
+		// These first three are required
+		$event['start'] = date("r", $params['entity']->time_created); // full date format
+		$event['isDuration'] = FALSE;
+		$event['title'] = $params['entity']->title; 
+		$event['description'] = elgg_get_excerpt($params['entity']->description);
+		$event['icon'] = elgg_get_site_url() . "mod/ubertags/images/simplekaltura_video.gif";
+		$event['link'] = $params['entity']->getURL();
+		return $event;
+	} 
+}
+
 /* Handler to change name of Albums to Photos */
 function ubertags_subtype_album_handler($hook, $type, $returnvalue, $params) {
 	if ($type == 'album') {

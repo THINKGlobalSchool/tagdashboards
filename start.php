@@ -56,6 +56,12 @@ function ubertags_init() {
 	// Change album subtype heading
 	//elgg_register_plugin_hook_handler('ubertags:subtype:heading', 'album', 'ubertags_subtype_album_handler');
 	
+	// Subtype handlers
+	elgg_register_plugin_hook_handler('ubertags:timeline:subtype', 'blog', 'ubertags_timeline_blog_handler');
+	elgg_register_plugin_hook_handler('ubertags:timeline:subtype', 'image', 'ubertags_timeline_image_handler');
+	elgg_register_plugin_hook_handler('ubertags:timeline:subtype', 'ubertag', 'ubertags_timeline_ubertag_handler');
+	elgg_register_plugin_hook_handler('ubertags:timeline:subtype', 'simplekaltura_video', 'ubertags_timeline_simplekaltura_handler');
+	
 	// Change display of photos
 	elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'ubertags_photo_override_handler');
 	
@@ -117,6 +123,10 @@ function ubertags_page_handler($page) {
 			break;
 			case 'timeline':
 				$content_info = ubertags_get_page_content_timeline($page[1]);
+			break;
+			case 'timeline_image_icon':
+				echo elgg_view('ubertags/timeline_image_icon', array('guid' => $page[1]));
+				exit;
 			break;
 			default:
 				// Should be a username if we're here

@@ -216,21 +216,24 @@ function ubertags_get_site_subtype_callback($data) {
  * event array
  */
 function ubertags_entity_to_timeline_event_array($entity) {
-	
-	// These first three are required
-	$event['start'] = date("r", $entity->time_created); // full date format
-	$event['isDuration'] = FALSE; // No entities we're using have a 'duration'
-	$event['title'] = $entity->name ? $entity->name : $entity->title; // Assuming we have a name or a title
-	
-	// Optional params
-	if ($description = $entity->description) {
-		$event['description'] = elgg_get_excerpt($description);
-	}
-	
-	if ($url = $entity->getURL()) { // this should always return something, but checking just in case
-		$event['link'] = $url;
-	}
-	
+	// Allow customization of event data for different entity subtypes
+	if (!$event = trigger_plugin_hook('ubertags:timeline:subtype', $entity->getSubtype(), array('entity' => $entity), false)) {
+		// Generic display
+		
+		// These first three are required
+		$event['start'] = date("r", $entity->time_created); // full date format
+		$event['isDuration'] = FALSE; // No entities we're using have a 'duration'
+		$event['title'] = $entity->name ? $entity->name : $entity->title; // Assuming we have a name or a title
+
+		// Optional params
+		if ($description = $entity->description) {
+			$event['description'] = elgg_get_excerpt($description);
+		}
+
+		if ($url = $entity->getURL()) { // this should always return something, but checking just in case
+			$event['link'] = $url;
+		}
+	}	
 	return $event;
 }
 
