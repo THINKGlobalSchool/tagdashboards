@@ -77,7 +77,7 @@ function ubertags_photo_override_handler($hook, $type, $returnvalue, $params) {
 function ubertags_timeline_blog_handler($hook, $type, $returnvalue, $params) {
 	if ($type == 'blog') {
 		// These first three are required
-		$event['start'] = date("r", $params['entity']->time_created); // full date format
+		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $params['entity']->time_created)));; // full date format
 		$event['isDuration'] = FALSE;
 		$event['title'] = $params['entity']->title; 
 		$event['description'] = elgg_get_excerpt($params['entity']->description);
@@ -91,7 +91,7 @@ function ubertags_timeline_blog_handler($hook, $type, $returnvalue, $params) {
 function ubertags_timeline_image_handler($hook, $type, $returnvalue, $params) {
 	if ($type == 'image') {
 		// These first three are required
-		$event['start'] = date("r", $params['entity']->time_created); // full date format
+		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $params['entity']->time_created))); // full date format
 		$event['isDuration'] = FALSE;
 		$event['title'] = $params['entity']->title; 
 		$event['description'] = elgg_get_excerpt($params['entity']->description);
@@ -106,7 +106,7 @@ function ubertags_timeline_image_handler($hook, $type, $returnvalue, $params) {
 function ubertags_timeline_ubertag_handler($hook, $type, $returnvalue, $params) {
 	if ($type == 'ubertag') {
 		// These first three are required
-		$event['start'] = date("r", $params['entity']->time_created); // full date format
+		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $params['entity']->time_created))); // full date format
 		$event['isDuration'] = FALSE;
 		$event['title'] = $params['entity']->title; 
 		$event['description'] = elgg_get_excerpt($params['entity']->description);
@@ -120,7 +120,7 @@ function ubertags_timeline_ubertag_handler($hook, $type, $returnvalue, $params) 
 function ubertags_timeline_simplekaltura_handler($hook, $type, $returnvalue, $params) {
 	if ($type == 'simplekaltura_video') {
 		// These first three are required
-		$event['start'] = date("r", $params['entity']->time_created); // full date format
+		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $params['entity']->time_created))); // full date format
 		$event['isDuration'] = FALSE;
 		$event['title'] = $params['entity']->title; 
 		$event['description'] = elgg_get_excerpt($params['entity']->description);

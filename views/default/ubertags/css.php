@@ -130,18 +130,25 @@ div.enabled-content-type label{
 
 /** Timeline  **/
 #ubertag-timeline {
-	height: 450px;
+	height: 400px;
 	border: 1px solid #aaa;
 	/**overflow-x:hidden; overflow-y:scroll;**/
 }
 
 
 .timeline-event-label {
-	padding-left: 5px;
-	padding-top: 2px;
+
 }
 
 
 .timeline-event-bubble-image {
 	float: none;
+}
+
+div.timeline-event-icon {
+
+}
+div.timeline-event-icon-default {
+	border: none;
+	padding: 0px;
 }

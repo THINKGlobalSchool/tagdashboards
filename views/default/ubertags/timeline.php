@@ -36,43 +36,52 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 			// Create an event source (will be a JSON feed)
             var eventSource = new Timeline.DefaultEventSource();
             
-            var theme1 = Timeline.ClassicTheme.create();
-			theme1.mouseWheel = 'default';
+            var theme = Timeline.ClassicTheme.create();
+			//theme.mouseWheel = 'default';
+			theme.event.instant.icon = "no-image-40.png";
+			theme.event.instant.iconWidth = 15;  // These are for the default stand-alone icon
+			theme.event.instant.iconHeight = 15;
+			
 
            
             var bandInfos = [
                 Timeline.createBandInfo({
 					eventSource:    eventSource,
-		  			width:          "50%", 
+		  			width:          "70%", 
 	         		intervalUnit:   Timeline.DateTime.DAY, 
 	         		intervalPixels: 100, 
-                    theme:          theme1,
-                    layout:         'original'  // original, overview, detailed
-		     	}),
-				Timeline.createBandInfo({
-		  			eventSource:    eventSource,
-					width:          "30%", 
-	         		intervalUnit:   Timeline.DateTime.MONTH, 
-	         		intervalPixels: 100, 
-                    theme:          theme1,
-                    layout:         'original'  // original, overview, detailed
+                    theme:          theme,
+                    layout:         'original',  // original, overview, detailed
+					eventPainter:   Timeline.CompactEventPainter,
+					eventPainterParams: {
+					                        iconLabelGap:     2,
+					                        labelRightMargin: 0,
+
+					                        iconWidth:        15, // These are for per-event custom icons
+					                        iconHeight:       15,
+
+					                        stackConcurrentPreciseInstantEvents: {
+					                            limit: 10,
+					                            moreMessageTemplate:    "%0 More Events",
+					                            icon:                   "no-image-80.png", // default icon in stacks
+					                            iconWidth:              15,
+					                            iconHeight:             15
+					                        }
+					                    }
 		     	}),
 				Timeline.createBandInfo({
 					overview: 		true, 
 		  			eventSource:    eventSource,
-					width:          "20%", 
-	         		intervalUnit:   Timeline.DateTime.YEAR, 
+					width:          "30%", 
+	         		intervalUnit:   Timeline.DateTime.MONTH, 
 	         		intervalPixels: 100, 
-                    theme:          theme1,
+                    theme:          theme,
                     layout:         'original'  // original, overview, detailed
 		     	})
             ];
 			
 			bandInfos[1].syncWith = 0;
 			bandInfos[1].highlight = true;
-			bandInfos[2].syncWith = 1;
-			bandInfos[2].highlight = true;
-
                                                             
             // create the Timeline
             tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);
