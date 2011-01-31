@@ -58,29 +58,5 @@ foreach ($subtypes as $subtype) {
 
 echo json_encode($json);
 
-/*$items = array(
-	'wiki-url' => 'http://simile.mit.edu/shelf/', 
-	'wiki-section' => 'Ubertags Timeline',
-	'dateTimeFormat' => 'Gregorian',
-	'events' => array(
-		array(
-			'start' => 'Sun January 23 2011 00:00:00 GMT-0600',
-			'title' => 'Stuff',
-			'durationEvent' => FALSE,
-		),
-		array(
-			'start' => 'Mon January 24 2011 00:00:00 GMT-0600',
-			'title' => 'More Stuff',
-			'durationEvent' => FALSE,
-		),
-		array(
-			'start' => 'Sat January 22 2011 00:00:00 GMT-0600',
-			'title' => 'Less Stuff',
-			'durationEvent' => FALSE,
-		),
-	)
-);*/
-
-//echo json_encode($items);
 
 ?>

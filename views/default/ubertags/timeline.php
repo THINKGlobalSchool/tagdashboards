@@ -28,6 +28,7 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 		window.onresize = onResize; // Can't do this with jQuery for some reason... ie: $("body").resize(...)
 	});
 
+
 	 var tl;
         function onLoad() {
 			// Which element will hold the timeline

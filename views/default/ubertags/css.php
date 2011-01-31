@@ -136,6 +136,10 @@ div.enabled-content-type label{
 }
 
 
+.timeline-event-bubble-time {
+	display: none;
+}
+
 .timeline-event-label {
 
 }

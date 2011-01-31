@@ -90,12 +90,14 @@ function ubertags_timeline_blog_handler($hook, $type, $returnvalue, $params) {
 /* Override default event converstion for image entities */
 function ubertags_timeline_image_handler($hook, $type, $returnvalue, $params) {
 	if ($type == 'image') {
+		$image_link = elgg_get_site_url() . "pg/photos/thumbnail/{$params['entity']->getGUID()}/small";
+		
 		// These first three are required
 		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $params['entity']->time_created))); // full date format
 		$event['isDuration'] = FALSE;
 		$event['title'] = $params['entity']->title; 
-		$event['description'] = elgg_get_excerpt($params['entity']->description);
-		$event['image'] = elgg_get_site_url() . "pg/photos/thumbnail/{$params['entity']->getGUID()}/small";
+		$event['description'] = "<div style='min-height: 180px'><img src='$image_link' /><br />" .  elgg_get_excerpt($params['entity']->description) ."</div>";
+		//$event['image'] = elgg_get_site_url() . "pg/photos/thumbnail/{$params['entity']->getGUID()}/small";
 		$event['icon'] = elgg_get_site_url() . "mod/ubertags/images/image.gif";
 		$event['link'] = $params['entity']->getURL();
 		return $event;
@@ -111,7 +113,7 @@ function ubertags_timeline_ubertag_handler($hook, $type, $returnvalue, $params) 
 		$event['title'] = $params['entity']->title; 
 		$event['description'] = elgg_get_excerpt($params['entity']->description);
 		$event['icon'] = elgg_get_site_url() . "mod/ubertags/images/ubertag.gif";
-		$event['link'] = $params['entity']->getURL();
+		$event['link'] = $params['entity']->getURL();	
 		return $event;
 	} 
 }
