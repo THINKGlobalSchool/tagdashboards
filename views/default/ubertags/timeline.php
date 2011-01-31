@@ -29,6 +29,25 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 	});
 
 
+	Timeline._Band.prototype.setBandShiftAndWidth = function(shift, width) {
+	    var inputDiv = this._keyboardInput.parentNode;
+	    var middle = shift + Math.floor(width / 2);
+	    if (this._timeline.isHorizontal()) {
+	        this._div.style.top = shift + "px";
+	        this._div.style.height = "100%";//width + "px";
+
+	        inputDiv.style.top = middle + "px";
+	        inputDiv.style.left = "-1em";
+	    } else {
+	        this._div.style.left = shift + "px";
+	        this._div.style.width = width + "px";
+
+	        inputDiv.style.left = middle + "px";
+	        inputDiv.style.top = "-1em";
+	    }
+	};
+	
+
 	 var tl;
         function onLoad() {
 			// Which element will hold the timeline
@@ -38,21 +57,34 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
             var eventSource = new Timeline.DefaultEventSource();
             
             var theme = Timeline.ClassicTheme.create();
-			//theme.mouseWheel = 'default';
+			theme.mouseWheel = 'default';
 			theme.event.instant.icon = "no-image-40.png";
 			theme.event.instant.iconWidth = 15;  // These are for the default stand-alone icon
 			theme.event.instant.iconHeight = 15;
 			
+			// Play around with the 'ether'
+			console.log(theme.ether.interval.marker);
 
            
             var bandInfos = [
+				Timeline.createBandInfo({
+					overview: 		true, 
+		  			eventSource:    eventSource,
+					width:          "15%", 
+	         		intervalUnit:   Timeline.DateTime.MONTH, 
+	         		intervalPixels: 100, 
+	                theme:          theme,
+					align: 			"Top",		// Align the dates to the top, easy way
+	                layout:         'original'  // original, overview, detailed
+		     	}), 
                 Timeline.createBandInfo({
 					eventSource:    eventSource,
-		  			width:          "70%", 
+		  			width:          "85%", 
 	         		intervalUnit:   Timeline.DateTime.DAY, 
 	         		intervalPixels: 100, 
                     theme:          theme,
-                    layout:         'original',  // original, overview, detailed
+					align: 			"Top", 	
+                    layout:         'original',  
 					eventPainter:   Timeline.CompactEventPainter,
 					eventPainterParams: {
 					                        iconLabelGap:     2,
@@ -69,20 +101,11 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 					                            iconHeight:             15
 					                        }
 					                    }
-		     	}),
-				Timeline.createBandInfo({
-					overview: 		true, 
-		  			eventSource:    eventSource,
-					width:          "30%", 
-	         		intervalUnit:   Timeline.DateTime.MONTH, 
-	         		intervalPixels: 100, 
-                    theme:          theme,
-                    layout:         'original'  // original, overview, detailed
 		     	})
             ];
 			
-			bandInfos[1].syncWith = 0;
-			bandInfos[1].highlight = true;
+			bandInfos[0].syncWith = 1;
+			bandInfos[0].highlight = true;
                                                             
             // create the Timeline
             tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);

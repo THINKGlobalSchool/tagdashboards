@@ -130,9 +130,11 @@ div.enabled-content-type label{
 
 /** Timeline  **/
 #ubertag-timeline {
-	height: 400px;
+	height: 450px;
 	border: 1px solid #aaa;
-	/**overflow-x:hidden; overflow-y:scroll;**/
+	/** these two are for the vertical scroll **/
+	overflow-x:hidden; 
+	overflow-y:scroll;
 }
 
 
@@ -152,6 +154,11 @@ div.enabled-content-type label{
 div.timeline-event-icon {
 
 }
+
+.timeline-band-events {
+	padding-top: 15px;
+}
+
 div.timeline-event-icon-default {
 	border: none;
 	padding: 0px;
