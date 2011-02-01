@@ -155,6 +155,7 @@ div.timeline-event-icon {
 
 }
 
+
 .timeline-band-events {
 	padding-top: 15px;
 }
@@ -163,6 +164,16 @@ div.timeline-event-icon-default {
 	border: none;
 	padding: 0px;
 }
+
+.simileAjax-bubble-container {
+	max-height: 450px;
+}
+
+.simileAjax-bubble-contentContainer {
+	overflow-x: hidden !important; 
+	overflow-y: scroll;
+}
+
 
 /** Timeline dark theme **/
 /*---------------------------------*/
