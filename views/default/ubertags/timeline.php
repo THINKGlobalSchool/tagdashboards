@@ -19,7 +19,7 @@ $json_data_url = elgg_get_site_url() . "pg/ubertags/timeline_feed/{$vars['entity
 elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=true", 'timeline');
 
 ?>
-<div id="ubertag-timeline"></div>
+<div id="ubertag-timeline" class='dark-theme'></div>
 <script>
 	var json_data_url = "<?php echo $json_data_url; ?>";
 
