@@ -62,62 +62,67 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 			theme.event.instant.iconWidth = 15;  // These are for the default stand-alone icon
 			theme.event.instant.iconHeight = 15;
 			
-			// Play around with the 'ether'
-			console.log(theme.ether.interval.marker);
-
-           
-            var bandInfos = [
-				Timeline.createBandInfo({
-					overview: 		true, 
-		  			eventSource:    eventSource,
-					width:          "15%", 
-	         		intervalUnit:   Timeline.DateTime.MONTH, 
-	         		intervalPixels: 100, 
-	                theme:          theme,
-					align: 			"Top",		// Align the dates to the top, easy way
-	                layout:         'original'  // original, overview, detailed
-		     	}), 
-                Timeline.createBandInfo({
-					eventSource:    eventSource,
-		  			width:          "85%", 
-	         		intervalUnit:   Timeline.DateTime.DAY, 
-	         		intervalPixels: 100, 
-                    theme:          theme,
-					align: 			"Top", 	
-                    layout:         'original',  
-					eventPainter:   Timeline.CompactEventPainter,
-					eventPainterParams: {
-					                        iconLabelGap:     2,
-					                        labelRightMargin: 0,
-
-					                        iconWidth:        15, // These are for per-event custom icons
-					                        iconHeight:       15,
-
-					                        stackConcurrentPreciseInstantEvents: {
-					                            limit: 10,
-					                            moreMessageTemplate:    "%0 More Events",
-					                            icon:                   "no-image-80.png", // default icon in stacks
-					                            iconWidth:              15,
-					                            iconHeight:             15
-					                        }
-					                    }
-		     	})
-            ];
-			
-			bandInfos[0].syncWith = 1;
-			bandInfos[0].highlight = true;
-                                                            
-            // create the Timeline
-            tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);
-            
+                    
             var url = '.'; // The base url for image, icon and background image
-                           // references in the data
+			var date = '';
 
 			Timeline.loadJSON(json_data_url, function(data, url){
 				eventSource.loadJSON(data, url);
+				date = eventSource.getLatestDate();
+				
+				// Going to set up all this stuff when the load is complete..
+				var bandInfos = [
+					Timeline.createBandInfo({
+						date:  			date, 
+						overview: 		true, 
+			  			eventSource:    eventSource,
+						width:          "15%", 
+		         		intervalUnit:   Timeline.DateTime.MONTH, 
+		         		intervalPixels: 100, 
+		                theme:          theme,
+						align: 			"Top",		// Align the dates to the top, easy way
+		                layout:         'original'  // original, overview, detailed
+			     	}), 
+	                Timeline.createBandInfo({
+						date:  			date,
+						eventSource:    eventSource,
+			  			width:          "85%", 
+		         		intervalUnit:   Timeline.DateTime.DAY, 
+		         		intervalPixels: 100, 
+	                    theme:          theme,
+						align: 			"Top", 	
+	                    layout:         'original',  
+						eventPainter:   Timeline.CompactEventPainter,
+						eventPainterParams: {
+						                        iconLabelGap:     2,
+						                        labelRightMargin: 0,
+
+						                        iconWidth:        15, // These are for per-event custom icons
+						                        iconHeight:       15,
+
+						                        stackConcurrentPreciseInstantEvents: {
+						                            limit: 10,
+						                            moreMessageTemplate:    "%0 More Events",
+						                            icon:                   "no-image-80.png", // default icon in stacks
+						                            iconWidth:              15,
+						                            iconHeight:             15
+						                        }
+						                    }
+			     	})
+	            ];
+
+				// Sync up the bands
+				bandInfos[0].syncWith = 1;
+				bandInfos[0].highlight = true;
+
+	            // create the Timeline
+	            tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);
+
+	            tl.layout(); // display the Timeline
 			});
+		
+
 			
-            tl.layout(); // display the Timeline
         }
         
         var resizeTimerID = null;

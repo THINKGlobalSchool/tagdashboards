@@ -168,8 +168,8 @@ div.timeline-event-icon-default {
 /*---------------------------------*/
 
 .dark-theme { color: #eee; }
-.dark-theme .timeline-band-0 .timeline-ether-bg { background-color: #333 }
-.dark-theme .timeline-band-1 .timeline-ether-bg { background-color: #111 }
+.dark-theme .timeline-band-0 .timeline-ether-bg { background-color: #111 }
+.dark-theme .timeline-band-1 .timeline-ether-bg { background-color: #333 }
 .dark-theme .timeline-band-2 .timeline-ether-bg { background-color: #222 }
 .dark-theme .timeline-band-3 .timeline-ether-bg { background-color: #444 }
 
