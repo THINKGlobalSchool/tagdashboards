@@ -175,6 +175,15 @@ div.timeline-event-icon-default {
 	overflow-y: scroll;
 }**/
 
+.timeline-entity-subtext {
+	margin-bottom: 3px;
+	padding-bottom: 3px;
+}
+
+.timeline-tidypics-image-container {
+	min-height: 180px;
+}
+
 
 /** Timeline dark theme **/
 /*---------------------------------*/

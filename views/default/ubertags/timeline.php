@@ -60,6 +60,8 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 	    }
 
 	    SimileAjax.WindowManager.cancelPopups();
+	
+		// Added 'left' (orientation) and 450 (max-height)
 	    SimileAjax.Graphics.createBubbleForContentAndPoint(div, x, y, this._params.theme.event.bubble.width, 'left', 450);
 	};
 	

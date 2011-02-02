@@ -80,7 +80,14 @@ function ubertags_timeline_blog_handler($hook, $type, $returnvalue, $params) {
 		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $params['entity']->time_created)));; // full date format
 		$event['isDuration'] = FALSE;
 		$event['title'] = $params['entity']->title; 
-		$event['description'] = elgg_get_excerpt($params['entity']->description);
+		
+		$comments_count = elgg_count_comments($params['entity']);
+		$likes_count = elgg_count_likes($params['entity']);
+		
+		$event['description'] = "<div class='entity_subtext timeline-entity-subtext'>
+									Likes: $likes_count $views_string Comments: $comments_count
+								</div>". elgg_get_excerpt($params['entity']->description);
+								
 		$event['icon'] = elgg_get_site_url() . "mod/ubertags/images/blog.gif";
 		$event['link'] = $params['entity']->getURL();
 		return $event;
@@ -96,8 +103,24 @@ function ubertags_timeline_image_handler($hook, $type, $returnvalue, $params) {
 		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $params['entity']->time_created))); // full date format
 		$event['isDuration'] = FALSE;
 		$event['title'] = $params['entity']->title; 
-		$event['description'] = "<div style='min-height: 180px'><img src='$image_link' /><br />" .  elgg_get_excerpt($params['entity']->description) ."</div>";
-		//$event['image'] = elgg_get_site_url() . "pg/photos/thumbnail/{$params['entity']->getGUID()}/small";
+		
+		// Description will contain the img link, likes, views, comments and excerpt
+		$views = $params['entity']->getViews(0);
+		if (is_array($views)) {
+			$views_string = sprintf(elgg_echo("tidypics:views"), $views['total']);
+		}
+		
+		$comments_count = elgg_count_comments($params['entity']);
+		$likes_count = elgg_count_likes($params['entity']);
+		
+		$event['description'] = "<div class='timeline-tidypics-image-container'>
+									<img src='$image_link' /><br />
+									<div class='entity_subtext timeline-entity-subtext'>
+										Likes: $likes_count $views_string Comments: $comments_count
+									</div>"
+									.  elgg_get_excerpt($params['entity']->description) . 
+								"</div>";
+
 		$event['icon'] = elgg_get_site_url() . "mod/ubertags/images/image.gif";
 		$event['link'] = $params['entity']->getURL();
 		return $event;
@@ -111,7 +134,14 @@ function ubertags_timeline_ubertag_handler($hook, $type, $returnvalue, $params) 
 		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $params['entity']->time_created))); // full date format
 		$event['isDuration'] = FALSE;
 		$event['title'] = $params['entity']->title; 
-		$event['description'] = elgg_get_excerpt($params['entity']->description);
+		
+		$comments_count = elgg_count_comments($params['entity']);
+		$likes_count = elgg_count_likes($params['entity']);
+		
+		$event['description'] = "<div class='entity_subtext timeline-entity-subtext'>
+									Likes: $likes_count $views_string Comments: $comments_count
+								</div>". elgg_get_excerpt($params['entity']->description);
+								
 		$event['icon'] = elgg_get_site_url() . "mod/ubertags/images/ubertag.gif";
 		$event['link'] = $params['entity']->getURL();	
 		return $event;
@@ -125,7 +155,14 @@ function ubertags_timeline_simplekaltura_handler($hook, $type, $returnvalue, $pa
 		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $params['entity']->time_created))); // full date format
 		$event['isDuration'] = FALSE;
 		$event['title'] = $params['entity']->title; 
-		$event['description'] = elgg_get_excerpt($params['entity']->description);
+		
+		$comments_count = elgg_count_comments($params['entity']);
+		$likes_count = elgg_count_likes($params['entity']);
+		
+		$event['description'] = "<div class='entity_subtext timeline-entity-subtext'>
+									Likes: $likes_count $views_string Comments: $comments_count
+								</div>". elgg_get_excerpt($params['entity']->description);
+								
 		$event['icon'] = elgg_get_site_url() . "mod/ubertags/images/simplekaltura_video.gif";
 		$event['link'] = $params['entity']->getURL();
 		return $event;
