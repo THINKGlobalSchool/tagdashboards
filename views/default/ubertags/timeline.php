@@ -65,6 +65,11 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 	    SimileAjax.Graphics.createBubbleForContentAndPoint(div, x, y, this._params.theme.event.bubble.width, 'left', 450);
 	};
 	
+	// This little function was responsible for '[space]' showing up everywhere
+	SimileAjax.HTML.deEntify = function(s) {
+		// don't do anything.. just return whatever was passed in
+	    return s;
+	};
 
 	 var tl;
         function onLoad() {
