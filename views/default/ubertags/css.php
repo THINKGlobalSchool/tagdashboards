@@ -166,7 +166,7 @@ div.timeline-event-icon-default {
 }
 
 .simileAjax-bubble-container {
-	max-height: 450px;
+	max-height: 450px !important;
 }
 
 .simileAjax-bubble-contentContainer {
