@@ -101,7 +101,7 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 						                        iconHeight:       15,
 
 						                        stackConcurrentPreciseInstantEvents: {
-						                            limit: 1,
+						                            limit: 10,
 						                            moreMessageTemplate:    "%0 More Events",
 						                            icon:                   "no-image-80.png", // default icon in stacks
 						                            iconWidth:              15,
