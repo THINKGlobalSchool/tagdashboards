@@ -28,13 +28,13 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 		window.onresize = onResize; // Can't do this with jQuery for some reason... ie: $("body").resize(...)
 	});
 
-
+	// Override setBandShiftAndWidth to show bands at 100%
 	Timeline._Band.prototype.setBandShiftAndWidth = function(shift, width) {
 	    var inputDiv = this._keyboardInput.parentNode;
 	    var middle = shift + Math.floor(width / 2);
 	    if (this._timeline.isHorizontal()) {
 	        this._div.style.top = shift + "px";
-	        this._div.style.height = "100%";//width + "px";
+	        this._div.style.height = "100%";//width + "px"; Sets width to 100% for scrolling
 
 	        inputDiv.style.top = middle + "px";
 	        inputDiv.style.left = "-1em";
@@ -45,6 +45,22 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 	        inputDiv.style.left = middle + "px";
 	        inputDiv.style.top = "-1em";
 	    }
+	};
+	
+	// Override to set a max height on bubbles
+	Timeline.CompactEventPainter.prototype._showBubble = function(x, y, evts) {
+	    var div = document.createElement("div");
+
+	    evts = ("fillInfoBubble" in evts) ? [evts] : evts;
+	    for (var i = 0; i < evts.length; i++) {
+	        var div2 = document.createElement("div");
+	        div.appendChild(div2);
+
+	        evts[i].fillInfoBubble(div2, this._params.theme, this._band.getLabeller());
+	    }
+
+	    SimileAjax.WindowManager.cancelPopups();
+	    SimileAjax.Graphics.createBubbleForContentAndPoint(div, x, y, this._params.theme.event.bubble.width, 'left', 450);
 	};
 	
 
