@@ -46,6 +46,7 @@ $english = array(
 	'ubertags:label:deleteconfirm' => 'Are you sure you want to delete this Ubertag?',
 	'ubertags:label:submitted_by' => 'Submitted by %s',
 	'ubertags:label:leaveacomment' => 'Leave a Comment / ',
+	'ubertags:label:viewfull' => 'View full post', 
 
 	// River
 	'ubertags:river:ubertag:create' => '%s created an Ubertag titled ',
