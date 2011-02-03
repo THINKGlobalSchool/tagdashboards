@@ -10,33 +10,20 @@
  * 
  */
 
+
 /* 
-	Override how photo's are grabbed to display both 
-	photos and photos in albums with searched tag
+	Helper function to grab images and images in albums 
+   	with given tag
 */
-function ubertags_photo_override_handler($hook, $type, $returnvalue, $params) {
-	if ($type == 'image') {
-		// store and get rid of offset for now
-		$offset = $params['params']['offset'];
-		unset($params['params']['offset']);
+function ubertags_get_images_and_albums_from_metadata($params) {
 		
-		// Set limit to 0 
-		$params['params']['limit'] = 0;
-		
-		// Count images first
-		$params['params']['count'] = TRUE;
-		$count = elgg_get_entities_from_metadata($params['params']);
-		
-		// Get all images
-		$params['params']['count'] = FALSE;
-		
-		if (!$images = elgg_get_entities_from_metadata($params['params'])) {
+		if (!$images = elgg_get_entities_from_metadata($params)) {
 			$images = array();
 		}
 		
 		// Get albums matching search
-		$params['params']['subtype'] = 'album';
-		$albums = elgg_get_entities_from_metadata($params['params']);
+		$params['subtype'] = 'album';
+		$albums = elgg_get_entities_from_metadata($params);
 		
 		// Loop and grab each image within the albums
 		foreach ($albums as $album) {
@@ -55,6 +42,35 @@ function ubertags_photo_override_handler($hook, $type, $returnvalue, $params) {
 		// Filter out dupes
 		$images = array_filter($images, 'ubertags_image_unique');
 		
+		return $images;
+}
+
+/* 
+	Hook to change how photos are retrieved on the timeline
+*/
+function ubertags_timeline_photo_override_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'image') {
+		return ubertags_get_images_and_albums_from_metadata($params['params']);
+	}
+	return false;
+}
+
+/* 
+	Override how photo's are listed to display both 
+	photos and photos in albums with searched tag
+	Uses: ubertags_get_images_and_albums_with_tag()
+*/
+function ubertags_photo_override_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'image') {
+		// store and get rid of offset for now
+		$offset = $params['params']['offset'];
+		unset($params['params']['offset']);
+		
+		// Set limit to 0 
+		$params['params']['limit'] = 0;
+		
+		$images = ubertags_get_images_and_albums_from_metadata($params['params']);
+		
 		// Image limit a nice round 12
 		$limit = 12;
 	
@@ -71,6 +87,7 @@ function ubertags_photo_override_handler($hook, $type, $returnvalue, $params) {
 				
 		return $return;
 	}
+	return false;
 }
 
 /* Handler to register a timeline icon for blogs */

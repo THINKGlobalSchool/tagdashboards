@@ -60,6 +60,9 @@ function ubertags_init() {
 	elgg_register_plugin_hook_handler('ubertags:timeline:icon', 'blog', 'ubertags_timeline_blog_icon_handler');
 	elgg_register_plugin_hook_handler('ubertags:timeline:icon', 'image', 'ubertags_timeline_image_icon_handler');
 	elgg_register_plugin_hook_handler('ubertags:timeline:icon', 'ubertag', 'ubertags_timeline_ubertag_icon_handler');
+
+	// Change how photos are retrieved for the timeline 
+	elgg_register_plugin_hook_handler('ubertags:timeline:subtype', 'image', 'ubertags_timeline_photo_override_handler');
 	
 	// Change display of photos
 	elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'ubertags_photo_override_handler');
