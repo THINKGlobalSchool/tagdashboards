@@ -279,6 +279,7 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 			// Also (now that all events have been loaded), automatically re-size
 			tl.finishedEventLoading(); // Automatically set new size of the div 
 			tl.getBand(1).setCenterVisibleDate(eventSource2.getLatestDate()); // Center the timline on last entry
+			tl.getBand(0).setCenterVisibleDate(eventSource2.getLatestDate());
 		}
 
 
