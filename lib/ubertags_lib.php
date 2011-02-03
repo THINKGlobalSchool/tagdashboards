@@ -163,7 +163,7 @@ function ubertags_get_page_content_timeline($guid) {
 	elgg_push_breadcrumb($owner->name, elgg_get_site_url() . 'pg/ubertags/' . $owner->username);
 	elgg_push_breadcrumb($ubertag->title, $ubertag->getURL());
 	$content_info['title'] = $ubertag->title;
-	$content_info['content'] = elgg_view('ubertags/timeline', array('entity' => $ubertag));
+	$content_info['content'] = elgg_view('ubertags/timeline_new', array('entity' => $ubertag));
 	$content_info['layout'] = 'one_column_with_sidebar';
 	
 	return $content_info;

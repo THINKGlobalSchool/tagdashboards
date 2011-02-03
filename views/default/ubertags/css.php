@@ -130,13 +130,18 @@ div.enabled-content-type label{
 
 /** Timeline  **/
 #ubertag-timeline {
-	height: 450px;
+	height: 400px;
 	border: 1px solid #aaa;
 	/** these two are for the vertical scroll **/
 	overflow-x:hidden; 
 	overflow-y:scroll;
 }
 
+#ubertag-timeline-new {
+	height: 200px;
+	border: 1px solid #aaa;
+	background: #444;
+}
 
 .timeline-event-bubble-time {
 	display: none;
@@ -182,6 +187,18 @@ div.timeline-event-icon-default {
 
 .timeline-tidypics-image-container {
 	min-height: 180px;
+}
+
+.timeline-message-container div {
+	background: #555555 !important;
+}
+
+.timeline-message-container {
+	border: 3px solid #222222;
+}
+
+.timeline-message img {
+	display: none;
 }
 
 /** Image Popup **/
