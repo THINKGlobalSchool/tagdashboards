@@ -204,107 +204,107 @@ elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.j
 	};
 
 
-	 var tl;
-	        function onLoad() {
-	            var tl_el = document.getElementById("ubertag-timeline-new");
-	            var eventSource1 = new Timeline.DefaultEventSource();
-	            var eventSource2 = new Timeline.DefaultEventSource();
+	var tl;
+	function onLoad() {
+	    var tl_el = document.getElementById("ubertag-timeline-new");
+	    var eventSource1 = new Timeline.DefaultEventSource();
+	    var eventSource2 = new Timeline.DefaultEventSource();
 
-	            var theme1 = Timeline.ClassicTheme.create();
-	            theme1.autoWidth = true; // Set the Timeline's "width" automatically.
-	                                     // Set autoWidth on the Timeline's first band's theme,
-	                                     // will affect all bands.
-
-
-	            // create a second theme for the second band because we want it to
-	            // have different settings
-	            var theme2 = Timeline.ClassicTheme.create();
-	            // increase tape height
-	            theme2.event.tape.height = 6; // px
-	            theme2.event.track.height = theme2.event.tape.height + 6;
-
-	            var bandInfos = [
-	                Timeline.createBandInfo({
-						overview: 		true,
-	                    width:          50, // set to a minimum, autoWidth will then adjust
-	                    intervalUnit:   Timeline.DateTime.MONTH, 
-	                    intervalPixels: 100,
-	                    eventSource:    eventSource1,
-	                    theme:          theme1,
-	                    layout:         'original',  // original, overview, detailed
-						align: 			'Top' 
-	                }),
-	                Timeline.createBandInfo({
-	                    width:          45, // set to a minimum, autoWidth will then adjust
-	                    intervalUnit:   Timeline.DateTime.DAY, 
-	                    intervalPixels: 100,
-	                    eventSource:    eventSource2,
-	                    theme:          theme2,
-	                    layout:         'original',  // original, overview, detailed
-						align: 			'Top',
-						eventPainter:   Timeline.CompactEventPainter,
-						eventPainterParams: {
-						                        iconLabelGap:     2,
-						                        labelRightMargin: 0,
-
-						                        iconWidth:        15, // These are for per-event custom icons
-						                        iconHeight:       15,
-
-						                        stackConcurrentPreciseInstantEvents: {
-						                            limit: 10,
-						                            moreMessageTemplate:    "%0 More Events",
-						                            icon:                   "no-image-80.png", // default icon in stacks
-						                            iconWidth:              15,
-						                            iconHeight:             15
-						                        }
-						                    }
-	                })
-	            ];
-	            bandInfos[1].syncWith = 0;
-	            bandInfos[1].highlight = true;
+	    var theme1 = Timeline.ClassicTheme.create();
+	    theme1.autoWidth = true; // Set the Timeline's "width" automatically.
+	                             // Set autoWidth on the Timeline's first band's theme,
+	                             // will affect all bands.
 
 
-	            // Asynchronous Callback functions. Called after data arrives.
-	            function load_json1(json, url) {
-	              // Called with first json file from server
-	              // Also initiates loading of second Band
+	    // create a second theme for the second band because we want it to
+	    // have different settings
+	    var theme2 = Timeline.ClassicTheme.create();
+	    // increase tape height
+	    theme2.event.tape.height = 6; // px
+	    theme2.event.track.height = theme2.event.tape.height + 6;
 
-	              eventSource1.loadJSON(json, url);
-	              // stop browser caching of data during testing by appending time
-	              tl.loadJSON(json_data_url + "?" + (new Date().getTime()), load_json2);
-	            };
+	    var bandInfos = [
+	        Timeline.createBandInfo({
+				overview: 		true,
+	            width:          50, // set to a minimum, autoWidth will then adjust
+	            intervalUnit:   Timeline.DateTime.MONTH, 
+	            intervalPixels: 100,
+	            eventSource:    eventSource1,
+	            theme:          theme1,
+	            layout:         'original',  // original, overview, detailed
+				align: 			'Top' 
+	        }),
+	        Timeline.createBandInfo({
+	            width:          45, // set to a minimum, autoWidth will then adjust
+	            intervalUnit:   Timeline.DateTime.DAY, 
+	            intervalPixels: 100,
+	            eventSource:    eventSource2,
+	            theme:          theme2,
+	            layout:         'original',  // original, overview, detailed
+				align: 			'Top',
+				eventPainter:   Timeline.CompactEventPainter,
+				eventPainterParams: {
+	                     iconLabelGap:     2,
+	                     labelRightMargin: 0,
 
-	            function load_json2(json, url) {
-	              // Called with second json file from server
-	              eventSource2.loadJSON(json, url);
-	              // Also (now that all events have been loaded), automatically re-size
-	              tl.finishedEventLoading(); // Automatically set new size of the div 
-	            };
+	                     iconWidth:        15, // These are for per-event custom icons
+	                     iconHeight:       15,
+	                     stackConcurrentPreciseInstantEvents: {
+	                         limit: 10,
+	                         moreMessageTemplate:    "%0 More Events",
+	                         icon:                   "no-image-80.png", // default icon in stacks
+	                         iconWidth:              15,
+	                         iconHeight:             15
+	                     }
+	                 }
+	        })
+	    ];
+	    bandInfos[1].syncWith = 0;
+	    bandInfos[1].highlight = true;
 
 
-	            // create the Timeline
-	            // Strategy: Initiate Ajax call for first band's data, then have its callback
-	            // initiate Ajax call for second band's data. Then have its callback 
-	            // automagically resize the overall Timeline since we will then have all
-	            // the data.
-	            tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);
+		// Asynchronous Callback functions. Called after data arrives.
+		function load_json1(json, url) {
+			// Called with first json file from server
+			// Also initiates loading of second Band
 
-	            // stop browser caching of data during testing by appending time
-	            tl.loadJSON(json_data_url + "?" + (new Date().getTime()), load_json1);
-	        }
+			eventSource1.loadJSON(json, url);
+			// stop browser caching of data during testing by appending time
+			tl.loadJSON(json_data_url + "?" + (new Date().getTime()), load_json2);
+		}
 
-	        function centerTimeline(year) {
-	            tl.getBand(0).setCenterVisibleDate(new Date(year, 0, 1));
-	        }
+		function load_json2(json, url) {
+			// Called with second json file from server
+			eventSource2.loadJSON(json, url);
+			// Also (now that all events have been loaded), automatically re-size
+			tl.finishedEventLoading(); // Automatically set new size of the div 
+			tl.getBand(1).setCenterVisibleDate(eventSource2.getLatestDate()); // Center the timline on last entry
+		}
 
-	        var resizeTimerID = null;
-	        function onResize() {
-	            if (resizeTimerID == null) {
-	                resizeTimerID = window.setTimeout(function() {
-	                    resizeTimerID = null;
-	                    tl.layout();
-	                }, 500);
-	            }
-	        }
+
+		// create the Timeline
+		// Strategy: Initiate Ajax call for first band's data, then have its callback
+		// initiate Ajax call for second band's data. Then have its callback 
+		// automagically resize the overall Timeline since we will then have all
+		// the data.
+		tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);
+
+		// stop browser caching of data during testing by appending time
+		tl.loadJSON(json_data_url + "?" + (new Date().getTime()), load_json1);
+	}
 	
+
+		
+
+
+	var resizeTimerID = null;
+	function onResize() {
+	    if (resizeTimerID == null) {
+	        resizeTimerID = window.setTimeout(function() {
+	            resizeTimerID = null;
+	            tl.layout();
+	        }, 500);
+	    }
+	}
+
 </script>
