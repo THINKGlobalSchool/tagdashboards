@@ -123,7 +123,7 @@ function ubertags_page_handler($page) {
 			break;
 			case 'timeline':
 				// Register the js in the head, because that makes things work.
-				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/timeline-video-popup.js', 'timeline-simplekaltura');
+				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/timeline-popup.js', 'timeline-popup');
 				$content_info = ubertags_get_page_content_timeline($page[1]);
 			break;
 			case 'timeline_image_icon':

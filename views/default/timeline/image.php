@@ -22,8 +22,12 @@ $image_link = elgg_get_site_url() . "pg/photos/thumbnail/{$vars['entity']->getGU
 $comments_count = elgg_count_comments($vars['entity']);
 $likes_count = elgg_count_likes($vars['entity']);
 
+$id = $vars['entity']->getGUID();
+$src = elgg_get_site_url() . "pg/photos/thumbnail/{$vars['entity']->getGUID()}/large";
+
 echo "<div class='timeline-tidypics-image-container'>
-		<img src='$image_link' /><br />
+		<div style='display: none;' id='popup-dialog-$id' class='image-popup-dialog'></div>
+		<img onclick='javascript:timeline_show_image_popup_by_id(\"popup-dialog-$id\", \"$src\")' src='$image_link' /><br />
 		<div class='entity_subtext timeline-entity-subtext'>
 			Likes: $likes_count $views_string Comments: $comments_count
 		</div>"

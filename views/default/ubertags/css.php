@@ -184,6 +184,15 @@ div.timeline-event-icon-default {
 	min-height: 180px;
 }
 
+/** Image Popup **/
+.image-popup-dialog {
+	display: none;
+	padding: 10px;
+	border: 8px solid #555555;
+	background: #ffffff;
+	-moz-border-radius:5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+}
 
 /** Timeline dark theme **/
 /*---------------------------------*/
