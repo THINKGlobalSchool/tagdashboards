@@ -89,14 +89,6 @@ function ubertags_timeline_image_icon_handler($hook, $type, $returnvalue, $param
 	return false;
 }
 
-/* Handler to register a timeline icon for simplekaltura videos */
-function ubertags_timeline_video_icon_handler($hook, $type, $returnvalue, $params) {
-	if ($type == 'simplekaltura_video') {
-		return elgg_get_site_url() . "mod/ubertags/images/simplekaltura_video.gif";
-	}
-	return false;
-}
-
 /* Handler to register a timeline icon for ubertags */
 function ubertags_timeline_ubertag_icon_handler($hook, $type, $returnvalue, $params) {
 	if ($type == 'ubertag') {

@@ -59,7 +59,6 @@ function ubertags_init() {
 	// Icon handlers
 	elgg_register_plugin_hook_handler('ubertags:timeline:icon', 'blog', 'ubertags_timeline_blog_icon_handler');
 	elgg_register_plugin_hook_handler('ubertags:timeline:icon', 'image', 'ubertags_timeline_image_icon_handler');
-	elgg_register_plugin_hook_handler('ubertags:timeline:icon', 'simplekaltura_video', 'ubertags_timeline_video_icon_handler');
 	elgg_register_plugin_hook_handler('ubertags:timeline:icon', 'ubertag', 'ubertags_timeline_ubertag_icon_handler');
 	
 	// Change display of photos
@@ -123,7 +122,7 @@ function ubertags_page_handler($page) {
 			break;
 			case 'timeline':
 				// Register the js in the head, because that makes things work.
-				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/timeline-popup.js', 'timeline-popup');
+				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/lib/timeline-popup.js', 'timeline-popup');
 				$content_info = ubertags_get_page_content_timeline($page[1]);
 			break;
 			case 'timeline_image_icon':
