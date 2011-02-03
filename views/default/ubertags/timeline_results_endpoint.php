@@ -48,14 +48,18 @@ $entities = array();
 foreach ($subtypes as $subtype) {
 	$params['subtype'] = $subtype;
 	
-	if(!$entities[$subtype] = trigger_plugin_hook('ubertags:timeline:subtype', $subtype, array('search' => $search, 'params' => $params))) {
-		$entities[$subtype] = elgg_get_entities_from_metadata($params);
-	}
-
-	foreach ($entities[$subtype] as $entity) {
-		$json['events'][] = ubertags_entity_to_timeline_event_array($entity);
+	if(!$return = trigger_plugin_hook('ubertags:timeline:subtype', $subtype, array('search' => $search, 'params' => $params))) {
+		$return = elgg_get_entities_from_metadata($params);
 	}
 	
+	$entities[$subtype] = $return;
+
+	if ($entities[$subtype]) {
+		foreach ($entities[$subtype] as $entity) {
+			$json['events'][] = ubertags_entity_to_timeline_event_array($entity);
+		}
+	}
+
 	$count++;
 }
 

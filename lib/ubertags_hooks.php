@@ -23,8 +23,11 @@ function ubertags_get_images_and_albums_from_metadata($params) {
 		
 		// Get albums matching search
 		$params['subtype'] = 'album';
-		$albums = elgg_get_entities_from_metadata($params);
 		
+		if (!$albums = elgg_get_entities_from_metadata($params)) {
+			$albums = array();
+		}
+
 		// Loop and grab each image within the albums
 		foreach ($albums as $album) {
 			$album_images = elgg_get_entities(array(
