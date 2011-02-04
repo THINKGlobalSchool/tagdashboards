@@ -23,16 +23,24 @@ $content = "<div class='ubertag-big-title'>" . $vars['entity']->title . "</div>"
 $content .= "<div class='ubertag-description'>" . $vars['entity']->description . "</div>";
 $content .= "<div class='ubertag-view-block'><a class='switch-ubertags' id='switch-content'>Content View</a> / <a class='switch-ubertags' id='switch-timeline'>Timeline View</a></div>";
 $content .= "<div class='ubertag-comment-block'>" . $edit_link . $comments_link . "</div><div style='clear:both;'></div>";
-$content .= "<div id='ubertags-timeline-container'>" . elgg_view('ubertags/timeline', array('entity' => $vars['entity'])) .  "</div>";
+$content .= "<div id='ubertags-timeline-container'></div>";
 $content .= "<div id='ubertags-content-container'>" . elgg_view('ubertags/ubertags_list_results', array('search' => $vars['entity']->search, 'subtypes' => $vars['entity']->subtypes)) . "</div>";
 $content .= "<a name='annotations'></a><hr style='border: 1px solid #bbb' />";
 
+$timeline_load = elgg_get_site_url() . "pg/ubertags/load_timeline/" . $vars['entity']->getGUID();
+$timeline_data = elgg_get_site_url() . "/pg/ubertags/timeline_feed/" . $vars['entity']->getGUID();
+
 $script = <<<EOT
 	<script type='text/javascript'>
+		var is_tl_loaded = false;
+		var end_url = "$timeline_load";
+		
+		set_timeline_data_url("$timeline_data");
 		
 		$("#ubertags-timeline-container").resize(function () {
 			$("#ubertags-content-container").css({top: -(	$("#ubertags-timeline-container").height())});
 		});
+	
 	
 	
 		// Grab height of the timeline container initially
@@ -46,6 +54,12 @@ $script = <<<EOT
 				$("#ubertags-timeline-container").css({visibility: 'hidden'});
 				$("#ubertags-content-container").show();
 			} else if ($(this).attr('id') == "switch-timeline") {
+				if (!is_tl_loaded) {
+					$("#ubertags-timeline-container").load(end_url, function() {
+						is_tl_loaded = true;
+						onLoad(); // init timeline
+					});
+				}
 				$("#ubertags-timeline-container").css({visibility: 'visible'});
 				$("#ubertags-content-container").hide();
 			}

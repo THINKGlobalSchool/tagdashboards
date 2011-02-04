@@ -153,7 +153,7 @@ a.switch-ubertags {
 }
 
 #ubertag-timeline {
-	height: 100px;
+	height: 200px;
 	border: 1px solid #aaa;
 	background: #444;
 }

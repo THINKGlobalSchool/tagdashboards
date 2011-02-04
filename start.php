@@ -126,6 +126,10 @@ function ubertags_page_handler($page) {
 				$content_info = ubertags_get_page_content_edit($page[1]);
 			break;
 			case 'view': 
+				// Register JS 
+				// HAVE TO HAVE TO HAVE TO HAVE TO LOAD THE JS IN THE HEAD!!!
+				elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false", 'timeline');
+				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/lib/ubertags-timeline.js', 'ubertags-timeline');
 				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/lib/timeline-popup.js', 'timeline-popup');
 				$content_info = ubertags_get_page_content_view($page[1]);
 			break;
@@ -133,6 +137,11 @@ function ubertags_page_handler($page) {
 				// Register the js in the head, because that makes things work.
 				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/lib/timeline-popup.js', 'timeline-popup');
 				$content_info = ubertags_get_page_content_timeline($page[1]);
+			break;
+			case 'load_timeline':
+				$timeline = get_entity($page[1]);
+				echo  elgg_view('ubertags/timeline', array('entity' => $timeline));
+				exit; // ajax load, exit
 			break;
 			case 'timeline_image_icon':
 				echo elgg_view('ubertags/timeline_image_icon', array('guid' => $page[1]));
