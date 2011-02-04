@@ -20,4 +20,4 @@ elgg_register_js(elgg_get_site_url() . 'mod/ubertags/lib/ubertags-timeline.js', 
 
 ?>
 <script>set_timeline_data_url("<?php echo $json_data_url;?>")</script>
-<div id="ubertag-timeline-new" class='dark-theme'></div>
+<div id="ubertag-timeline" class='dark-theme'></div>

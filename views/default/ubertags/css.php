@@ -152,17 +152,8 @@ a.switch-ubertags {
 	color: #333;
 }
 
-/** Timeline  **/
 #ubertag-timeline {
-	height: 400px;
-	border: 1px solid #aaa;
-	/** these two are for the vertical scroll **/
-	overflow-x:hidden; 
-	overflow-y:scroll;
-}
-
-#ubertag-timeline-new {
-	height: 200px;
+	height: 100px;
 	border: 1px solid #aaa;
 	background: #444;
 }
