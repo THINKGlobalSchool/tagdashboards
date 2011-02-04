@@ -10,6 +10,6 @@
  * 
  */
 ?>
-<div class="ubertags_loading <?php echo $vars['class']; ?>" id="<?php echo $vars['id']; ?>">
+<div class="ubertags-loading <?php echo $vars['class']; ?>" id="<?php echo $vars['id']; ?>">
 	<img src="<?php echo elgg_get_site_url() . "_graphics/ajax_loader_bw.gif"; ?>" />
 </div>

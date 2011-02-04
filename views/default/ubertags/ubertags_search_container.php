@@ -21,7 +21,7 @@ $results = '';
 $save_link = "<a id='show_hide' href='#'>" . elgg_echo('ubertags:label:saveform') . "</a>";
 	
 echo <<<EOT
-	<div id='ubertags_search_container'>
+	<div id='ubertags-search-container'>
 		$search_form
 	</div>
 	$save_link
@@ -33,7 +33,7 @@ echo <<<EOT
 				if (!window.location.hash) {
 					$('a#show_hide').hide();
 				}
-				$('#ubertags_save_container').hide();
+				$('#ubertags-save-container').hide();
 				var on = true;
 				$('#show_hide').click(
 					function() {
@@ -44,7 +44,7 @@ echo <<<EOT
 							on = true;
 							//$('#show_hide').html('$show');
 						}
-						$('#ubertags_save_container').toggle('slow');
+						$('#ubertags-save-container').toggle('slow');
 						return false;
 					}
 				);

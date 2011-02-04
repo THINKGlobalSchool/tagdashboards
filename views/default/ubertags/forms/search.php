@@ -21,14 +21,14 @@ $tags_json = json_encode($tags_array);
 
 $search_input = elgg_view('input/text', array(	
 	'internalname' => 'ubertags_search', 
-	'internalid' => 'ubertags_search_input',
+	'internalid' => 'ubertags-search-input',
 	'value' => get_input('ubertags_search')
 ));
 
 $submit_value = elgg_echo('ubertags:label:submitsearch');
 $search_submit = "<input type='submit' 
 						 name='ubertags_search_submit' 
-						 id='ubertags_search_submit' 
+						 id='ubertags-search-submit' 
 						 value='$submit_value'
 						  />";
 
@@ -68,7 +68,7 @@ $script = <<<EOT
 			}
 			
 			function get_ubertag_search_value() {
-				var value = $('#ubertags_search_input').val();
+				var value = $('#ubertags-search-input').val();
 				value = value.toLowerCase();
 				return value;
 			}
@@ -76,16 +76,16 @@ $script = <<<EOT
 			// If we have a hash up in the address, search automatically
 			if (window.location.hash) {
 				var hash = decodeURI(window.location.hash.substring(1));
-				var value = $('#ubertags_search_input').val(hash);
+				var value = $('#ubertags-search-input').val(hash);
 				submit_search(hash);
 				// Show the save link
 			}
 		
-			$('#ubertags_search_submit').click(function(){
+			$('#ubertags-search-submit').click(function(){
 				submit_search(get_ubertag_search_value());
 			});
 			
-			$('#ubertags_search_input').keypress(function(e){
+			$('#ubertags-search-input').keypress(function(e){
 				if(e.which == 13) {
 			    	submit_search(get_ubertag_search_value());
 					e.preventDefault();
@@ -95,7 +95,7 @@ $script = <<<EOT
 			
 			// Typeahead
 			var data = $.parseJSON('$tags_json');
-			$("#ubertags_search_input").autocomplete(data, {
+			$("#ubertags-search-input").autocomplete(data, {
 											highlight: false,
 											multiple: false,
 											multipleSeparator: ", ",

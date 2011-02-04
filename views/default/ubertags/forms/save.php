@@ -60,7 +60,7 @@ $title_input = elgg_view('input/text', array(
 
 $description_label =  elgg_echo('ubertags:label:description');
 $description_input = elgg_view('input/longtext', array(
-	'internalid' => 'ubertag_description',
+	'internalid' => 'ubertag-description',
 	'internalname' => 'ubertag_description',
 	'value' => $description
 ));
@@ -145,7 +145,7 @@ $script = <<<EOT
 	<script type='text/javascript'>
 		// Load our hidden input so we can save the search term
 		$(document).ready(function() {
-			$('input#ubertag_search').val($('#ubertags_search_input').val());
+			$('input#ubertag_search').val($('#ubertags-search-input').val());
 		});
 	</script>
 EOT;

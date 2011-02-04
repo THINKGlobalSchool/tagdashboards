@@ -2,6 +2,6 @@
 echo elgg_view('ubertags/css', $vars, FALSE, FALSE, 'default');
 ?>
 
-.ubertags_loading .hidden {
+.ubertags-loading .hidden {
 	display: none;
 }

@@ -123,6 +123,7 @@ function ubertags_page_handler($page) {
 				$content_info = ubertags_get_page_content_edit($page[1]);
 			break;
 			case 'view': 
+				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/lib/timeline-popup.js', 'timeline-popup');
 				$content_info = ubertags_get_page_content_view($page[1]);
 			break;
 			case 'timeline':

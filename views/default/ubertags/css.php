@@ -11,40 +11,50 @@
  */
 ?>
 
-#ubertags_search_container {
+#ubertags-search-container {
 	width: 100%;
 }
 
-#ubertags_save_container {
+#ubertags-save-container {
 	margin-top: 10px;
 	width: 100%;
 }
 
-#ubertags_search_input {
+#ubertags-timeline-container {
+	visibility: hidden;
+}
+
+#ubertags-content-container {
+	position: relative;
+	top: 0;
+}
+
+
+#ubertags-search-input {
 	width: 80%;
 	margin-top: 10px;
 	display: inline;
 	font-size: 1em;
 }
 
-#ubertags_search_submit {
+#ubertags-search-submit {
 	
 }
 
-span#ubertags_search_error {
+span#ubertags-search-error {
 	color: Red;
 	font-size: 12px;
 	font-weight: bold;
 }
 
-.ubertags_subtype_container {
+.ubertags-subtype-container {
 	width: 46%;
 	float: right;
 	margin: 10px;
 }
 
 
-h3.ubertags_subtype_title {
+h3.ubertags-subtype-title {
 	background: #E4E4E4;
 	border-top-left-radius: 4px 4px;
 	-webkit-border-radius: 4px;
@@ -55,7 +65,7 @@ h3.ubertags_subtype_title {
 	padding: 5px 5px 3px;
 }
 
-div.ubertag_big_title {
+div.ubertag-big-title {
 	margin-top: 22px;
 	height: 60px;
 	display: block;
@@ -70,7 +80,7 @@ div.ubertag_big_title {
 	font-style: italic;
 }
 
-div.ubertag_description {
+div.ubertag-description {
 	margin-left: auto;
 	margin-right: auto;
 	width: 88%;
@@ -79,7 +89,17 @@ div.ubertag_description {
 	font-weight: bold;
 }
 
-div.ubertag_comment_block {
+div.ubertag-view-block {
+	width: 200px;
+	margin-left: auto;
+	margin-right: auto;
+	font-size: 11px;
+	color: #666;
+	text-align: center;
+}
+
+
+div.ubertag-comment-block {
 	float: right;
 	font-size: 11px;
 	color: #666;
@@ -98,9 +118,13 @@ div.enabled-content-type label{
 	margin-right: 4px;
 }
 
+a.switch-ubertags {
+	cursor: pointer;
+}
+
 /** Loading box **/
 
-.ubertags_subtype_container .ubertags_loading {
+.ubertags-subtype-container .ubertags-loading {
 	border: 1px solid #666;
 	background: #fff;
 	padding-top: 10px;
@@ -114,7 +138,7 @@ div.enabled-content-type label{
 	-moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.45);
 }
 
-.ubertags_subtype_container .ubertags_loading img {
+.ubertags-subtype-container .ubertags-loading img {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -122,7 +146,7 @@ div.enabled-content-type label{
 	margin-bottom: 7px;
 }
 
-.ubertags_subtype_container .ubertags_loading p {
+.ubertags-subtype-container .ubertags-loading p {
 	text-align: center;
 	font-weight: bold;
 	color: #333;

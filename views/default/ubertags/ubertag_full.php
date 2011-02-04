@@ -18,11 +18,35 @@ if ($vars['entity']->canEdit()) {
 	$edit_link = "<span class='entity_edit'><a href=\"$edit_url\">" . elgg_echo('edit') . '</a></span> / ';
 }
 
-$content = "<div class='ubertag_big_title'>" . $vars['entity']->title . "</div>";
-$content .= "<div class='ubertag_description'>" . $vars['entity']->description . "</div>";
-$content .= "<div class='ubertag_comment_block'>" . $edit_link . $comments_link . "</div><div style='clear:both;'></div>";
 
-$content .= "<div>" . elgg_view('ubertags/ubertags_list_results', array('search' => $vars['entity']->search, 'subtypes' => $vars['entity']->subtypes)) . "</div>";
+$content = "<div class='ubertag-big-title'>" . $vars['entity']->title . "</div>";
+$content .= "<div class='ubertag-description'>" . $vars['entity']->description . "</div>";
+$content .= "<div class='ubertag-view-block'><a class='switch-ubertags' id='switch-content'>Content View</a> / <a class='switch-ubertags' id='switch-timeline'>Timeline View</a></div>";
+$content .= "<div class='ubertag-comment-block'>" . $edit_link . $comments_link . "</div><div style='clear:both;'></div>";
+$content .= "<div id='ubertags-timeline-container'>" . elgg_view('ubertags/timeline', array('entity' => $vars['entity'])) .  "</div>";
+$content .= "<div id='ubertags-content-container'>" . elgg_view('ubertags/ubertags_list_results', array('search' => $vars['entity']->search, 'subtypes' => $vars['entity']->subtypes)) . "</div>";
 $content .= "<a name='annotations'></a><hr style='border: 1px solid #bbb' />";
-echo $content;
+
+$script = <<<EOT
+	<script type='text/javascript'>
+		// Grab height of the timeline container initially
+		tl_height = $('#ubertags-timeline-container').height();
+		
+		// Set the top position of the content container to -(tl_heigh)
+		$("#ubertags-content-container").css({top: -(tl_height)});
+	
+		$('.switch-ubertags').click(function () {
+			if ($(this).attr('id') == "switch-content") {
+				$("#ubertags-timeline-container").css({visibility: 'hidden'});
+				$("#ubertags-content-container").show();
+			} else if ($(this).attr('id') == "switch-timeline") {
+				$("#ubertags-timeline-container").css({visibility: 'visible'});
+				$("#ubertags-content-container").hide();
+			}
+		});
+	</script>
+EOT;
+
+
+echo $content . $script;
 ?>
