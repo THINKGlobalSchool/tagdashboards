@@ -12,9 +12,10 @@
 
 
 // Description will contain the img link, likes, views, comments and excerpt
-$views = $vars['entity']->getViews(0);
-if (is_array($views)) {
-	$views_string = sprintf(elgg_echo("tidypics:views"), $views['total']);
+$views = count_annotations($vars['entity']->getGUID(), "object", "image", "tp_view");
+
+if ($views) {
+	$views_string = sprintf(elgg_echo("tidypics:views"), $views);
 }
 
 $image_link = elgg_get_site_url() . "pg/photos/thumbnail/{$vars['entity']->getGUID()}/small";
