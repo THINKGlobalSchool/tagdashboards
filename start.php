@@ -102,7 +102,9 @@ function ubertags_page_handler($page) {
 				// This ia an ajax load, so exit
 				exit;
 			case 'timeline_feed':
-				echo elgg_view('ubertags/timeline_results_endpoint', array('guid' => $page[1]));
+				// Grab a type so we can differentiate
+				$type = get_input('type', 'overview');
+				echo elgg_view('ubertags/timeline_results_endpoint', array('guid' => $page[1], 'type' => $type));
 				// This ia an ajax load, so exit
 				exit;
 			break;

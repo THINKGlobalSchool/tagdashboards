@@ -214,23 +214,28 @@ function ubertags_get_site_subtype_callback($data) {
 /**
  * Helper function to convert an elgg entity to a timeline compatible
  * event array
+ * @param $entity ElggEntity
+ * @param $type string either 'overview' or 'detailed'
  */
-function ubertags_entity_to_timeline_event_array($entity) {
+function ubertags_entity_to_timeline_event_array($entity, $type) {
 	// Allow customization of event data for different entity subtypes
-	if (!$event = trigger_plugin_hook('ubertags:timeline:subtype', $entity->getSubtype(), array('entity' => $entity), FALSE)) {
-		// Generic display
+	if (!$event = trigger_plugin_hook('ubertags:timeline:subtype', $entity->getSubtype(), array('entity' => $entity, 'type' => $type), FALSE)) {
+		
+		// Load these no matter what the type, (overview and detailed)
 		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $entity->time_created))); // full date format
 		$event['isDuration'] = FALSE;
-		$event['title'] = $entity->title; 
-		$event['description'] = elgg_view("timeline/{$entity->getSubtype()}", array('entity' => $entity));
 		
-		// See if any subtypes have registered for an icon
-		if (!$icon = trigger_plugin_hook('ubertags:timeline:icon', $entity->getSubtype(), array('entity' => $entity), FALSE)) {
-			$icon = elgg_get_site_url() . "mod/ubertags/images/generic_icon.gif";
-		}
-		
-		$event['icon'] = $icon;
-		$event['link'] = $entity->getURL();
+		if ($type == 'detailed') { // Detailed, will load description, etc..
+			$event['title'] = $entity->title; 
+			$event['description'] = elgg_view("timeline/{$entity->getSubtype()}", array('entity' => $entity));
+			// See if any subtypes have registered for an icon
+			if (!$icon = trigger_plugin_hook('ubertags:timeline:icon', $entity->getSubtype(), array('entity' => $entity), FALSE)) {
+				$icon = elgg_get_site_url() . "mod/ubertags/images/generic_icon.gif";
+			}
+
+			$event['icon'] = $icon;
+			$event['link'] = $entity->getURL();	
+		} 
 	}	
 	return $event;
 }

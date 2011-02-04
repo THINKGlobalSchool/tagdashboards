@@ -14,6 +14,9 @@
 
 $ubertag = get_entity($vars['guid']);
 
+// Type determines how detailed the results will be, either 'overview' or 'detailed'
+$type = $vars['type'];
+
 $subtypes = unserialize($ubertag->subtypes);
 
 $search = $ubertag->search;
@@ -56,7 +59,7 @@ foreach ($subtypes as $subtype) {
 
 	if ($entities[$subtype]) {
 		foreach ($entities[$subtype] as $entity) {
-			$json['events'][] = ubertags_entity_to_timeline_event_array($entity);
+			$json['events'][] = ubertags_entity_to_timeline_event_array($entity, $type);
 		}
 	}
 
