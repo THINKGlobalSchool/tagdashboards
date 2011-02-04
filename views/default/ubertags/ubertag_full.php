@@ -29,6 +29,12 @@ $content .= "<a name='annotations'></a><hr style='border: 1px solid #bbb' />";
 
 $script = <<<EOT
 	<script type='text/javascript'>
+		
+		$("#ubertags-timeline-container").resize(function () {
+			$("#ubertags-content-container").css({top: -(	$("#ubertags-timeline-container").height())});
+		});
+	
+	
 		// Grab height of the timeline container initially
 		tl_height = $('#ubertags-timeline-container').height();
 		

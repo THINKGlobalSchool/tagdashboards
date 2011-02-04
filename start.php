@@ -50,6 +50,9 @@ function ubertags_init() {
 	// Comment handler
 	elgg_register_plugin_hook_handler('entity:annotate', 'object', 'ubertag_annotate_comments');
 	
+	// Provide the jquery resize plugin
+	elgg_register_js(elgg_get_site_url() . 'mod/ubertags/vendors/jquery.resize.js', 'jquery.resize');
+	
 	//elgg_register_plugin_hook_handler('ubertags', 'exceptions', 'ubertags_exception_example');
 	//elgg_register_plugin_hook_handler('ubertags:subtype', 'image', 'ubertags_subtype_example');
 	
