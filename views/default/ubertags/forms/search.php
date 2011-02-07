@@ -36,7 +36,7 @@ $search_submit = "<input type='submit'
 $form_body = <<<EOT
 	<div>	
 		$search_input $search_submit<br />
-		<span id='ubertags_search_error'></span>
+		<span id='ubertags-search-error'></span>
 	</div>
 EOT;
 
@@ -57,11 +57,11 @@ $script = <<<EOT
 				if (value) {
 					load_ubertags_results(value);
 					$('a#show_hide').show();
-					$('span#ubertags_search_error').html('');
+					$('span#ubertags-search-error').html('');
 					window.location.hash = encodeURI(value); // Hash magic for permalinks
 				} else {
 					$('a#show_hide').hide();
-					$('span#ubertags_search_error').html('Please enter text to search');
+					$('span#ubertags-search-error').html('Please enter text to search');
 					$('#ubertags_load_results').html('');
 				}
 				

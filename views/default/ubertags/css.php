@@ -162,19 +162,9 @@ a.switch-ubertags {
 	display: none;
 }
 
-.timeline-event-label {
-
-}
-
-
 .timeline-event-bubble-image {
 	float: none;
 }
-
-div.timeline-event-icon {
-
-}
-
 
 .timeline-band-events {
 	padding-top: 15px;
