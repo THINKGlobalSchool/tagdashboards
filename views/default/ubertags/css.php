@@ -152,6 +152,11 @@ a.switch-ubertags {
 	color: #333;
 }
 
+#ubertag-timeline-wrapper {
+	max-height: 475px;
+	overflow-y: scroll;
+}
+
 #ubertag-timeline {
 	height: 200px;
 	border: 1px solid #aaa;

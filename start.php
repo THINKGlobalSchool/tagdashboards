@@ -135,6 +135,8 @@ function ubertags_page_handler($page) {
 			break;
 			case 'timeline':
 				// Register the js in the head, because that makes things work.
+				elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false", 'timeline');
+				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/lib/ubertags-timeline.js', 'ubertags-timeline');
 				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/lib/timeline-popup.js', 'timeline-popup');
 				$content_info = ubertags_get_page_content_timeline($page[1]);
 			break;
