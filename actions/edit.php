@@ -44,7 +44,7 @@ elgg_clear_sticky_form('ubertags_save_form');
 
 // Forward on
 system_message(elgg_echo('ubertags:success:save'));
-forward('pg/ubertags');
+forward('pg/ubertags/view/' . $ubertag_guid);
 
 
 ?>
