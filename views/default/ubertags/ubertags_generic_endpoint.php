@@ -20,7 +20,6 @@ if (!elgg_view_exists("object/{$vars['subtype']}")) {
 }
 
 
-
 /* 
 	Setting up a pile of default params. metadata_name_value_pairs
 	is what makes the tag magic happen. This might even work 
@@ -38,7 +37,7 @@ $params = array(
 	'listtype' => 'list',
 	'pagination' => TRUE,
 	'metadata_name_value_pairs' => array(	'name' => 'tags', 
-											'value' => $vars['search'], 
+											'value' => rawurldecode($vars['search']), 
 											'operand' => '=',
 											'case_sensitive' => FALSE)
 );
