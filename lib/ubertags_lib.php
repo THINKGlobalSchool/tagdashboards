@@ -241,6 +241,37 @@ function ubertags_entity_to_timeline_event_array($entity, $type) {
 }
 
 /** 
+ * Helper function to grab the last/newest entity
+ * for given ubertag
+ * @param int $guid
+ * @return mixed 
+ */
+function ubertags_get_last_content($guid) {
+	$ubertag = get_entity($guid);
+	
+	$subtypes = unserialize($ubertag->subtypes);
+
+	// If we weren't supplied an array of subtypes, use defaults
+	if (!is_array($subtypes)) {
+		$subtypes = ubertags_get_enabled_subtypes();
+	}
+	
+	$params = array(
+		'types' => array('object'),
+		'subtypes' => $subtypes,
+		'limit' => 1,
+		'metadata_name_value_pairs' => array(	'name' => 'tags', 
+												'value' => $ubertag->search, 
+												'operand' => '=',
+												'case_sensitive' => FALSE)
+	);
+	
+	$entities = elgg_get_entities_from_metadata($params);
+	
+	return $entities[0];
+}
+
+/** 
  * Helper function to use with array_filter()
  * to determine if tidypics images are unique
  */
