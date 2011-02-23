@@ -11,7 +11,6 @@
  * INFO: http://simile.mit.edu/wiki/How_to_Create_Event_Source_Files#JSON_files
  */
 
-
 $ubertag = get_entity($vars['guid']);
 
 // Type determines how detailed the results will be, either 'overview' or 'detailed'
@@ -31,13 +30,24 @@ if (!is_array($subtypes)) {
 $params = array(
 	'type' => 'object',
 	'owner' => ELGG_ENTITIES_ANY_VALUE,
-	'limit' => 0,
-	'metadata_name_value_pairs' => array(	'name' => 'tags', 
-											'value' => $ubertag->search, 
-											'operand' => '=',
-											'case_sensitive' => FALSE)
+	'limit' => 0,						
 );
 
+$params['metadata_name_value_pairs'] = array(array(
+	'name' => 'tags', 
+	'value' => $search, 
+	'operand' => '=',
+	'case_sensitive' => FALSE
+));
+
+// Need to use wheres here, because 'time_created' isn't metadata..
+if ($vars['min']) {
+	$params['wheres'][] = "e.time_created > {$vars['min']}";	
+}
+
+if ($vars['max']) {
+	$params['wheres'][] = "e.time_created < {$vars['max']}";
+}
 
 $json = array();
 
@@ -56,17 +66,11 @@ foreach ($subtypes as $subtype) {
 	}
 	
 	$entities[$subtype] = $return;
-
 	if ($entities[$subtype]) {
 		foreach ($entities[$subtype] as $entity) {
 			$json['events'][] = ubertags_entity_to_timeline_event_array($entity, $type);
 		}
 	}
-
 	$count++;
 }
-
 echo json_encode($json);
-
-
-?>

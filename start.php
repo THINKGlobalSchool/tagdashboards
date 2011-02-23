@@ -107,7 +107,14 @@ function ubertags_page_handler($page) {
 			case 'timeline_feed':
 				// Grab a type so we can differentiate
 				$type = get_input('type', 'overview');
-				echo elgg_view('ubertags/timeline_results_endpoint', array('guid' => $page[1], 'type' => $type));
+				$min = get_input('min');
+				$max = get_input('max');
+				echo elgg_view('ubertags/timeline_results_endpoint', array(
+					'guid' => $page[1], 
+					'type' => $type,
+					'min' => $min,
+					'max' => $max
+				));
 				// This ia an ajax load, so exit
 				exit;
 			break;

@@ -14,6 +14,7 @@ $json_data_url = elgg_get_site_url() . "pg/ubertags/timeline_feed/{$vars['entity
 
 ?>
 <script>set_timeline_data_url("<?php echo $json_data_url;?>")</script>
+<div id="info"></div>
 <div id="ubertag-timeline-wrapper">
 	<div id="ubertag-timeline" class='dark-theme'></div>
 </div>

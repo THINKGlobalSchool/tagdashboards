@@ -10,7 +10,6 @@
  * 
  */
 
-
 // Description will contain the img link, likes, views, comments and excerpt
 $views = count_annotations($vars['entity']->getGUID(), "object", "image", "tp_view");
 
