@@ -112,13 +112,12 @@ function ubertags_get_entities_from_tag_and_container_tag($params) {
 				JOIN {$px}metadata n_table1 on e.guid = n_table1.entity_guid 
 				JOIN {$px}metastrings msn1 on n_table1.name_id = msn1.id 
 				JOIN {$px}metastrings msv1 on n_table1.value_id = msv1.id 
-				WHERE (cmsn.string = 'tags' AND cmsv.string = '{$params['ubertags_search_term']}') 
-					OR (((msn1.string = 'tags' AND msv1.string = '{$params['ubertags_search_term']}' AND ( (1 = 1) and n_table1.enabled='yes'))))
+				WHERE ((msn1.string = 'tags' AND msv1.string = '{$params['ubertags_search_term']}') OR (cmsn.string = 'tags' AND cmsv.string = '{$params['ubertags_search_term']}'))
 					AND {$type_subtype_sql}
 					AND (e.site_guid IN (1)) ";
 					
 	$query .= "AND " . get_access_sql_suffix('e');
-								
+															
 	if (!$params['count']) {
 		$query .= " ORDER BY e.time_created desc LIMIT {$params['offset']}, {$params['limit']}";
 		$dt = get_data($query, "entity_row_to_elggstar");
@@ -152,7 +151,6 @@ function ubertags_page_handler($page) {
 			);
 			
 			$context = get_context();
-			
 			set_context('query_dump');
 			echo elgg_list_entities($params, 'ubertags_get_entities_from_tag_and_container_tag');
 			set_context($context);
