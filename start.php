@@ -108,7 +108,6 @@ function ubertags_get_entities_from_tag_and_container_tag($params) {
 	$query .=  "JOIN {$px}metadata c_table on e.container_guid = c_table.entity_guid 
 				JOIN {$px}metastrings cmsn on c_table.name_id = cmsn.id 
 				JOIN {$px}metastrings cmsv on c_table.value_id = cmsv.id 
-				JOIN {$px}metadata n_table on e.guid = n_table.entity_guid 
 				JOIN {$px}metadata n_table1 on e.guid = n_table1.entity_guid 
 				JOIN {$px}metastrings msn1 on n_table1.name_id = msn1.id 
 				JOIN {$px}metastrings msv1 on n_table1.value_id = msv1.id 
@@ -117,7 +116,7 @@ function ubertags_get_entities_from_tag_and_container_tag($params) {
 					AND (e.site_guid IN (1)) ";
 					
 	$query .= "AND " . get_access_sql_suffix('e');
-															
+																				
 	if (!$params['count']) {
 		$query .= " ORDER BY e.time_created desc LIMIT {$params['offset']}, {$params['limit']}";
 		$dt = get_data($query, "entity_row_to_elggstar");
