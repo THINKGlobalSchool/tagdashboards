@@ -80,7 +80,54 @@ function ubertags_init() {
 	
 }
 
-
+/**
+ * Screwy function name I know.. this is a hacked up entity getter
+ * function that gets entities with given tag ($params['ubertags_search_term']) and
+ * entities with a container guid with given tag. This is mostly for images, but 
+ * could work on just about anything. I couldn't do this with any existing elgg
+ * core functions, so I have this here custom query.
+ *
+ * @uses $params['ubertags_search_term']
+ * @return array
+ */
+function ubertags_get_entities_from_tag_and_container_tag($params) {
+	global $CONFIG;
+	
+	$px = $CONFIG->dbprefix;
+	
+	$type_subtype_sql = elgg_get_entity_type_subtype_where_sql('e', $params['types'], $params['subtypes'], $params['type_subtype_pairs']);
+	
+		
+	if ($params['count']) {	
+		$query = "SELECT count(DISTINCT e.guid) as total FROM {$CONFIG->dbprefix}entities e ";
+	} else {
+		$query = "SELECT DISTINCT e.* FROM {$px}entities e ";
+	}
+	
+	
+	$query .=  "JOIN {$px}metadata c_table on e.container_guid = c_table.entity_guid 
+				JOIN {$px}metastrings cmsn on c_table.name_id = cmsn.id 
+				JOIN {$px}metastrings cmsv on c_table.value_id = cmsv.id 
+				JOIN {$px}metadata n_table on e.guid = n_table.entity_guid 
+				JOIN {$px}metadata n_table1 on e.guid = n_table1.entity_guid 
+				JOIN {$px}metastrings msn1 on n_table1.name_id = msn1.id 
+				JOIN {$px}metastrings msv1 on n_table1.value_id = msv1.id 
+				WHERE (cmsn.string = 'tags' AND cmsv.string = '{$params['ubertags_search_term']}') 
+					OR (((msn1.string = 'tags' AND msv1.string = '{$params['ubertags_search_term']}' AND ( (1 = 1) and n_table1.enabled='yes'))))
+					AND {$type_subtype_sql}
+					AND (e.site_guid IN (1)) ";
+					
+	$query .= "AND " . get_access_sql_suffix('e');
+								
+	if (!$params['count']) {
+		$query .= " ORDER BY e.time_created desc LIMIT {$params['offset']}, {$params['limit']}";
+		$dt = get_data($query, "entity_row_to_elggstar");
+		return $dt;
+	} else {
+		$total = get_data_row($query);
+		return (int)$total->total;
+	}
+}
 
 /* Ubertags page handler */
 function ubertags_page_handler($page) {
@@ -90,6 +137,29 @@ function ubertags_page_handler($page) {
 
 	if (isset($page[0]) && !empty($page[0])) {
 		switch ($page[0]) {
+			case 'test':
+			
+			global $CONFIG;
+			
+			$params = array(
+				'types' => array('object'),
+				'subtypes' => array('image'),
+				'full_view' => FALSE,
+				'listtypetoggle' => FALSE,
+				'listtype' => 'list',
+				'pagination' => TRUE,
+				'ubertags_search_term' => 'test'
+			);
+			
+			$context = get_context();
+			
+			set_context('query_dump');
+			echo elgg_list_entities($params, 'ubertags_get_entities_from_tag_and_container_tag');
+			set_context($context);
+			exit;
+			break;
+			
+			
 			case 'ajax_load_subtype':
 				// Get inputs
 				$search = get_input('search');

@@ -10,50 +10,17 @@
  * 
  */
 
-
-/* 
-	Helper function to grab images and images in albums 
-   	with given tag
-*/
-function ubertags_get_images_and_albums_from_metadata($params) {
-		
-		if (!$images = elgg_get_entities_from_metadata($params)) {
-			$images = array();
-		}
-		
-		// Get albums matching search
-		$params['subtype'] = 'album';
-		
-		if (!$albums = elgg_get_entities_from_metadata($params)) {
-			$albums = array();
-		}
-
-		// Loop and grab each image within the albums
-		foreach ($albums as $album) {
-			$album_images = elgg_get_entities(array(
-				'types' => 'object', 
-				'subtypes' => 'image', 
-				'container_guids' => $album->getGUID(), 
-				'limit' => 0
-			));
-			
-			if ($album_images) {
-				$images = array_merge($images, $album_images);
-			}
-		}
-		
-		// Filter out dupes
-		$images = array_filter($images, 'ubertags_image_unique');
-		
-		return $images;
-}
-
 /* 
 	Hook to change how photos are retrieved on the timeline
 */
 function ubertags_timeline_photo_override_handler($hook, $type, $returnvalue, $params) {
 	if ($type == 'image') {
-		return ubertags_get_images_and_albums_from_metadata($params['params']);
+		$params['params']['ubertags_search_term'] = $params['search']; // Need to set this to use the hacky function
+		$params['params']['limit'] = 0;
+		$params['params']['offset'] = 0;
+		$params['params']['types'] = array('object');
+		$params['params']['subtypes'] = array('image');
+		return ubertags_get_entities_from_tag_and_container_tag($params['params']);
 	}
 	return false;
 }
@@ -65,30 +32,8 @@ function ubertags_timeline_photo_override_handler($hook, $type, $returnvalue, $p
 */
 function ubertags_photo_override_handler($hook, $type, $returnvalue, $params) {
 	if ($type == 'image') {
-		// store and get rid of offset for now
-		$offset = $params['params']['offset'];
-		unset($params['params']['offset']);
-		
-		// Set limit to 0 
-		$params['params']['limit'] = 0;
-		
-		$images = ubertags_get_images_and_albums_from_metadata($params['params']);
-		
-		// Image limit a nice round 12
-		$limit = 12;
-	
-		// List out entities
-		$return = elgg_view_entity_list(
-			array_slice($images, $offset, $limit), // Note to self, array_slice is awesome
-			count($images), 
-			$offset,
-			$limit, 
-			$params['params']['full_view'], 
-			$params['params']['view_type_toggle'], 
-			$params['params']['pagination']
-		);
-				
-		return $return;
+		$params['params']['ubertags_search_term'] = $params['search']; // Need to set this to use the hacky function
+		return elgg_list_entities($params['params'], 'ubertags_get_entities_from_tag_and_container_tag');
 	}
 	return false;
 }

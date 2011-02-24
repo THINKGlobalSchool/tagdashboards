@@ -27,8 +27,8 @@ if (!elgg_view_exists("object/{$vars['subtype']}")) {
 	that'd be cool.
 */
 $params = array(
-	'type' => 'object',
-	'subtype' => $vars['subtype'],
+	'types' => array('object'),
+	'subtypes' => array($vars['subtype']),
 	'owner' => ELGG_ENTITIES_ANY_VALUE,
 	'limit' => 10,
 	'offset' => $vars['offset'] ? $vars['offset'] : 0,

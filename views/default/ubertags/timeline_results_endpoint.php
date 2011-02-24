@@ -28,7 +28,7 @@ if (!is_array($subtypes)) {
 
 // Params
 $params = array(
-	'type' => 'object',
+	'types' => array('object'),
 	'owner' => ELGG_ENTITIES_ANY_VALUE,
 	'limit' => 0,						
 );
@@ -59,7 +59,7 @@ $json['events'] = array();
 $entities = array();
 
 foreach ($subtypes as $subtype) {
-	$params['subtype'] = $subtype;
+	$params['subtypes'] = array($subtype);
 	
 	if(!$return = trigger_plugin_hook('ubertags:timeline:subtype', $subtype, array('search' => $search, 'params' => $params))) {
 		$return = elgg_get_entities_from_metadata($params);
