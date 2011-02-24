@@ -219,15 +219,16 @@ function ubertags_get_site_subtype_callback($data) {
  */
 function ubertags_entity_to_timeline_event_array($entity, $type) {
 	// Allow customization of event data for different entity subtypes
-	if (!$event = trigger_plugin_hook('ubertags:timeline:subtype', $entity->getSubtype(), array('entity' => $entity, 'type' => $type), FALSE)) {
-		
+	if (!$event = trigger_plugin_hook('ubertags:event:subtype', $entity->getSubtype(), array('entity' => $entity, 'type' => $type), FALSE)) {
 		// Load these no matter what the type, (overview and detailed)
 		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $entity->time_created))); // full date format
 		$event['isDuration'] = FALSE;
-		
+	
 		if ($type == 'detailed') { // Detailed, will load description, etc..
 			$event['title'] = $entity->title; 
 			$event['description'] = elgg_view("timeline/{$entity->getSubtype()}", array('entity' => $entity));
+
+			
 			// See if any subtypes have registered for an icon
 			if (!$icon = trigger_plugin_hook('ubertags:timeline:icon', $entity->getSubtype(), array('entity' => $entity), FALSE)) {
 				$icon = elgg_get_site_url() . "mod/ubertags/images/generic_icon.gif";
@@ -235,9 +236,73 @@ function ubertags_entity_to_timeline_event_array($entity, $type) {
 
 			$event['icon'] = $icon;
 			$event['link'] = $entity->getURL();	
+
 		} 
-	}	
+	}
 	return $event;
+
+}
+
+/**
+ * Screwy function name I know.. this is a hacked up entity getter
+ * function that gets entities with given tag ($params['ubertags_search_term']) and
+ * entities with a container guid with given tag. This is mostly for images, but 
+ * could work on just about anything. I couldn't do this with any existing elgg
+ * core functions, so I have this here custom query.
+ *
+ * @uses $params['ubertags_search_term']
+ * @return array
+ */
+function ubertags_get_entities_from_tag_and_container_tag($params) {
+	global $CONFIG;
+	
+	$px = $CONFIG->dbprefix;
+	
+	$type_subtype_sql = elgg_get_entity_type_subtype_where_sql('e', $params['types'], $params['subtypes'], $params['type_subtype_pairs']);
+	$access_sql = get_access_sql_suffix('e');
+	
+	// Include additional wheres
+	if ($params['wheres']) {
+		foreach($params['wheres'] as $where) {
+			$wheres .= " AND $where";
+		}
+	}
+		
+	$query =   "(SELECT e.* FROM {$CONFIG->dbprefix}entities e 
+				JOIN {$px}metadata n_table1 on e.guid = n_table1.entity_guid 
+				JOIN {$px}metastrings msn1 on n_table1.name_id = msn1.id 
+				JOIN {$px}metastrings msv1 on n_table1.value_id = msv1.id 
+				WHERE (msn1.string = 'tags' AND msv1.string = '{$params['ubertags_search_term']}')
+					AND {$type_subtype_sql}
+					AND (e.site_guid IN ({$CONFIG->site_guid}))
+					AND $access_sql
+					$wheres) 
+				UNION DISTINCT
+				(SELECT e.* FROM {$CONFIG->dbprefix}entities e 
+				JOIN {$px}metadata c_table on e.container_guid = c_table.entity_guid 
+				JOIN {$px}metastrings cmsn on c_table.name_id = cmsn.id 
+				JOIN {$px}metastrings cmsv on c_table.value_id = cmsv.id 
+				WHERE (cmsn.string = 'tags' AND cmsv.string = '{$params['ubertags_search_term']}')
+					AND {$type_subtype_sql}
+					AND (e.site_guid IN ({$CONFIG->site_guid}))
+					AND $access_sql
+					$wheres) ";
+																						
+	if (!$params['count']) {
+		$query .= " ORDER BY time_created desc";
+		
+		if ($params['limit']) {
+			$limit = sanitise_int($params['limit']);
+			$offset = sanitise_int($params['offset']);
+			$query .= " LIMIT $offset, $limit";
+		}
+		
+		$dt = get_data($query, "entity_row_to_elggstar");			
+		return $dt;
+	} else {
+		$dt = get_data($query);
+		return count($dt);
+	}
 }
 
 /** 

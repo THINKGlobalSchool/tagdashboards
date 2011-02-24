@@ -20,7 +20,6 @@ $subtypes = unserialize($ubertag->subtypes);
 
 $search = $ubertag->search;
 
-
 // If we weren't supplied an array of subtypes, use defaults
 if (!is_array($subtypes)) {
 	$subtypes = ubertags_get_enabled_subtypes();
@@ -64,8 +63,10 @@ foreach ($subtypes as $subtype) {
 	if(!$return = trigger_plugin_hook('ubertags:timeline:subtype', $subtype, array('search' => $search, 'params' => $params))) {
 		$return = elgg_get_entities_from_metadata($params);
 	}
-	
+
 	$entities[$subtype] = $return;
+	
+	
 	if ($entities[$subtype]) {
 		foreach ($entities[$subtype] as $entity) {
 			$json['events'][] = ubertags_entity_to_timeline_event_array($entity, $type);
