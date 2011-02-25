@@ -22,7 +22,7 @@ if ($entity) {
 ?>
 <script>
 	setTimelineDataURL("<?php echo $json_data_url;?>");
-	setLatestDate("<?php echo $latest_date;?>");
+	//setLatestDate("<?php echo $latest_date;?>");
 </script>
 <div style='display: none;' id="info"></div>
 <div id="ubertag-timeline-wrapper">
