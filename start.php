@@ -99,11 +99,38 @@ function ubertags_page_handler($page) {
 				'listtypetoggle' => FALSE,
 				'listtype' => 'list',
 				'pagination' => TRUE,
-				'ubertags_search_term' => 'test'
+				'ubertags_search_term' => get_input('st'),
 			);
 				
 			$context = get_context();
 			set_context('query_dump');
+			
+			
+			$rows = ubertags_get_entities_from_tag_and_container_tag($params);
+		
+		
+			$entities = array();
+			$date_counter = 0;
+			
+			foreach($rows as $key => $row) {
+				$row_date = date("m.d.y", $row->time_created);
+				if ($key != 0 && $key != (count($rows) - 1)) {
+					if ($row_date == date("m.d.y", $rows[$key - 1]->time_created)){
+						$date_counter++;
+					} else {
+						$date_counter = 0;
+					}
+				}
+			
+				
+				if ($date_counter < 10) {
+					//echo $date_counter . ' --- ' . $row_date . "<br />";
+					$entities[] = entity_row_to_elggstar($row);
+				}	
+			}
+			
+			print_r_html($entities);
+			
 			echo elgg_list_entities($params, 'ubertags_get_entities_from_tag_and_container_tag');
 			set_context($context);
 			exit;

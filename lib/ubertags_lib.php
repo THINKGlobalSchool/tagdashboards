@@ -251,6 +251,7 @@ function ubertags_entity_to_timeline_event_array($entity, $type) {
  * core functions, so I have this here custom query.
  *
  * @uses $params['ubertags_search_term']
+ * @uses $params['callback'] - pass in a callback, or use none (return just data rows)
  * @return array
  */
 function ubertags_get_entities_from_tag_and_container_tag($params) {
@@ -296,8 +297,7 @@ function ubertags_get_entities_from_tag_and_container_tag($params) {
 			$offset = sanitise_int($params['offset']);
 			$query .= " LIMIT $offset, $limit";
 		}
-		
-		$dt = get_data($query, "entity_row_to_elggstar");			
+		$dt = get_data($query, $params['callback']);			
 		return $dt;
 	} else {
 		$dt = get_data($query);
