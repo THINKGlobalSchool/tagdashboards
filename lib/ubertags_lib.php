@@ -306,6 +306,46 @@ function ubertags_get_entities_from_tag_and_container_tag($params) {
 }
 
 /** 
+ * Helper function that takes rows from a query and creates no more than 
+ * a defined limit of those entities created on the same day
+ * @param array $rows
+ * @param int $limit
+ * @return array
+ */
+function ubertags_get_limited_entities_from_rows($rows, $limit = 10) {
+	// Make sure limit is a positive number
+	if ((int)$limit <= 0) {
+		$limit = 10;
+	}
+	
+	// Limited entities array
+	$entities = array();
+	
+	// Counter to keep track of how many rows share the same DAY
+	$date_counter = 0;
+	
+	// Limiting loop
+	foreach($rows as $key => $row) {
+		$row_date = date("m.d.y", $row->time_created); // Get item create DAY
+		if ($key != 0) {
+			// If we're not on the first index, check the DAY of the previous row
+			if ($row_date == date("m.d.y", $rows[$key - 1]->time_created)){
+				// If this rows DAY is the same as the previous, increment counter
+				$date_counter++;
+			} else {
+				// New DAY, reset counter
+				$date_counter = 0;
+			}
+		}
+		// If we haven't reached our limit of 10, create entity and add it to the array
+		if ($date_counter < $limit) {
+			$entities[] = entity_row_to_elggstar($row);
+		}	
+	}
+	return $entities;
+}
+
+/** 
  * Helper function to grab the last/newest entity
  * for given ubertag
  * @param int $guid

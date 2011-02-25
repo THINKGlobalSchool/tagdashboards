@@ -109,27 +109,13 @@ function ubertags_page_handler($page) {
 			$rows = ubertags_get_entities_from_tag_and_container_tag($params);
 		
 		
-			$entities = array();
-			$date_counter = 0;
+			$entities = ubertags_get_limited_entities_from_rows($rows, get_input('l', 10));
 			
-			foreach($rows as $key => $row) {
-				$row_date = date("m.d.y", $row->time_created);
-				if ($key != 0 && $key != (count($rows) - 1)) {
-					if ($row_date == date("m.d.y", $rows[$key - 1]->time_created)){
-						$date_counter++;
-					} else {
-						$date_counter = 0;
-					}
-				}
-			
-				
-				if ($date_counter < 10) {
-					//echo $date_counter . ' --- ' . $row_date . "<br />";
-					$entities[] = entity_row_to_elggstar($row);
-				}	
+			foreach($entities as $entity) {
+				echo date('m.d.y', $entity->time_created) . "<br />";
 			}
 			
-			print_r_html($entities);
+			$params['callback'] = "entity_row_to_elggstar";
 			
 			echo elgg_list_entities($params, 'ubertags_get_entities_from_tag_and_container_tag');
 			set_context($context);
