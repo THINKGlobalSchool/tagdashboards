@@ -20,8 +20,10 @@ function ubertags_timeline_photo_override_handler($hook, $type, $returnvalue, $p
 		$params['params']['offset'] = 0;
 		$params['params']['types'] = array('object');
 		$params['params']['subtypes'] = array('image');
-		$params['params']['callback'] = "entity_row_to_elggstar";
-		return ubertags_get_entities_from_tag_and_container_tag($params['params']);
+		//$params['params']['callback'] = "entity_row_to_elggstar";
+		
+		$rows = ubertags_get_entities_from_tag_and_container_tag($params['params']);
+		return ubertags_get_limited_entities_from_rows($rows);
 	}
 	return false;
 }
