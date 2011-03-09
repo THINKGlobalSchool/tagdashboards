@@ -1,6 +1,6 @@
 <?php
 /**
- * Ubertags generic container
+ * Ubertags subtype container
  *
  * @package Ubertags
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -23,8 +23,8 @@ if (!$subtype_heading) {
 $spinner = elgg_view('ubertags/ajax_spinner', array('id' => 'loading_' . $vars['subtype']));
 
 ?>
-<div class='ubertags-subtype-container'>
-	<h3 class='ubertags-subtype-title'><?php echo $subtype_heading; ?></h3>
+<div class='ubertags-container ubertags-subtype'>
+	<h3 class='ubertags-container-title'><?php echo $subtype_heading; ?></h3>
 	<?php echo $spinner; ?>
 	<div id='<?php echo $uber_id; ?>'>
 	</div>

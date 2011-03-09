@@ -10,7 +10,6 @@
  * 
  */
 
-
 elgg_register_event_handler('init', 'system', 'ubertags_init');
 
 function ubertags_init() {
@@ -19,7 +18,12 @@ function ubertags_init() {
 	// Include helpers
 	require_once 'lib/ubertags_lib.php';
 	require_once 'lib/ubertags_hooks.php';
-			
+	
+	define('UBERTAGS_GROUP_ACTIVITY', 'activity');
+	define('UBERTAGS_GROUP_ACTIVITY_TAGS', 'activity_tags');	
+	define('UBERTAGS_GROUP_SUBTYPE', 'subtype');
+	define('UBERTAGS_GROUP_TAGS', 'tags');
+	
 	// Extend CSS
 	elgg_extend_view('css/screen','ubertags/css');
 	
@@ -98,13 +102,9 @@ function ubertags_page_handler($page) {
 				$group = get_entity($group_guid);
 				if (elgg_instanceof($group, 'group')) {
 					elgg_set_page_owner_guid($group_guid);
-
-					ubertags_get_group_activities();
-
-
 					$content_info['title'] = "Gubertag";
 					$content_info['layout'] = "one_column_with_sidebar";
-					$content_info['content'] = "";
+					$content_info['content'] = elgg_view('ubertags/content', array('search' => $vars['search'], 'group_by' => UBERTAGS_GROUP_ACTIVITY, 'container_guid' => $group_guid));
 				} else {
 					forward();
 				}
@@ -115,6 +115,14 @@ function ubertags_page_handler($page) {
 				$subtype = get_input('subtype');
 				$offset = get_input('offset', NULL);
 				echo elgg_view('ubertags/subtype_content', array('subtype' => $subtype, 'search' => $search, 'offset' => $offset));
+				// This is an ajax load, so exit
+				exit;
+			break;
+			case 'loadactivity':
+				// Get inputs
+				$activity = get_input('activity');
+				$offset = get_input('offset', NULL);
+				echo elgg_view('ubertags/activity_content', array('activity' => $activity, 'offset' => $offset));
 				// This is an ajax load, so exit
 				exit;
 			break;

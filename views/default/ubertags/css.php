@@ -47,14 +47,14 @@ span#ubertags-search-error {
 	font-weight: bold;
 }
 
-.ubertags-subtype-container {
+.ubertags-container {
 	width: 46%;
 	float: right;
 	margin: 10px;
 }
 
 
-h3.ubertags-subtype-title {
+h3.ubertags-container-title {
 	background: #E4E4E4;
 	border-top-left-radius: 4px 4px;
 	-webkit-border-radius: 4px;
@@ -124,7 +124,7 @@ a.switch-ubertags {
 
 /** Loading box **/
 
-.ubertags-subtype-container .ubertags-loading {
+.ubertags-container .ubertags-loading {
 	border: 1px solid #666;
 	background: #fff;
 	padding-top: 10px;
@@ -138,7 +138,7 @@ a.switch-ubertags {
 	-moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.45);
 }
 
-.ubertags-subtype-container .ubertags-loading img {
+.ubertags-container .ubertags-loading img {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -146,7 +146,7 @@ a.switch-ubertags {
 	margin-bottom: 7px;
 }
 
-.ubertags-subtype-container .ubertags-loading p {
+.ubertags-container .ubertags-loading p {
 	text-align: center;
 	font-weight: bold;
 	color: #333;

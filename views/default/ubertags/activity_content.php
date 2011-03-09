@@ -1,6 +1,6 @@
 <?php
 /**
- * Ubertags subtype content
+ * Ubertags activity content
  *
  * @package Ubertags
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -14,21 +14,10 @@
 elgg_set_viewtype('uberview');
 set_input('search_viewtype', 'list');
 
-// If this entity doesn't have a custom uberview, use default
-if (!elgg_view_exists("object/{$vars['subtype']}")) {
-	elgg_set_viewtype('default');
-}
-
-
-/* 
-	Setting up a pile of default params. metadata_name_value_pairs
-	is what makes the tag magic happen. This might even work 
-	for multiple tags. (2 Minutes later..) No it doesn't but 
-	that'd be cool.
-*/
+// Params
 $params = array(
 	'types' => array('object'),
-	'subtypes' => array($vars['subtype']),
+	'subtypes' => ubertags_get_enabled_subtypes(),
 	'owner' => ELGG_ENTITIES_ANY_VALUE,
 	'limit' => 10,
 	'offset' => $vars['offset'] ? $vars['offset'] : 0,
@@ -37,15 +26,14 @@ $params = array(
 	'listtype' => 'list',
 	'pagination' => TRUE,
 	'metadata_name_value_pairs' => array(	'name' => 'tags', 
-											'value' => rawurldecode($vars['search']), 
+											'value' => rawurldecode($vars['activity']), 
 											'operand' => '=',
 											'case_sensitive' => FALSE)
 );
 
-// See if anyone has registered a hook to display their subtype appropriately
-if (!$entity_list = trigger_plugin_hook('ubertags:subtype', $vars['subtype'], array('search' => $vars['search'], 'params' => $params), false)) {
-	$entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');
-} 
+
+$entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');
+
 
 if (!empty($entity_list)) {
 	echo $entity_list; 

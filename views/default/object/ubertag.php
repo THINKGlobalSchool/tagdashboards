@@ -26,10 +26,10 @@ if (elgg_instanceof($vars['entity'], 'object', 'ubertag')) {
 	if ($vars['full']) { // Full view
 		// Show 'leave a comment' and comment count (if any)
 		if ($comments_count) {
-			$comments_link = "<a href=\"#annotations\">" . elgg_echo('ubertags:label:leaveacomment') . '/ ' . 
+			$comments_link = "<a href=\"#annotations\">" . elgg_echo('ubertags:label:leaveacomment') . '</a> / ' . 
 							"<a href='#annotations'>" . elgg_echo("comments") . " ($comments_count)</a>";
 		} else {
-			$comments_link = "<a href=\"#annotations\">" . elgg_echo('ubertags:label:leaveacomment');
+			$comments_link = "<a href=\"#annotations\">" . elgg_echo('ubertags:label:leaveacomment') . "</a>";
 		}
 		
 
@@ -44,7 +44,7 @@ if (elgg_instanceof($vars['entity'], 'object', 'ubertag')) {
 		$content_link_label = elgg_echo('ubertags:label:contentview');
 		$timeline_link_label = elgg_echo('ubertags:label:timelineview');
 		
-		$ubertag_content = elgg_view('ubertags/content', array('search' => $vars['entity']->search, 'subtypes' => $vars['entity']->subtypes));
+		$ubertag_content = elgg_view('ubertags/content', array('search' => $vars['entity']->search, 'subtypes' => $vars['entity']->subtypes, 'group_by' => UBERTAGS_GROUP_SUBTYPE));
 		
 		$timeline_load = elgg_get_site_url() . "pg/ubertags/load_timeline/" . $vars['entity']->getGUID();
 		$timeline_data = elgg_get_site_url() . "pg/ubertags/timeline_feed/" . $vars['entity']->getGUID();

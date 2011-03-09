@@ -380,27 +380,27 @@ function ubertags_get_last_content($guid) {
 function ubertags_get_group_activities() {
 	return array(
 		array(	
-			'name' => 'Researcher', 
+			'name' => elgg_echo('ubertags:activity:research'), 
 			'tag' => 'research'
 		), 
 		array(	
-			'name' => 'Curriculum Reviewer', 
+			'name' => elgg_echo('ubertags:activity:curriculum'), 
 			'tag' => 'curriculum'
 		),
 		array(	
-			'name' => 'Collaboration Coordinator', 
+			'name' => elgg_echo('ubertags:activity:collabco'), 
 			'tag' => 'collabco'
 		),
 		array(	
-			'name' => 'Tutorial Designers', 
+			'name' => elgg_echo('ubertags:activity:tutorial'), 
 			'tag' => 'tutorial'
 		),
 		array(	
-			'name' => 'Contributors To Society', 
+			'name' => elgg_echo('ubertags:activity:society'), 
 			'tag' => 'society'
 		),
 		array(	
-			'name' => 'Official Scribes', 
+			'name' => elgg_echo('ubertags:activity:scribe'), 
 			'tag' => 'scribe'
 		),
 	);

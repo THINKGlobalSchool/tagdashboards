@@ -84,6 +84,20 @@ elgg.ubertags.load_ubertags_subtype_content = function (subtype, search, offset)
 	return false;
 }
 
+elgg.ubertags.load_ubertags_activity_content = function (activity, offset) {
+	var end_url = elgg.normalize_url('pg/ubertags/loadactivity/');
+	end_url += "?activity=" + activity;
+	if (offset) {
+		end_url += "&offset=" + offset;
+	}
+
+	/* Simple show/hide */
+	$("#" + activity + "_content").load(end_url, '', function() {
+		$("#loading_" + activity).hide();
+	});	
+	return false;
+}
+
 elgg.ubertags.fade_div = function(id) {
 	$("#uberview_entity_list_" + id).fadeOut('fast', function () {
 		$("#loading_" + id).show();

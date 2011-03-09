@@ -51,6 +51,14 @@ $english = array(
 	'ubertags:label:contentview' => 'Content View',
 	'ubertags:label:timelineview' => 'Timeline View',
 
+	// Activities
+	'ubertags:activity:research' => 'Researcher',
+	'ubertags:activity:curriculum' => 'Curriculum Reviewer',
+	'ubertags:activity:collabco' => 'Collaboration Coordinator',
+	'ubertags:activity:tutorial' => 'Tutorial Designers',
+	'ubertags:activity:society' => 'Contributors To Society',
+	'ubertags:activity:scribe' => 'Official Scribes',
+
 	// River
 	'ubertags:river:ubertag:create' => '%s created an Ubertag titled ',
 
