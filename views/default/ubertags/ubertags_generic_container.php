@@ -31,6 +31,6 @@ $spinner = elgg_view('ubertags/ubertags_ajax_spinner', array('id' => 'loading_' 
 </div>
 <script type='text/javascript'>
 	$(document).ready(function() {
-		load_ubertags_subtype_content("<?php echo $vars['subtype']; ?>", "<?php echo $vars['search']; ?>", null);
+		elgg.ubertags.load_ubertags_subtype_content("<?php echo $vars['subtype']; ?>", "<?php echo $vars['search']; ?>", null);
 	});
 </script>

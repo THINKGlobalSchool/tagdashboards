@@ -25,7 +25,7 @@ echo <<<EOT
 		$search_form
 	</div>
 	$save_link
-	<div id='ubertags_load_results'>
+	<div id='ubertags-content-container'>
 	</div>
 	
 	<script type='text/javascript'>

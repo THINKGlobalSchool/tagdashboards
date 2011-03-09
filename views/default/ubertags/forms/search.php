@@ -40,54 +40,24 @@ $form_body = <<<EOT
 	</div>
 EOT;
 
-$results_end_url = elgg_get_site_url() . "pg/ubertags/ajax_load_results";
-
 $script = <<<EOT
-	<script language="javascript" type="text/javascript" src="{$vars['url']}vendors/jquery/jquery.autocomplete.min.js"></script>
 	<script type='text/javascript'>
-		$(document).ready(function() {
-			function load_ubertags_results(search) {
-				$('#ubertags_load_results').hide().load('$results_end_url' + '?search=' + (search), function() {
-					$('#ubertags_load_results').fadeIn('fast');
-				});
-				return false;
-			}
-			
-			function submit_search(value) {
-				if (value) {
-					load_ubertags_results(value);
-					$('a#show_hide').show();
-					$('span#ubertags-search-error').html('');
-					window.location.hash = encodeURI(value); // Hash magic for permalinks
-				} else {
-					$('a#show_hide').hide();
-					$('span#ubertags-search-error').html('Please enter text to search');
-					$('#ubertags_load_results').html('');
-				}
-				
-			}
-			
-			function get_ubertag_search_value() {
-				var value = $('#ubertags-search-input').val();
-				value = value.toLowerCase();
-				return value;
-			}
-			
+		$(document).ready(function() {			
 			// If we have a hash up in the address, search automatically
 			if (window.location.hash) {
 				var hash = decodeURI(window.location.hash.substring(1));
 				var value = $('#ubertags-search-input').val(hash);
-				submit_search(hash);
+				elgg.ubertags.submit_search(hash);
 				// Show the save link
 			}
 		
 			$('#ubertags-search-submit').click(function(){
-				submit_search(get_ubertag_search_value());
+				elgg.ubertags.submit_search(elgg.ubertags.get_ubertag_search_value());
 			});
 			
 			$('#ubertags-search-input').keypress(function(e){
 				if(e.which == 13) {
-			    	submit_search(get_ubertag_search_value());
+			    	elgg.ubertags.submit_search(elgg.ubertags.get_ubertag_search_value());
 					e.preventDefault();
 					return false;
 				}

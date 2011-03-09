@@ -8,9 +8,6 @@
  * @copyright THINK Global School 2010
  * @link http://www.thinkglobalschool.com/
  * 
- * 
- * /////////// @TODO ///////////////
- * - Might need to rethink the JS handling.. kind of everywhere ATM
  */
 
 function ubertags_init() {
@@ -85,9 +82,30 @@ function ubertags_page_handler($page) {
 	global $CONFIG;
 	set_context('ubertags');
 	gatekeeper();
-
+	
+	// Register autocomplete JS
+	$auto_url = elgg_get_site_url() . "vendors/jquery/jquery.autocomplete.min.js";
+	elgg_register_js($auto_url, 'jquery.autocomplete');
+	
 	if (isset($page[0]) && !empty($page[0])) {
 		switch ($page[0]) {
+			case 'gubertag':
+				set_context('group');
+				$group_guid = $page[1];
+				$group = get_entity($group_guid);
+				if (elgg_instanceof($group, 'group')) {
+					elgg_set_page_owner_guid($group_guid);
+
+					ubertags_get_group_activities();
+
+
+					$content_info['title'] = "Gubertag";
+					$content_info['layout'] = "one_column_with_sidebar";
+					$content_info['content'] = "";
+				} else {
+					forward();
+				}
+			break;
 			case 'ajax_load_subtype':
 				// Get inputs
 				$search = get_input('search');
@@ -97,8 +115,9 @@ function ubertags_page_handler($page) {
 				// This is an ajax load, so exit
 				exit;
 			break;
-			case 'ajax_load_results':
+			case 'loadubertag':
 				$search = get_input('search');
+				$group = get_input('group');
 				echo elgg_view('ubertags/ubertags_results_endpoint', array('subtype' => $subtype, 'search' => $search));
 				// This ia an ajax load, so exit
 				exit;
@@ -178,6 +197,10 @@ function ubertags_page_handler($page) {
 		'sidebar' => $sidebar . elgg_view('ubertags/beta'),
 	);
 	$body = elgg_view_layout($content_info['layout'], $params);
+	
+	// Register ubertags JS library
+	$url = elgg_view_get_simplecache_url('js', 'ubertags');
+	elgg_register_js($url, 'ubertags');
 
 	echo elgg_view_page($content_info['title'], $body, $content_info['layout'] == 'administration' ? 'admin' : 'default');
 }
