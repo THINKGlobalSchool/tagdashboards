@@ -7,7 +7,7 @@
  * @author Jeff Tilson
  * @copyright THINK Global School 2010
  * @link http://www.thinkglobalschool.com/
- * 
+ * -
  */
 
 // If we have an entity, we're editing
