@@ -20,7 +20,7 @@ if ($vars['entity']->canEdit()) {
 
 
 $content = "<div class='ubertag-big-title'>" . $vars['entity']->title . "</div>";
-$content .= "<div class='ubertag-description'>" . $vars['entity']->description . "</div>";
+$content .= "<div class='ubertag-description'><i>" . elgg_echo('ubertags:label:searchtag') . ": " . $vars['entity']->search . "</i><br /><br />". $vars['entity']->description . "</div>";
 $content .= "<div class='ubertag-view-block'><a class='switch-ubertags' id='switch-content'>Content View</a> / <a class='switch-ubertags' id='switch-timeline'>Timeline View</a></div>";
 $content .= "<div class='ubertag-comment-block'>" . $edit_link . $comments_link . "</div><div style='clear:both;'></div>";
 $content .= "<div id='ubertags-timeline-container'></div>";
