@@ -17,5 +17,3 @@ set_plugin_setting('enabled_subtypes', serialize($enabled_subtypes), 'ubertags')
 system_message(elgg_echo('ubertags:success:setenabledsubtypes'));
 
 forward(REFERER);
-
-?>

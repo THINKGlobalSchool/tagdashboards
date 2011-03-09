@@ -50,6 +50,3 @@ add_to_river('river/object/ubertag/create', 'create', get_loggedin_userid(), $ub
 // Forward on
 system_message(elgg_echo('ubertags:success:save'));
 forward('pg/ubertags');
-
-
-?>

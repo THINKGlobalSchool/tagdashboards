@@ -33,4 +33,3 @@ echo "<div class='timeline-tidypics-image-container'>
 		</div>"
 		.  elgg_get_excerpt($vars['entity']->description) . 
 	"</div>";
-?>

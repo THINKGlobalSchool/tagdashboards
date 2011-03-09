@@ -421,5 +421,3 @@ function ubertags_image_unique($object) {
 	$idList[] = $object->getGUID();
 	return true;
 }
-
-?>

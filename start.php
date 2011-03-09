@@ -10,6 +10,9 @@
  * 
  */
 
+
+elgg_register_event_handler('init', 'system', 'ubertags_init');
+
 function ubertags_init() {
 	global $CONFIG;
 	
@@ -264,5 +267,3 @@ function ubertag_annotate_comments($hook, $entity_type, $returnvalue, $params) {
 	
 }
 
-register_elgg_event_handler('init', 'system', 'ubertags_init');
-?>

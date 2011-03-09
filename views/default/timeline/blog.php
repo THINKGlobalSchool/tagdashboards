@@ -17,4 +17,3 @@ echo "<div class='entity_subtext timeline-entity-subtext'>
 		Likes: $likes_count $views_string Comments: $comments_count
 	</div>". elgg_get_excerpt(elgg_view('output/longtext', array('value' => $vars['entity']->description))) .
 	 "<br /><a href='" . $vars['entity']->getURL() . "'><i>" . elgg_echo('ubertags:label:viewfull') . "</i></a>";
-?>

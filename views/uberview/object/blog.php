@@ -70,3 +70,4 @@ echo <<<___END
 	</div>
 </div>
 ___END;
+?>

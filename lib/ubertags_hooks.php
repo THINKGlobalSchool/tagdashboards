@@ -90,4 +90,3 @@ function ubertags_subtype_example($hook, $type, $returnvalue, $params) {
 	// return custom content
 	return "Test";
 }
-?>
