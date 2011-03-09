@@ -20,7 +20,7 @@ if (!$subtype_heading) {
 	$subtype_heading = elgg_echo('item:object:' . $vars['subtype']);
 }
 
-$spinner = elgg_view('ubertags/ubertags_ajax_spinner', array('id' => 'loading_' . $vars['subtype']));
+$spinner = elgg_view('ubertags/ajax_spinner', array('id' => 'loading_' . $vars['subtype']));
 
 ?>
 <div class='ubertags-subtype-container'>

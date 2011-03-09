@@ -106,19 +106,19 @@ function ubertags_page_handler($page) {
 					forward();
 				}
 			break;
-			case 'ajax_load_subtype':
+			case 'loadsubtype':
 				// Get inputs
 				$search = get_input('search');
 				$subtype = get_input('subtype');
 				$offset = get_input('offset', NULL);
-				echo elgg_view('ubertags/ubertags_generic_endpoint', array('subtype' => $subtype, 'search' => $search, 'offset' => $offset));
+				echo elgg_view('ubertags/subtype_content', array('subtype' => $subtype, 'search' => $search, 'offset' => $offset));
 				// This is an ajax load, so exit
 				exit;
 			break;
-			case 'loadubertag':
+			case 'searchubertag':
 				$search = get_input('search');
 				$group = get_input('group');
-				echo elgg_view('ubertags/ubertags_results_endpoint', array('subtype' => $subtype, 'search' => $search));
+				echo elgg_view('ubertags/search', array('subtype' => $subtype, 'search' => $search));
 				// This ia an ajax load, so exit
 				exit;
 			case 'timeline_feed':

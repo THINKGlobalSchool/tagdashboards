@@ -19,7 +19,7 @@ if (!is_array($subtypes)) {
 
 // Loop over and display each
 foreach ($subtypes as $subtype) {
-	$results .= elgg_view('ubertags/ubertags_generic_container', array('subtype' => $subtype, 'search' => $vars['search']));
+	$results .= elgg_view('ubertags/subtype_container', array('subtype' => $subtype, 'search' => $vars['search']));
 }
 
 echo $results . "<div style='clear: both;'></div>";

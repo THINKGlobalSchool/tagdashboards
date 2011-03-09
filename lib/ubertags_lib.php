@@ -14,7 +14,7 @@
 function ubertags_get_page_content_search() {
 	$content_info['title'] = elgg_echo('ubertags:title:search');
 	$content_info['layout'] = 'one_column_with_sidebar';
-	$content = elgg_view('ubertags/ubertags_search_container');
+	$content = elgg_view('forms/ubertags/search');
 	$content_info['content'] = elgg_view_title($content_info['title']) . $content;
 	return $content_info;
 }
@@ -28,7 +28,7 @@ function ubertags_get_page_content_edit($guid) {
 		elgg_push_breadcrumb('edit');
 		$content_info['title'] = elgg_echo('ubertags:title:edit');
 		$content_info['layout'] = 'one_column_with_sidebar';
-		$content = elgg_view('ubertags/forms/save', array('entity' => $ubertag));
+		$content = elgg_view('forms/ubertags/save', array('entity' => $ubertag));
 		$content_info['content'] = elgg_view_title($content_info['title']) . $content;
 		return $content_info;
 	} else {

@@ -13,25 +13,32 @@
 elgg.provide('elgg.ubertags');
 elgg.provide('elgg.ubertags.timeline');
 
+// Contants
+elgg.ubertags.SUBTYPE = 'subtype';
+elgg.ubertags.TAG = 'tag';
+
 // Init function
 elgg.ubertags.init = function () {
 	console.log('Ubertags Loaded');
 }
 
-// Loads the ubertags results
-elgg.ubertags.load_ubertags_results = function(search) {
-	var url = elgg.normalize_url('pg/ubertags/loadubertag?group=subtypes&search=' + search);
-	
+// Loads the ubertags results, this is wrapped by a validator: submit_search
+elgg.ubertags.load_ubertags_results = function(search, group_by) {
+	var url = elgg.normalize_url('pg/ubertags/searchubertag?group=' + group_by + '&search=' + search);
 	$('#ubertags-content-container').hide().load(url, function() {
 		$('#ubertags-content-container').fadeIn('fast');
 	});
 	return false;
 }
 
-// Submit ubertag search
-elgg.ubertags.submit_search = function (value) {
+// Validate and submit and ubertag search
+elgg.ubertags.submit_search = function (value, group_by) {
 	if (value) {
-		elgg.ubertags.load_ubertags_results(value);
+		// Make sure group_by is valid (either subtype or tag)
+		if (!group_by || (group_by != elgg.ubertags.SUBTYPE || group_by != elgg.ubertags.TAG)) {
+			group_by = elgg.ubertags.SUBTYPE;
+		}
+		elgg.ubertags.load_ubertags_results(value, group_by);
 		$('a#show_hide').show();
 		$('span#ubertags-search-error').html('');
 		window.location.hash = encodeURI(value); // Hash magic for permalinks
@@ -51,7 +58,7 @@ elgg.ubertags.get_ubertag_search_value = function () {
 }
 
 elgg.ubertags.load_ubertags_subtype_content = function (subtype, search, offset) {
-	var end_url = elgg.normalize_url('pg/ubertags/ajax_load_subtype/');
+	var end_url = elgg.normalize_url('pg/ubertags/loadsubtype/');
 	end_url += "?subtype=" + subtype + "&search=" + search;
 	if (offset) {
 		end_url += "&offset=" + offset;
