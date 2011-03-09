@@ -376,6 +376,37 @@ function ubertags_get_last_content($guid) {
 	return $entities[0];
 }
 
+/* Helper function to grab an array of predefined group activities */
+function ubertags_get_group_activities() {
+	return array(
+		array(	
+			'name' => 'Researcher', 
+			'tag' => 'research'
+		), 
+		array(	
+			'name' => 'Curriculum Reviewer', 
+			'tag' => 'curriculum'
+		),
+		array(	
+			'name' => 'Collaboration Coordinator', 
+			'tag' => 'collabco'
+		),
+		array(	
+			'name' => 'Tutorial Designers', 
+			'tag' => 'tutorial'
+		),
+		array(	
+			'name' => 'Contributors To Society', 
+			'tag' => 'society'
+		),
+		array(	
+			'name' => 'Official Scribes', 
+			'tag' => 'scribe'
+		),
+	);
+}
+
+
 /** 
  * Helper function to use with array_filter()
  * to determine if tidypics images are unique

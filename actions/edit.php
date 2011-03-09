@@ -13,6 +13,7 @@ gatekeeper();
 
 // Get inputs
 $ubertag_guid = get_input('ubertag_guid');
+$search = get_input('ubertag_search');
 $title = get_input('ubertag_title');
 $description = get_input('ubertag_description');
 $tags = string_to_tag_array(get_input('ubertag_tags'));
@@ -21,12 +22,14 @@ $subtypes = get_input('subtypes_enabled');
 
 // Sticky form
 elgg_make_sticky_form('ubertags_save_form');
-if (!$title) {
-	register_error(elgg_echo('ubertags:error:titlerequired'));
+if (!$title || !$search) {
+	register_error(elgg_echo('ubertags:error:requiredfields'));
 	forward(elgg_get_site_url() . 'pg/ubertags/edit/' . $ubertag_guid);
 }
 
+
 $ubertag = get_entity($ubertag_guid);
+$ubertag->search = $search;
 $ubertag->title = $title;
 $ubertag->description = $description;
 $ubertag->tags = $tags;

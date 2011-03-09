@@ -88,41 +88,6 @@ function ubertags_page_handler($page) {
 
 	if (isset($page[0]) && !empty($page[0])) {
 		switch ($page[0]) {
-			case 'test':
-			
-			global $CONFIG;
-			
-			$params = array(
-				'types' => array('object'),
-				'subtypes' => array('image'),
-				'full_view' => FALSE,
-				'listtypetoggle' => FALSE,
-				'listtype' => 'list',
-				'pagination' => TRUE,
-				'ubertags_search_term' => get_input('st'),
-			);
-				
-			$context = get_context();
-			set_context('query_dump');
-			
-			
-			$rows = ubertags_get_entities_from_tag_and_container_tag($params);
-		
-		
-			$entities = ubertags_get_limited_entities_from_rows($rows, get_input('l', 10));
-			
-			foreach($entities as $entity) {
-				echo date('m.d.y', $entity->time_created) . "<br />";
-			}
-			
-			$params['callback'] = "entity_row_to_elggstar";
-			
-			echo elgg_list_entities($params, 'ubertags_get_entities_from_tag_and_container_tag');
-			set_context($context);
-			exit;
-			break;
-			
-			
 			case 'ajax_load_subtype':
 				// Get inputs
 				$search = get_input('search');

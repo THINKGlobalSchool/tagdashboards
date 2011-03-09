@@ -47,6 +47,7 @@ $english = array(
 	'ubertags:label:submitted_by' => 'Submitted by %s',
 	'ubertags:label:leaveacomment' => 'Leave a Comment / ',
 	'ubertags:label:viewfull' => 'View full post', 
+	'ubertags:label:searchtag' => 'Search Tag',
 
 	// River
 	'ubertags:river:ubertag:create' => '%s created an Ubertag titled ',
@@ -59,7 +60,7 @@ $english = array(
 	'ubertags:error:save' => 'Error saving Ubertag',
 	'ubertags:error:delete' => 'There wasn an error deleting the Ubertag',
 	'ubertags:error:notfound' => 'Ubertag not found',
-	'ubertags:error:titlerequired' => 'Title is required',
+	'ubertags:error:requiredfields' => 'One or more required fields are missing',
 
 
 	
