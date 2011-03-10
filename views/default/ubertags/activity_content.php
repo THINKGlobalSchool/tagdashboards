@@ -14,11 +14,16 @@
 elgg_set_viewtype('uberview');
 set_input('search_viewtype', 'list');
 
+$subtypes = ubertags_get_enabled_subtypes();
+
+
+
 // Params
 $params = array(
 	'types' => array('object'),
 	'subtypes' => ubertags_get_enabled_subtypes(),
-	'owner' => ELGG_ENTITIES_ANY_VALUE,
+	'owner_guid' => ELGG_ENTITIES_ANY_VALUE,
+	'container_guid' => $vars['container_guid'],
 	'limit' => 10,
 	'offset' => $vars['offset'] ? $vars['offset'] : 0,
 	'full_view' => FALSE,

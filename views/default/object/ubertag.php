@@ -44,7 +44,7 @@ if (elgg_instanceof($vars['entity'], 'object', 'ubertag')) {
 		$content_link_label = elgg_echo('ubertags:label:contentview');
 		$timeline_link_label = elgg_echo('ubertags:label:timelineview');
 		
-		$ubertag_content = elgg_view('ubertags/content', array('search' => $vars['entity']->search, 'subtypes' => $vars['entity']->subtypes, 'group_by' => UBERTAGS_GROUP_SUBTYPE));
+		$ubertag_content = elgg_view('ubertags/subtypes', array('search' => $vars['entity']->search, 'subtypes' => $vars['entity']->subtypes));
 		
 		$timeline_load = elgg_get_site_url() . "pg/ubertags/load_timeline/" . $vars['entity']->getGUID();
 		$timeline_data = elgg_get_site_url() . "pg/ubertags/timeline_feed/" . $vars['entity']->getGUID();

@@ -45,12 +45,6 @@ if ($blog->comments_on != 'Off') {
 	$comments_link = '';
 }
 
-// links to delete or edit.
-
-// access is always shown.
-$edit = elgg_view('output/access', array('entity' => $vars['entity']), FALSE, FALSE, 'default');
-
-
 echo <<<___END
 <div class="blog $status_class entity_listing clearfix">
 	<div class="entity_listing_icon">

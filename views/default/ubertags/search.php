@@ -1,7 +1,7 @@
 <?php
 
 $save_form = elgg_view('forms/ubertags/save', array('search' => $vars['search']));
-$content = elgg_view('ubertags/content', array('search' => $vars['search'], 'group_by' => UBERTAGS_GROUP_SUBTYPE));
+$content = elgg_view('ubertags/subtypes', array('search' => $vars['search']);
 
 echo <<<EOT
 	<div id='ubertags-save-container' class='hidden'>

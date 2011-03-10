@@ -21,6 +21,7 @@ $english = array(
 	'ubertags:title:search' => 'Ubertags Search',
 	'ubertags:title:edit' => 'Edit Ubertag',
 	'ubertags:title:adminsettings' => 'Ubertags Settings',
+	'ubertags:title:groupbyactivity' => 'Content grouped by student activity',
 	
 	// Menu items
 	'ubertags:menu:allubertags' => 'All Ubertags',
@@ -50,6 +51,7 @@ $english = array(
 	'ubertags:label:searchtag' => 'Search Tag',
 	'ubertags:label:contentview' => 'Content View',
 	'ubertags:label:timelineview' => 'Timeline View',
+	'ubertags:label:groupbyactivity' => 'View by activity',
 
 	// Activities
 	'ubertags:activity:research' => 'Researcher',

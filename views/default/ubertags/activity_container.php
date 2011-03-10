@@ -27,6 +27,6 @@ $spinner = elgg_view('ubertags/ajax_spinner', array('id' => 'loading_' . $activi
 </div>
 <script type='text/javascript'>
 	$(document).ready(function() {
-		elgg.ubertags.load_ubertags_activity_content("<?php echo $activity['tag']; ?>", null);
+		elgg.ubertags.load_ubertags_activity_content("<?php echo $activity['tag']; ?>", "<?php echo $vars['container_guid']; ?>", null);
 	});
 </script>

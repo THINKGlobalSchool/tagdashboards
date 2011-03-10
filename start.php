@@ -30,6 +30,9 @@ function ubertags_init() {
 	// Extend admin view to include some extra styles
 	elgg_extend_view('layouts/administration', 'ubertags/admin/css');
 	
+	// Add ubertag activity to sidebar
+	elgg_extend_view('group-extender/sidebar','ubertags/group_sidebar', 0);
+	
 	// Page handler
 	register_page_handler('ubertags','ubertags_page_handler');
 
@@ -96,18 +99,9 @@ function ubertags_page_handler($page) {
 	
 	if (isset($page[0]) && !empty($page[0])) {
 		switch ($page[0]) {
-			case 'gubertag':
+			case 'group_activity':
 				set_context('group');
-				$group_guid = $page[1];
-				$group = get_entity($group_guid);
-				if (elgg_instanceof($group, 'group')) {
-					elgg_set_page_owner_guid($group_guid);
-					$content_info['title'] = "Gubertag";
-					$content_info['layout'] = "one_column_with_sidebar";
-					$content_info['content'] = elgg_view('ubertags/content', array('search' => $vars['search'], 'group_by' => UBERTAGS_GROUP_ACTIVITY, 'container_guid' => $group_guid));
-				} else {
-					forward();
-				}
+				$content_info = ubertags_get_page_content_group_activity($page[1]);
 			break;
 			case 'loadsubtype':
 				// Get inputs
@@ -121,8 +115,9 @@ function ubertags_page_handler($page) {
 			case 'loadactivity':
 				// Get inputs
 				$activity = get_input('activity');
+				$container_guid = get_input('container_guid');
 				$offset = get_input('offset', NULL);
-				echo elgg_view('ubertags/activity_content', array('activity' => $activity, 'offset' => $offset));
+				echo elgg_view('ubertags/activity_content', array('activity' => $activity, 'container_guid' => $container_guid, 'offset' => $offset));
 				// This is an ajax load, so exit
 				exit;
 			break;

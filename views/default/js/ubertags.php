@@ -84,9 +84,9 @@ elgg.ubertags.load_ubertags_subtype_content = function (subtype, search, offset)
 	return false;
 }
 
-elgg.ubertags.load_ubertags_activity_content = function (activity, offset) {
+elgg.ubertags.load_ubertags_activity_content = function (activity, container_guid, offset) {
 	var end_url = elgg.normalize_url('pg/ubertags/loadactivity/');
-	end_url += "?activity=" + activity;
+	end_url += "?activity=" + activity + "&container_guid=" + container_guid;
 	if (offset) {
 		end_url += "&offset=" + offset;
 	}

@@ -169,6 +169,22 @@ function ubertags_get_page_content_timeline($guid) {
 	return $content_info;
 }
 
+/* View a groups content grouped by student activity */
+function ubertags_get_page_content_group_activity($guid) {
+	$group = get_entity($guid);
+	$content_info['title'] = elgg_echo('ubertags:title:groupbyactivity');
+	$content_info['layout'] = "one_column_with_sidebar";
+	if (elgg_instanceof($group, 'group')) {
+		elgg_set_page_owner_guid($guid);
+		$content_info['content'] = elgg_view_title($content_info['title']);
+		$content_info['content'] .= elgg_view('ubertags/group_activity', array('search' => $vars['search'], 'container_guid' => $guid));
+	} else {
+		$content_info['content'] = '';
+	}
+	$content_info['sidebar'] = elgg_view('ubertags/group_sidebar');
+	return $content_info;
+}
+
 /* Helper function tog grab the plugins enabled subtypes */
 function ubertags_get_enabled_subtypes() {
 	return unserialize(get_plugin_setting('enabled_subtypes', 'ubertags'));
