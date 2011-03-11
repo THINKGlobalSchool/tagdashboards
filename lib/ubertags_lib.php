@@ -195,6 +195,16 @@ function ubertags_get_page_content_activity_tag() {
 	return $content_info;
 }
 
+/* View content grouped by user defined tag with specified search */
+function ubertags_get_page_content_custom() {
+	$search = get_input('search', 'test');
+	$content_info['title'] = elgg_echo('ubertags:title:custom');
+	$content_info['layout'] = "one_column_with_sidebar";
+	$content_info['content'] = elgg_view_title($content_info['title']);
+	$content_info['content'] .= elgg_view('ubertags/custom', array('search' => $search));
+	return $content_info;
+}
+
 /* Helper function tog grab the plugins enabled subtypes */
 function ubertags_get_enabled_subtypes() {
 	return unserialize(get_plugin_setting('enabled_subtypes', 'ubertags'));

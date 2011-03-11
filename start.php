@@ -99,13 +99,8 @@ function ubertags_page_handler($page) {
 	
 	if (isset($page[0]) && !empty($page[0])) {
 		switch ($page[0]) {
-			case 'group_activity':
-				set_context('group');
-				$content_info = ubertags_get_page_content_group_activity($page[1]);
-			break;
-			case 'activity_tag':
-				$content_info = ubertags_get_page_content_activity_tag();
-			break;
+			/* BEGIN AJAX ENDPOINTS */
+			//@TODO maybe a second page handler for the ajax? 
 			case 'loadsubtype':
 				// Get inputs
 				$search = get_input('search');
@@ -133,6 +128,15 @@ function ubertags_page_handler($page) {
 				// This is an ajax load, so exit
 				exit;
 			break;
+			case 'loadcustom':
+				// Get inputs
+				$group = get_input('group');
+				$search = get_input('search');
+				$offset = get_input('offset', NULL);
+				echo elgg_view('ubertags/custom_content', array('group' => $group, 'search' => $search, 'offset' => $offset));
+				// This is an ajax load, so exit
+				exit;
+			break;
 			case 'searchubertag':
 				$search = get_input('search');
 				$group = get_input('group');
@@ -153,6 +157,13 @@ function ubertags_page_handler($page) {
 				// This ia an ajax load, so exit
 				exit;
 			break;
+			case 'load_timeline':
+				$timeline = get_entity($page[1]);
+				echo  elgg_view('ubertags/timeline', array('entity' => $timeline));
+				exit; // ajax load, exit
+			break;
+			/* END AJAX ENDPOINTS */
+			/* BEGIN CONTENT */
 			case 'friends': 
 				$content_info = ubertags_get_page_content_friends(get_loggedin_userid());
 			break;
@@ -182,14 +193,19 @@ function ubertags_page_handler($page) {
 				elgg_register_js(elgg_get_site_url() . 'mod/ubertags/lib/timeline-popup.js', 'timeline-popup');
 				$content_info = ubertags_get_page_content_timeline($page[1]);
 			break;
-			case 'load_timeline':
-				$timeline = get_entity($page[1]);
-				echo  elgg_view('ubertags/timeline', array('entity' => $timeline));
-				exit; // ajax load, exit
-			break;
 			case 'timeline_image_icon':
 				echo elgg_view('ubertags/timeline_image_icon', array('guid' => $page[1]));
 				exit;
+			break;
+			case 'group_activity':
+				set_context('group');
+				$content_info = ubertags_get_page_content_group_activity($page[1]);
+			break;
+			case 'activity_tag':
+				$content_info = ubertags_get_page_content_activity_tag();
+			break;
+			case 'custom':
+				$content_info = ubertags_get_page_content_custom();
 			break;
 			default:
 				// Should be a username if we're here
@@ -203,6 +219,7 @@ function ubertags_page_handler($page) {
 				$owner = elgg_get_page_owner();
 				$content_info = ubertags_get_page_content_list($owner->getGUID());
 			break;
+			/* END CONTENT */
 		}
 	} else {
 		$content_info = ubertags_get_page_content_list();

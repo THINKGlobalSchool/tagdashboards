@@ -112,6 +112,21 @@ elgg.ubertags.load_ubertags_activity_tag_content = function (activity, search, o
 	return false;
 }
 
+elgg.ubertags.load_ubertags_custom_content = function (group, search, offset) {
+	console.log('huh');
+	var end_url = elgg.normalize_url('pg/ubertags/loadcustom/');
+	end_url += "?group=" + group + "&search=" + search;
+	if (offset) {
+		end_url += "&offset=" + offset;
+	}
+
+	/* Simple show/hide */
+	$("#" + group + "_content").load(end_url, '', function() {
+		$("#loading_" + group).hide();
+	});	
+	return false;
+}
+
 elgg.ubertags.fade_div = function(id) {
 	$("#uberview_entity_list_" + id).fadeOut('fast', function () {
 		$("#loading_" + id).show();
