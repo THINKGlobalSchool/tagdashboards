@@ -32,15 +32,21 @@ $params = array(
 	'listtypetoggle' => FALSE,
 	'listtype' => 'list',
 	'pagination' => TRUE,
+	// Search where tag == activity AND tag == search
 	'metadata_name_value_pairs' => array(array(	
 											'name' => 'tags', 
 											'value' => rawurldecode($vars['activity']), 
 											'operand' => '=',
 											'case_sensitive' => FALSE),
+										array(	
+											'name' => 'tags', 
+											'value' => rawurldecode($vars['search']), 
+											'operand' => '=',
+											'case_sensitive' => FALSE)
 										)
 );
 
-
+//set_context('query_dump');
 $entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');
 
 
