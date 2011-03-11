@@ -46,9 +46,7 @@ $params = array(
 										)
 );
 
-//set_context('query_dump');
 $entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');
-
 
 if (!empty($entity_list)) {
 	echo $entity_list; 
