@@ -103,6 +103,9 @@ function ubertags_page_handler($page) {
 				set_context('group');
 				$content_info = ubertags_get_page_content_group_activity($page[1]);
 			break;
+			case 'activity_tag':
+				$content_info = ubertags_get_page_content_activity_tag();
+			break;
 			case 'loadsubtype':
 				// Get inputs
 				$search = get_input('search');
@@ -118,6 +121,15 @@ function ubertags_page_handler($page) {
 				$container_guid = get_input('container_guid');
 				$offset = get_input('offset', NULL);
 				echo elgg_view('ubertags/activity_content', array('activity' => $activity, 'container_guid' => $container_guid, 'offset' => $offset));
+				// This is an ajax load, so exit
+				exit;
+			break;
+			case 'loadactivitytag':
+				// Get inputs
+				$activity = get_input('activity');
+				$search = get_input('search');
+				$offset = get_input('offset', NULL);
+				echo elgg_view('ubertags/activity_tag_content', array('activity' => $activity, 'search' => $search, 'offset' => $offset));
 				// This is an ajax load, so exit
 				exit;
 			break;

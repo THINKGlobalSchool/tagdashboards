@@ -1,6 +1,6 @@
 <?php
 /**
- * Ubertags activity content
+ * Ubertags activity tag content
  *
  * @package Ubertags
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -17,7 +17,7 @@ set_input('search_viewtype', 'list');
 $subtypes = ubertags_get_enabled_subtypes();
 
 // Set the pager js (which function to use when reloading pagination)
-$page_js = "elgg.ubertags.load_ubertags_activity_content(\"{$vars['activity']}\", \"{$vars['container_guid']}\", \"%s\");";
+$page_js = "elgg.ubertags.load_ubertags_activity_tag_content(\"{$vars['activity']}\", \"{$vars['search']}\", \"%s\");";
 
 set_input('page_js', $page_js);
 
@@ -26,17 +26,18 @@ $params = array(
 	'types' => array('object'),
 	'subtypes' => ubertags_get_enabled_subtypes(),
 	'owner_guid' => ELGG_ENTITIES_ANY_VALUE,
-	'container_guid' => $vars['container_guid'],
 	'limit' => 10,
 	'offset' => $vars['offset'] ? $vars['offset'] : 0,
 	'full_view' => FALSE,
 	'listtypetoggle' => FALSE,
 	'listtype' => 'list',
 	'pagination' => TRUE,
-	'metadata_name_value_pairs' => array(	'name' => 'tags', 
+	'metadata_name_value_pairs' => array(array(	
+											'name' => 'tags', 
 											'value' => rawurldecode($vars['activity']), 
 											'operand' => '=',
-											'case_sensitive' => FALSE)
+											'case_sensitive' => FALSE),
+										)
 );
 
 

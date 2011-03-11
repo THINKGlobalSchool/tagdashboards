@@ -177,11 +177,21 @@ function ubertags_get_page_content_group_activity($guid) {
 	if (elgg_instanceof($group, 'group')) {
 		elgg_set_page_owner_guid($guid);
 		$content_info['content'] = elgg_view_title($content_info['title']);
-		$content_info['content'] .= elgg_view('ubertags/group_activity', array('search' => $vars['search'], 'container_guid' => $guid));
+		$content_info['content'] .= elgg_view('ubertags/group_activity', array('container_guid' => $guid));
 	} else {
 		$content_info['content'] = '';
 	}
 	$content_info['sidebar'] = elgg_view('ubertags/group_sidebar');
+	return $content_info;
+}
+
+/* View content grouped by student activity with specified tag */
+function ubertags_get_page_content_activity_tag() {
+	$search = get_input('search', 'test');
+	$content_info['title'] = elgg_echo('ubertags:title:activitytag');
+	$content_info['layout'] = "one_column_with_sidebar";
+	$content_info['content'] = elgg_view_title($content_info['title']);
+	$content_info['content'] .= elgg_view('ubertags/activity_tag', array('search' => $search));
 	return $content_info;
 }
 

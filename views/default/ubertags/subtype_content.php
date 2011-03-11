@@ -20,6 +20,11 @@ if (!elgg_view_exists("object/{$vars['subtype']}")) {
 }
 
 
+// Set the pager js (which function to use when reloading pagination)
+$page_js = "elgg.ubertags.load_ubertags_subtype_content(\"{$vars['subtype']}\", \"{$vars['search']}\", \"%s\");";
+
+set_input('page_js', $page_js);
+
 /* 
 	Setting up a pile of default params. metadata_name_value_pairs
 	is what makes the tag magic happen. This might even work 

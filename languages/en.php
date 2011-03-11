@@ -22,6 +22,7 @@ $english = array(
 	'ubertags:title:edit' => 'Edit Ubertag',
 	'ubertags:title:adminsettings' => 'Ubertags Settings',
 	'ubertags:title:groupbyactivity' => 'Content grouped by student activity',
+	'ubertags:title:activitytag' => 'Searched tag, grouped by activity',
 	
 	// Menu items
 	'ubertags:menu:allubertags' => 'All Ubertags',
