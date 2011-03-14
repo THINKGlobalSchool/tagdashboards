@@ -29,8 +29,7 @@
 	top: 0;
 }
 
-
-#ubertags-search-input {
+.ubertags-text-input {
 	width: 80%;
 	margin-top: 10px;
 	display: inline;

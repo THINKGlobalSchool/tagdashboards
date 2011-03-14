@@ -24,6 +24,7 @@ $tags_json = json_encode($tags_array);
 $search_input = elgg_view('input/text', array(	
 	'internalname' => 'ubertags_search', 
 	'internalid' => 'ubertags-search-input',
+	'class' => 'ubertags-text-input',
 	'value' => get_input('ubertags_search')
 ));
 
@@ -57,7 +58,8 @@ EOT;
 	$custom_label = elgg_echo('ubertags:label:customtags');
 	$custom_input = elgg_view('input/text', array(
 		'internalname' => 'ubertags_custom',
-		'internalid' => 'ubertags-custom-input'
+		'internalid' => 'ubertags-custom-input',
+		'class' => 'ubertags-text-input',
 	));
 	
 $form_body = <<<EOT
