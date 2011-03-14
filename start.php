@@ -139,8 +139,9 @@ function ubertags_page_handler($page) {
 			break;
 			case 'searchubertag':
 				$search = get_input('search');
-				$group = get_input('group');
-				echo elgg_view('ubertags/search', array('subtype' => $subtype, 'search' => $search));
+				$type = get_input('type');
+				$custom = get_input('custom');
+				echo elgg_view('ubertags/search', array('search' => $search, 'type' => $type, 'custom' => $custom));
 				// This ia an ajax load, so exit
 				exit;
 			case 'timeline_feed':
@@ -168,7 +169,7 @@ function ubertags_page_handler($page) {
 				$content_info = ubertags_get_page_content_friends(get_loggedin_userid());
 			break;
 			case 'search':
-				$content_info = ubertags_get_page_content_search();
+				$content_info = ubertags_get_page_content_search($page[1]);
 			break;
 			case 'settings':
 				admin_gatekeeper();

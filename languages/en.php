@@ -54,6 +54,8 @@ $english = array(
 	'ubertags:label:contentview' => 'Content View',
 	'ubertags:label:timelineview' => 'Timeline View',
 	'ubertags:label:groupbyactivity' => 'View by activity',
+	'ubertags:label:search' => 'Search tag',
+	'ubertags:label:customtags' => 'Group by tags',
 
 	// Activities
 	'ubertags:activity:research' => 'Researcher',

@@ -11,10 +11,13 @@
  */
 
 /* Build content for the ubertag search page */
-function ubertags_get_page_content_search() {
+function ubertags_get_page_content_search($type) { 
+	if (!$type) {
+		$type = 'subtype';
+	}
 	$content_info['title'] = elgg_echo('ubertags:title:search');
 	$content_info['layout'] = 'one_column_with_sidebar';
-	$content = elgg_view('forms/ubertags/search');
+	$content = elgg_view('forms/ubertags/search', array('type' => $type));
 	$content_info['content'] = elgg_view_title($content_info['title']) . $content;
 	return $content_info;
 }
@@ -187,7 +190,7 @@ function ubertags_get_page_content_group_activity($guid) {
 
 /* View content grouped by student activity with specified tag */
 function ubertags_get_page_content_activity_tag() {
-	$search = get_input('search', 'test');
+	$search = get_input('search');
 	$content_info['title'] = elgg_echo('ubertags:title:activitytag');
 	$content_info['layout'] = "one_column_with_sidebar";
 	$content_info['content'] = elgg_view_title($content_info['title']);
@@ -197,7 +200,7 @@ function ubertags_get_page_content_activity_tag() {
 
 /* View content grouped by user defined tag with specified search */
 function ubertags_get_page_content_custom() {
-	$search = get_input('search', 'test');
+	$search = get_input('search');
 	$content_info['title'] = elgg_echo('ubertags:title:custom');
 	$content_info['layout'] = "one_column_with_sidebar";
 	$content_info['content'] = elgg_view_title($content_info['title']);

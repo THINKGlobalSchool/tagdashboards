@@ -13,32 +13,30 @@
 elgg.provide('elgg.ubertags');
 elgg.provide('elgg.ubertags.timeline');
 
-// Contants
-elgg.ubertags.SUBTYPE = 'subtype';
-elgg.ubertags.TAG = 'tag';
-
 // Init function
 elgg.ubertags.init = function () {
 	console.log('Ubertags Loaded');
 }
 
-// Loads the ubertags results, this is wrapped by a validator: submit_search
-elgg.ubertags.load_ubertags_results = function(search, group_by) {
-	var url = elgg.normalize_url('pg/ubertags/searchubertag?group=' + group_by + '&search=' + search);
-	$('#ubertags-content-container').hide().load(url, function() {
-		$('#ubertags-content-container').fadeIn('fast');
-	});
-	return false;
-}
-
 // Validate and submit and ubertag search
-elgg.ubertags.submit_search = function (value, group_by) {
+elgg.ubertags.submit_search = function (value, type) {
 	if (value) {
-		// Make sure group_by is valid (either subtype or tag)
-		if (!group_by || (group_by != elgg.ubertags.SUBTYPE || group_by != elgg.ubertags.TAG)) {
-			group_by = elgg.ubertags.SUBTYPE;
+		if (type == 'custom') {
+			// Grab the custom tags string
+			var tag_string = elgg.ubertags.get_ubertag_custom_value();
+			
+			// Split into an array
+			var tag_array = tag_string.split(', ');
+			
+			// Nead little jquery hack to remove empty array elements
+			tag_array = $.grep(tag_array,function(n,i){
+			    return(n);
+			});
 		}
-		elgg.ubertags.load_ubertags_results(value, group_by);
+		var url = elgg.normalize_url('pg/ubertags/searchubertag?type=' + type + '&search=' + value);
+		$('#ubertags-content-container').hide().load(url, { 'custom[]': tag_array }, function() {
+			$('#ubertags-content-container').fadeIn('fast');
+		});
 		$('a#show_hide').show();
 		$('span#ubertags-search-error').html('');
 		window.location.hash = encodeURI(value); // Hash magic for permalinks
@@ -53,6 +51,13 @@ elgg.ubertags.submit_search = function (value, group_by) {
 // Get search value
 elgg.ubertags.get_ubertag_search_value = function () {
 	var value = $('#ubertags-search-input').val();
+	value = value.toLowerCase();
+	return value;
+}
+
+// Get search value
+elgg.ubertags.get_ubertag_custom_value = function () {
+	var value = $('#ubertags-custom-input').val();
 	value = value.toLowerCase();
 	return value;
 }
@@ -113,7 +118,6 @@ elgg.ubertags.load_ubertags_activity_tag_content = function (activity, search, o
 }
 
 elgg.ubertags.load_ubertags_custom_content = function (group, search, offset) {
-	console.log('huh');
 	var end_url = elgg.normalize_url('pg/ubertags/loadcustom/');
 	end_url += "?group=" + group + "&search=" + search;
 	if (offset) {

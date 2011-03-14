@@ -10,13 +10,7 @@
  * 
  */
 
-$custom = array(
-	'custom1', 
-	'custom2', 
-	'custom3', 
-	'custom4',
-);
-
+$custom = $vars['custom'];
 $search = $vars['search'];
 
 $content .= "<div class='ubertag-big-title'>

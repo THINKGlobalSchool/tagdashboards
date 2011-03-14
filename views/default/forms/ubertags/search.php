@@ -10,8 +10,8 @@
  * 
  */
 
-$save_link = "<a id='show_hide' href='#'>" . elgg_echo('ubertags:label:saveform') . "</a>";
-	
+$type = $vars['type'];
+
 // Get site tags
 $site_tags = elgg_get_tags(array(threshold=>0, limit=>100));
 $tags_array = array();
@@ -35,6 +35,10 @@ $search_submit = "<input type='submit'
 						  />";
 
 
+// If we're doing a regular subtype search or an activity
+if ($type == 'subtype' || $type == 'activity') {
+	$save_link = "<a id='show_hide' href='#'>" . elgg_echo('ubertags:label:saveform') . "</a>";
+	
 $form_body = <<<EOT
 	<div id='ubertags-search-container'>
 		<div>	
@@ -45,8 +49,35 @@ $form_body = <<<EOT
 	$save_link
 	<div id='ubertags-content-container'>
 	</div>
-
 EOT;
+	
+	
+} else if ($type == 'custom') { // Custom form
+	$search_label = elgg_echo('ubertags:label:search');
+	$custom_label = elgg_echo('ubertags:label:customtags');
+	$custom_input = elgg_view('input/text', array(
+		'internalname' => 'ubertags_custom',
+		'internalid' => 'ubertags-custom-input'
+	));
+	
+$form_body = <<<EOT
+	<div id='ubertags-search-container'>
+		<div>	
+			<label>$search_label</label><br />
+			$search_input <br /><br />
+			<label>$custom_label</label><br />
+			$custom_input <br /><br />
+			$search_submit<br />
+			<span id='ubertags-search-error'></span>
+		</div>
+	</div>
+	$save_link
+	<div id='ubertags-content-container'>
+	</div>
+EOT;
+	
+}
+	
 
 $script = <<<EOT
 	<script type='text/javascript'>	
@@ -75,20 +106,30 @@ $script = <<<EOT
 			if (window.location.hash) {
 				var hash = decodeURI(window.location.hash.substring(1));
 				var value = $('#ubertags-search-input').val(hash);
-				elgg.ubertags.submit_search(hash, elgg.ubertags.SUBTYPE);
+				elgg.ubertags.submit_search(hash, '$type');
 				// Show the save link
 			}
 		
 			$('#ubertags-search-submit').click(function(){
-				elgg.ubertags.submit_search(elgg.ubertags.get_ubertag_search_value(), elgg.ubertags.SUBTYPE);
+				elgg.ubertags.submit_search(elgg.ubertags.get_ubertag_search_value(), '$type');
 			});
 			
 			$('#ubertags-search-input').keypress(function(e){
 				if(e.which == 13) {
-			    	elgg.ubertags.submit_search(elgg.ubertags.get_ubertag_search_value(), elgg.ubertags.SUBTYPE);
+			    	elgg.ubertags.submit_search(elgg.ubertags.get_ubertag_search_value(), '$type');
 					e.preventDefault();
 					return false;
 				}
+			});
+			
+			// Typeahead for custom
+			var data = $.parseJSON('$tags_json');
+			$("#ubertags-custom-input").autocomplete(data, {
+											highlight: false,
+											multiple: true,
+											multipleSeparator: ", ",
+											scroll: true,
+											scrollHeight: 300
 			});
 			
 			// Typeahead
@@ -100,6 +141,8 @@ $script = <<<EOT
 											scroll: true,
 											scrollHeight: 300
 			});	
+			
+
 		});
 	</script>
 
