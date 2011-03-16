@@ -87,17 +87,6 @@ EOT;
 	$enabled = ubertags_get_enabled_subtypes();
 	$access_id = ACCESS_LOGGED_IN;
 	
-	// Load hidden input
-	$script = <<<EOT
-		<script type='text/javascript'>
-			// Load our hidden input so we can save the search term
-			$(document).ready(function() {
-				$('input#ubertag_search').val($('#ubertags-search-input').val());
-			});
-		</script>
-EOT;
-
-
 	// Hidden search input
 	$hidden_search_input = elgg_view('input/hidden', array(
 		'internalid' => 'ubertag_search',
@@ -268,6 +257,10 @@ $form_body = <<<EOT
 			$("div#$selected_tab").show();
 		});
 		
+		$('#ubertags_save_input').click(function() {
+			$('input#ubertag_search').val(elgg.ubertags.get_ubertag_search_value());
+		});
+		
 		$('#ubertags-refresh-input').click(function() {
 			// Grab selected subtypes
 			var inputs = $('.ubertags-subtype-input:checked');
@@ -290,4 +283,4 @@ echo elgg_view('input/form', array(
 	'internalid' => 'ubertags_save_form',
 	'body' => $form_body,
 	'action' => $action
-)) . $script;
+));
