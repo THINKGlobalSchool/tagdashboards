@@ -14,7 +14,12 @@
 elgg_set_viewtype('uberview');
 set_input('search_viewtype', 'list');
 
-$subtypes = ubertags_get_enabled_subtypes();
+$subtypes = $vars['subtypes'];
+
+// If we weren't supplied an array of subtypes, use defaults
+if (!is_array($subtypes)) {
+	$subtypes = ubertags_get_enabled_subtypes();
+}
 
 // Set the pager js (which function to use when reloading pagination)
 $page_js = "elgg.ubertags.load_ubertags_activity_tag_content(\"{$vars['activity']}\", \"{$vars['search']}\", \"%s\");";
@@ -24,7 +29,7 @@ set_input('page_js', $page_js);
 // Params
 $params = array(
 	'types' => array('object'),
-	'subtypes' => ubertags_get_enabled_subtypes(),
+	'subtypes' => $subtypes,
 	'owner_guid' => ELGG_ENTITIES_ANY_VALUE,
 	'limit' => 10,
 	'offset' => $vars['offset'] ? $vars['offset'] : 0,

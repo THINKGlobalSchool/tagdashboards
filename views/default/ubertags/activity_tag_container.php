@@ -12,6 +12,8 @@
 
 $activity = $vars['activity'];
 
+$subtypes = json_encode($vars['subtypes']);
+
 // Div, JS label
 $uber_id = $activity['tag'] . '_content';
 
@@ -27,6 +29,7 @@ $spinner = elgg_view('ubertags/ajax_spinner', array('id' => 'loading_' . $activi
 </div>
 <script type='text/javascript'>
 	$(document).ready(function() {
-		elgg.ubertags.load_ubertags_activity_tag_content("<?php echo $activity['tag']; ?>", "<?php echo $vars['search']; ?>", null);
+		var subtypes = $.parseJSON('<?php echo $subtypes;?>');
+		elgg.ubertags.load_ubertags_activity_tag_content("<?php echo $activity['tag']; ?>", "<?php echo $vars['search']; ?>", subtypes, null);
 	});
 </script>

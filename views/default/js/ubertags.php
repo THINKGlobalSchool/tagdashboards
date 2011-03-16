@@ -19,22 +19,27 @@ elgg.ubertags.init = function () {
 }
 
 // Validate and submit and ubertag search
-elgg.ubertags.submit_search = function (value, type) {
+elgg.ubertags.submit_search = function (value, type, subtypes) {
 	if (value) {
 		if (type == 'custom') {
 			// Grab the custom tags string
 			var tag_string = elgg.ubertags.get_ubertag_custom_value();
 			
 			// Split into an array
-			var tag_array = tag_string.split(', ');
+			var tag_array = tag_string.split(',');
 			
 			// Nead little jquery hack to remove empty array elements
 			tag_array = $.grep(tag_array,function(n,i){
 			    return(n);
 			});
+			
+			// Handle any weird whitespace issues in supplied tags (trim 'em)
+			$.each(tag_array, function(i, v) {
+				tag_array[i] = $.trim(v);
+			});
 		}
 		var url = elgg.normalize_url('pg/ubertags/searchubertag?type=' + type + '&search=' + value);
-		$('#ubertags-content-container').hide().load(url, { 'custom[]': tag_array }, function() {
+		$('#ubertags-content-container').hide().load(url, { 'custom[]': tag_array, 'subtypes' : subtypes }, function() {
 			$('#ubertags-content-container').fadeIn('fast');
 		});
 		$('a#show_hide').show();
@@ -103,7 +108,7 @@ elgg.ubertags.load_ubertags_activity_content = function (activity, container_gui
 	return false;
 }
 
-elgg.ubertags.load_ubertags_activity_tag_content = function (activity, search, offset) {
+elgg.ubertags.load_ubertags_activity_tag_content = function (activity, search, subtypes, offset) {
 	var end_url = elgg.normalize_url('pg/ubertags/loadactivitytag/');
 	end_url += "?activity=" + activity + "&search=" + search;
 	if (offset) {
@@ -111,13 +116,13 @@ elgg.ubertags.load_ubertags_activity_tag_content = function (activity, search, o
 	}
 
 	/* Simple show/hide */
-	$("#" + activity + "_content").load(end_url, '', function() {
+	$("#" + activity + "_content").load(end_url, { 'subtypes' : subtypes }, function() {
 		$("#loading_" + activity).hide();
 	});	
 	return false;
 }
 
-elgg.ubertags.load_ubertags_custom_content = function (group, search, offset) {
+elgg.ubertags.load_ubertags_custom_content = function (group, search, subtypes, offset) {
 	var end_url = elgg.normalize_url('pg/ubertags/loadcustom/');
 	end_url += "?group=" + group + "&search=" + search;
 	if (offset) {
@@ -125,7 +130,7 @@ elgg.ubertags.load_ubertags_custom_content = function (group, search, offset) {
 	}
 
 	/* Simple show/hide */
-	$("#" + group + "_content").load(end_url, '', function() {
+	$("#" + group + "_content").load(end_url, { 'subtypes' : subtypes }, function() {
 		$("#loading_" + group).hide();
 	});	
 	return false;
@@ -135,6 +140,17 @@ elgg.ubertags.fade_div = function(id) {
 	$("#uberview_entity_list_" + id).fadeOut('fast', function () {
 		$("#loading_" + id).show();
 	});
+}
+
+elgg.ubertags.ubertags_switch_groupby = function(tab_id, groupby_val) {
+	var nav_name = "li#" + tab_id;
+	var tab_name = "div#" + tab_id;
+
+	$(".ubertags-groupby-div").hide();
+	$(tab_name).show();
+	$(".edt_tab_nav").removeClass("selected");
+	$(nav_name).addClass("selected");
+	$("#ubertag-groupby").val(groupby_val);
 }
 
 // Timeline functions..

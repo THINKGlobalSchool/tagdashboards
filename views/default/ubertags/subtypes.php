@@ -11,7 +11,7 @@
  */
 
 // Grab subtypes if they were supplied
-$subtypes = unserialize($vars['subtypes']);
+$subtypes = $vars['subtypes'];
 
 // If we weren't supplied an array of subtypes, use defaults
 if (!is_array($subtypes)) {

@@ -13,6 +13,7 @@
 // Div, JS label
 $uber_id = $vars['group'] . '_content';
 
+$subtypes = json_encode($vars['subtypes']);
 
 $spinner = elgg_view('ubertags/ajax_spinner', array('id' => 'loading_' . $vars['group']));
 
@@ -25,6 +26,7 @@ $spinner = elgg_view('ubertags/ajax_spinner', array('id' => 'loading_' . $vars['
 </div>
 <script type='text/javascript'>
 	$(document).ready(function() {
-		elgg.ubertags.load_ubertags_custom_content("<?php echo $vars['group']; ?>", "<?php echo $vars['search']; ?>", null);
+		var subtypes = $.parseJSON('<?php echo $subtypes;?>');
+		elgg.ubertags.load_ubertags_custom_content("<?php echo $vars['group']; ?>", "<?php echo $vars['search']; ?>", subtypes, null);
 	});
 </script>

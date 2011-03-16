@@ -1,6 +1,6 @@
 <?php
 /**
- * Ubertags no results view
+ * Ubertags groupby container
  * 
  * @package Ubertags
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -9,13 +9,12 @@
  * @link http://www.thinkglobalschool.com/
  * 
  */
-?>
-<div class="margin_top">
-		<center>
-		<b>
-		<?php 
-			echo elgg_echo("No Results");
-		?>
-		</b>
-		</center>
-</div>
+
+$description = $vars['description'];
+$form = $vars['form'];
+
+echo 
+"<div class='ubertags-groupby-description'>
+	$description
+	$form
+</div>";

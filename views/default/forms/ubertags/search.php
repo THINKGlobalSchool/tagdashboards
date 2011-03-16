@@ -33,12 +33,12 @@ $search_submit = "<input type='submit'
 						 name='ubertags_search_submit' 
 						 id='ubertags-search-submit' 
 						 value='$submit_value'
-						  />";
+						  />";	
+						
+$save_form = elgg_view('forms/ubertags/save', array('search' => $vars['search']));
 
 
-// If we're doing a regular subtype search or an activity
-if ($type == 'subtype' || $type == 'activity') {
-	$save_link = "<a id='show_hide' href='#'>" . elgg_echo('ubertags:label:saveform') . "</a>";
+$save_link = "<a id='show_hide' href='#'>" . elgg_echo('ubertags:label:saveform') . "</a>";
 	
 $form_body = <<<EOT
 	<div id='ubertags-search-container'>
@@ -48,39 +48,13 @@ $form_body = <<<EOT
 		</div>
 	</div>
 	$save_link
+	<div id='ubertags-save-container' class='hidden'>
+		$save_form
+	</div>
 	<div id='ubertags-content-container'>
 	</div>
 EOT;
-	
-	
-} else if ($type == 'custom') { // Custom form
-	$search_label = elgg_echo('ubertags:label:search');
-	$custom_label = elgg_echo('ubertags:label:customtags');
-	$custom_input = elgg_view('input/text', array(
-		'internalname' => 'ubertags_custom',
-		'internalid' => 'ubertags-custom-input',
-		'class' => 'ubertags-text-input',
-	));
-	
-$form_body = <<<EOT
-	<div id='ubertags-search-container'>
-		<div>	
-			<label>$search_label</label><br />
-			$search_input <br /><br />
-			<label>$custom_label</label><br />
-			$custom_input <br /><br />
-			$search_submit<br />
-			<span id='ubertags-search-error'></span>
-		</div>
-	</div>
-	$save_link
-	<div id='ubertags-content-container'>
-	</div>
-EOT;
-	
-}
-	
-
+	 
 $script = <<<EOT
 	<script type='text/javascript'>	
 		$(document).ready(function() {	
@@ -122,16 +96,6 @@ $script = <<<EOT
 					e.preventDefault();
 					return false;
 				}
-			});
-			
-			// Typeahead for custom
-			var data = $.parseJSON('$tags_json');
-			$("#ubertags-custom-input").autocomplete(data, {
-											highlight: false,
-											multiple: true,
-											multipleSeparator: ", ",
-											scroll: true,
-											scrollHeight: 300
 			});
 			
 			// Typeahead

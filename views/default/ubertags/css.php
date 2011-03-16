@@ -52,6 +52,21 @@ span#ubertags-search-error {
 	margin: 10px;
 }
 
+.ubertags-groupby-div {
+	display: none;
+}
+
+.ubertags-groupby-description {
+	border: 1px solid #888;
+	background: #ddd;
+	padding: 15px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.ubertags-groupby-description ul {
+	
+}
 
 h3.ubertags-container-title {
 	background: #E4E4E4;

@@ -12,6 +12,7 @@
 
 $activities = ubertags_get_group_activities();
 $search = $vars['search'];
+$subtypes = $vars['subtypes'];
 
 $content .= "<div class='ubertag-big-title'>
 				$search
@@ -21,6 +22,7 @@ foreach($activities as $activity) {
 	$content .= elgg_view('ubertags/activity_tag_container', array(
 		'search' => $search, 
 		'activity' => $activity, 
+		'subtypes' => $subtypes,
 	));
 }
 

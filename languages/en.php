@@ -42,6 +42,7 @@ $english = array(
 	'ubertags:label:description' => 'Description',
 	'ubertags:label:tags' => 'Tags',
 	'ubertags:label:save' => 'Save',
+	'ubertags:label:refresh' => 'Refresh',
 	'ubertags:label:saveform' => 'Save this Ubertag',
 	'ubertags:label:showsave' => 'Show Save Form',
 	'ubertags:label:hidesave' => 'Hide Save Form',
@@ -56,6 +57,22 @@ $english = array(
 	'ubertags:label:groupbyactivity' => 'View by activity',
 	'ubertags:label:search' => 'Search tag',
 	'ubertags:label:customtags' => 'Group by tags',
+	'ubertags:label:activity' => 'Group by activity',
+	'ubertags:label:subtype' => 'Group by subtype',
+	'ubertags:label:grouping' => 'Grouping Settings',
+
+	// Descriptions
+	'ubertags:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',
+	'ubertags:description:activity' => 'Grouping by activity will group content matching your search term by these tags:<br /><br />
+	<ul>
+		<li>research</li>
+		<li>curriculum</li>
+		<li>collabco</li>
+		<li>tutorial</li>
+		<li>society</li>
+		<li>scribe</li>
+	</ul>',
+	'ubertags:description:custom' => 'Grouping by tag will group content matching your search term and by the tags you enter below.',
 
 	// Activities
 	'ubertags:activity:research' => 'Researcher',

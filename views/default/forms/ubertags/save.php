@@ -108,7 +108,6 @@ EOT;
 
 $subtypes = ubertags_get_enabled_subtypes();
 
-
 // Labels/Inputs
 $title_label = elgg_echo('ubertags:label:title');
 $title_input = elgg_view('input/text', array(
@@ -138,6 +137,13 @@ $access_input = elgg_view('input/access', array(
 	'value' => $access_id
 ));
 
+$ubertags_refresh_input = elgg_view('input/submit', array(
+	'internalid' => 'ubertags-refresh-input',
+	'internalname' => 'ubertags_refresh_input',
+	'value' => elgg_echo('ubertags:label:refresh')
+));
+
+
 $ubertags_save_input = elgg_view('input/submit', array(
 	'internalid' => 'ubertags_save_input',
 	'internalname' => 'ubertags_save_input',
@@ -152,13 +158,62 @@ $subtypes_input = '';
 foreach($subtypes as $subtype) {
 	$checked = '';
 	if (in_array($subtype, $enabled)) {
-		$checked = "checked";
+		$checked = "checked='checked'";
 	}
 	$subtypes_input .= "<div class='enabled-content-type'>";
 	$subtypes_input .= "<label>$subtype</label>";
-	$subtypes_input .= "<input type='checkbox' name='subtypes_enabled[]' value='$subtype' $checked />";
+	$subtypes_input .= "<input class='ubertags-subtype-input' type='checkbox' name='subtypes_enabled[]' value='$subtype' $checked />";
 	$subtypes_input .= "</div>";
 }
+
+// Build grouping content
+$grouping_label = elgg_echo('ubertags:label:grouping');
+
+$group_subtype = elgg_view('ubertags/groupby', array('description' => elgg_echo('ubertags:description:subtype')));
+$group_activity = elgg_view('ubertags/groupby', array('description' => elgg_echo('ubertags:description:activity')));
+$group_custom = elgg_view('ubertags/groupby', array(
+	'description' => elgg_echo('ubertags:description:custom'), 
+	'form' => elgg_view('forms/ubertags/custom_tags')
+));
+
+// Build up tab array with id's, labels, and content	
+$tabs = array(
+	array(
+		'id' => 'tab_subtype', 
+		'label' => elgg_echo('ubertags:label:subtype'), 
+		'content' => $group_subtype,
+		'value' => 'subtype'
+	),
+	array(
+		'id' => 'tab_activity', 
+		'label' => elgg_echo('ubertags:label:activity'), 
+		'content' => $group_activity,
+		'value' => 'activity',
+	),
+	array(
+		'id' => 'tab_custom', 
+		'label' => elgg_echo('ubertags:label:customtags'), 
+		'content' => $group_custom,
+		'value' => 'custom',
+	)
+);
+
+$selected_tab = 'tab_subtype';
+
+// Build tab nav and content
+for ($i = 0; $i < count($tabs); $i++) {
+	// Tab Nav
+	$selected = ($selected_tab == $tabs[$i]['id']) ? "selected" : ""; 
+	$tab_items .= "<li id='{$tabs[$i]['id']}' class='$selected edt_tab_nav'><a href=\"javascript:elgg.ubertags.ubertags_switch_groupby('{$tabs[$i]['id']}', '{$tabs[$i]['value']}')\">{$tabs[$i]['label']}</a></li>";
+	// Tab Content
+	$tab_content .= "<div class='ubertags-groupby-div' id='{$tabs[$i]['id']}'>{$tabs[$i]['content']}</div>";
+}
+
+$hidden_groupby_input = elgg_view('input/hidden', array(
+	'internalid' => 'ubertag-groupby',
+	'internalname' => 'ubertag_groupby',
+	'value' => 'subtype', // default
+));
 
 $form_body = <<<EOT
 	<div id='ubertags_save'>
@@ -175,6 +230,17 @@ $form_body = <<<EOT
 			<label>$subtypes_label</label>
 			$subtypes_input
 		</p>
+		<br />
+		<div style='clear: both; margin-top: 35px;'>
+			<label>$grouping_label</label>
+			<div class="elgg_horizontal_tabbed_nav margin_top">
+				<ul>
+					$tab_items
+				</ul>
+			</div>
+			<br />
+			$tab_content
+		</div>
 		<div style='clear: both;'></div>
 		<br />
 		<p>
@@ -187,11 +253,35 @@ $form_body = <<<EOT
 			$access_input
 		</p>
 		<p>
+			$ubertags_refresh_input
 			$ubertags_save_input
 			$hidden_search_input
+			$hidden_groupby_input
 			$ubertag_guid
 		</p>
 	</div>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// Need to force this on load, for some reason, sometimes, the browser will remember the wrong tab
+			$('#ubertag-groupby').val('subtype');
+						
+			$("div#$selected_tab").show();
+		});
+		
+		$('#ubertags-refresh-input').click(function() {
+			// Grab selected subtypes
+			var inputs = $('.ubertags-subtype-input:checked');
+			var selected_subtypes = {};
+			count = 0;
+			inputs.each(function() {
+				selected_subtypes[count] = $(this).val();
+				count++;
+			});
+		
+			elgg.ubertags.submit_search(elgg.ubertags.get_ubertag_search_value(), $('#ubertag-groupby').val(), selected_subtypes);
+			return false;
+		});
+	</script>
 EOT;
 
 
