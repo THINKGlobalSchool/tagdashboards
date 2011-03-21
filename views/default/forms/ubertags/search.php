@@ -66,6 +66,8 @@ $script = <<<EOT
 			var on = true;
 			$('#show_hide').click(
 				function() {
+					// Populate the title with the search by default
+					$('#ubertag_title').val(elgg.ubertags.get_ubertag_search_value);
 					if (on) {
 						on = false;
 						//$('#show_hide').html('$hide');
