@@ -18,6 +18,7 @@ if ($vars['entity']) {
 	$tags 			= $vars['entity']->tags;
 	$access_id 		= $vars['entity']->access_id;
 	$search			= $vars['entity']->search;
+	$custom_tags	= $vars['entity']->custom_tags;
 	
 	// Load sticky form values
 	if (elgg_is_sticky_form('ubertags_save_form')) {
@@ -67,6 +68,13 @@ if ($vars['entity']) {
 		'value' => $vars['entity']->getGUID()
 	));
 		
+	$groupby = $vars['entity']->groupby;
+	
+	// Possible that this isn't set, so default to subtype
+	if (!$groupby) {
+		$groupby = 'subtype';
+	}
+	
 	// Typeahead tag search
 	$script = <<<EOT
 		<script type='text/javascript'>
@@ -93,7 +101,19 @@ EOT;
 		'internalname' => 'ubertag_search',
 		'value' => '' // Will be updated by JS
 	));
+	
+	$ubertags_refresh_input = elgg_view('input/submit', array(
+		'internalid' => 'ubertags-refresh-input',
+		'internalname' => 'ubertags_refresh_input',
+		'value' => elgg_echo('ubertags:label:refresh')
+	));
+	
+	// Default grouping
+	$groupby = 'subtype';
 }
+
+// For the groupby input
+$selected_tab = "tab_$groupby";	
 
 $subtypes = ubertags_get_enabled_subtypes();
 
@@ -126,13 +146,6 @@ $access_input = elgg_view('input/access', array(
 	'value' => $access_id
 ));
 
-$ubertags_refresh_input = elgg_view('input/submit', array(
-	'internalid' => 'ubertags-refresh-input',
-	'internalname' => 'ubertags_refresh_input',
-	'value' => elgg_echo('ubertags:label:refresh')
-));
-
-
 $ubertags_save_input = elgg_view('input/submit', array(
 	'internalid' => 'ubertags_save_input',
 	'internalname' => 'ubertags_save_input',
@@ -162,7 +175,7 @@ $group_subtype = elgg_view('ubertags/groupby', array('description' => elgg_echo(
 $group_activity = elgg_view('ubertags/groupby', array('description' => elgg_echo('ubertags:description:activity')));
 $group_custom = elgg_view('ubertags/groupby', array(
 	'description' => elgg_echo('ubertags:description:custom'), 
-	'form' => elgg_view('forms/ubertags/custom_tags')
+	'form' => elgg_view('forms/ubertags/custom_tags', array('value' => $custom_tags))
 ));
 
 // Build up tab array with id's, labels, and content	
@@ -186,8 +199,6 @@ $tabs = array(
 		'value' => 'custom',
 	)
 );
-
-$selected_tab = 'tab_subtype';
 
 // Build tab nav and content
 for ($i = 0; $i < count($tabs); $i++) {
@@ -252,7 +263,7 @@ $form_body = <<<EOT
 	<script type="text/javascript">
 		$(document).ready(function() {
 			// Need to force this on load, for some reason, sometimes, the browser will remember the wrong tab
-			$('#ubertag-groupby').val('subtype');
+			$('#ubertag-groupby').val('$groupby');
 						
 			$("div#$selected_tab").show();
 		});

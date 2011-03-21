@@ -44,7 +44,31 @@ if (elgg_instanceof($vars['entity'], 'object', 'ubertag')) {
 		$content_link_label = elgg_echo('ubertags:label:contentview');
 		$timeline_link_label = elgg_echo('ubertags:label:timelineview');
 		
-		$ubertag_content = elgg_view('ubertags/subtypes', array('search' => $vars['entity']->search, 'subtypes' => unserialize($vars['entity']->subtypes)));
+		// Display ubertag depending on the ubertags groupby option
+		$subtypes = unserialize($vars['entity']->subtypes);
+		switch ($vars['entity']->groupby) {
+			case 'activity': 
+				$ubertag_content = elgg_view('ubertags/activity_tag', array(
+					'search' => $vars['entity']->search, 
+					'subtypes' => $subtypes
+				));
+			break;
+			case 'custom': 
+				$ubertag_content = elgg_view('ubertags/custom', array(
+					'search' => $vars['entity']->search, 
+					'custom' => $vars['entity']->custom_tags, 
+					'subtypes' => $subtypes
+				));
+			break;
+			default: 
+			case 'subtype': 
+				$ubertag_content = elgg_view('ubertags/subtypes', array(
+					'search' => $vars['entity']->search, 
+					'subtypes' => $subtypes
+				));
+			break;
+		}
+		
 		
 		$timeline_load = elgg_get_site_url() . "pg/ubertags/load_timeline/" . $vars['entity']->getGUID();
 		$timeline_data = elgg_get_site_url() . "pg/ubertags/timeline_feed/" . $vars['entity']->getGUID();

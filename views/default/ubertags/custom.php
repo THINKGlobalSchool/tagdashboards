@@ -14,10 +14,6 @@ $custom = $vars['custom'];
 $search = $vars['search'];
 $subtypes = $vars['subtypes'];
 
-$content .= "<div class='ubertag-big-title'>
-				$search
-			</div>";
-
 foreach($custom as $tag) {
 	$content .= elgg_view('ubertags/custom_container', array(
 		'search' => $search, 

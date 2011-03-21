@@ -18,11 +18,13 @@ $tags = string_to_tag_array(get_input('ubertag_tags'));
 $access = get_input('ubertag_access');
 $search = get_input('ubertag_search');
 $subtypes = get_input('subtypes_enabled');
+$groupby = get_input('ubertag_groupby');	// How are we grouping the content
+$custom_tags = string_to_tag_array(get_input('ubertags_custom')); // Custom fields
 
 // Sticky form
 elgg_make_sticky_form('ubertags_save_form');
 if (!$title) {
-	register_error(elgg_echo('ubertags:error:titlerequired'));
+	register_error(elgg_echo('ubertags:error:requiredfields'));
 	forward(elgg_get_site_url() . 'pg/ubertags/search#' . $search);
 }
 
@@ -34,6 +36,8 @@ $ubertag->tags = $tags;
 $ubertag->access_id = $access;
 $ubertag->search = $search;
 $ubertag->subtypes = serialize($subtypes);
+$ubertag->groupby = $groupby;
+$ubertag->custom_tags = $custom_tags;
 
 // If error saving, register error and return
 if (!$ubertag->save()) {

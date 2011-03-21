@@ -15,7 +15,7 @@ elgg.provide('elgg.ubertags.timeline');
 
 // Init function
 elgg.ubertags.init = function () {
-	console.log('Ubertags Loaded');
+	// Nothing to do here at the moment
 }
 
 // Validate and submit and ubertag search
@@ -33,8 +33,6 @@ elgg.ubertags.submit_search = function (value, type, subtypes) {
 			if (tag_string.substr(len-1,1) == ",") {
 				tag_string = tag_string.substring(0,len-1);
 			}
-			
-			console.log(tag_string);
 			
 			// Split into an array
 			var tag_array = tag_string.split(',');
@@ -178,7 +176,6 @@ elgg.ubertags.timeline.timeline_create_popup_with_id = function (id, width) {
 						height: 'auto',
 						modal: true,
 						open: function(event, ui) { 
-							console.log('opening');
 							$(".ui-dialog-titlebar-close").hide(); 	
 						},
 						buttons: {

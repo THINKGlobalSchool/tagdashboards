@@ -19,6 +19,8 @@ $description = get_input('ubertag_description');
 $tags = string_to_tag_array(get_input('ubertag_tags'));
 $access = get_input('ubertag_access');
 $subtypes = get_input('subtypes_enabled');
+$groupby = get_input('ubertag_groupby');	// How are we grouping the content
+$custom_tags = string_to_tag_array(get_input('ubertags_custom')); // Custom fields
 
 // Sticky form
 elgg_make_sticky_form('ubertags_save_form');
@@ -35,6 +37,8 @@ $ubertag->description = $description;
 $ubertag->tags = $tags;
 $ubertag->access_id = $access;
 $ubertag->subtypes = serialize($subtypes);
+$ubertag->groupby = $groupby;
+$ubertag->custom_tags = $custom_tags;
 
 // If error saving, register error and return
 if (!$ubertag->save()) {
