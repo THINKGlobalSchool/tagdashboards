@@ -14,7 +14,7 @@ $english = array(
 	// Generic
 	'ubertags' => 'Ubertags',
 	'ubertag' => 'Ubertags',
-	'ubertag:new' => 'Create an Ubertag',
+	'ubertag:new' => 'Start New Ubertag',
 	'item:object:ubertag' => 'Ubertags',
 	
 	// Page titles 
@@ -43,7 +43,7 @@ $english = array(
 	'ubertags:label:tags' => 'Tags',
 	'ubertags:label:save' => 'Save',
 	'ubertags:label:refresh' => 'Refresh',
-	'ubertags:label:saveform' => 'Save this Ubertag',
+	'ubertags:label:saveform' => 'Edit Options',
 	'ubertags:label:showsave' => 'Show Save Form',
 	'ubertags:label:hidesave' => 'Hide Save Form',
 	'ubertags:label:grouptags' => 'Group Ubertags', 
@@ -57,21 +57,22 @@ $english = array(
 	'ubertags:label:groupbyactivity' => 'View by activity',
 	'ubertags:label:search' => 'Search tag',
 	'ubertags:label:customtags' => 'Group by tags',
-	'ubertags:label:activity' => 'Group by activity',
+	'ubertags:label:activity' => 'Group by role',
 	'ubertags:label:subtype' => 'Group by subtype',
 	'ubertags:label:grouping' => 'Grouping Settings',
 
 	// Descriptions
 	'ubertags:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',
-	'ubertags:description:activity' => 'Grouping by activity will group content matching your search term by these tags:<br /><br />
+	'ubertags:description:activity' => 'Grouping by role will group content matching your search term by these tags based on Alan November\'s 6 jobs for students::<br /><br />
 	<ul>
-		<li>research</li>
-		<li>curriculum</li>
-		<li>collabco</li>
-		<li>tutorial</li>
-		<li>society</li>
-		<li>scribe</li>
-	</ul>',
+		<li>research - Researchers</li>
+		<li>curriculum - Curriculum Reviewers</li>
+		<li>collabco - Collaboration Coordinators</li>
+		<li>tutorial - Tutorial Designers</li>
+		<li>society - Contributing to Society</li>
+		<li>scribe - Official Scribes</li>
+	</ul><br />
+	For more information on the 6 jobs for students, see the article on <a href="http://novemberlearning.com/wp-content/uploads/2009/02/students-as-contributors.pdf">novemberlearning.com</a>',
 	'ubertags:description:custom' => 'Grouping by tag will group content matching your search term and by the tags you enter below.',
 
 	// Activities

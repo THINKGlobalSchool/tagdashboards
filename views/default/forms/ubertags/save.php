@@ -75,6 +75,9 @@ if ($vars['entity']) {
 		$groupby = 'subtype';
 	}
 	
+	// Show the form automatically
+	$display_form = 'block';
+	
 	// Typeahead tag search
 	$script = <<<EOT
 		<script type='text/javascript'>
@@ -102,18 +105,19 @@ EOT;
 		'value' => '' // Will be updated by JS
 	));
 	
+	// Default grouping
+	$groupby = 'subtype';
+	$display_form = 'none';
+	
 	$ubertags_refresh_input = elgg_view('input/submit', array(
 		'internalid' => 'ubertags-refresh-input',
 		'internalname' => 'ubertags_refresh_input',
 		'value' => elgg_echo('ubertags:label:refresh')
 	));
-	
-	// Default grouping
-	$groupby = 'subtype';
 }
 
 // For the groupby input
-$selected_tab = "tab_$groupby";	
+$selected_tab = "tab-$groupby";	
 
 $subtypes = ubertags_get_enabled_subtypes();
 
@@ -153,7 +157,6 @@ $ubertags_save_input = elgg_view('input/submit', array(
 ));
 
 
-
 $subtypes_label = elgg_echo('ubertags:label:contenttypes');
 $subtypes_input = '';
 
@@ -181,19 +184,19 @@ $group_custom = elgg_view('ubertags/groupby', array(
 // Build up tab array with id's, labels, and content	
 $tabs = array(
 	array(
-		'id' => 'tab_subtype', 
+		'id' => 'tab-subtype', 
 		'label' => elgg_echo('ubertags:label:subtype'), 
 		'content' => $group_subtype,
 		'value' => 'subtype'
 	),
 	array(
-		'id' => 'tab_activity', 
+		'id' => 'tab-activity', 
 		'label' => elgg_echo('ubertags:label:activity'), 
 		'content' => $group_activity,
 		'value' => 'activity',
 	),
 	array(
-		'id' => 'tab_custom', 
+		'id' => 'tab-custom', 
 		'label' => elgg_echo('ubertags:label:customtags'), 
 		'content' => $group_custom,
 		'value' => 'custom',
@@ -203,8 +206,8 @@ $tabs = array(
 // Build tab nav and content
 for ($i = 0; $i < count($tabs); $i++) {
 	// Tab Nav
-	$selected = ($selected_tab == $tabs[$i]['id']) ? "selected" : ""; 
-	$tab_items .= "<li id='{$tabs[$i]['id']}' class='$selected edt_tab_nav'><a href=\"javascript:elgg.ubertags.ubertags_switch_groupby('{$tabs[$i]['id']}', '{$tabs[$i]['value']}')\">{$tabs[$i]['label']}</a></li>";
+	$selected = ($selected_tab == $tabs[$i]['id']) ? "checked='checked'" : ""; 
+	$tab_items .= "<div onclick=\"javascript:elgg.ubertags.ubertags_switch_groupby('{$tabs[$i]['id']}', '{$tabs[$i]['value']}')\" class='enabled-content-type'><label style='cursor: pointer;'>{$tabs[$i]['label']}</label><input id='{$tabs[$i]['id']}' class='ubertags-groupby-radio' type='radio' $selected /></div>";
 	// Tab Content
 	$tab_content .= "<div class='ubertags-groupby-div' id='{$tabs[$i]['id']}'>{$tabs[$i]['content']}</div>";
 }
@@ -216,7 +219,7 @@ $hidden_groupby_input = elgg_view('input/hidden', array(
 ));
 
 $form_body = <<<EOT
-	<div id='ubertags_save'>
+	<div id='ubertags-save-container' style='display: $display_form;'>
 		$search_content
 		<p>
 			<label>$title_label</label>
@@ -227,20 +230,21 @@ $form_body = <<<EOT
 			$description_input
 		</p>
 		<p>
-			<label>$subtypes_label</label>
-			$subtypes_input
+			<a id='ubertags-subtypes-toggler' href='#'>$subtypes_label &#9660;</a><br />
+			<div id='ubertags-subtypes-input' style='display: none; clear: both;'>
+				$subtypes_input
+				<div style='clear: both;'></div>
+			</div>
 		</p>
 		<br />
-		<div style='clear: both; margin-top: 35px;'>
-			<label>$grouping_label</label>
-			<div class="elgg_horizontal_tabbed_nav margin_top">
-				<ul>
-					$tab_items
-				</ul>
+		<p>
+			<a id='ubertags-groupby-toggler' href='#'>$grouping_label &#9660;</a><br />
+			<div id='ubertags-groupby-input' style='display: none; clear: both;'>
+				$tab_items
+				<br /><br />
+				$tab_content
 			</div>
-			<br />
-			$tab_content
-		</div>
+		</p>
 		<div style='clear: both;'></div>
 		<br />
 		<p>
@@ -252,15 +256,20 @@ $form_body = <<<EOT
 			<label>$access_label</label>
 			$access_input
 		</p>
-		<p>
+	</div>
+	<p>
+		<div id="ubertags-save-input-container">
 			$ubertags_refresh_input
 			$ubertags_save_input
-			$hidden_search_input
-			$hidden_groupby_input
-			$ubertag_guid
-		</p>
-	</div>
+		</div>
+		$hidden_search_input
+		$hidden_groupby_input
+		$ubertag_guid
+	</p>
 	<script type="text/javascript">
+		var subtypes_on = false;
+		var groupby_on = false;
+	
 		$(document).ready(function() {
 			// Need to force this on load, for some reason, sometimes, the browser will remember the wrong tab
 			$('#ubertag-groupby').val('$groupby');
@@ -272,6 +281,30 @@ $form_body = <<<EOT
 			$('input#ubertag_search').val(elgg.ubertags.get_ubertag_search_value());
 		});
 		
+		$('#ubertags-subtypes-toggler').click(function () {
+			if (subtypes_on) {
+				subtypes_on = false;
+				$('#ubertags-subtypes-toggler').html("$subtypes_label" + " &#9660;");
+			} else {
+				subtypes_on = true;
+				$('#ubertags-subtypes-toggler').html("$subtypes_label" + " &#9650;");
+			}
+			$('#ubertags-subtypes-input').toggle('slow');
+			return false;
+		});
+		
+		$('#ubertags-groupby-toggler').click(function () {
+			if (groupby_on) {
+				groupby_on = false;
+				$('#ubertags-groupby-toggler').html("$grouping_label" + " &#9660;");
+			} else {
+				groupby_on = true;
+				$('#ubertags-groupby-toggler').html("$grouping_label" + " &#9650;");
+			}
+			$('#ubertags-groupby-input').toggle('slow');
+			return false;
+		});
+		
 		$('#ubertags-refresh-input').click(function() {
 			// Grab selected subtypes
 			var inputs = $('.ubertags-subtype-input:checked');
@@ -281,8 +314,14 @@ $form_body = <<<EOT
 				selected_subtypes[count] = $(this).val();
 				count++;
 			});
+			
+			var search = $("#ubertags-search").val();
+			
+			if (!search) {
+				search = elgg.ubertags.get_ubertag_search_value();
+			}
 		
-			elgg.ubertags.submit_search(elgg.ubertags.get_ubertag_search_value(), $('#ubertag-groupby').val(), selected_subtypes);
+			elgg.ubertags.submit_search(search, $('#ubertag-groupby').val(), selected_subtypes);
 			return false;
 		});
 	</script>

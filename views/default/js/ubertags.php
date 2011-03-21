@@ -51,11 +51,13 @@ elgg.ubertags.submit_search = function (value, type, subtypes) {
 		$('#ubertags-content-container').hide().load(url, { 'custom[]': tag_array, 'subtypes' : subtypes }, function() {
 			$('#ubertags-content-container').fadeIn('fast');
 		});
-		$('a#show_hide').show();
+		$('a#ubertags-options-toggle').show();
+		$('#ubertags-save-input-container').show();
 		$('span#ubertags-search-error').html('');
 		window.location.hash = encodeURI(value); // Hash magic for permalinks
 	} else {
-		$('a#show_hide').hide();
+		$('a#ubertags-options-toggle').hide();
+		$('#ubertags-save-input-container').hide();
 		$('span#ubertags-search-error').html('Please enter text to search');
 		$('#ubertags-content-container').html('');
 	}
@@ -152,13 +154,17 @@ elgg.ubertags.fade_div = function(id) {
 }
 
 elgg.ubertags.ubertags_switch_groupby = function(tab_id, groupby_val) {
-	var nav_name = "li#" + tab_id;
+	var nav_name = "input#" + tab_id;
 	var tab_name = "div#" + tab_id;
+	
+	console.log(nav_name);
+	console.log(tab_name);
 
 	$(".ubertags-groupby-div").hide();
 	$(tab_name).show();
-	$(".edt_tab_nav").removeClass("selected");
-	$(nav_name).addClass("selected");
+	$(".ubertags-groupby-radio").attr('checked', false);
+	
+	$(nav_name).attr('checked', true);
 	$("#ubertag-groupby").val(groupby_val);
 }
 

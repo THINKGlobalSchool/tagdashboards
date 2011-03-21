@@ -119,21 +119,33 @@ div.ubertag-comment-block {
 	color: #666;
 }
 
-div.enabled-content-type {
+.enabled-content-type {
 	float: left;
 	margin-right: 12px;
 	padding: 5px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	background: #cccccc;
+	cursor: pointer;
 }
 
-div.enabled-content-type label{
+.enabled-content-type label{
 	margin-right: 4px;
+	font-weight: bold;
 }
 
 a.switch-ubertags {
 	cursor: pointer;
+}
+
+a#ubertags-groupby-toggler {
+	font-weight: bold;	
+	font-size: 110%;
+}
+
+a#ubertags-subtypes-toggler {
+	font-weight: bold;
+	font-size: 110%;
 }
 
 /** Loading box **/

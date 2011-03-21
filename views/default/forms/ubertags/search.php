@@ -37,8 +37,9 @@ $search_submit = "<input type='submit'
 						
 $save_form = elgg_view('forms/ubertags/save', array('search' => $vars['search']));
 
+$save_text = elgg_echo('ubertags:label:saveform');
 
-$save_link = "<a id='show_hide' href='#'>" . elgg_echo('ubertags:label:saveform') . "</a>";
+$save_link = "<a id='ubertags-options-toggle' href='#'>" . $save_text . " &#9660;</a>";
 	
 $form_body = <<<EOT
 	<div id='ubertags-search-container'>
@@ -48,33 +49,33 @@ $form_body = <<<EOT
 		</div>
 	</div>
 	$save_link
-	<div id='ubertags-save-container' class='hidden'>
-		$save_form
-	</div>
+	$save_form
 	<div id='ubertags-content-container'>
 	</div>
 EOT;
 	 
 $script = <<<EOT
 	<script type='text/javascript'>	
+		if (!window.location.hash) {
+			$('a#ubertags-options-toggle').hide();
+			$('#ubertags-save-input-container').hide();
+		}
 		$(document).ready(function() {	
 			
-			if (!window.location.hash) {
-				$('a#show_hide').hide();
-			}
 			$('#ubertags-save-container').hide();
 			var on = true;
-			$('#show_hide').click(
+			$('#ubertags-options-toggle').click(
 				function() {
 					// Populate the title with the search by default
 					$('#ubertag_title').val(elgg.ubertags.get_ubertag_search_value);
 					if (on) {
 						on = false;
-						//$('#show_hide').html('$hide');
+						$('#ubertags-options-toggle').html("$save_text" + " &#9650;");
 					} else {
 						on = true;
-						//$('#show_hide').html('$show');
+						$('#ubertags-options-toggle').html("$save_text" + " &#9660;");
 					}
+					console.log(on);
 					$('#ubertags-save-container').toggle('slow');
 					return false;
 				}
