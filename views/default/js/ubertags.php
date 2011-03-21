@@ -25,6 +25,17 @@ elgg.ubertags.submit_search = function (value, type, subtypes) {
 			// Grab the custom tags string
 			var tag_string = elgg.ubertags.get_ubertag_custom_value();
 			
+			// Trim whitespace
+			tag_string = $.trim(tag_string);
+			
+			// Trim any trailing commas, sometimes these get in there
+			var len = tag_string.length;
+			if (tag_string.substr(len-1,1) == ",") {
+				tag_string = tag_string.substring(0,len-1);
+			}
+			
+			console.log(tag_string);
+			
 			// Split into an array
 			var tag_array = tag_string.split(',');
 			
