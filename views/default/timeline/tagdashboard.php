@@ -1,6 +1,6 @@
 <?php
 /**
- * Timeline view for blogs
+ * Timeline view for Tag Dashboards
  *
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -15,5 +15,4 @@ $likes_count = elgg_count_likes($vars['entity']);
 
 echo "<div class='entity_subtext timeline-entity-subtext'>
 		Likes: $likes_count $views_string Comments: $comments_count
-	</div>". elgg_get_excerpt(elgg_view('output/longtext', array('value' => $vars['entity']->description))) .
-	 "<br /><a href='" . $vars['entity']->getURL() . "'><i>" . elgg_echo('tagdashboards:label:viewfull') . "</i></a>";
+	</div>". elgg_get_excerpt($vars['entity']->description);

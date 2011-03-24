@@ -1,0 +1,25 @@
+<?php
+/**
+ * Tag Dashboards group by user defined, based on search tag container
+ * 
+ * @package Tag Dashboards
+ * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
+ * @author Jeff Tilson
+ * @copyright THINK Global School 2010
+ * @link http://www.thinkglobalschool.com/
+ * 
+ */
+
+$custom = $vars['custom'];
+$search = $vars['search'];
+$subtypes = $vars['subtypes'];
+
+foreach($custom as $tag) {
+	$content .= elgg_view('tagdashboards/custom_container', array(
+		'search' => $search, 
+		'group' => $tag, 
+		'subtypes' => $subtypes,
+	));
+}
+
+echo $content . "<div style='clear: both;'></div>";

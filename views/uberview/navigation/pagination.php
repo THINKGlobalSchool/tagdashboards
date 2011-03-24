@@ -25,7 +25,7 @@ $uid = $vars['uid'];
 $totalpages = ceil($count / $limit);
 $currentpage = ceil($offset / $limit) + 1;
 
-// Ubertags customizations
+// Tag dashboard customizations
 $page_js = get_input('page_js'); // Custom pager JS
 
 //only display if there is content to paginate through or if we already have an offset
@@ -46,7 +46,7 @@ if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 		$prevurl = elgg_http_add_url_query_elements($baseurl, array($word => $prevoffset));
 
 		$prevjs = sprintf($page_js, $prevoffset);
-		echo "<a onclick='javascript:$prevjs elgg.ubertags.fade_div(\"$uid\");' class='pagination_previous'>&laquo; ". elgg_echo("previous") ."</a> ";
+		echo "<a onclick='javascript:$prevjs elgg.tagdashboards.fade_div(\"$uid\");' class='pagination_previous'>&laquo; ". elgg_echo("previous") ."</a> ";
 	}
 
 	if ($offset > 0 || $offset < ($count - $limit)) {
@@ -88,7 +88,7 @@ if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 			
 			if ($curoffset != $offset) {
 				$curjs = sprintf($page_js, $curoffset);
-				echo " <a onclick='javascript:$curjs elgg.ubertags.fade_div(\"$uid\");' class='pagination_number'>{$i}</a> ";
+				echo " <a onclick='javascript:$curjs elgg.tagdashboards.fade_div(\"$uid\");' class='pagination_number'>{$i}</a> ";
 			} else {
 				echo "<span class='pagination_currentpage'>{$i}</span>";
 			}
@@ -107,7 +107,7 @@ if (($count > $limit || $offset > 0) && elgg_get_context() != 'widget') {
 		$nexturl = elgg_http_add_url_query_elements($baseurl, array($word => $nextoffset));
 
 		$nextjs = sprintf($page_js, $nextoffset);
-		echo " <a onclick='$nextjs elgg.ubertags.fade_div(\"$uid\");' class='pagination_next'>" . elgg_echo("next") . " &raquo;</a>";
+		echo " <a onclick='$nextjs elgg.tagdashboards.fade_div(\"$uid\");' class='pagination_next'>" . elgg_echo("next") . " &raquo;</a>";
 
 	}
 

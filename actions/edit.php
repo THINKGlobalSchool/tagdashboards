@@ -1,8 +1,8 @@
 <?php
 /**
- * Ubertags edit action
+ * Tag Dashboards edit action
  * 
- * @package Ubertags
+ * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
  * @copyright THINK Global School 2010
@@ -12,43 +12,43 @@
 gatekeeper();
 
 // Get inputs
-$ubertag_guid = get_input('ubertag_guid');
-$search = get_input('ubertag_search');
-$title = get_input('ubertag_title');
-$description = get_input('ubertag_description');
-$tags = string_to_tag_array(get_input('ubertag_tags'));
-$access = get_input('ubertag_access');
+$tagdashboard_guid = get_input('tagdashboard_guid');
+$search = get_input('tagdashboard_search');
+$title = get_input('tagdashboard_title');
+$description = get_input('tagdashboard_description');
+$tags = string_to_tag_array(get_input('tagdashboard_tags'));
+$access = get_input('tagdashboard_access');
 $subtypes = get_input('subtypes_enabled');
-$groupby = get_input('ubertag_groupby');	// How are we grouping the content
-$custom_tags = string_to_tag_array(get_input('ubertags_custom')); // Custom fields
+$groupby = get_input('tagdashboard_groupby');	// How are we grouping the content
+$custom_tags = string_to_tag_array(get_input('tagdashboards_custom')); // Custom fields
 
 // Sticky form
-elgg_make_sticky_form('ubertags_save_form');
+elgg_make_sticky_form('tagdashboards_save_form');
 if (!$title || !$search) {
-	register_error(elgg_echo('ubertags:error:requiredfields'));
-	forward(elgg_get_site_url() . 'pg/ubertags/edit/' . $ubertag_guid);
+	register_error(elgg_echo('tagdashboards:error:requiredfields'));
+	forward(elgg_get_site_url() . 'pg/tagdashboards/edit/' . $tagdashboard_guid);
 }
 
 
-$ubertag = get_entity($ubertag_guid);
-$ubertag->search = $search;
-$ubertag->title = $title;
-$ubertag->description = $description;
-$ubertag->tags = $tags;
-$ubertag->access_id = $access;
-$ubertag->subtypes = serialize($subtypes);
-$ubertag->groupby = $groupby;
-$ubertag->custom_tags = $custom_tags;
+$tagdashboard = get_entity($tagdashboard_guid);
+$tagdashboard->search = $search;
+$tagdashboard->title = $title;
+$tagdashboard->description = $description;
+$tagdashboard->tags = $tags;
+$tagdashboard->access_id = $access;
+$tagdashboard->subtypes = serialize($subtypes);
+$tagdashboard->groupby = $groupby;
+$tagdashboard->custom_tags = $custom_tags;
 
 // If error saving, register error and return
-if (!$ubertag->save()) {
-	register_error(elgg_echo('ubertags:error:save'));
+if (!$tagdashboard->save()) {
+	register_error(elgg_echo('tagdashboards:error:save'));
 	forward(REFERER);
 }
 
 // Clear sticky form
-elgg_clear_sticky_form('ubertags_save_form');
+elgg_clear_sticky_form('tagdashboards_save_form');
 
 // Forward on
-system_message(elgg_echo('ubertags:success:save'));
-forward('pg/ubertags/view/' . $ubertag_guid);
+system_message(elgg_echo('tagdashboards:success:save'));
+forward('pg/tagdashboards/view/' . $tagdashboard_guid);

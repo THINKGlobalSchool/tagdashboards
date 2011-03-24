@@ -1,8 +1,8 @@
 <?php
 /**
- * Ubertags delete action
+ * Tag Dashboards delete action
  *
- * @package Ubertags
+ * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
  * @copyright THINK Global School 2010
@@ -10,18 +10,18 @@
  */
 
 $guid = get_input('guid', null);
-$ubertag = get_entity($guid);
+$tagdashboard = get_entity($guid);
 
-if (elgg_instanceof($ubertag, 'object', 'ubertag') && $ubertag->canEdit()) {
-	$container = get_entity($ubertag->container_guid);
-	if ($ubertag->delete()) {
-		system_message(elgg_echo('ubertags:success:delete'));
-		forward("pg/ubertags/{$container->username}");
+if (elgg_instanceof($tagdashboard, 'object', 'tagdashboard') && $tagdashboard->canEdit()) {
+	$container = get_entity($tagdashboard->container_guid);
+	if ($tagdashboard->delete()) {
+		system_message(elgg_echo('tagdashboards:success:delete'));
+		forward("pg/tagdashboards/{$container->username}");
 	} else {
-		register_error(elgg_echo('ubertags:error:delete'));
+		register_error(elgg_echo('tagdashboards:error:delete'));
 	}
 } else {
-	register_error(elgg_echo('ubertags:error:notfound'));
+	register_error(elgg_echo('tagdashboards:error:notfound'));
 }
 
 forward(REFERER);
