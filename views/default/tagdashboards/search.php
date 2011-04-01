@@ -14,11 +14,11 @@ switch ($vars['type']) {
 }
 
 
-echo <<<EOT
+echo <<<HTML
 	<div style='clear: both;'></div>
 	<div id='tagdashboards-content'>
 		$content
 	</div>
-EOT;
+HTML;
 
 ?>

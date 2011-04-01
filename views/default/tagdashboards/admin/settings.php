@@ -46,12 +46,12 @@ $subtypes_settings_submit = elgg_view('input/submit', array(
 
 $subtypes_action_url = elgg_add_action_tokens_to_url(elgg_get_site_url() . 'action/tagdashboards/admin_enable_subtypes');
 
-echo <<<EOT
+echo <<<HTML
 	<div class="tagdashboards_settings">
 		<form action="$subtypes_action_url" method="POST" name="subtypes_enable">
 		$subtypes_table
 		$subtypes_settings_submit
 		</form>
 	</div>
-EOT;
+HTML;
 ?>

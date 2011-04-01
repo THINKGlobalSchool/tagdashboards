@@ -24,6 +24,7 @@ $english = array(
 	'tagdashboards:title:groupbyactivity' => 'Content grouped by student activity',
 	'tagdashboards:title:activitytag' => 'Searched tag, grouped by activity',
 	'tagdashboards:title:custom' => 'Searched tag, grouped by custom',
+	'tagdashboards:title:tagportfolio' => 'Tag Portfolio',
 	
 	// Menu items
 	'tagdashboards:menu:alltagdashboards' => 'All Tag Dashboards',
@@ -75,6 +76,8 @@ $english = array(
 	</ul><br />
 	For more information on the 6 jobs for students, see the article on <a href="http://novemberlearning.com/wp-content/uploads/2009/02/students-as-contributors.pdf">novemberlearning.com</a>',
 	'tagdashboards:description:custom' => 'Grouping by tag will group content matching your search term and by the tags you enter below.',
+
+	'tagdashboards:description:tagportfolio' => 'Your tag portfolio contains all of your content organized by your chosen tags.',
 
 	// Activities
 	'tagdashboards:activity:research' => 'Researcher',

@@ -26,6 +26,27 @@ $page_js = "elgg.tagdashboards.load_tagdashboards_custom_content(\"{$vars['group
 
 set_input('page_js', $page_js);
 
+$search = $vars['search'];
+
+$search_pairs = array();
+
+$search_pairs[] = array(	
+	'name' => 'tags', 
+	'value' => rawurldecode($vars['group']), 
+	'operand' => '=',
+	'case_sensitive' => FALSE
+);
+
+// If we were supplied a search, use it
+if ($search) {
+	$search_pairs[] = array(	
+		'name' => 'tags', 
+		'value' => rawurldecode($search), 
+		'operand' => '=',
+		'case_sensitive' => FALSE
+	);
+}
+
 // Params
 $params = array(
 	'types' => array('object'),
@@ -38,17 +59,7 @@ $params = array(
 	'listtype' => 'list',
 	'pagination' => TRUE,
 	// Search where tag == activity AND tag == search
-	'metadata_name_value_pairs' => array(array(	
-											'name' => 'tags', 
-											'value' => rawurldecode($vars['group']), 
-											'operand' => '=',
-											'case_sensitive' => FALSE),
-										array(	
-											'name' => 'tags', 
-											'value' => rawurldecode($vars['search']), 
-											'operand' => '=',
-											'case_sensitive' => FALSE)
-										)
+	'metadata_name_value_pairs' => $search_pairs,
 );
 
 $entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');

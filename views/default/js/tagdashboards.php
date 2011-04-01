@@ -19,34 +19,42 @@ elgg.tagdashboards.init = function () {
 }
 
 // Validate and submit and tagdashboard search
-elgg.tagdashboards.submit_search = function (value, type, subtypes) {
-	if (value) {
+elgg.tagdashboards.submit_search = function (value, type, subtypes, any_value) {
+	// Search any value?
+	if (!any_value) {
+		any_value = false;
+	}
+
+	// If we're supplied a search value or we're not looking for a value
+	if (value || any_value) {
+		// If custom, validate and clean custom values
 		if (type == 'custom') {
 			// Grab the custom tags string
 			var tag_string = elgg.tagdashboards.get_tagdashboard_custom_value();
-			
+
 			// Trim whitespace
 			tag_string = $.trim(tag_string);
-			
+
 			// Trim any trailing commas, sometimes these get in there
 			var len = tag_string.length;
 			if (tag_string.substr(len-1,1) == ",") {
 				tag_string = tag_string.substring(0,len-1);
 			}
-			
+
 			// Split into an array
 			var tag_array = tag_string.split(',');
-			
+
 			// Nead little jquery hack to remove empty array elements
 			tag_array = $.grep(tag_array,function(n,i){
 			    return(n);
 			});
-			
+
 			// Handle any weird whitespace issues in supplied tags (trim 'em)
 			$.each(tag_array, function(i, v) {
 				tag_array[i] = $.trim(v);
 			});
 		}
+				
 		var url = elgg.normalize_url('pg/tagdashboards/searchtagdashboard?type=' + type + '&search=' + value);
 		$('#tagdashboards-content-container').hide().load(url, { 'custom[]': tag_array, 'subtypes' : subtypes }, function() {
 			$('#tagdashboards-content-container').fadeIn('fast');
@@ -55,7 +63,7 @@ elgg.tagdashboards.submit_search = function (value, type, subtypes) {
 		$('#tagdashboards-save-input-container').show();
 		$('span#tagdashboards-search-error').html('');
 		window.location.hash = encodeURI(value); // Hash magic for permalinks
-	} else {
+	} else { // No value supplied, show error
 		$('a#tagdashboards-options-toggle').hide();
 		$('#tagdashboards-save-input-container').hide();
 		$('span#tagdashboards-search-error').html('Please enter text to search');

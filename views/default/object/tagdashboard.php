@@ -78,7 +78,7 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 			$latest_date = date('r', strtotime(strftime("%a %b %d %Y", $last_entity->time_created))); 
 		}
 		
-		$content = <<<EOT
+		$content = <<<HTML
 			<div class='tagdashboard-big-title'>
 				$title
 			</div>
@@ -98,9 +98,9 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 				$tagdashboard_content
 			</div>
 			<a name='annotations'></a><hr style='border: 1px solid #bbb' />
-EOT;
+HTML;
 
-		$script = <<<EOT
+		$script = <<<HTML
 			<script type='text/javascript'>
 				var is_tl_loaded = false;
 				var end_url = "$timeline_load";
@@ -149,7 +149,7 @@ EOT;
 					$("#tagdashboards-content-container").hide();
 				}
 			</script>
-EOT;
+HTML;
 
 
 		echo $content . $script;
@@ -209,7 +209,7 @@ EOT;
 			$note = "<div class='note hidden'>". $description . "</div>";
 		}
 		
-		$info = <<<EOT
+		$info = <<<HTML
 			<div class='entity_metadata'>
 				<span>$object_acl</span>
 				$edit
@@ -224,7 +224,7 @@ EOT;
 			</p>
 			$tags
 			$note
-EOT;
+HTML;
 
 		//display
 		echo elgg_view_listing($icon, $info);

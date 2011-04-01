@@ -79,7 +79,7 @@ if ($vars['entity']) {
 	$display_form = 'block';
 	
 	// Typeahead tag search
-	$script = <<<EOT
+	$script = <<<HTML
 		<script type='text/javascript'>
 			// Typeahead
 			var data = $.parseJSON('$tags_json');
@@ -91,7 +91,7 @@ if ($vars['entity']) {
 											scrollHeight: 300
 			});
 		</script>
-EOT;
+HTML;
 
 } else { // Creating a new tagdashboard
 	$action = 'action/tagdashboards/save';
@@ -218,7 +218,7 @@ $hidden_groupby_input = elgg_view('input/hidden', array(
 	'value' => 'subtype', // default
 ));
 
-$form_body = <<<EOT
+$form_body = <<<HTML
 	<div id='tagdashboards-save-container' style='display: $display_form;'>
 		$search_content
 		<p>
@@ -325,7 +325,7 @@ $form_body = <<<EOT
 			return false;
 		});
 	</script>
-EOT;
+HTML;
 
 
 echo elgg_view('input/form', array(

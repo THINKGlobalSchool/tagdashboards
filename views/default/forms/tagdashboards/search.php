@@ -13,7 +13,7 @@
 $type = $vars['type'];
 
 // Get site tags
-$site_tags = elgg_get_tags(array(threshold=>0, limit=>100));
+$site_tags = elgg_get_tags(array(threshold => 0, limit => 100));
 $tags_array = array();
 foreach ($site_tags as $site_tag) {
 	$tags_array[] = $site_tag->tag;
@@ -41,7 +41,7 @@ $save_text = elgg_echo('tagdashboards:label:saveform');
 
 $save_link = "<a id='tagdashboards-options-toggle' href='#'>" . $save_text . " &#9660;</a>";
 	
-$form_body = <<<EOT
+$form_body = <<<HTML
 	<div id='tagdashboards-search-container'>
 		<div>	
 			$search_input $search_submit<br />
@@ -52,9 +52,9 @@ $form_body = <<<EOT
 	$save_form
 	<div id='tagdashboards-content-container'>
 	</div>
-EOT;
+HTML;
 	 
-$script = <<<EOT
+$script = <<<HTML
 	<script type='text/javascript'>	
 		if (!window.location.hash) {
 			$('a#tagdashboards-options-toggle').hide();
@@ -115,6 +115,6 @@ $script = <<<EOT
 		});
 	</script>
 
-EOT;
+HTML;
 
 echo $form_body . $script;
