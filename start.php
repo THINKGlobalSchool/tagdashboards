@@ -28,6 +28,9 @@ function tagdashboards_init() {
 	// Add tagdashboard activity to sidebar
 	elgg_extend_view('group-extender/sidebar','tagdashboards/group_sidebar', 0);
 	
+	// Extend profile view (pre-18)
+	elgg_extend_view('profile_navigation/extend', 'tagdashboards/profile_tab');
+	
 	// Page handler
 	register_page_handler('tagdashboards','tagdashboards_page_handler');
 
@@ -54,13 +57,7 @@ function tagdashboards_init() {
 	
 	// Provide the jquery resize plugin
 	elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js', 'jquery.resize');
-	
-	//elgg_register_plugin_hook_handler('tagdashboards', 'exceptions', 'tagdashboards_exception_example');
-	//elgg_register_plugin_hook_handler('tagdashboards:subtype', 'image', 'tagdashboards_subtype_example');
-	
-	// Change album subtype heading
-	//elgg_register_plugin_hook_handler('tagdashboards:subtype:heading', 'album', 'tagdashboards_subtype_album_handler');
-	
+		
 	// Icon handlers
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'blog', 'tagdashboards_timeline_blog_icon_handler');
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'image', 'tagdashboards_timeline_image_icon_handler');
