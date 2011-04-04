@@ -273,6 +273,9 @@ $form_body = <<<HTML
 		$(document).ready(function() {
 			// Need to force this on load, for some reason, sometimes, the browser will remember the wrong tab
 			$('#tagdashboard-groupby').val('$groupby');
+			$('.tagdashboards-groupby-radio').removeAttr('checked');
+			$('#tab-subtype').attr('checked', 'checked');
+			
 						
 			$("div#$selected_tab").show();
 		});
@@ -320,8 +323,15 @@ $form_body = <<<HTML
 			if (!search) {
 				search = elgg.tagdashboards.get_tagdashboard_search_value();
 			}
+			
+			// Set up options
+			var options = new Array();
+			options['search'] = search;
+			options['type'] = $('#tagdashboard-groupby').val();
+			options['subtypes'] = selected_subtypes;
+			options['custom_tags'] = $('#tagdashboards-custom-input').val();
 		
-			elgg.tagdashboards.submit_search(search, $('#tagdashboard-groupby').val(), selected_subtypes);
+			elgg.tagdashboards.display(options);
 			return false;
 		});
 	</script>

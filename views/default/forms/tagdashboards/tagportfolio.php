@@ -22,20 +22,30 @@ elgg_register_js($url, 'tagdashboards');
 $auto_url = elgg_get_site_url() . "vendors/jquery/jquery.autocomplete.min.js";
 elgg_register_js($auto_url, 'jquery.autocomplete');
 
-$script = "<script type='text/javascript'>
+$script = <<<HTML
+	<script type='text/javascript'>
 	// Hack to switch the selected tab to the proper one..won't need this in 1.8
 	$('div.profile > ul > li').removeClass('selected');
 	$('li#tagportfolio-tab').addClass('selected');
 	
 	$(document).ready(function() {
-		elgg.tagdashboards.submit_search('', 'custom', null, true);
+		
+		// Set up options
+		var options = new Array();
+		options['type'] = 'custom';
+		options['custom_tags'] = $('#tagdashboards-custom-input').val();
+		
+		elgg.tagdashboards.display(options);
 		
 		$('#tagdashboards-refresh-input').click(function() {
-			elgg.tagdashboards.submit_search('', 'custom', null, true);
+			options['custom_tags'] = $('#tagdashboards-custom-input').val();
+			
+			elgg.tagdashboards.display(options);
 			return false;
 		});
 	});
-</script>";
+</script>
+HTML;
 
 $header = elgg_view_title(elgg_echo('tagdashboards:title:tagportfolio'));
 $instructions = elgg_echo('tagdashboards:description:tagportfolio');

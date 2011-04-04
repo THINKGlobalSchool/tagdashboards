@@ -18,58 +18,50 @@ elgg.tagdashboards.init = function () {
 	// Nothing to do here at the moment
 }
 
-// Validate and submit and tagdashboard search
-elgg.tagdashboards.submit_search = function (value, type, subtypes, any_value) {
-	// Search any value?
-	if (!any_value) {
-		any_value = false;
-	}
+/**
+ * Display tag dashboard based on given values
+ * @param array options:
+ * 
+ * search => NULL|STRING search for tag (can be empty for 'all')
+ * 
+ * type => STRING type of search (custom, subtype or activity)
+ * 
+ * subtypes => Array of subtypes to include
+ * 
+ * owner_guids => NULL|Array of owner_guids to include 
+ * 
+ * custom_tags => NULL|Array custom tags to group content
+ */
+elgg.tagdashboards.display = function (options) {
+	// Get options
+	var type 		= options['type'];
+	var search 		= options['search'];
+	var subtypes 	= options['subtypes'];
+	var owner_guids	= options['owner_guids'];
+	var custom_tags	= elgg.tagdashboards.custom_tags_string_to_array(options['custom_tags']);
 
-	// If we're supplied a search value or we're not looking for a value
-	if (value || any_value) {
-		// If custom, validate and clean custom values
-		if (type == 'custom') {
-			// Grab the custom tags string
-			var tag_string = elgg.tagdashboards.get_tagdashboard_custom_value();
-
-			// Trim whitespace
-			tag_string = $.trim(tag_string);
-
-			// Trim any trailing commas, sometimes these get in there
-			var len = tag_string.length;
-			if (tag_string.substr(len-1,1) == ",") {
-				tag_string = tag_string.substring(0,len-1);
-			}
-
-			// Split into an array
-			var tag_array = tag_string.split(',');
-
-			// Nead little jquery hack to remove empty array elements
-			tag_array = $.grep(tag_array,function(n,i){
-			    return(n);
-			});
-
-			// Handle any weird whitespace issues in supplied tags (trim 'em)
-			$.each(tag_array, function(i, v) {
-				tag_array[i] = $.trim(v);
-			});
-		}
-				
-		var url = elgg.normalize_url('pg/tagdashboards/searchtagdashboard?type=' + type + '&search=' + value);
-		$('#tagdashboards-content-container').hide().load(url, { 'custom[]': tag_array, 'subtypes' : subtypes }, function() {
-			$('#tagdashboards-content-container').fadeIn('fast');
-		});
-		$('a#tagdashboards-options-toggle').show();
-		$('#tagdashboards-save-input-container').show();
-		$('span#tagdashboards-search-error').html('');
-		window.location.hash = encodeURI(value); // Hash magic for permalinks
-	} else { // No value supplied, show error
-		$('a#tagdashboards-options-toggle').hide();
-		$('#tagdashboards-save-input-container').hide();
-		$('span#tagdashboards-search-error').html('Please enter text to search');
-		$('#tagdashboards-content-container').html('');
+	// Create url to load
+	var url = elgg.normalize_url('pg/tagdashboards/searchtagdashboard?type=' + type);
+	
+	if (search) {
+		url += '&search=' + search;
 	}
 	
+	// Load in content
+	$('#tagdashboards-content-container').hide().load(url, { 'custom[]': custom_tags, 'subtypes' : subtypes }, function() {
+		$('#tagdashboards-content-container').fadeIn('fast');
+	});
+	$('#tagdashboards-save-input-container').show();
+}
+
+/**
+ * Display an error in the specified element (id) with given txt
+ */
+elgg.tagdashboards.display_error = function(id, txt) {
+		$('a#tagdashboards-options-toggle').hide();
+		$('#tagdashboards-save-input-container').hide();
+		$('#' + id).html(txt);
+		$('#tagdashboards-content-container').html('');
 }
 
 // Get search value
@@ -79,11 +71,36 @@ elgg.tagdashboards.get_tagdashboard_search_value = function () {
 	return value;
 }
 
-// Get search value
-elgg.tagdashboards.get_tagdashboard_custom_value = function () {
-	var value = $('#tagdashboards-custom-input').val();
-	value = value.toLowerCase();
-	return value;
+// Validate, and format custom tag string as an array
+elgg.tagdashboards.custom_tags_string_to_array = function (tag_string) {
+	// To lower case
+	tag_string = tag_string.toLowerCase();
+	
+	// Trim whitespace
+	tag_string = $.trim(tag_string);
+
+	// Trim any trailing commas, sometimes these get in there
+	var len = tag_string.length;
+	if (tag_string.substr(len-1,1) == ",") {
+		tag_string = tag_string.substring(0,len-1);
+	}
+
+	// Split into an array
+	var tag_array = tag_string.split(',');
+
+	// Nead little jquery hack to remove empty array elements
+	tag_array = $.grep(tag_array,function(n,i){
+	    return(n);
+	});
+
+	// Handle any weird whitespace issues in supplied tags (trim 'em)
+	$.each(tag_array, function(i, v) {
+		tag_array[i] = $.trim(v);
+	});
+	
+	//var value = $('#tagdashboards-custom-input').val();
+	
+	return tag_array;
 }
 
 elgg.tagdashboards.load_tagdashboards_subtype_content = function (subtype, search, offset) {
@@ -164,9 +181,6 @@ elgg.tagdashboards.fade_div = function(id) {
 elgg.tagdashboards.tagdashboards_switch_groupby = function(tab_id, groupby_val) {
 	var nav_name = "input#" + tab_id;
 	var tab_name = "div#" + tab_id;
-	
-	console.log(nav_name);
-	console.log(tab_name);
 
 	$(".tagdashboards-groupby-div").hide();
 	$(tab_name).show();

@@ -90,19 +90,55 @@ $script = <<<HTML
 				var hash = decodeURI(window.location.hash.substring(1));
 				var value = $('#tagdashboards-search-input').val(hash);
 				set_dashboard_title();
-				elgg.tagdashboards.submit_search(hash, '$type');
+				
+				// Set up options
+				var options = new Array();
+				options['search'] = hash;
+				options['type'] = '$type';
+				options['custom_tags'] = $('#tagdashboards-custom-input').val();				
+				
+				elgg.tagdashboards.display(options);
 				// Show the save link
 			}
 		
+			// DRY UP
 			$('#tagdashboards-search-submit').click(function(){
-				set_dashboard_title();
-				elgg.tagdashboards.submit_search(elgg.tagdashboards.get_tagdashboard_search_value(), '$type');
+				if (!$('#tagdashboards-search-input').val()) {
+					elgg.tagdashboards.display_error('tagdashboards-search-error', 'Please enter search text');
+				} else {
+					$('a#tagdashboards-options-toggle').show();
+					$('span#tagdashboards-search-error').html('');
+					set_dashboard_title();
+					
+					// Set up options
+					var options = new Array();
+					options['search'] = elgg.tagdashboards.get_tagdashboard_search_value();
+					options['type'] = '$type';
+					options['custom_tags'] = $('#tagdashboards-custom-input').val();
+					
+					elgg.tagdashboards.display(options);
+					window.location.hash = encodeURI(options['search']); // Hash magic for permalinks
+				}
 			});
-			
+			// DRY UP
 			$('#tagdashboards-search-input').keypress(function(e){
 				if(e.which == 13) {
-					set_dashboard_title();
-			    	elgg.tagdashboards.submit_search(elgg.tagdashboards.get_tagdashboard_search_value(), '$type');
+					if (!$('#tagdashboards-search-input').val()) {
+						elgg.tagdashboards.display_error('tagdashboards-search-error', 'Please enter search text');
+					} else {
+						$('a#tagdashboards-options-toggle').show();
+						$('span#tagdashboards-search-error').html('');
+						set_dashboard_title();
+						
+				    	// Set up options
+						var options = new Array();
+						options['search'] = elgg.tagdashboards.get_tagdashboard_search_value();
+						options['type'] = '$type';
+						options['custom_tags'] = $('#tagdashboards-custom-input').val();
+
+						elgg.tagdashboards.display(options);
+						window.location.hash = encodeURI(options['search']); // Hash magic for permalinks
+					}
 					e.preventDefault();
 					return false;
 				}
