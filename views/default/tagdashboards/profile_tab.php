@@ -10,7 +10,7 @@
  * 
  */
 
-$url = $vars['user']->getURL();
+$url = $vars['entity']->getURL();
 
 ?>
 <li id='tagportfolio-tab' <?php echo $tagdashboards ?>><a href="<?php echo  $url . '/tagportfolio'; ?>"><?php echo elgg_echo('tagdashboards:label:tagportfolio'); ?></a></li>
