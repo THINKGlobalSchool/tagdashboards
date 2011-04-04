@@ -12,9 +12,7 @@
 
 elgg_register_event_handler('init', 'system', 'tagdashboards_init');
 
-function tagdashboards_init() {
-	global $CONFIG;
-	
+function tagdashboards_init() {	
 	// Include helpers
 	require_once 'lib/tagdashboards_lib.php';
 	require_once 'lib/tagdashboards_hooks.php';
@@ -35,7 +33,7 @@ function tagdashboards_init() {
 	register_page_handler('tagdashboards','tagdashboards_page_handler');
 
 	// Add to tools menu
-	add_menu(elgg_echo("tagdashboards"), $CONFIG->wwwroot . 'pg/tagdashboards');
+	add_menu(elgg_echo("tagdashboards"), elgg_get_site_url() . 'pg/tagdashboards');
 
 	// Add submenus
 	elgg_register_event_handler('pagesetup','system','tagdashboards_submenus');
@@ -44,10 +42,12 @@ function tagdashboards_init() {
 	elgg_register_event_handler('tagdashboard_url','object', 'tagdashboard');
 
 	// Register actions
-	elgg_register_action('tagdashboards/save', $CONFIG->pluginspath . 'tagdashboards/actions/save.php');
-	elgg_register_action('tagdashboards/edit', $CONFIG->pluginspath . 'tagdashboards/actions/edit.php');
-	elgg_register_action('tagdashboards/delete', $CONFIG->pluginspath . 'tagdashboards/actions/delete.php');
-	elgg_register_action('tagdashboards/admin_enable_subtypes', $CONFIG->pluginspath . 'tagdashboards/actions/admin_enable_subtypes.php', 'admin');
+	$action_base = elgg_get_plugin_path() . 'tagdashboards/actions/tagdashboards';
+	elgg_register_action('tagdashboards/save', "$action_base/save.php");
+	elgg_register_action('tagdashboards/save_tag_portfolio', "$action_base/save_tag_portfolio.php");
+	elgg_register_action('tagdashboards/edit', "$action_base/edit.php");
+	elgg_register_action('tagdashboards/delete', "$action_base/delete.php");
+	elgg_register_action('tagdashboards/admin_enable_subtypes', "$action_base/admin_enable_subtypes.php", 'admin');
 	
 	// Setup url handler for tag dashboards
 	register_entity_url_handler('tagdashboards_url_handler','object', 'tagdashboard');
@@ -81,7 +81,6 @@ function tagdashboards_init() {
 
 /* Tag Dashboards page handler */
 function tagdashboards_page_handler($page) {
-	global $CONFIG;
 	set_context('tagdashboards');
 	gatekeeper();
 	
@@ -240,8 +239,6 @@ function tagdashboards_page_handler($page) {
  * Setup tag dashboard submenus
  */
 function tagdashboards_submenus() {
-	global $CONFIG;
-
 	// all/yours/friends 
 	elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:menu:yourtagdashboards'), 
 								'href' => elgg_get_site_url() . 'pg/tagdashboards/' . get_loggedin_user()->username), 'tagdashboards');
@@ -255,7 +252,7 @@ function tagdashboards_submenus() {
 	// Admin 
 	if (isadminloggedin()) {
 		elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:title:adminsettings'), 
-									'href' => $CONFIG->url . "pg/tagdashboards/settings"), 'admin', 'z');
+									'href' => elgg_get_site_url() . "pg/tagdashboards/settings"), 'admin', 'z');
 	}
 }
 	
@@ -266,8 +263,7 @@ function tagdashboards_submenus() {
  * @return string request url
  */
 function tagdashboards_url_handler($entity) {
-	global $CONFIG;
-	return $CONFIG->url . "pg/tagdashboards/view/{$entity->guid}/";
+	return elgg_get_site_url() . "pg/tagdashboards/view/{$entity->guid}/";
 }
 
 /**

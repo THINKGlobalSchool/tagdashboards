@@ -94,6 +94,7 @@ $english = array(
 	// Messages
 	'tagdashboards:success:setenabledsubtypes' => 'Enabled subtypes set',
 	'tagdashboards:success:save' => 'Succesfully saved Tag Dashboard',
+	'tagdashboards:success:saveportfolio' => 'Succesfully saved Tag Portfolio',
 	'tagdashboards:success:delete' => 'Tag Dashboard succesfully deleted',
 	'tagdashboards:error:save' => 'Error saving Tag Dashboard',
 	'tagdashboards:error:delete' => 'There wasn an error deleting the Tag Dashboard',

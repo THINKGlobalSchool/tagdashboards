@@ -1,6 +1,6 @@
 <?php
 /**
- * Tag Dashboards admin enable entities action
+ * Tag Dashboards edit action
  * 
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -9,32 +9,32 @@
  * @link http://www.thinkglobalschool.com/
  * 
  */
-gatekeeper();
 
 // Get inputs
+$tagdashboard_guid = get_input('tagdashboard_guid');
+$search = get_input('tagdashboard_search');
 $title = get_input('tagdashboard_title');
 $description = get_input('tagdashboard_description');
 $tags = string_to_tag_array(get_input('tagdashboard_tags'));
 $access = get_input('tagdashboard_access');
-$search = get_input('tagdashboard_search');
 $subtypes = get_input('subtypes_enabled');
 $groupby = get_input('tagdashboard_groupby');	// How are we grouping the content
 $custom_tags = string_to_tag_array(get_input('tagdashboards_custom')); // Custom fields
 
 // Sticky form
-elgg_make_sticky_form('tagdashboards_save_form');
-if (!$title) {
+elgg_make_sticky_form('tagdashboards-save-form');
+if (!$title || !$search) {
 	register_error(elgg_echo('tagdashboards:error:requiredfields'));
-	forward(elgg_get_site_url() . 'pg/tagdashboards/search#' . $search);
+	forward(elgg_get_site_url() . 'pg/tagdashboards/edit/' . $tagdashboard_guid);
 }
 
-$tagdashboard = new ElggObject();
-$tagdashboard->subtype = 'tagdashboard';
+
+$tagdashboard = get_entity($tagdashboard_guid);
+$tagdashboard->search = $search;
 $tagdashboard->title = $title;
 $tagdashboard->description = $description;
 $tagdashboard->tags = $tags;
 $tagdashboard->access_id = $access;
-$tagdashboard->search = $search;
 $tagdashboard->subtypes = serialize($subtypes);
 $tagdashboard->groupby = $groupby;
 $tagdashboard->custom_tags = $custom_tags;
@@ -46,11 +46,8 @@ if (!$tagdashboard->save()) {
 }
 
 // Clear sticky form
-elgg_clear_sticky_form('tagdashboards_save_form');
-
-// Add to river
-add_to_river('river/object/tagdashboard/create', 'create', get_loggedin_userid(), $tagdashboard->getGUID());
+elgg_clear_sticky_form('tagdashboards-save-form');
 
 // Forward on
 system_message(elgg_echo('tagdashboards:success:save'));
-forward('pg/tagdashboards');
+forward('pg/tagdashboards/view/' . $tagdashboard_guid);

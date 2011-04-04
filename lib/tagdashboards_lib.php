@@ -99,7 +99,6 @@ function tagdashboards_get_page_content_list($user_guid = null) {
 
 /* Get friends docs */
 function tagdashboards_get_page_content_friends($user_guid) {
-	global $CONFIG;
 	$user = get_entity($user_guid);
 	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'pg/tagdashboards');
 	elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'pg/tagdashboards/' . $user->username);

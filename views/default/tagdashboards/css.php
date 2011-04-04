@@ -46,10 +46,15 @@ span#tagdashboards-search-error {
 	font-weight: bold;
 }
 
+
 .tagdashboards-container {
 	width: 46%;
 	float: right;
 	margin: 10px;
+}
+
+#tagdashboards-content-container.tagdashboards-left #tagdashboards-content .tagdashboards-container {
+	float: left;
 }
 
 .tagdashboards-groupby-div {

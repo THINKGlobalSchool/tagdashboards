@@ -9,7 +9,7 @@
  * @link http://www.thinkglobalschool.com/
  * 
  */
-
+admin_gatekeeper();
 $enabled_subtypes = get_input('subtypes_enabled');
 
 set_plugin_setting('enabled_subtypes', serialize($enabled_subtypes), 'tagdashboards');

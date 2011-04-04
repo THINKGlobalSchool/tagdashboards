@@ -60,14 +60,18 @@ $script = <<<HTML
 			$('a#tagdashboards-options-toggle').hide();
 			$('#tagdashboards-save-input-container').hide();
 		}
+		
+		// Set the title to the searched tag
+		function set_dashboard_title() {
+			$('#tagdashboard-title').val(elgg.tagdashboards.get_tagdashboard_search_value);
+		}
+		
 		$(document).ready(function() {	
 			
 			$('#tagdashboards-save-container').hide();
 			var on = true;
 			$('#tagdashboards-options-toggle').click(
 				function() {
-					// Populate the title with the search by default
-					$('#tagdashboard_title').val(elgg.tagdashboards.get_tagdashboard_search_value);
 					if (on) {
 						on = false;
 						$('#tagdashboards-options-toggle').html("$save_text" + " &#9650;");
@@ -85,16 +89,19 @@ $script = <<<HTML
 			if (window.location.hash) {
 				var hash = decodeURI(window.location.hash.substring(1));
 				var value = $('#tagdashboards-search-input').val(hash);
+				set_dashboard_title();
 				elgg.tagdashboards.submit_search(hash, '$type');
 				// Show the save link
 			}
 		
 			$('#tagdashboards-search-submit').click(function(){
+				set_dashboard_title();
 				elgg.tagdashboards.submit_search(elgg.tagdashboards.get_tagdashboard_search_value(), '$type');
 			});
 			
 			$('#tagdashboards-search-input').keypress(function(e){
 				if(e.which == 13) {
+					set_dashboard_title();
 			    	elgg.tagdashboards.submit_search(elgg.tagdashboards.get_tagdashboard_search_value(), '$type');
 					e.preventDefault();
 					return false;

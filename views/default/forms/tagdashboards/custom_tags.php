@@ -7,7 +7,7 @@
  * @author Jeff Tilson
  * @copyright THINK Global School 2010
  * @link http://www.thinkglobalschool.com/
- * 
+ * @uses $vars['value']
  */
 
 // Get site tags
@@ -38,8 +38,8 @@ if ($custom_tags) {
 }
 
 // Load sticky form values
-if (elgg_is_sticky_form('tagdashboards_save_form')) {
-	$custom_value = elgg_get_sticky_value('tagdashboards_save_form', 'tagdashboards_custom');
+if (elgg_is_sticky_form('tagdashboards-save-form')) {
+	$custom_value = elgg_get_sticky_value('tagdashboards-save-form', 'tagdashboards_custom');
 }
 
 $custom_input = elgg_view('input/text', array(
