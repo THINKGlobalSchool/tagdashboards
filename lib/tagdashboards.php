@@ -10,7 +10,9 @@
  * 
  */
 
-/* Build content for the tagdashboard search page */
+/**
+ * Build content for the tagdashboard search page 
+ */
 function tagdashboards_get_page_content_search($type) { 
 	if (!$type) {
 		$type = 'subtype';
@@ -22,7 +24,9 @@ function tagdashboards_get_page_content_search($type) {
 	return $content_info;
 }
 
-/* Build content for editing an tagdashboard */
+/** 
+ * Build content for editing an tagdashboard 
+ */
 function tagdashboards_get_page_content_edit($guid) {
 	$tagdashboard = get_entity($guid);
 	if (elgg_instanceof($tagdashboard, 'object', 'tagdashboard') && $tagdashboard->canEdit()) {
@@ -40,7 +44,9 @@ function tagdashboards_get_page_content_edit($guid) {
 	}
 }
 
-/* Build content for tag dashboards admin settings */
+/**
+ * Build content for tag dashboards admin settings 
+ */
 function tagdashboards_get_page_content_admin_settings() {
 	$content_info['title'] = elgg_echo('tagdashboards:title:adminsettings');
 	$content_info['layout'] = 'administration';
@@ -49,7 +55,9 @@ function tagdashboards_get_page_content_admin_settings() {
 	return $content_info;
 }
 
-/* Get tag dashboard listing content */
+/**
+ * Get tag dashboard listing content 
+ */
 function tagdashboards_get_page_content_list($user_guid = null) {
 	if ($user_guid) {
 		// Breadcrumbs
@@ -97,7 +105,9 @@ function tagdashboards_get_page_content_list($user_guid = null) {
 	return $content_info;
 }
 
-/* Get friends docs */
+/**
+ * Get friends tagdashboards 
+ */
 function tagdashboards_get_page_content_friends($user_guid) {
 	$user = get_entity($user_guid);
 	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'pg/tagdashboards');
@@ -141,7 +151,9 @@ function tagdashboards_get_page_content_friends($user_guid) {
 	return $content_info;
 }
 
-/* View an tagdashboard */
+/**
+ * View a tagdashboard 
+ */
 function tagdashboards_get_page_content_view($guid) {
 	$tagdashboard = get_entity($guid);
 	$owner = get_entity($tagdashboard->container_guid);
@@ -156,7 +168,9 @@ function tagdashboards_get_page_content_view($guid) {
 	return $content_info;
 }
 
-/* View an tagdashboard in timeline mode */
+/** 
+ * View a tagdashboard in timeline mode 
+ */
 function tagdashboards_get_page_content_timeline($guid) {
 	$tagdashboard = get_entity($guid);
 	$owner = get_entity($tagdashboard->container_guid);
@@ -171,7 +185,9 @@ function tagdashboards_get_page_content_timeline($guid) {
 	return $content_info;
 }
 
-/* View a groups content grouped by student activity */
+/**
+ * View a groups content grouped by student activity 
+ */
 function tagdashboards_get_page_content_group_activity($guid) {
 	$group = get_entity($guid);
 	$content_info['title'] = elgg_echo('tagdashboards:title:groupbyactivity');
@@ -187,7 +203,9 @@ function tagdashboards_get_page_content_group_activity($guid) {
 	return $content_info;
 }
 
-/* View content grouped by student activity with specified tag */
+/**
+ * View content grouped by student activity with specified tag 
+ */
 function tagdashboards_get_page_content_activity_tag() {
 	$search = get_input('search');
 	$content_info['title'] = elgg_echo('tagdashboards:title:activitytag');
@@ -197,7 +215,9 @@ function tagdashboards_get_page_content_activity_tag() {
 	return $content_info;
 }
 
-/* View content grouped by user defined tag with specified search */
+/**
+ * View content grouped by user defined tag with specified search 
+ */
 function tagdashboards_get_page_content_custom() {
 	$search = get_input('search');
 	$content_info['title'] = elgg_echo('tagdashboards:title:custom');
@@ -207,7 +227,41 @@ function tagdashboards_get_page_content_custom() {
 	return $content_info;
 }
 
-/* Helper function tog grab the plugins enabled subtypes */
+/**
+ * Build content for an ajax loaded tagdashboard with given options
+ * @param Array $options: 
+ *
+ * search => NULL|string search for tag
+ * 
+ * type => string type of search (custom, activity, subtype (default))
+ * 
+ * subtypes => NULL|array of subtypes to include
+ * 
+ * owner_guids => NULL|array of owner guids to filter on
+ *
+ * custom_tags => NULL|array of custom tags to group content on (used with type: custom)
+ * 
+ * @return string 
+ */
+function tagdashboards_get_load_content($options) {
+	switch ($options['type']) {
+		case 'activity': 
+			$content = elgg_view('tagdashboards/activity_tag', $options);
+		break;
+		case 'custom': 
+			$content = elgg_view('tagdashboards/custom', $options);
+		break;
+		default: 
+		case 'subtype': 
+			$content = elgg_view('tagdashboards/subtypes', $options);
+		break;
+	}
+	echo $content;
+}
+
+/**
+ * Helper function tog grab the plugins enabled subtypes 
+ */
 function tagdashboards_get_enabled_subtypes() {
 	return unserialize(get_plugin_setting('enabled_subtypes', 'tagdashboards'));
 }
@@ -414,7 +468,9 @@ function tagdashboards_get_last_content($guid) {
 	return $entities[0];
 }
 
-/* Helper function to grab an array of predefined group activities */
+/**
+ * Helper function to grab an array of predefined group activities 
+ */
 function tagdashboards_get_group_activities() {
 	return array(
 		array(	
@@ -442,6 +498,101 @@ function tagdashboards_get_group_activities() {
 			'tag' => 'scribe'
 		),
 	);
+}
+
+/** HOOKS */
+
+/** 
+ *	Hook to change how photos are retrieved on the timeline
+ */
+function tagdashboards_timeline_photo_override_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'image') {
+		$params['params']['tagdashboards_search_term'] = $params['search']; // Need to set this to use the hacky function
+		$params['params']['limit'] = 0;
+		$params['params']['offset'] = 0;
+		$params['params']['types'] = array('object');
+		$params['params']['subtypes'] = array('image');
+		//$params['params']['callback'] = "entity_row_to_elggstar";
+		
+		$rows = tagdashboards_get_entities_from_tag_and_container_tag($params['params']);
+		return tagdashboards_get_limited_entities_from_rows($rows);
+	}
+	return false;
+}
+
+/** 
+ *	Override how photo's are listed to display both 
+ *	photos and photos in albums with searched tag
+ *	Uses: tagdashboards_get_images_and_albums_with_tag()
+ */
+function tagdashboards_photo_override_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'image') {
+		$params['params']['tagdashboards_search_term'] = $params['search']; // Need to set this to use the hacky function
+		$params['params']['callback'] = "entity_row_to_elggstar";
+		return elgg_list_entities($params['params'], 'tagdashboards_get_entities_from_tag_and_container_tag');
+	}
+	return false;
+}
+
+/**
+ * Handler to register a timeline icon for blogs 
+ */
+function tagdashboards_timeline_blog_icon_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'blog') {
+		return elgg_get_site_url() . "mod/tagdashboards/images/blog.gif";
+	}
+	return false;
+}
+
+/**
+ * Handler to register a timeline icon for images 
+ */
+function tagdashboards_timeline_image_icon_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'image') {
+		return elgg_get_site_url() . "mod/tagdashboards/images/image.gif";
+	}
+	return false;
+}
+
+/** 
+ * Handler to register a timeline icon for tag dashboards 
+ */
+function tagdashboards_timeline_tagdashboard_icon_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'tagdashboard') {
+		return elgg_get_site_url() . "mod/tagdashboards/images/tagdashboard.gif";
+	}
+	return false;
+}
+
+/**
+ * Handler to change name of Albums to Photos 
+ */
+function tagdashboards_subtype_album_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'album') {
+		return 'Photos';
+	}
+}
+
+
+
+/**
+ * Example for exceptions 
+ */
+function tagdashboards_exception_example($hook, $type, $returnvalue, $params) {
+	// Unset a type (includes it in the list)
+	unset($returnvalue[array_search('plugin', $returnvalue)]);
+	
+	// Add a new exception
+	$returnvalue[] = 'todo';
+	return $returnvalue;
+}
+
+/**
+ * Example for subtypes 
+ */
+function tagdashboards_subtype_example($hook, $type, $returnvalue, $params) {
+	// return custom content
+	return "Test";
 }
 
 

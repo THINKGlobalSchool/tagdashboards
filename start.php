@@ -14,8 +14,7 @@ elgg_register_event_handler('init', 'system', 'tagdashboards_init');
 
 function tagdashboards_init() {	
 	// Include helpers
-	require_once 'lib/tagdashboards_lib.php';
-	require_once 'lib/tagdashboards_hooks.php';
+	require_once 'lib/tagdashboards.php';
 	
 	// Extend CSS
 	elgg_extend_view('css/screen','tagdashboards/css');
@@ -126,16 +125,20 @@ function tagdashboards_page_handler($page) {
 				$search = get_input('search');
 				$offset = get_input('offset', NULL);
 				$subtypes = get_input('subtypes', NULL);
-				echo elgg_view('tagdashboards/custom_content', array('group' => $group, 'search' => $search, 'offset' => $offset, 'subtypes' => $subtypes));
+				$owner_guids = get_input('owner_guids', NULL);
+				echo elgg_view('tagdashboards/custom_content', array('group' => $group, 'search' => $search, 'offset' => $offset, 'subtypes' => $subtypes, 'owner_guids' => $owner_guids));
 				// This is an ajax load, so exit
 				exit;
 			break;
-			case 'searchtagdashboard':
-				$search = get_input('search');
-				$type = get_input('type');
-				$custom = get_input('custom');
-				$subtypes = get_input('subtypes', null);
-				echo elgg_view('tagdashboards/search', array('search' => $search, 'type' => $type, 'custom' => $custom, 'subtypes' => $subtypes));
+			case 'loadtagdashboard':
+				$options = array(
+					'search' => get_input('search', NULL),
+					'type' => get_input('type', 'subtype'),
+					'custom_tags' =>  get_input('custom_tags'),
+					'owner_guids' => get_input('owner_guids', NULL),
+					'subtypes' => get_input('subtypes', null),
+				);  
+				echo tagdashboards_get_load_content($options);
 				// This ia an ajax load, so exit
 				exit;
 			case 'timeline_feed':

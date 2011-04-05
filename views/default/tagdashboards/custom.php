@@ -10,15 +10,17 @@
  * 
  */
 
-$custom = $vars['custom'];
+$custom = $vars['custom_tags'];
 $search = $vars['search'];
 $subtypes = $vars['subtypes'];
+$owner_guids = $vars['owner_guids'];
 
 foreach($custom as $tag) {
 	$content .= elgg_view('tagdashboards/custom_container', array(
 		'search' => $search, 
 		'group' => $tag, 
 		'subtypes' => $subtypes,
+		'owner_guids' => $owner_guids,
 	));
 }
 

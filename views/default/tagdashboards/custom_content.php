@@ -15,10 +15,16 @@ elgg_set_viewtype('uberview');
 set_input('search_viewtype', 'list');
 
 $subtypes = $vars['subtypes'];
+$owner_guids = $vars['owner_guids'];
 
 // If we weren't supplied an array of subtypes, use defaults
 if (!is_array($subtypes)) {
 	$subtypes = tagdashboards_get_enabled_subtypes();
+}
+
+// If we weren't supplied an array of owner guids, use default 
+if (!is_array($owner_guids)) {
+	$owner_guids = ELGG_ENTITIES_ANY_VALUE;
 }
 
 // Set the pager js (which function to use when reloading pagination)
@@ -51,7 +57,7 @@ if ($search) {
 $params = array(
 	'types' => array('object'),
 	'subtypes' => $subtypes,
-	'owner_guid' => ELGG_ENTITIES_ANY_VALUE,
+	'owner_guids' => $owner_guids,
 	'limit' => 10,
 	'offset' => $vars['offset'] ? $vars['offset'] : 0,
 	'full_view' => FALSE,

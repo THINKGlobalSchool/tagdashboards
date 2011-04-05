@@ -56,7 +56,7 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 			case 'custom': 
 				$tagdashboard_content = elgg_view('tagdashboards/custom', array(
 					'search' => $vars['entity']->search, 
-					'custom' => $vars['entity']->custom_tags, 
+					'custom_tags' => $vars['entity']->custom_tags, 
 					'subtypes' => $subtypes
 				));
 			break;

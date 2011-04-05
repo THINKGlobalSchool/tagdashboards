@@ -11,7 +11,10 @@
  */
 
 $page_owner = elgg_get_page_owner();
+$page_owner_guid = $page_owner->getGUID();
+
 $tag_portfolio = $page_owner->tag_portfolio;
+
 
 
 // Register tag dashboards JS library
@@ -34,6 +37,7 @@ $script = <<<HTML
 		var options = new Array();
 		options['type'] = 'custom';
 		options['custom_tags'] = $('#tagdashboards-custom-input').val();
+		options['owner_guids'] = new Array('$page_owner_guid');
 		
 		elgg.tagdashboards.display(options);
 		

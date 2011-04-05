@@ -15,6 +15,8 @@ $dashboard_id = $vars['group'] . '_content';
 
 $subtypes = json_encode($vars['subtypes']);
 
+$owner_guids = json_encode($vars['owner_guids']);
+
 $spinner = elgg_view('tagdashboards/ajax_spinner', array('id' => 'loading_' . $vars['group']));
 
 ?>
@@ -27,6 +29,7 @@ $spinner = elgg_view('tagdashboards/ajax_spinner', array('id' => 'loading_' . $v
 <script type='text/javascript'>
 	$(document).ready(function() {
 		var subtypes = $.parseJSON('<?php echo $subtypes;?>');
-		elgg.tagdashboards.load_tagdashboards_custom_content("<?php echo $vars['group']; ?>", "<?php echo $vars['search']; ?>", subtypes, null);
+		var owner_guids = $.parseJSON('<?php echo $owner_guids;?>');
+		elgg.tagdashboards.load_tagdashboards_custom_content("<?php echo $vars['group']; ?>", "<?php echo $vars['search']; ?>", subtypes, owner_guids, null);
 	});
 </script>
