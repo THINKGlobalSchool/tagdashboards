@@ -100,6 +100,7 @@ $english = array(
 	'tagdashboards:error:delete' => 'There wasn an error deleting the Tag Dashboard',
 	'tagdashboards:error:notfound' => 'Tag Dashboard not found',
 	'tagdashboards:error:requiredfields' => 'One or more required fields are missing',
+	'tagdashboards:error:noportfolio' => '%s has not yet set up his/her Tag Portfolio',
 
 
 	

@@ -53,7 +53,7 @@ span#tagdashboards-search-error {
 	margin: 10px;
 }
 
-#tagdashboards-content-container.tagdashboards-left #tagdashboards-content .tagdashboards-container {
+#tagdashboards-content-container.tagdashboards-left .tagdashboards-container {
 	float: left;
 }
 
