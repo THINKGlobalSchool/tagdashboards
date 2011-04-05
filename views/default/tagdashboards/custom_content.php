@@ -17,9 +17,19 @@ set_input('search_viewtype', 'list');
 $subtypes = $vars['subtypes'];
 $owner_guids = $vars['owner_guids'];
 
+$json_subtypes = json_encode($subtypes);
+$json_owner_guids = json_encode($owner_guids);
+
 // If we weren't supplied an array of subtypes, use defaults
 if (!is_array($subtypes)) {
 	$subtypes = tagdashboards_get_enabled_subtypes();
+}
+
+// Remove image related subtypes until I figure out what to do with them..
+foreach($subtypes as $idx => $subtype) {
+	if ($subtype == 'image' || $subtype == 'album') {
+		unset($subtypes[$idx]);
+	}
 }
 
 // If we weren't supplied an array of owner guids, use default 
@@ -28,7 +38,7 @@ if (!is_array($owner_guids)) {
 }
 
 // Set the pager js (which function to use when reloading pagination)
-$page_js = "elgg.tagdashboards.load_tagdashboards_custom_content(\"{$vars['group']}\", \"{$vars['search']}\", \"%s\");";
+$page_js = "elgg.tagdashboards.load_tagdashboards_custom_content(\"{$vars['group']}\", \"{$vars['search']}\", $json_subtypes, $json_owner_guids, \"%s\");";
 
 set_input('page_js', $page_js);
 
@@ -77,6 +87,3 @@ if (!empty($entity_list)) {
 	echo elgg_view('tagdashboards/noresults', array(), false, false, 'default');
 }
 	
-
-
-?>

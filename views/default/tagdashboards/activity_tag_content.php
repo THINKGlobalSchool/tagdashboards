@@ -16,6 +16,13 @@ set_input('search_viewtype', 'list');
 
 $subtypes = $vars['subtypes'];
 
+// Remove image related subtypes until I figure out what to do with them..
+foreach($subtypes as $idx => $subtype) {
+	if ($subtype == 'image' || $subtype == 'album') {
+		unset($subtypes[$idx]);
+	}
+}
+
 // If we weren't supplied an array of subtypes, use defaults
 if (!is_array($subtypes)) {
 	$subtypes = tagdashboards_get_enabled_subtypes();
