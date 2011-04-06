@@ -79,7 +79,6 @@ $script = <<<HTML
 						on = true;
 						$('#tagdashboards-options-toggle').html("$save_text" + " &#9660;");
 					}
-					console.log(on);
 					$('#tagdashboards-save-container').toggle('slow');
 					return false;
 				}

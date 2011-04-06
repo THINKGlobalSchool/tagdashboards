@@ -471,7 +471,7 @@ function tagdashboards_get_last_content($guid) {
 /**
  * Helper function to grab an array of predefined group activities 
  */
-function tagdashboards_get_group_activities() {
+function tagdashboards_get_activities() {
 	return array(
 		array(	
 			'name' => elgg_echo('tagdashboards:activity:research'), 

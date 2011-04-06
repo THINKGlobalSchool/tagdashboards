@@ -13,15 +13,33 @@
 $custom = $vars['custom_tags'];
 $search = $vars['search'];
 $subtypes = $vars['subtypes'];
+$json_subtypes = json_encode($subtypes);
+$json_owner_guids = json_encode($owner_guids);
 $owner_guids = $vars['owner_guids'];
 
+$content = <<<HTML
+	<script type='text/javascript'>
+		var subtypes = $.parseJSON('$json_subtypes');
+		var owner_guids = $.parseJSON('$json_owner_guids');
+	</script>
+HTML;
+
 foreach($custom as $tag) {
-	$content .= elgg_view('tagdashboards/custom_container', array(
-		'search' => $search, 
-		'group' => $tag, 
-		'subtypes' => $subtypes,
-		'owner_guids' => $owner_guids,
+	// Build container
+	$content .= elgg_view('tagdashboards/content/container', array(
+		'heading' => ucfirst($tag),
+		'container_class' => 'tagdashboards-custom',
+		'id' => $tag,
 	));
+
+	// Build JS
+	$content .= <<<HTML
+	<script type='text/javascript'>
+		$(document).ready(function() {
+			elgg.tagdashboards.load_tagdashboards_custom_content("$tag", "$search", subtypes, owner_guids, null);
+		});
+	</script>
+HTML;
 }
 
 echo $content . "<div style='clear: both;'></div>";
