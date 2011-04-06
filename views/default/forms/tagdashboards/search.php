@@ -66,6 +66,26 @@ $script = <<<HTML
 			$('#tagdashboard-title').val(elgg.tagdashboards.get_tagdashboard_search_value);
 		}
 		
+		// Validate and submit search
+		function validate_search() {
+			if (!$('#tagdashboards-search-input').val()) {
+				elgg.tagdashboards.display_error('tagdashboards-search-error', 'Please enter search text');
+			} else {
+				$('a#tagdashboards-options-toggle').show();
+				$('span#tagdashboards-search-error').html('');
+				set_dashboard_title();
+				
+				// Set up options
+				var options = new Array();
+				options['search'] = elgg.tagdashboards.get_tagdashboard_search_value();
+				options['type'] = '$type';
+				options['custom_tags'] = $('#tagdashboards-custom-input').val();
+				
+				elgg.tagdashboards.display(options);
+				window.location.hash = encodeURI(options['search']); // Hash magic for permalinks
+			}
+		}
+		
 		$(document).ready(function() {	
 			
 			$('#tagdashboards-save-container').hide();
@@ -100,44 +120,13 @@ $script = <<<HTML
 				// Show the save link
 			}
 		
-			// DRY UP
 			$('#tagdashboards-search-submit').click(function(){
-				if (!$('#tagdashboards-search-input').val()) {
-					elgg.tagdashboards.display_error('tagdashboards-search-error', 'Please enter search text');
-				} else {
-					$('a#tagdashboards-options-toggle').show();
-					$('span#tagdashboards-search-error').html('');
-					set_dashboard_title();
-					
-					// Set up options
-					var options = new Array();
-					options['search'] = elgg.tagdashboards.get_tagdashboard_search_value();
-					options['type'] = '$type';
-					options['custom_tags'] = $('#tagdashboards-custom-input').val();
-					
-					elgg.tagdashboards.display(options);
-					window.location.hash = encodeURI(options['search']); // Hash magic for permalinks
-				}
+				validate_search();
 			});
-			// DRY UP
+
 			$('#tagdashboards-search-input').keypress(function(e){
 				if(e.which == 13) {
-					if (!$('#tagdashboards-search-input').val()) {
-						elgg.tagdashboards.display_error('tagdashboards-search-error', 'Please enter search text');
-					} else {
-						$('a#tagdashboards-options-toggle').show();
-						$('span#tagdashboards-search-error').html('');
-						set_dashboard_title();
-						
-				    	// Set up options
-						var options = new Array();
-						options['search'] = elgg.tagdashboards.get_tagdashboard_search_value();
-						options['type'] = '$type';
-						options['custom_tags'] = $('#tagdashboards-custom-input').val();
-
-						elgg.tagdashboards.display(options);
-						window.location.hash = encodeURI(options['search']); // Hash magic for permalinks
-					}
+					validate_search();
 					e.preventDefault();
 					return false;
 				}
