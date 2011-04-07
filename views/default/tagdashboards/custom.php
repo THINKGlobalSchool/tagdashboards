@@ -12,10 +12,13 @@
 
 $custom = $vars['custom_tags'];
 $search = $vars['search'];
+
 $subtypes = $vars['subtypes'];
 $json_subtypes = json_encode($subtypes);
-$json_owner_guids = json_encode($owner_guids);
+
 $owner_guids = $vars['owner_guids'];
+
+$json_owner_guids = json_encode($owner_guids);
 
 $content = <<<HTML
 	<script type='text/javascript'>

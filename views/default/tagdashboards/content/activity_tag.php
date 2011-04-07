@@ -15,6 +15,10 @@ elgg_set_viewtype('uberview');
 set_input('search_viewtype', 'list');
 
 $subtypes = $vars['subtypes'];
+$owner_guids = $vars['owner_guids'];
+
+$json_subtypes = json_encode($subtypes);
+$json_owner_guids = json_encode($owner_guids);
 
 // Remove image related subtypes until I figure out what to do with them..
 foreach($subtypes as $idx => $subtype) {
@@ -28,8 +32,13 @@ if (!is_array($subtypes)) {
 	$subtypes = tagdashboards_get_enabled_subtypes();
 }
 
+// If we weren't supplied an array of owner guids, use default 
+if (!is_int((int)$owner_guids) && !is_array($owner_guids)) {
+	$owner_guids = ELGG_ENTITIES_ANY_VALUE;
+}
+
 // Set the pager js (which function to use when reloading pagination)
-$page_js = "elgg.tagdashboards.load_tagdashboards_activity_tag_content(\"{$vars['activity']}\", \"{$vars['search']}\", \"%s\");";
+$page_js = "elgg.tagdashboards.load_tagdashboards_activity_tag_content(\"{$vars['activity']}\", \"{$vars['search']}\", $json_subtypes, $json_owner_guids, \"%s\");";
 
 set_input('page_js', $page_js);
 
@@ -37,7 +46,7 @@ set_input('page_js', $page_js);
 $params = array(
 	'types' => array('object'),
 	'subtypes' => $subtypes,
-	'owner_guid' => ELGG_ENTITIES_ANY_VALUE,
+	'owner_guids' => $owner_guids,
 	'limit' => 10,
 	'offset' => $vars['offset'] ? $vars['offset'] : 0,
 	'full_view' => FALSE,
@@ -66,7 +75,3 @@ if (!empty($entity_list)) {
 	// Might be in uberview here, make sure to display default
 	echo elgg_view('tagdashboards/noresults', array(), false, false, 'default');
 }
-	
-
-
-?>

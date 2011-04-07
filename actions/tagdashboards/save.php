@@ -19,6 +19,7 @@ $search = get_input('tagdashboard_search');
 $subtypes = get_input('subtypes_enabled');
 $groupby = get_input('tagdashboard_groupby');	// How are we grouping the content
 $custom_tags = string_to_tag_array(get_input('tagdashboards_custom')); // Custom fields
+$owner_guids = get_input('tagdashboard_owner_guids');
 
 // Sticky form
 elgg_make_sticky_form('tagdashboards-save-form');
@@ -37,6 +38,7 @@ $tagdashboard->search = $search;
 $tagdashboard->subtypes = serialize($subtypes);
 $tagdashboard->groupby = $groupby;
 $tagdashboard->custom_tags = $custom_tags;
+$tagdashboard->owner_guids = $owner_guids;
 
 // If error saving, register error and return
 if (!$tagdashboard->save()) {

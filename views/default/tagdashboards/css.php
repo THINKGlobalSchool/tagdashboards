@@ -143,13 +143,8 @@ a.switch-tagdashboards {
 	cursor: pointer;
 }
 
-a#tagdashboards-groupby-toggler {
+a.tagdashboards-toggler {
 	font-weight: bold;	
-	font-size: 110%;
-}
-
-a#tagdashboards-subtypes-toggler {
-	font-weight: bold;
 	font-size: 110%;
 }
 

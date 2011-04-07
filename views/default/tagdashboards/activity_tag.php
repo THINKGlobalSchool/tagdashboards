@@ -12,11 +12,16 @@
 
 $activities = tagdashboards_get_activities();
 $search = $vars['search'];
+
 $subtypes = $vars['subtypes'];
 $json_subtypes = json_encode($subtypes);
 
+$owner_guids = $vars['owner_guids'];
+$json_owner_guids = json_encode($owner_guids);
+
 $content = <<<HTML
 	<script type='text/javascript'>
+		var owner_guids = $.parseJSON('$json_owner_guids');
 		var subtypes = $.parseJSON('$json_subtypes');
 	</script>
 HTML;
@@ -37,7 +42,7 @@ foreach($activities as $activity) {
 	$content .= <<<HTML
 	<script type='text/javascript'>
 		$(document).ready(function() {
-			elgg.tagdashboards.load_tagdashboards_activity_tag_content("$activity_tag", "$search", subtypes, null);
+			elgg.tagdashboards.load_tagdashboards_activity_tag_content("$activity_tag", "$search", subtypes, owner_guids, null);
 		});
 	</script>
 HTML;

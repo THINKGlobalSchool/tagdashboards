@@ -17,4 +17,3 @@ if (is_array($images)) {
 						'container_guids' => $vars['entity']->getGUID(), 'limit' => 34, 'full_view' => false, 'pagination' => false));	
 	echo $list_entities;
 }
-?>

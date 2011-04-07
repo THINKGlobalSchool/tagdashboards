@@ -44,27 +44,31 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 		$content_link_label = elgg_echo('tagdashboards:label:contentview');
 		$timeline_link_label = elgg_echo('tagdashboards:label:timelineview');
 		
+				
 		// Display tag dashboard depending on the tag dashboards groupby option
 		$subtypes = unserialize($vars['entity']->subtypes);
 		switch ($vars['entity']->groupby) {
 			case 'activity': 
 				$tagdashboard_content = elgg_view('tagdashboards/activity_tag', array(
 					'search' => $vars['entity']->search, 
-					'subtypes' => $subtypes
+					'subtypes' => $subtypes,
+					'owner_guids' => $vars['entity']->owner_guids,
 				));
 			break;
 			case 'custom': 
 				$tagdashboard_content = elgg_view('tagdashboards/custom', array(
 					'search' => $vars['entity']->search, 
 					'custom_tags' => $vars['entity']->custom_tags, 
-					'subtypes' => $subtypes
+					'subtypes' => $subtypes,
+					'owner_guids' => $vars['entity']->owner_guids,
 				));
 			break;
 			default: 
 			case 'subtype': 
 				$tagdashboard_content = elgg_view('tagdashboards/subtypes', array(
 					'search' => $vars['entity']->search, 
-					'subtypes' => $subtypes
+					'subtypes' => $subtypes,
+					'owner_guids' => $vars['entity']->owner_guids,
 				));
 			break;
 		}

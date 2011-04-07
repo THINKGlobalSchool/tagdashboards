@@ -14,6 +14,9 @@
 elgg_set_viewtype('uberview');
 set_input('search_viewtype', 'list');
 
+$owner_guids = $vars['owner_guids'];
+$json_owner_guids = json_encode($owner_guids);
+
 // If this entity doesn't have a custom uberview, use default
 if (!elgg_view_exists("object/{$vars['subtype']}")) {
 	elgg_set_viewtype('default');
@@ -21,20 +24,20 @@ if (!elgg_view_exists("object/{$vars['subtype']}")) {
 
 
 // Set the pager js (which function to use when reloading pagination)
-$page_js = "elgg.tagdashboards.load_tagdashboards_subtype_content(\"{$vars['subtype']}\", \"{$vars['search']}\", \"%s\");";
+$page_js = "elgg.tagdashboards.load_tagdashboards_subtype_content(\"{$vars['subtype']}\", \"{$vars['search']}\", $json_owner_guids, \"%s\");";
 
 set_input('page_js', $page_js);
 
-/* 
-	Setting up a pile of default params. metadata_name_value_pairs
-	is what makes the tag magic happen. This might even work 
-	for multiple tags. (2 Minutes later..) No it doesn't but 
-	that'd be cool.
-*/
+// If we weren't supplied an array of owner guids, use default 
+if (!is_int((int)$owner_guids) && !is_array($owner_guids)) {
+	$owner_guids = ELGG_ENTITIES_ANY_VALUE;
+}
+
+// Setting up a pile of default params. metadata_name_value_pairs is what makes the tag magic happen.
 $params = array(
 	'types' => array('object'),
 	'subtypes' => array($vars['subtype']),
-	'owner' => ELGG_ENTITIES_ANY_VALUE,
+	'owner_guids' => $owner_guids,
 	'limit' => 10,
 	'offset' => $vars['offset'] ? $vars['offset'] : 0,
 	'full_view' => FALSE,
@@ -58,7 +61,3 @@ if (!empty($entity_list)) {
 	// Might be in uberview here, make sure to display default
 	echo elgg_view('tagdashboards/noresults', array(), false, false, 'default');
 }
-	
-
-
-?>

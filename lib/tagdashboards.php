@@ -350,8 +350,13 @@ function tagdashboards_get_entities_from_tag_and_container_tag($params) {
 	global $CONFIG;
 	
 	$px = $CONFIG->dbprefix;
-	
+		
 	$type_subtype_sql = elgg_get_entity_type_subtype_where_sql('e', $params['types'], $params['subtypes'], $params['type_subtype_pairs']);
+	
+	if (is_array($params['owner_guids'])) {
+		$owner_guids_sql = " AND " . elgg_get_entity_owner_where_sql('e', $params['owner_guids']) . " ";
+	}
+	
 	$access_sql = get_access_sql_suffix('e');
 	
 	// Include additional wheres
@@ -367,6 +372,7 @@ function tagdashboards_get_entities_from_tag_and_container_tag($params) {
 				JOIN {$px}metastrings msv1 on n_table1.value_id = msv1.id 
 				WHERE (msn1.string = 'tags' AND msv1.string = '{$params['tagdashboards_search_term']}')
 					AND {$type_subtype_sql}
+					$owner_guids_sql
 					AND (e.site_guid IN ({$CONFIG->site_guid}))
 					AND $access_sql
 					$wheres) 
@@ -377,10 +383,11 @@ function tagdashboards_get_entities_from_tag_and_container_tag($params) {
 				JOIN {$px}metastrings cmsv on c_table.value_id = cmsv.id 
 				WHERE (cmsn.string = 'tags' AND cmsv.string = '{$params['tagdashboards_search_term']}')
 					AND {$type_subtype_sql}
+					$owner_guids_sql
 					AND (e.site_guid IN ({$CONFIG->site_guid}))
 					AND $access_sql
 					$wheres) ";
-																						
+																							
 	if (!$params['count']) {
 		$query .= " ORDER BY time_created desc";
 		

@@ -33,9 +33,11 @@ foreach($subtypes as $idx => $subtype) {
 }
 
 // If we weren't supplied an array of owner guids, use default 
-if (!is_array($owner_guids)) {
+if (!is_int((int)$owner_guids) && !is_array($owner_guids)) {
 	$owner_guids = ELGG_ENTITIES_ANY_VALUE;
 }
+
+
 
 // Set the pager js (which function to use when reloading pagination)
 $page_js = "elgg.tagdashboards.load_tagdashboards_custom_content(\"{$vars['group']}\", \"{$vars['search']}\", $json_subtypes, $json_owner_guids, \"%s\");";

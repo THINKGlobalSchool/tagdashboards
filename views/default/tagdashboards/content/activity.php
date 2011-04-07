@@ -49,7 +49,4 @@ if (!empty($entity_list)) {
 	// Might be in uberview here, make sure to display default
 	echo elgg_view('tagdashboards/noresults', array(), false, false, 'default');
 }
-	
 
-
-?>

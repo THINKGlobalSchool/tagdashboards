@@ -19,6 +19,7 @@ if ($vars['entity']) {
 	$access_id 		= $vars['entity']->access_id;
 	$search			= $vars['entity']->search;
 	$custom_tags	= $vars['entity']->custom_tags;
+	$owner_guids 	= $vars['entity']->owner_guids;
 	
 	// Load sticky form values
 	if (elgg_is_sticky_form('tagdashboards-save-form')) {
@@ -218,6 +219,13 @@ $hidden_groupby_input = elgg_view('input/hidden', array(
 	'value' => 'subtype', // default
 ));
 
+$filter_label = elgg_echo('tagdashboards:label:filter');
+$filter_owners .= elgg_echo('tagdashboards:label:ownerguids');
+$filter_owners_input .= elgg_view('input/tduserpicker', array(
+	'internalname' => 'tagdashboard_owner_guids',
+	'value' => $owner_guids,
+));
+
 $form_body = <<<HTML
 	<div id='tagdashboards-save-container' style='display: $display_form;'>
 		$search_content
@@ -230,7 +238,7 @@ $form_body = <<<HTML
 			$description_input
 		</p>
 		<p>
-			<a id='tagdashboards-subtypes-toggler' href='#'>$subtypes_label &#9660;</a><br />
+			<a id='tagdashboards-subtypes-toggler' class='tagdashboards-toggler' href='#'>$subtypes_label &#9660;</a><br />
 			<div id='tagdashboards-subtypes-input' style='display: none; clear: both;'>
 				$subtypes_input
 				<div style='clear: both;'></div>
@@ -238,11 +246,20 @@ $form_body = <<<HTML
 		</p>
 		<br />
 		<p>
-			<a id='tagdashboards-groupby-toggler' href='#'>$grouping_label &#9660;</a><br />
+			<a id='tagdashboards-groupby-toggler' class='tagdashboards-toggler' href='#'>$grouping_label &#9660;</a><br />
 			<div id='tagdashboards-groupby-input' style='display: none; clear: both;'>
 				$tab_items
 				<br /><br />
 				$tab_content
+			</div>
+		</p>
+		<br />
+		<p>
+			<a id='tagdashboards-filter-toggler' class='tagdashboards-toggler' href='#'>$filter_label &#9660;</a><br />
+			<div id='tagdashboards-filter-input' style='display: none; clear: both;'>
+				<strong>$filter_owners</strong><br /><br />
+				$filter_owners_input
+				<div style='clear: both;'></div>
 			</div>
 		</p>
 		<div style='clear: both;'></div>
@@ -269,13 +286,12 @@ $form_body = <<<HTML
 	<script type="text/javascript">
 		var subtypes_on = false;
 		var groupby_on = false;
+		var filter_on = false;
 	
 		$(document).ready(function() {
 			// Need to force this on load, for some reason, sometimes, the browser will remember the wrong tab
 			$('#tagdashboard-groupby').val('$groupby');
-			$('.tagdashboards-groupby-radio').removeAttr('checked');
-			$('#tab-subtype').attr('checked', 'checked');
-			
+
 						
 			$("div#$selected_tab").show();
 		});
@@ -308,6 +324,18 @@ $form_body = <<<HTML
 			return false;
 		});
 		
+		$('#tagdashboards-filter-toggler').click(function () {
+			if (filter_on) {
+				filter_on = false;
+				$('#tagdashboards-filter-toggler').html("$filter_label" + " &#9660;");
+			} else {
+				filter_on = true;
+				$('#tagdashboards-filter-toggler').html("$filter_label" + " &#9650;");
+			}
+			$('#tagdashboards-filter-input').toggle('slow');
+			return false;
+		});
+		
 		$('#tagdashboards-refresh-input').click(function() {
 			// Grab selected subtypes
 			var inputs = $('.tagdashboards-subtype-input:checked');
@@ -324,12 +352,22 @@ $form_body = <<<HTML
 				search = elgg.tagdashboards.get_tagdashboard_search_value();
 			}
 			
+			// Get owner guids
+			var userpicker_input = $('input[name="tagdashboard_owner_guids[]"]');
+			var owner_guids = new Array();
+			count = 0;
+			userpicker_input.each(function() {
+				owner_guids[count] = $(this).val();
+				count++;
+			});
+			
 			// Set up options
 			var options = new Array();
 			options['search'] = search;
 			options['type'] = $('#tagdashboard-groupby').val();
 			options['subtypes'] = selected_subtypes;
 			options['custom_tags'] = $('#tagdashboards-custom-input').val();
+			options['owner_guids'] = owner_guids;
 		
 			elgg.tagdashboards.display(options);
 			return false;

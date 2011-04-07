@@ -103,7 +103,7 @@ elgg.tagdashboards.custom_tags_string_to_array = function (tag_string) {
 	return tag_array;
 }
 
-elgg.tagdashboards.load_tagdashboards_subtype_content = function (subtype, search, offset) {
+elgg.tagdashboards.load_tagdashboards_subtype_content = function (subtype, search, owner_guids, offset) {
 	var end_url = elgg.normalize_url('pg/tagdashboards/loadsubtype/');
 	end_url += "?subtype=" + subtype + "&search=" + search;
 	if (offset) {
@@ -111,7 +111,7 @@ elgg.tagdashboards.load_tagdashboards_subtype_content = function (subtype, searc
 	}
 
 	/* Simple show/hide */
-	$("#" + subtype + "_content").load(end_url, '', function() {
+	$("#" + subtype + "_content").load(end_url, {'owner_guids' : owner_guids}, function() {
 		$("#loading_" + subtype).hide();
 	});
 	
@@ -144,7 +144,7 @@ elgg.tagdashboards.load_tagdashboards_activity_content = function (activity, con
 	return false;
 }
 
-elgg.tagdashboards.load_tagdashboards_activity_tag_content = function (activity, search, subtypes, offset) {
+elgg.tagdashboards.load_tagdashboards_activity_tag_content = function (activity, search, subtypes, owner_guids, offset) {
 	var end_url = elgg.normalize_url('pg/tagdashboards/loadactivitytag/');
 	end_url += "?activity=" + activity + "&search=" + search;
 	if (offset) {
@@ -152,7 +152,7 @@ elgg.tagdashboards.load_tagdashboards_activity_tag_content = function (activity,
 	}
 
 	/* Simple show/hide */
-	$("#" + activity + "_content").load(end_url, { 'subtypes' : subtypes }, function() {
+	$("#" + activity + "_content").load(end_url, { 'subtypes' : subtypes, 'owner_guids' : owner_guids}, function() {
 		$("#loading_" + activity).hide();
 	});	
 	return false;

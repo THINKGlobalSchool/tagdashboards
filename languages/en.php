@@ -61,7 +61,10 @@ $english = array(
 	'tagdashboards:label:activity' => 'Group by role',
 	'tagdashboards:label:subtype' => 'Group by subtype',
 	'tagdashboards:label:grouping' => 'Grouping Settings',
+	'tagdashboards:label:filter' => 'Filter Settings',
+	'tagdashboards:label:ownerguids' => 'Show content from selected users',
 	'tagdashboards:label:tagportfolio' => 'Tag Portfolio',
+
 
 	// Descriptions
 	'tagdashboards:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',

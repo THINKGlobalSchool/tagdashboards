@@ -16,6 +16,15 @@ $subtypes = $vars['subtypes'];
 // Get search
 $search = $vars['search'];
 
+$owner_guids = $vars['owner_guids'];
+$json_owner_guids = json_encode($owner_guids);
+
+$content = <<<HTML
+	<script type='text/javascript'>
+		var owner_guids = $.parseJSON('$json_owner_guids');
+	</script>
+HTML;
+
 // If we weren't supplied an array of subtypes, use defaults
 if (!is_array($subtypes)) {
 	$subtypes = tagdashboards_get_enabled_subtypes();
@@ -41,7 +50,7 @@ foreach ($subtypes as $subtype) {
 	$content .= <<<HTML
 	<script type='text/javascript'>
 		$(document).ready(function() {
-			elgg.tagdashboards.load_tagdashboards_subtype_content("$subtype", "$search", null);
+			elgg.tagdashboards.load_tagdashboards_subtype_content("$subtype", "$search", owner_guids, null);
 		});
 	</script>
 HTML;

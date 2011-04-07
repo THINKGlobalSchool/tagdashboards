@@ -68,9 +68,6 @@ function tagdashboards_init() {
 	// Change display of photos
 	elgg_register_plugin_hook_handler('tagdashboards:subtype', 'image', 'tagdashboards_photo_override_handler');
 	
-	// Register blog subtype handler
-	elgg_register_plugin_hook_handler('tagdashboards:subtype', 'blog', 'tagdashboards_blog_display');
-
 	// Register type
 	register_entity_type('object', 'tagdashboard');		
 
@@ -96,7 +93,13 @@ function tagdashboards_page_handler($page) {
 				$search = get_input('search');
 				$subtype = get_input('subtype');
 				$offset = get_input('offset', NULL);
-				echo elgg_view('tagdashboards/content/subtype', array('subtype' => $subtype, 'search' => $search, 'offset' => $offset));
+				$owner_guids = get_input('owner_guids', NULL);
+				echo elgg_view('tagdashboards/content/subtype', array(
+					'subtype' => $subtype, 
+					'search' => $search, 
+					'offset' => $offset, 
+					'owner_guids' => $owner_guids
+				));
 				// This is an ajax load, so exit
 				exit;
 			break;
@@ -105,7 +108,11 @@ function tagdashboards_page_handler($page) {
 				$activity = get_input('activity');
 				$container_guid = get_input('container_guid');
 				$offset = get_input('offset', NULL);
-				echo elgg_view('tagdashboards/content/activity', array('activity' => $activity, 'container_guid' => $container_guid, 'offset' => $offset));
+				echo elgg_view('tagdashboards/content/activity', array(
+					'activity' => $activity, 
+					'container_guid' => $container_guid, 
+					'offset' => $offset
+				));
 				// This is an ajax load, so exit
 				exit;
 			break;
@@ -115,7 +122,14 @@ function tagdashboards_page_handler($page) {
 				$search = get_input('search');
 				$offset = get_input('offset', NULL);
 				$subtypes = get_input('subtypes', NULL);
-				echo elgg_view('tagdashboards/content/activity_tag', array('activity' => $activity, 'search' => $search, 'offset' => $offset, 'subtypes' => $subtypes));
+				$owner_guids = get_input('owner_guids', NULL);
+				echo elgg_view('tagdashboards/content/activity_tag', array(
+					'activity' => $activity, 
+					'search' => $search, 
+					'offset' => $offset, 
+					'subtypes' => $subtypes, 
+					'owner_guids' => $owner_guids
+				));
 				// This is an ajax load, so exit
 				exit;
 			break;
@@ -126,7 +140,13 @@ function tagdashboards_page_handler($page) {
 				$offset = get_input('offset', NULL);
 				$subtypes = get_input('subtypes', NULL);
 				$owner_guids = get_input('owner_guids', NULL);
-				echo elgg_view('tagdashboards/content/custom', array('group' => $group, 'search' => $search, 'offset' => $offset, 'subtypes' => $subtypes, 'owner_guids' => $owner_guids));
+				echo elgg_view('tagdashboards/content/custom', array(
+					'group' => $group, 
+					'search' => $search, 
+					'offset' => $offset, 
+					'subtypes' => $subtypes, 
+					'owner_guids' => $owner_guids
+				));
 				// This is an ajax load, so exit
 				exit;
 			break;
