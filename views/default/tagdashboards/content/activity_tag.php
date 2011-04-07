@@ -17,6 +17,13 @@ set_input('search_viewtype', 'list');
 $subtypes = $vars['subtypes'];
 $owner_guids = $vars['owner_guids'];
 
+$owner_guids = $vars['owner_guids'];
+// If we weren't supplied an array of owner guids, use default 
+if (((int)$owner_guids == 0 || (!is_int((int)$owner_guids))) && !is_array($owner_guids)) {
+	$owner_guids = ELGG_ENTITIES_ANY_VALUE;
+}
+
+
 $json_subtypes = json_encode($subtypes);
 $json_owner_guids = json_encode($owner_guids);
 
@@ -30,11 +37,6 @@ foreach($subtypes as $idx => $subtype) {
 // If we weren't supplied an array of subtypes, use defaults
 if (!is_array($subtypes)) {
 	$subtypes = tagdashboards_get_enabled_subtypes();
-}
-
-// If we weren't supplied an array of owner guids, use default 
-if (!is_int((int)$owner_guids) && !is_array($owner_guids)) {
-	$owner_guids = ELGG_ENTITIES_ANY_VALUE;
 }
 
 // Set the pager js (which function to use when reloading pagination)

@@ -15,6 +15,12 @@ elgg_set_viewtype('uberview');
 set_input('search_viewtype', 'list');
 
 $owner_guids = $vars['owner_guids'];
+// If we weren't supplied an array of owner guids, use default 
+if (((int)$owner_guids == 0 || (!is_int((int)$owner_guids))) && !is_array($owner_guids)) {
+	$owner_guids = ELGG_ENTITIES_ANY_VALUE;
+}
+
+
 $json_owner_guids = json_encode($owner_guids);
 
 // If this entity doesn't have a custom uberview, use default
@@ -27,11 +33,6 @@ if (!elgg_view_exists("object/{$vars['subtype']}")) {
 $page_js = "elgg.tagdashboards.load_tagdashboards_subtype_content(\"{$vars['subtype']}\", \"{$vars['search']}\", $json_owner_guids, \"%s\");";
 
 set_input('page_js', $page_js);
-
-// If we weren't supplied an array of owner guids, use default 
-if (!is_int((int)$owner_guids) && !is_array($owner_guids)) {
-	$owner_guids = ELGG_ENTITIES_ANY_VALUE;
-}
 
 // Setting up a pile of default params. metadata_name_value_pairs is what makes the tag magic happen.
 $params = array(
