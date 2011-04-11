@@ -74,8 +74,8 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 		}
 		
 		
-		$timeline_load = elgg_get_site_url() . "pg/tagdashboards/load_timeline/" . $vars['entity']->getGUID();
-		$timeline_data = elgg_get_site_url() . "pg/tagdashboards/timeline_feed/" . $vars['entity']->getGUID();
+		$timeline_load = elgg_get_site_url() . "pg/tagdashboards/loadtimeline/" . $vars['entity']->getGUID();
+		$timeline_data = elgg_get_site_url() . "pg/tagdashboards/timelinefeed/" . $vars['entity']->getGUID();
 
 		$entity = tagdashboards_get_last_content($vars['entity']->getGUID());
 		if ($last_entity) {

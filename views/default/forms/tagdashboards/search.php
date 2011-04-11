@@ -35,11 +35,13 @@ $search_submit = "<input type='submit'
 						 value='$submit_value'
 						  />";	
 						
-$save_form = elgg_view('forms/tagdashboards/save', array('search' => $vars['search']));
+									
+$save_form = elgg_view('forms/tagdashboards/save', $vars);
 
 $save_text = elgg_echo('tagdashboards:label:saveform');
 
 $save_link = "<a id='tagdashboards-options-toggle' href='#'>" . $save_text . " &#9660;</a>";
+	
 	
 $form_body = <<<HTML
 	<div id='tagdashboards-search-container'>

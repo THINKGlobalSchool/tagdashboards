@@ -16,6 +16,7 @@ $english = array(
 	'tagdashboard' => 'Tag Dashboard',
 	'tagdashboard:new' => 'Start New Tag Dashboard',
 	'item:object:tagdashboard' => 'Tag Dashboard',
+	'tagdashboard:enablegroup' => 'Enable group tag dashboards',
 	
 	// Page titles 
 	'tagdashboards:title:search' => 'Tag Dashboard Search',
@@ -25,6 +26,7 @@ $english = array(
 	'tagdashboards:title:activitytag' => 'Searched tag, grouped by activity',
 	'tagdashboards:title:custom' => 'Searched tag, grouped by custom',
 	'tagdashboards:title:tagportfolio' => 'Tag Portfolio',
+	'tagdashboards:title:owneddashboards' => '%s\'s Tag Dashboards',
 	
 	// Menu items
 	'tagdashboards:menu:alltagdashboards' => 'All Tag Dashboards',

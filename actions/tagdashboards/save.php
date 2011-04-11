@@ -20,12 +20,13 @@ $subtypes = get_input('subtypes_enabled');
 $groupby = get_input('tagdashboard_groupby');	// How are we grouping the content
 $custom_tags = string_to_tag_array(get_input('tagdashboards_custom')); // Custom fields
 $owner_guids = get_input('tagdashboard_owner_guids');
+$container_guid = get_input('container_guid', NULL);
 
 // Sticky form
 elgg_make_sticky_form('tagdashboards-save-form');
 if (!$title) {
 	register_error(elgg_echo('tagdashboards:error:requiredfields'));
-	forward(elgg_get_site_url() . 'pg/tagdashboards/search#' . $search);
+	forward(elgg_get_site_url() . 'pg/tagdashboards/add#' . $search);
 }
 
 $tagdashboard = new ElggObject();
@@ -39,6 +40,10 @@ $tagdashboard->subtypes = serialize($subtypes);
 $tagdashboard->groupby = $groupby;
 $tagdashboard->custom_tags = $custom_tags;
 $tagdashboard->owner_guids = $owner_guids;
+
+if ($container_guid) {
+	$tagdashboard->container_guid = $container_guid;
+}
 
 // If error saving, register error and return
 if (!$tagdashboard->save()) {

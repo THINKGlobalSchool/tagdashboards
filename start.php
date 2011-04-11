@@ -28,6 +28,10 @@ function tagdashboards_init() {
 	// Extend profile view (pre-18)
 	elgg_extend_view('profile_navigation/extend', 'tagdashboards/profile_tab');
 	
+	// Extend Groups profile page
+	elgg_extend_view('groups/tool_latest','tagdashboards/group_dashboards');
+	
+	
 	// Page handler
 	register_page_handler('tagdashboards','tagdashboards_page_handler');
 
@@ -71,11 +75,32 @@ function tagdashboards_init() {
 	// Register type
 	register_entity_type('object', 'tagdashboard');		
 
-	return true;
+	// Add group option
+	add_group_tool_option('tagdashboards',elgg_echo('tagdashboard:enablegroup'), TRUE);
 	
+	// Profile hook	
+	elgg_register_plugin_hook_handler('profile_menu', 'profile', 'tagdashboards_profile_menu');
+
+	return true;
 }
 
-/* Tag Dashboards page handler */
+/**
+ * Tag Dashboards page handler 
+ * 
+ *
+ * @todo Ajax endpoints - Should be somewhere else? Somehow?
+ *	loadsubtype 		Load subtype content
+ * 	loadactivity		Load activity content
+ * 	loadactivitytag		Load activity/tag content
+ * 	loadcustom			Load custom content
+ * 	loadtagdashboard	Load a tagdashboard
+ * 	timelinefeed		Load timeline feed content
+ * 	loadtimeline		Load timeline via ajax
+ *
+ * Title is ignored
+ * @param array $page
+ * @return NULL
+ */
 function tagdashboards_page_handler($page) {
 	set_context('tagdashboards');
 	gatekeeper();
@@ -161,7 +186,7 @@ function tagdashboards_page_handler($page) {
 				echo tagdashboards_get_load_content($options);
 				// This ia an ajax load, so exit
 				exit;
-			case 'timeline_feed':
+			case 'timelinefeed':
 				// Grab a type so we can differentiate
 				$type = get_input('type', 'overview');
 				$min = get_input('min');
@@ -175,7 +200,7 @@ function tagdashboards_page_handler($page) {
 				// This ia an ajax load, so exit
 				exit;
 			break;
-			case 'load_timeline':
+			case 'loadtimeline':
 				$timeline = get_entity($page[1]);
 				echo  elgg_view('tagdashboards/timeline', array('entity' => $timeline));
 				exit; // ajax load, exit
@@ -185,8 +210,11 @@ function tagdashboards_page_handler($page) {
 			case 'friends': 
 				$content_info = tagdashboards_get_page_content_friends(get_loggedin_userid());
 			break;
-			case 'search':
-				$content_info = tagdashboards_get_page_content_search($page[1]);
+			case 'add':
+				if ($page[1]) {
+					set_page_owner(get_entity($page[1])->getGUID());
+				}
+				$content_info = tagdashboards_get_page_content_add($page[1]);
 			break;
 			case 'settings':
 				admin_gatekeeper();
@@ -287,6 +315,27 @@ function tagdashboards_submenus() {
  */
 function tagdashboards_url_handler($entity) {
 	return elgg_get_site_url() . "pg/tagdashboards/view/{$entity->guid}/";
+}
+
+/**
+ * Plugin hook to add tagdashboards to the profile block
+ * 	
+ * @param unknown_type $hook
+ * @param unknown_type $entity_type
+ * @param unknown_type $returnvalue
+ * @param unknown_type $params
+ * @return unknown
+ */
+function tagdashboards_profile_menu($hook, $entity_type, $return_value, $params) {
+	global $CONFIG;
+
+	if ($params['owner'] instanceof ElggUser || $params['owner']->tagdashboards_enable == 'yes') {
+		$return_value[] = array(
+			'text' => elgg_echo('tagdashboards'),
+			'href' => "{$CONFIG->url}pg/tagdashboards/{$params['owner']->username}",
+		);
+	}
+	return $return_value;
 }
 
 /**

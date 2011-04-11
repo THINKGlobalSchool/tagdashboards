@@ -117,6 +117,11 @@ HTML;
 	));
 }
 
+$container_guid_input = elgg_view('input/hidden', array(
+	'internalname' => 'container_guid',
+	'value' => $vars['container_guid'],
+));
+
 // For the groupby input
 $selected_tab = "tab-$groupby";	
 
@@ -279,6 +284,7 @@ $form_body = <<<HTML
 			$tagdashboards_refresh_input
 			$tagdashboards_save_input
 		</div>
+		$container_guid_input
 		$hidden_search_input
 		$hidden_groupby_input
 		$tagdashboard_guid
