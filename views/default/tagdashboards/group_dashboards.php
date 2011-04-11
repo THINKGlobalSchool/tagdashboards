@@ -48,7 +48,7 @@ if($tagdashboards){
 		echo "<div class='entity_listing clearfix'>" . $info . "</div>";
 	} 
 } else {
-	$add = elgg_get_site_url() . "pg/tagdashboards/add/" . elgg_get_page_owner()->username;
+	$add = elgg_get_site_url() . "pg/tagdashboards/add/" . $page_owner->getGUID();
 	echo "<p class='margin_top'><a href=\"{$add}\">" . elgg_echo("tagdashboard:new") . "</a></p>";
 }
 echo "</div>";
