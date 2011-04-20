@@ -167,12 +167,13 @@ $subtypes_label = elgg_echo('tagdashboards:label:contenttypes');
 $subtypes_input = '';
 
 foreach($subtypes as $subtype) {
+	$label = trigger_plugin_hook('tagdashboards:subtype:heading', $subtype, array(), $subtype);
 	$checked = '';
 	if (in_array($subtype, $enabled)) {
 		$checked = "checked='checked'";
 	}
 	$subtypes_input .= "<div class='enabled-content-type'>";
-	$subtypes_input .= "<label>$subtype</label>";
+	$subtypes_input .= "<label>$label</label>";
 	$subtypes_input .= "<input class='tagdashboards-subtype-input' type='checkbox' name='subtypes_enabled[]' value='$subtype' $checked />";
 	$subtypes_input .= "</div>";
 }
