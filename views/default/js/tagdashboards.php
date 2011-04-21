@@ -9,7 +9,7 @@
  * @link http://www.thinkglobalschool.com/
  */ 
 ?>
-
+//<script>
 elgg.provide('elgg.tagdashboards');
 elgg.provide('elgg.tagdashboards.timeline');
 
@@ -73,6 +73,12 @@ elgg.tagdashboards.get_tagdashboard_search_value = function () {
 
 // Validate, and format custom tag string as an array
 elgg.tagdashboards.custom_tags_string_to_array = function (tag_string) {
+	// If string is empty, return empty array
+	if (!tag_string) {
+		return new Array();
+	} else if (tag_string instanceof Array) { // If we were supplied with an array, just return it
+		return tag_string;
+	}
 	// To lower case
 	tag_string = tag_string.toLowerCase();
 	
@@ -228,3 +234,4 @@ elgg.tagdashboards.timeline.timeline_show_image_popup_by_id = function (id, src)
 }
 
 elgg.register_event_handler('init', 'system', elgg.tagdashboards.init);
+//</script>

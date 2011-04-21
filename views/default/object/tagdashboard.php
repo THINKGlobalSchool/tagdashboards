@@ -47,33 +47,7 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 				
 		// Display tag dashboard depending on the tag dashboards groupby option
 		$subtypes = unserialize($vars['entity']->subtypes);
-		switch ($vars['entity']->groupby) {
-			case 'activity': 
-				$tagdashboard_content = elgg_view('tagdashboards/activity_tag', array(
-					'search' => $vars['entity']->search, 
-					'subtypes' => $subtypes,
-					'owner_guids' => $vars['entity']->owner_guids,
-				));
-			break;
-			case 'custom': 
-				$tagdashboard_content = elgg_view('tagdashboards/custom', array(
-					'search' => $vars['entity']->search, 
-					'custom_tags' => $vars['entity']->custom_tags, 
-					'subtypes' => $subtypes,
-					'owner_guids' => $vars['entity']->owner_guids,
-				));
-			break;
-			default: 
-			case 'subtype': 
-				$tagdashboard_content = elgg_view('tagdashboards/subtypes', array(
-					'search' => $vars['entity']->search, 
-					'subtypes' => $subtypes,
-					'owner_guids' => $vars['entity']->owner_guids,
-				));
-			break;
-		}
-		
-		
+				
 		$timeline_load = elgg_get_site_url() . "pg/tagdashboards/loadtimeline/" . $vars['entity']->getGUID();
 		$timeline_data = elgg_get_site_url() . "pg/tagdashboards/timelinefeed/" . $vars['entity']->getGUID();
 
@@ -91,21 +65,47 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 				$description
 			</div>
 			<div class='tagdashboard-view-block'>
-				<a class='switch-tagdashboards' id='switch-content'>$content_link_label</a> / <a class='switch-tagdashboards' id='switch-timeline'>$timeline_link_label</a>
+				<a class='switch-tagdashboards' id='switch-content'>$content_link_label</a> / <a class='switch-tagdashboards' id='switch-timeline'>$timeline_link_label</a> / View
 			</div>
 			<div class='tagdashboard-comment-block'>
 				$edit_link $comments_link
 			</div>
 			<div style='clear:both;'></div>
 			<div id='tagdashboards-timeline-container'></div>
-			<div id='tagdashboards-content-container'>
-				$tagdashboard_content
-			</div>
+			<div id='tagdashboards-content-container'></div>
 			<a name='annotations'></a><hr style='border: 1px solid #bbb' />
 HTML;
-
+	
+		// Vars for JS
+		$js_type = $vars['entity']->groupby;
+		$js_search = $vars['entity']->search;
+		$js_subtypes = json_encode($subtypes);
+		$js_custom_tags = json_encode($vars['entity']->custom_tags);
+		$js_owner_guids = json_encode($vars['entity']->owner_guids);
+ 	
 		$script = <<<HTML
 			<script type='text/javascript'>
+				var type = '$js_type';
+				var search = '$js_search';
+				var subtypes = '$js_subtypes';
+				var custom_tags = '$js_custom_tags';
+				var owner_guids = '$js_owner_guids';
+				
+				// Set up options
+				var options = new Array();
+				options['search'] = search;
+				options['type'] = type;
+				options['subtypes'] = $.parseJSON(subtypes);
+				options['custom_tags'] = $.parseJSON(custom_tags);
+				options['owner_guids'] = $.parseJSON(owner_guids);
+				
+			
+				$(document).ready(function() {
+					elgg.tagdashboards.display(options);
+				});
+				
+				
+			
 				var is_tl_loaded = false;
 				var end_url = "$timeline_load";
 
@@ -130,7 +130,6 @@ HTML;
 					}
 				}
 
-
 				$('.switch-tagdashboards').click(function () {
 					if ($(this).attr('id') == "switch-content") {
 						window.location.hash = "";
@@ -154,7 +153,6 @@ HTML;
 				}
 			</script>
 HTML;
-
 
 		echo $content . $script;
 	} else { // Listing 
