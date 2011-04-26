@@ -60,7 +60,8 @@ function tagdashboards_init() {
 	
 	// Provide the jquery resize plugin
 	elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js', 'jquery.resize');
-		
+	
+	
 	// Icon handlers
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'blog', 'tagdashboards_timeline_blog_icon_handler');
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'image', 'tagdashboards_timeline_image_icon_handler');
@@ -108,6 +109,18 @@ function tagdashboards_page_handler($page) {
 	// Register autocomplete JS
 	$auto_url = elgg_get_site_url() . "vendors/jquery/jquery.autocomplete.min.js";
 	elgg_register_js($auto_url, 'jquery.autocomplete');
+	
+	// Register datepicker
+	$daterange_url = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
+	elgg_register_js($daterange_url, 'jquery.daterangepicker');
+	
+	// Register datepicker css
+	$daterange_url = elgg_get_site_url(). 'mod/tagdashboards/vendors/ui.daterangepicker.css';
+	elgg_register_css($daterange_url, 'daterange');
+	
+	// Register custom theme CSS
+	$ui_url = elgg_get_site_url() . 'mod/tagdashboards/vendors/smoothness/jquery-ui-1.7.3.custom.css';
+	elgg_register_css($ui_url, 'smoothness');
 	
 	if (isset($page[0]) && !empty($page[0])) {
 		switch ($page[0]) {

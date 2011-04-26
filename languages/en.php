@@ -64,8 +64,10 @@ $english = array(
 	'tagdashboards:label:subtype' => 'Group by subtype',
 	'tagdashboards:label:grouping' => 'Grouping Settings',
 	'tagdashboards:label:filter' => 'Filter Settings',
-	'tagdashboards:label:ownerguids' => 'Show content from selected users',
+	'tagdashboards:label:filterowner' => 'Show content from selected users',
+	'tagdashboards:label:filterdate' => 'Show content created within date range',
 	'tagdashboards:label:tagportfolio' => 'Tag Portfolio',
+	'tagdashboards:label:clear' => 'Clear',
 
 
 	// Descriptions

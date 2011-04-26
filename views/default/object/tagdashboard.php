@@ -65,7 +65,7 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 				$description
 			</div>
 			<div class='tagdashboard-view-block'>
-				<a class='switch-tagdashboards' id='switch-content'>$content_link_label</a> / <a class='switch-tagdashboards' id='switch-timeline'>$timeline_link_label</a> / View
+				<a class='switch-tagdashboards' id='switch-content'>$content_link_label</a> / <a class='switch-tagdashboards' id='switch-timeline'>$timeline_link_label</a>
 			</div>
 			<div class='tagdashboard-comment-block'>
 				$edit_link $comments_link

@@ -21,6 +21,8 @@ $subtypes = get_input('subtypes_enabled');
 $groupby = get_input('tagdashboard_groupby');	// How are we grouping the content
 $custom_tags = string_to_tag_array(get_input('tagdashboards_custom')); // Custom fields
 $owner_guids = get_input('tagdashboard_owner_guids');
+$lower_date = strtotime(get_input('tagdashboard_date_range_from', null));
+$upper_date = strtotime(get_input('tagdashboard_date_range_to', null));
 
 // Sticky form
 elgg_make_sticky_form('tagdashboards-save-form');
@@ -40,6 +42,14 @@ $tagdashboard->subtypes = serialize($subtypes);
 $tagdashboard->groupby = $groupby;
 $tagdashboard->custom_tags = $custom_tags;
 $tagdashboard->owner_guids = $owner_guids;
+
+// Set dates if provided
+if ($lower_date) {
+	$tagdashboard->lower_date = $lower_date;
+}
+if ($upper_date) {
+	$tagdashboard->upper_date = $upper_date;
+}
 
 // If error saving, register error and return
 if (!$tagdashboard->save()) {

@@ -20,6 +20,8 @@ if ($vars['entity']) {
 	$search			= $vars['entity']->search;
 	$custom_tags	= $vars['entity']->custom_tags;
 	$owner_guids 	= $vars['entity']->owner_guids;
+	$lower_date 	= $vars['entity']->lower_date;
+	$upper_date 	= $vars['entity']->upper_date;
 	
 	// Load sticky form values
 	if (elgg_is_sticky_form('tagdashboards-save-form')) {
@@ -226,10 +228,17 @@ $hidden_groupby_input = elgg_view('input/hidden', array(
 ));
 
 $filter_label = elgg_echo('tagdashboards:label:filter');
-$filter_owners .= elgg_echo('tagdashboards:label:ownerguids');
+$filter_owners .= elgg_echo('tagdashboards:label:filterowner');
 $filter_owners_input .= elgg_view('input/tduserpicker', array(
 	'internalname' => 'tagdashboard_owner_guids',
 	'value' => $owner_guids,
+));
+
+$filter_date = elgg_echo('tagdashboards:label:filterdate');
+$filter_date_input .= elgg_view('input/tddaterange', array(
+	'name' => 'tagdashboard_date_range',
+	'id' => 'tagdashboard-date-range',
+	'value' => $date_range,
 ));
 
 $form_body = <<<HTML
@@ -265,7 +274,9 @@ $form_body = <<<HTML
 			<div id='tagdashboards-filter-input' style='display: none; clear: both;'>
 				<strong>$filter_owners</strong><br /><br />
 				$filter_owners_input
-				<div style='clear: both;'></div>
+				<div style='clear: both;'></div><br />
+				<strong>$filter_date</strong><br /><br />
+				$filter_date_input
 			</div>
 		</p>
 		<div style='clear: both;'></div>
