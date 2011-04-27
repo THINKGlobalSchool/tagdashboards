@@ -19,6 +19,12 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 	$title = $vars['entity']->title;
 	$description = $vars['entity']->description;
 	
+	$lower_date = $vars['entity']->lower_date;
+	$upper_date = $vars['entity']->upper_date;
+	
+	var_dump($lower_date);
+	var_dump($upper_date);
+		
 	$parsed_url = parse_url($address);
 
 	$comments_count = elgg_count_comments($vars['entity']);

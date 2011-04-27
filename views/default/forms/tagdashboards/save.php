@@ -238,7 +238,8 @@ $filter_date = elgg_echo('tagdashboards:label:filterdate');
 $filter_date_input .= elgg_view('input/tddaterange', array(
 	'name' => 'tagdashboard_date_range',
 	'id' => 'tagdashboard-date-range',
-	'value' => $date_range,
+	'value_lower' => $lower_date,
+	'value_upper' => $upper_date,
 ));
 
 $form_body = <<<HTML

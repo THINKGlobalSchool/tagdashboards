@@ -8,17 +8,23 @@
  * @copyright THINK Global School 2010
  * @link http://www.thinkglobalschool.com/
  * 
+ * @uses $vars['name'] 	Name of the inputs (will have _to or _from appended)
+ * @uses $vars['id']	Input ID (will have -to or -from appended)
+ * @uses $vars['value_lower'] 	Lower initial value (optional)
+ * @uses $vars['value_upper'] 	Upper initial value (optional)
  */
 
-$name = $vars['name'];
-$id = $vars['id'];
+$name 	= $vars['name'];
+$id 	= $vars['id'];
+$lower 	= date("F j, Y",$vars['value_lower']);
+$upper 	= date("F j, Y",$vars['value_upper']);
 
 echo <<<HTML
 	<div id='daterange-container' style='position:relative;'>
 		<label>From</label>
-		<input class='tagdashboards-daterange' type="text" id="{$id}-from" name="{$name}_from"/>
+		<input class='tagdashboards-daterange' type="text" id="{$id}-from" name="{$name}_from" value="{$lower}" />
 		<label>to</label>
-		<input class='tagdashboards-daterange' type="text" id="{$id}-to" name="{$name}_to"/>
+		<input class='tagdashboards-daterange' type="text" id="{$id}-to" name="{$name}_to" value="{$upper}" />
 		<script type='text/javascript'>
 			$(function() {
 				$('.tagdashboards-daterange').daterangepicker({
@@ -27,6 +33,7 @@ echo <<<HTML
 					posY: 			"0",
 					earliestDate: 	Date.parse('-99years'),
 					latestDate: 	Date.parse('+99years'),
+					dateFormat: 	'MM d, yy',
 					onOpen: 		function() {
 						//$('input.tagdashboards-daterange').val('');
 					},
