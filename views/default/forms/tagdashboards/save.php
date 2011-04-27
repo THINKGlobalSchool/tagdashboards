@@ -387,6 +387,10 @@ $form_body = <<<HTML
 			options['subtypes'] = selected_subtypes;
 			options['custom_tags'] = $('#tagdashboards-custom-input').val();
 			options['owner_guids'] = owner_guids;
+			
+			// Get/parse dates
+			options['lower_date'] = Date.parse($('#tagdashboard-date-range-from').val()) / 1000;
+			options['upper_date'] = Date.parse($('#tagdashboard-date-range-to').val()) / 1000;
 		
 			elgg.tagdashboards.display(options);
 			return false;

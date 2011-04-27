@@ -39,6 +39,8 @@ elgg.tagdashboards.display = function (options) {
 	var subtypes 	= options['subtypes'];
 	var owner_guids	= options['owner_guids'];
 	var custom_tags	= elgg.tagdashboards.custom_tags_string_to_array(options['custom_tags']);
+	var lower_date 	= options['lower_date'];
+	var upper_date 	= options['upper_date'];
 
 	// Create url to load
 	var url = elgg.normalize_url('pg/tagdashboards/loadtagdashboard?type=' + type);
@@ -48,9 +50,15 @@ elgg.tagdashboards.display = function (options) {
 	}
 	
 	// Load in content
-	$('#tagdashboards-content-container').hide().load(url, { 'custom_tags[]': custom_tags, 'subtypes': subtypes , 'owner_guids': owner_guids}, function() {
-		$('#tagdashboards-content-container').fadeIn('fast');
-	});
+	$('#tagdashboards-content-container').hide().load(url, { 
+		'custom_tags[]': 	custom_tags, 
+		'subtypes': 		subtypes , 
+		'owner_guids': 		owner_guids,
+		'lower_date': 		lower_date,
+		'upper_date': 		upper_date, 
+		}, 
+		function() {$('#tagdashboards-content-container').fadeIn('fast');}
+	);
 	$('#tagdashboards-save-input-container').show();
 }
 
@@ -109,7 +117,7 @@ elgg.tagdashboards.custom_tags_string_to_array = function (tag_string) {
 	return tag_array;
 }
 
-elgg.tagdashboards.load_tagdashboards_subtype_content = function (subtype, search, owner_guids, offset) {
+elgg.tagdashboards.load_tagdashboards_subtype_content = function (subtype, search, owner_guids, lower_date, upper_date, offset) {
 	var end_url = elgg.normalize_url('pg/tagdashboards/loadsubtype/');
 	end_url += "?subtype=" + subtype + "&search=" + search;
 	if (offset) {
@@ -117,7 +125,7 @@ elgg.tagdashboards.load_tagdashboards_subtype_content = function (subtype, searc
 	}
 
 	/* Simple show/hide */
-	$("#" + subtype + "_content").load(end_url, {'owner_guids' : owner_guids}, function() {
+	$("#" + subtype + "_content").load(end_url, {'owner_guids' : owner_guids, 'lower_date' : lower_date, 'upper_date' : upper_date}, function() {
 		$("#loading_" + subtype).hide();
 	});
 	
@@ -150,7 +158,7 @@ elgg.tagdashboards.load_tagdashboards_activity_content = function (activity, con
 	return false;
 }
 
-elgg.tagdashboards.load_tagdashboards_activity_tag_content = function (activity, search, subtypes, owner_guids, offset) {
+elgg.tagdashboards.load_tagdashboards_activity_tag_content = function (activity, search, subtypes, owner_guids, lower_date, upper_date, offset) {
 	var end_url = elgg.normalize_url('pg/tagdashboards/loadactivitytag/');
 	end_url += "?activity=" + activity + "&search=" + search;
 	if (offset) {
@@ -158,13 +166,13 @@ elgg.tagdashboards.load_tagdashboards_activity_tag_content = function (activity,
 	}
 
 	/* Simple show/hide */
-	$("#" + activity + "_content").load(end_url, { 'subtypes' : subtypes, 'owner_guids' : owner_guids}, function() {
+	$("#" + activity + "_content").load(end_url, { 'subtypes' : subtypes, 'owner_guids' : owner_guids, 'lower_date' : lower_date, 'upper_date' : upper_date}, function() {
 		$("#loading_" + activity).hide();
 	});	
 	return false;
 }
 
-elgg.tagdashboards.load_tagdashboards_custom_content = function (group, search, subtypes, owner_guids, offset) {
+elgg.tagdashboards.load_tagdashboards_custom_content = function (group, search, subtypes, owner_guids, lower_date, upper_date, offset) {
 	var end_url = elgg.normalize_url('pg/tagdashboards/loadcustom/');
 	end_url += "?group=" + group + "&search=" + search;
 	if (offset) {
@@ -172,7 +180,7 @@ elgg.tagdashboards.load_tagdashboards_custom_content = function (group, search, 
 	}
 
 	/* Simple show/hide */
-	$("#" + group + "_content").load(end_url, { 'subtypes' : subtypes, 'owner_guids' : owner_guids }, function() {
+	$("#" + group + "_content").load(end_url, { 'subtypes' : subtypes, 'owner_guids' : owner_guids, 'lower_date' : lower_date, 'upper_date' : upper_date }, function() {
 		$("#loading_" + group).hide();
 	});	
 	return false;

@@ -16,8 +16,8 @@
 
 $name 	= $vars['name'];
 $id 	= $vars['id'];
-$lower 	= date("F j, Y",$vars['value_lower']);
-$upper 	= date("F j, Y",$vars['value_upper']);
+$lower 	= $vars['value_lower'] ? date("F j, Y",$vars['value_lower']) : '';
+$upper 	= $vars['value_upper'] ? date("F j, Y",$vars['value_upper']) : '';
 
 echo <<<HTML
 	<div id='daterange-container' style='position:relative;'>

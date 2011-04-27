@@ -42,14 +42,8 @@ $tagdashboard->subtypes = serialize($subtypes);
 $tagdashboard->groupby = $groupby;
 $tagdashboard->custom_tags = $custom_tags;
 $tagdashboard->owner_guids = $owner_guids;
-
-// Set dates if provided
-if ($lower_date) {
-	$tagdashboard->lower_date = $lower_date;
-}
-if ($upper_date) {
-	$tagdashboard->upper_date = $upper_date;
-}
+$tagdashboard->lower_date = $lower_date;
+$tagdashboard->upper_date = $upper_date;
 
 // If error saving, register error and return
 if (!$tagdashboard->save()) {

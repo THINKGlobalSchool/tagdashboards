@@ -23,9 +23,11 @@ if (((int)$owner_guids == 0 || (!is_int((int)$owner_guids))) && !is_array($owner
 	$owner_guids = ELGG_ENTITIES_ANY_VALUE;
 }
 
-
 $json_subtypes = json_encode($subtypes);
 $json_owner_guids = json_encode($owner_guids);
+
+$lower_date = $vars['lower_date'];
+$upper_date = $vars['upper_date'];
 
 // Remove image related subtypes until I figure out what to do with them..
 foreach($subtypes as $idx => $subtype) {
@@ -40,7 +42,7 @@ if (!is_array($subtypes)) {
 }
 
 // Set the pager js (which function to use when reloading pagination)
-$page_js = "elgg.tagdashboards.load_tagdashboards_activity_tag_content(\"{$vars['activity']}\", \"{$vars['search']}\", $json_subtypes, $json_owner_guids, \"%s\");";
+$page_js = "elgg.tagdashboards.load_tagdashboards_activity_tag_content(\"{$vars['activity']}\", \"{$vars['search']}\", $json_subtypes, $json_owner_guids, \"{$lower_date}\", \"{$upper_date}\", \"%s\");";
 
 set_input('page_js', $page_js);
 
@@ -68,6 +70,16 @@ $params = array(
 											'case_sensitive' => FALSE)
 										)
 );
+
+// If we were supplied with a lower date, include it 
+if ((int)$lower_date) {
+	$params['created_time_lower'] = $lower_date;
+}
+
+// If we were supplied with an upper date, include it
+if ((int)$upper_date) {
+	$params['created_time_upper'] = $upper_date;
+}
 
 $entity_list = elgg_list_entities($params, 'elgg_get_entities_from_metadata');
 

@@ -16,12 +16,19 @@ $subtypes = $vars['subtypes'];
 // Get search
 $search = $vars['search'];
 
+// Owner guids
 $owner_guids = $vars['owner_guids'];
 $json_owner_guids = json_encode($owner_guids);
+
+// Dates
+$lower_date = $vars['lower_date'];
+$upper_date = $vars['upper_date'];
 
 $content = <<<HTML
 	<script type='text/javascript'>
 		var owner_guids = $.parseJSON('$json_owner_guids');
+		var lower_date = '$lower_date';
+		var upper_date = '$upper_date';
 	</script>
 HTML;
 
@@ -50,7 +57,7 @@ foreach ($subtypes as $subtype) {
 	$content .= <<<HTML
 	<script type='text/javascript'>
 		$(document).ready(function() {
-			elgg.tagdashboards.load_tagdashboards_subtype_content("$subtype", "$search", owner_guids, null);
+			elgg.tagdashboards.load_tagdashboards_subtype_content("$subtype", "$search", owner_guids, lower_date, upper_date, null);
 		});
 	</script>
 HTML;

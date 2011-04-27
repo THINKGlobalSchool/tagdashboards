@@ -122,81 +122,62 @@ function tagdashboards_page_handler($page) {
 	$ui_url = elgg_get_site_url() . 'mod/tagdashboards/vendors/smoothness/jquery-ui-1.7.3.custom.css';
 	elgg_register_css($ui_url, 'smoothness');
 	
+	// Common options & inputs
+	$type = get_input('type', 'subtype');
+	$search = get_input('search', NULL);
+	$activity = get_input('activity');
+	$group = get_input('group');
+	$container_guid = get_input('container_guid');
+	$subtype = get_input('subtype');
+	$subtypes = get_input('subtypes', NULL);
+	$offset = get_input('offset', NULL);
+	$owner_guids = get_input('owner_guids', NULL);
+	$lower_date = get_input('lower_date', NULL);
+	$upper_date = get_input('upper_date', NULL);
+	$custom_tags = get_input('custom_tags');
+	
+	$dashboard_options = array(
+		'type' => $type,
+		'activity' => $activity, 
+		'group' => $group, 
+		'container_guid' => $container_guid, 
+		'subtype' => $subtype,
+		'subtypes' => $subtypes, 
+		'search' => $search, 
+		'offset' => $offset, 
+		'owner_guids' => $owner_guids,
+		'lower_date' => $lower_date,
+		'upper_date' => $upper_date,
+		'custom_tags' => $custom_tags,
+	);
+	
+	
 	if (isset($page[0]) && !empty($page[0])) {
 		switch ($page[0]) {
 			/* BEGIN AJAX ENDPOINTS */
 			//@TODO maybe a second page handler for the ajax? 
-			case 'loadsubtype':
-				// Get inputs
-				$search = get_input('search');
-				$subtype = get_input('subtype');
-				$offset = get_input('offset', NULL);
-				$owner_guids = get_input('owner_guids', NULL);
-				echo elgg_view('tagdashboards/content/subtype', array(
-					'subtype' => $subtype, 
-					'search' => $search, 
-					'offset' => $offset, 
-					'owner_guids' => $owner_guids
-				));
+			case 'loadsubtype':				
+				echo elgg_view('tagdashboards/content/subtype', $dashboard_options);
 				// This is an ajax load, so exit
 				exit;
 			break;
 			case 'loadactivity':
-				// Get inputs
-				$activity = get_input('activity');
-				$container_guid = get_input('container_guid');
-				$offset = get_input('offset', NULL);
-				echo elgg_view('tagdashboards/content/activity', array(
-					'activity' => $activity, 
-					'container_guid' => $container_guid, 
-					'offset' => $offset
-				));
+				echo elgg_view('tagdashboards/content/activity', $dashboard_options);
 				// This is an ajax load, so exit
 				exit;
 			break;
 			case 'loadactivitytag':
-				// Get inputs
-				$activity = get_input('activity');
-				$search = get_input('search');
-				$offset = get_input('offset', NULL);
-				$subtypes = get_input('subtypes', NULL);
-				$owner_guids = get_input('owner_guids', NULL);
-				echo elgg_view('tagdashboards/content/activity_tag', array(
-					'activity' => $activity, 
-					'search' => $search, 
-					'offset' => $offset, 
-					'subtypes' => $subtypes, 
-					'owner_guids' => $owner_guids
-				));
+				echo elgg_view('tagdashboards/content/activity_tag', $dashboard_options);
 				// This is an ajax load, so exit
 				exit;
 			break;
 			case 'loadcustom':
-				// Get inputs
-				$group = get_input('group');
-				$search = get_input('search');
-				$offset = get_input('offset', NULL);
-				$subtypes = get_input('subtypes', NULL);
-				$owner_guids = get_input('owner_guids', NULL);
-				echo elgg_view('tagdashboards/content/custom', array(
-					'group' => $group, 
-					'search' => $search, 
-					'offset' => $offset, 
-					'subtypes' => $subtypes, 
-					'owner_guids' => $owner_guids
-				));
+				echo elgg_view('tagdashboards/content/custom', $dashboard_options);
 				// This is an ajax load, so exit
 				exit;
 			break;
 			case 'loadtagdashboard':
-				$options = array(
-					'search' => get_input('search', NULL),
-					'type' => get_input('type', 'subtype'),
-					'custom_tags' =>  get_input('custom_tags'),
-					'owner_guids' => get_input('owner_guids', NULL),
-					'subtypes' => get_input('subtypes', null),
-				);  
-				echo tagdashboards_get_load_content($options);
+				echo tagdashboards_get_load_content($dashboard_options);
 				// This ia an ajax load, so exit
 				exit;
 			case 'timelinefeed':

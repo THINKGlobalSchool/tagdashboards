@@ -368,6 +368,16 @@ function tagdashboards_get_entities_from_tag_and_container_tag($params) {
 		$owner_guids_sql = " AND " . elgg_get_entity_owner_where_sql('e', $params['owner_guids']) . " ";
 	}
 	
+	if ((int)$params['created_time_upper'] && (int)$params['created_time_lower']) {
+		$date_sql = " AND " . elgg_get_entity_time_where_sql(
+			'e', 
+			$params['created_time_upper'],
+			$params['created_time_lower'], 
+			$params['modified_time_upper'], 
+			$params['modified_time_lower']
+		);
+	}
+
 	$access_sql = get_access_sql_suffix('e');
 	
 	// Include additional wheres
@@ -384,6 +394,7 @@ function tagdashboards_get_entities_from_tag_and_container_tag($params) {
 				WHERE (msn1.string = 'tags' AND msv1.string = '{$params['tagdashboards_search_term']}')
 					AND {$type_subtype_sql}
 					$owner_guids_sql
+					$date_sql
 					AND (e.site_guid IN ({$CONFIG->site_guid}))
 					AND $access_sql
 					$wheres) 
@@ -395,6 +406,7 @@ function tagdashboards_get_entities_from_tag_and_container_tag($params) {
 				WHERE (cmsn.string = 'tags' AND cmsv.string = '{$params['tagdashboards_search_term']}')
 					AND {$type_subtype_sql}
 					$owner_guids_sql
+					$date_sql
 					AND (e.site_guid IN ({$CONFIG->site_guid}))
 					AND $access_sql
 					$wheres) ";
@@ -531,7 +543,7 @@ function tagdashboards_timeline_photo_override_handler($hook, $type, $returnvalu
 		$params['params']['types'] = array('object');
 		$params['params']['subtypes'] = array('image');
 		//$params['params']['callback'] = "entity_row_to_elggstar";
-		
+
 		$rows = tagdashboards_get_entities_from_tag_and_container_tag($params['params']);
 		return tagdashboards_get_limited_entities_from_rows($rows);
 	}
@@ -546,7 +558,7 @@ function tagdashboards_timeline_photo_override_handler($hook, $type, $returnvalu
 function tagdashboards_photo_override_handler($hook, $type, $returnvalue, $params) {
 	if ($type == 'image') {
 		$params['params']['tagdashboards_search_term'] = $params['search']; // Need to set this to use the hacky function
-		$params['params']['callback'] = "entity_row_to_elggstar";
+		$params['params']['callback'] = "entity_row_to_elggstar";		
 		return elgg_list_entities($params['params'], 'tagdashboards_get_entities_from_tag_and_container_tag');
 	}
 	return false;

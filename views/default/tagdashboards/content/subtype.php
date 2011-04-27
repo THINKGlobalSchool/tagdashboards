@@ -20,6 +20,8 @@ if (((int)$owner_guids == 0 || (!is_int((int)$owner_guids))) && !is_array($owner
 	$owner_guids = ELGG_ENTITIES_ANY_VALUE;
 }
 
+$lower_date = $vars['lower_date'];
+$upper_date = $vars['upper_date'];
 
 $json_owner_guids = json_encode($owner_guids);
 
@@ -30,7 +32,7 @@ if (!elgg_view_exists("object/{$vars['subtype']}")) {
 
 
 // Set the pager js (which function to use when reloading pagination)
-$page_js = "elgg.tagdashboards.load_tagdashboards_subtype_content(\"{$vars['subtype']}\", \"{$vars['search']}\", $json_owner_guids, \"%s\");";
+$page_js = "elgg.tagdashboards.load_tagdashboards_subtype_content(\"{$vars['subtype']}\", \"{$vars['search']}\", $json_owner_guids, \"{$lower_date}\", \"{$upper_date}\", \"%s\");";
 
 set_input('page_js', $page_js);
 
@@ -50,6 +52,16 @@ $params = array(
 											'operand' => '=',
 											'case_sensitive' => FALSE)
 );
+
+// If we were supplied with a lower date, include it 
+if ((int)$lower_date) {
+	$params['created_time_lower'] = $lower_date;
+}
+
+// If we were supplied with an upper date, include it
+if ((int)$upper_date) {
+	$params['created_time_upper'] = $upper_date;
+}
 
 // See if anyone has registered a hook to display their subtype appropriately
 if (!$entity_list = trigger_plugin_hook('tagdashboards:subtype', $vars['subtype'], array('search' => $vars['search'], 'params' => $params), false)) {

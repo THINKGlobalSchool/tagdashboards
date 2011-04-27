@@ -10,20 +10,28 @@
  * 
  */
 
+// Custom tags
 $custom = $vars['custom_tags'];
 $search = $vars['search'];
 
+// Get Subtypes
 $subtypes = $vars['subtypes'];
 $json_subtypes = json_encode($subtypes);
 
+// Get ownerguids
 $owner_guids = $vars['owner_guids'];
-
 $json_owner_guids = json_encode($owner_guids);
+
+// Dates
+$lower_date = $vars['lower_date'];
+$upper_date = $vars['upper_date'];
 
 $content = <<<HTML
 	<script type='text/javascript'>
 		var subtypes = $.parseJSON('$json_subtypes');
 		var owner_guids = $.parseJSON('$json_owner_guids');
+		var lower_date = '$lower_date';
+		var upper_date = '$upper_date';
 	</script>
 HTML;
 
@@ -39,7 +47,7 @@ foreach($custom as $tag) {
 	$content .= <<<HTML
 	<script type='text/javascript'>
 		$(document).ready(function() {
-			elgg.tagdashboards.load_tagdashboards_custom_content("$tag", "$search", subtypes, owner_guids, null);
+			elgg.tagdashboards.load_tagdashboards_custom_content("$tag", "$search", subtypes, owner_guids, lower_date, upper_date, null);
 		});
 	</script>
 HTML;

@@ -43,14 +43,9 @@ $tagdashboard->subtypes = serialize($subtypes);
 $tagdashboard->groupby = $groupby;
 $tagdashboard->custom_tags = $custom_tags;
 $tagdashboard->owner_guids = $owner_guids;
+$tagdashboard->lower_date = $lower_date;
+$tagdashboard->upper_date = $upper_date;
 
-// Set dates if provided
-if ($lower_date) {
-	$tagdashboard->lower_date = $lower_date;
-}
-if ($upper_date) {
-	$tagdashboard->upper_date = $upper_date;
-}
 
 if ($container_guid) {
 	$tagdashboard->container_guid = $container_guid;

@@ -18,12 +18,6 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 	$address = $vars['entity']->getURL();
 	$title = $vars['entity']->title;
 	$description = $vars['entity']->description;
-	
-	$lower_date = $vars['entity']->lower_date;
-	$upper_date = $vars['entity']->upper_date;
-	
-	var_dump($lower_date);
-	var_dump($upper_date);
 		
 	$parsed_url = parse_url($address);
 
@@ -88,6 +82,8 @@ HTML;
 		$js_subtypes = json_encode($subtypes);
 		$js_custom_tags = json_encode($vars['entity']->custom_tags);
 		$js_owner_guids = json_encode($vars['entity']->owner_guids);
+		$js_lower_date = $vars['entity']->lower_date;
+		$js_upper_date = $vars['entity']->upper_date;
  	
 		$script = <<<HTML
 			<script type='text/javascript'>
@@ -96,6 +92,8 @@ HTML;
 				var subtypes = '$js_subtypes';
 				var custom_tags = '$js_custom_tags';
 				var owner_guids = '$js_owner_guids';
+				var lower_date = '$js_lower_date';
+				var upper_date = '$js_upper_date';
 				
 				// Set up options
 				var options = new Array();
@@ -104,14 +102,13 @@ HTML;
 				options['subtypes'] = $.parseJSON(subtypes);
 				options['custom_tags'] = $.parseJSON(custom_tags);
 				options['owner_guids'] = $.parseJSON(owner_guids);
+				options['lower_date'] = lower_date;
+				options['upper_date'] = upper_date;
 				
-			
 				$(document).ready(function() {
 					elgg.tagdashboards.display(options);
 				});
 				
-				
-			
 				var is_tl_loaded = false;
 				var end_url = "$timeline_load";
 
