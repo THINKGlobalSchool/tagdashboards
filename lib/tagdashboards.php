@@ -48,17 +48,6 @@ function tagdashboards_get_page_content_edit($guid) {
 }
 
 /**
- * Build content for tag dashboards admin settings 
- */
-function tagdashboards_get_page_content_admin_settings() {
-	$content_info['title'] = elgg_echo('tagdashboards:title:adminsettings');
-	$content_info['layout'] = 'administration';
-	$content = elgg_view('tagdashboards/admin/settings');	
-	$content_info['content'] = elgg_view_title($content_info['title']) . $content;
-	return $content_info;
-}
-
-/**
  * Get tag dashboard listing content 
  */
 function tagdashboards_get_page_content_list($user_guid = null) {

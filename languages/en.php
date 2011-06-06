@@ -18,6 +18,9 @@ $english = array(
 	'item:object:tagdashboard' => 'Tag Dashboard',
 	'tagdashboard:enablegroup' => 'Enable group tag dashboards',
 	
+	'admin:tagdashboards' => 'Tag Dashboards',
+	'admin:tagdashboards:subtypes' => 'Entity Settings',
+	
 	// Page titles 
 	'tagdashboards:title:search' => 'Tag Dashboard Search',
 	'tagdashboards:title:edit' => 'Edit Tag Dashboard',

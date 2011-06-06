@@ -12,10 +12,6 @@
 
 $tag_portfolio = $vars['tag_portfolio'];
 
-// Register autocomplete JS
-$auto_url = elgg_get_site_url() . "vendors/jquery/jquery.autocomplete.min.js";
-elgg_register_js($auto_url, 'jquery.autocomplete');
-
 $instructions = elgg_echo('tagdashboards:description:tagportfolio');
 
 // Tags search input

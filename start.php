@@ -10,14 +10,28 @@
  * 
  */
 
+/************* 1.8 Update To Do's *****************
+ * Must:
+ * - Profile portfolio
+ * - Sort out all the included vendors (jquery, theme etc)
+ *
+ * If possible:
+ * - Modules?
+ * - Uberviews (maybe replace with module?)
+ */
+
+
 elgg_register_event_handler('init', 'system', 'tagdashboards_init');
 
 function tagdashboards_init() {	
-	// Include helpers
-	require_once 'lib/tagdashboards.php';
 	
-	// Extend CSS
-	elgg_extend_view('css/screen','tagdashboards/css');
+	// Register and load library
+	elgg_register_library('tagdashboards', elgg_get_plugins_path() . 'tagdashboards/lib/tagdashboards.php');
+	elgg_load_library('tagdashboards');
+		
+	// Register CSS
+	$td_css = elgg_get_simplecache_url('css', 'tagdashboards/css');
+	elgg_register_css('elgg.tagdashboards', $td_css);
 	
 	// Extend admin view to include some extra styles
 	elgg_extend_view('layouts/administration', 'tagdashboards/admin/css');
@@ -50,7 +64,7 @@ function tagdashboards_init() {
 	elgg_register_action('tagdashboards/save_tag_portfolio', "$action_base/save_tag_portfolio.php");
 	elgg_register_action('tagdashboards/edit', "$action_base/edit.php");
 	elgg_register_action('tagdashboards/delete', "$action_base/delete.php");
-	elgg_register_action('tagdashboards/admin_enable_subtypes', "$action_base/admin_enable_subtypes.php", 'admin');
+	elgg_register_action('tagdashboards/subtypes', "$action_base/subtypes.php", 'admin');
 	
 	// Setup url handler for tag dashboards
 	elgg_register_entity_url_handler('object', 'tagdashboard', 'tagdashboards_url_handler');
@@ -73,7 +87,7 @@ function tagdashboards_init() {
 	elgg_register_plugin_hook_handler('tagdashboards:subtype', 'image', 'tagdashboards_photo_override_handler');
 	
 	// Register type
-	register_entity_type('object', 'tagdashboard');		
+	elgg_register_entity_type('object', 'tagdashboard');		
 
 	// Add group option
 	add_group_tool_option('tagdashboards',elgg_echo('tagdashboard:enablegroup'), TRUE);
@@ -86,7 +100,6 @@ function tagdashboards_init() {
 
 /**
  * Tag Dashboards page handler 
- * 
  *
  * @todo Ajax endpoints - Should be somewhere else? Somehow?
  *	loadsubtype 		Load subtype content
@@ -102,12 +115,11 @@ function tagdashboards_init() {
  * @return NULL
  */
 function tagdashboards_page_handler($page) {
-	set_context('tagdashboards');
-	gatekeeper();
+	// Load CSS
+	elgg_load_css('elgg.tagdashboards');
 	
-	// Register autocomplete JS
-	$auto_url = elgg_get_site_url() . "vendors/jquery/jquery.autocomplete.min.js";
-	elgg_register_js($auto_url, 'jquery.autocomplete');
+	elgg_set_context('tagdashboards');
+	gatekeeper();
 	
 	// Register datepicker
 	$daterange_url = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
@@ -209,11 +221,6 @@ function tagdashboards_page_handler($page) {
 				}
 				$content_info = tagdashboards_get_page_content_add($page[1]);
 			break;
-			case 'settings':
-				admin_gatekeeper();
-				set_context('admin');
-				$content_info = tagdashboards_get_page_content_admin_settings();
-			break;
 			case 'edit':
 				$content_info = tagdashboards_get_page_content_edit($page[1]);
 			break;
@@ -222,14 +229,12 @@ function tagdashboards_page_handler($page) {
 				// HAVE TO HAVE TO HAVE TO HAVE TO LOAD THE JS IN THE HEAD!!!
 				elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false", 'timeline');
 				elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/lib/tagdashboards-timeline.js', 'tagdashboards-timeline');
-				elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/lib/timeline-popup.js', 'timeline-popup');
 				$content_info = tagdashboards_get_page_content_view($page[1]);
 			break;
 			case 'timeline':
 				// Register the js in the head, because that makes things work.
 				elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false", 'timeline');
 				elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/lib/tagdashboards-timeline.js', 'tagdashboards-timeline');
-				elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/lib/timeline-popup.js', 'timeline-popup');
 				$content_info = tagdashboards_get_page_content_timeline($page[1]);
 			break;
 			case 'timeline_image_icon':
@@ -237,7 +242,7 @@ function tagdashboards_page_handler($page) {
 				exit;
 			break;
 			case 'group_activity':
-				set_context('group');
+				elgg_set_context('group');
 				$content_info = tagdashboards_get_page_content_group_activity($page[1]);
 			break;
 			case 'activity_tag':
@@ -283,20 +288,9 @@ function tagdashboards_page_handler($page) {
  * Setup tag dashboard submenus
  */
 function tagdashboards_submenus() {
-	// all/yours/friends 
-	/*
-	elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:menu:yourtagdashboards'), 
-								'href' => elgg_get_site_url() . 'tagdashboards/' . get_loggedin_user()->username), 'tagdashboards');
-								
-	elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:menu:friendstagdashboards'), 
-								'href' => elgg_get_site_url() . 'tagdashboards/friends' ), 'tagdashboards');
-
-	elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:menu:alltagdashboards'), 
-								'href' => elgg_get_site_url() . 'tagdashboards/' ), 'tagdashboards');
-	*/
-
-	// Admin 
-	if (elgg_is_admin_logged_in()) {
+	// Add admin link
+	if (elgg_in_context('admin')) {
+		elgg_register_admin_menu_item('administer', 'subtypes', 'tagdashboards');
 		/*elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:title:adminsettings'), 
 									'href' => elgg_get_site_url() . "tagdashboards/settings"), 'admin', 'z');
 		*/
@@ -336,7 +330,7 @@ function tagdashboards_profile_menu($hook, $type, $value, $params) {
 
 /**
  * Hook into the framework and provide comments on tag dashboards
- *
+ * @todo get rid of this
  * @param unknown_type $hook
  * @param unknown_type $type
  * @param unknown_type $value
@@ -356,5 +350,4 @@ function tagdashboard_annotate_comments($hook, $type, $value, $params) {
 		// Display comments
 		return elgg_view_comments($entity);
 	}
-	
 }
