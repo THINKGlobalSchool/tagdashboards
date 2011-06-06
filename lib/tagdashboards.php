@@ -33,7 +33,7 @@ function tagdashboards_get_page_content_edit($guid) {
 	if (elgg_instanceof($tagdashboard, 'object', 'tagdashboard') && $tagdashboard->canEdit()) {
 		$owner = get_entity($tagdashboard->container_guid);
 		set_page_owner($owner->getGUID());
-		elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'pg/tagdashboards');
+		elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
 		elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
 		elgg_push_breadcrumb('edit');
 		$content_info['title'] = elgg_echo('tagdashboards:title:edit');
@@ -67,13 +67,13 @@ function tagdashboards_get_page_content_list($user_guid = null) {
 		$user = get_entity($user_guid);
 		if ($user instanceof ElggGroup) {
 			// Got a group
-			elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'pg/tagdashboards');
-			elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'pg/tagdashboards/' . $user->username);
+			elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
+			elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'tagdashboards/' . $user->username);
 			elgg_push_breadcrumb(elgg_echo('tagdashboards:label:grouptags'));
 			$container_guid = "/" .$user->getGUID();
 		} else {
-			elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'pg/tagdashboards');
-			elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'pg/tagdashboards/' . $user->username);
+			elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
+			elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'tagdashboards/' . $user->username);
 		}
 		$header_context = 'mine';
 		$content = elgg_list_entities(array('type' => 'object', 'subtype' => 'tagdashboard', 'full_view' => false, 'container_guid' => $user_guid));
@@ -100,10 +100,10 @@ function tagdashboards_get_page_content_list($user_guid = null) {
 	$header = elgg_view('page_elements/content_header', array(
 		'context' => $header_context,
 		'type' => 'tagdashboard',
-		'all_link' => elgg_get_site_url() . "pg/tagdashboards",
-		'mine_link' => elgg_get_site_url() . "pg/tagdashboards/" . get_loggedin_user()->username,
-		'friend_link' => elgg_get_site_url() . "pg/tagdashboards/friends",
-		'new_link' => elgg_get_site_url() . "pg/tagdashboards/add" . $container_guid,
+		'all_link' => elgg_get_site_url() . "tagdashboards",
+		'mine_link' => elgg_get_site_url() . "tagdashboards/" . get_loggedin_user()->username,
+		'friend_link' => elgg_get_site_url() . "tagdashboards/friends",
+		'new_link' => elgg_get_site_url() . "tagdashboards/add" . $container_guid,
 	));
 	
 	if ($user_guid && ($user_guid != $loggedin_userid) && !elgg_instanceof($user, 'group')) {
@@ -121,17 +121,17 @@ function tagdashboards_get_page_content_list($user_guid = null) {
  */
 function tagdashboards_get_page_content_friends($user_guid) {
 	$user = get_entity($user_guid);
-	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'pg/tagdashboards');
-	elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'pg/tagdashboards/' . $user->username);
+	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
+	elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'tagdashboards/' . $user->username);
 	elgg_push_breadcrumb(elgg_echo('friends'));
 	
 	$content = elgg_view('page_elements/content_header', array(
 		'context' => 'friends',
 		'type' => 'tagdashboard',
-		'all_link' => elgg_get_site_url() . "pg/tagdashboards",
-		'mine_link' => elgg_get_site_url() . "pg/tagdashboards/" . get_loggedin_user()->username,
-		'friend_link' => elgg_get_site_url() . "pg/tagdashboards/friends",
-		'new_link' => elgg_get_site_url() . "pg/tagdashboards/add"
+		'all_link' => elgg_get_site_url() . "tagdashboards",
+		'mine_link' => elgg_get_site_url() . "tagdashboards/" . get_loggedin_user()->username,
+		'friend_link' => elgg_get_site_url() . "tagdashboards/friends",
+		'new_link' => elgg_get_site_url() . "tagdashboards/add"
 	));
 
 	if (!$friends = get_user_friends($user_guid, ELGG_ENTITIES_ANY_VALUE, 0)) {
@@ -169,8 +169,8 @@ function tagdashboards_get_page_content_view($guid) {
 	$tagdashboard = get_entity($guid);
 	$owner = get_entity($tagdashboard->container_guid);
 	set_page_owner($owner->getGUID());
-	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'pg/tagdashboards');
-	elgg_push_breadcrumb($owner->name, elgg_get_site_url() . 'pg/tagdashboards/' . $owner->username);
+	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
+	elgg_push_breadcrumb($owner->name, elgg_get_site_url() . 'tagdashboards/' . $owner->username);
 	elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
 	$content_info['title'] = $tagdashboard->title;
 	$content_info['content'] = elgg_view_entity($tagdashboard, true);
@@ -186,8 +186,8 @@ function tagdashboards_get_page_content_timeline($guid) {
 	$tagdashboard = get_entity($guid);
 	$owner = get_entity($tagdashboard->container_guid);
 	set_page_owner($owner->getGUID());
-	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'pg/tagdashboards');
-	elgg_push_breadcrumb($owner->name, elgg_get_site_url() . 'pg/tagdashboards/' . $owner->username);
+	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
+	elgg_push_breadcrumb($owner->name, elgg_get_site_url() . 'tagdashboards/' . $owner->username);
 	elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
 	$content_info['title'] = $tagdashboard->title;
 	$content_info['content'] = elgg_view('tagdashboards/timeline', array('entity' => $tagdashboard));
@@ -535,7 +535,7 @@ function tagdashboards_get_activities() {
 /** 
  *	Hook to change how photos are retrieved on the timeline
  */
-function tagdashboards_timeline_photo_override_handler($hook, $type, $returnvalue, $params) {
+function tagdashboards_timeline_photo_override_handler($hook, $type, $value, $params) {
 	if ($type == 'image') {
 		$params['params']['tagdashboards_search_term'] = $params['search']; // Need to set this to use the hacky function
 		$params['params']['limit'] = 0;
@@ -555,7 +555,7 @@ function tagdashboards_timeline_photo_override_handler($hook, $type, $returnvalu
  *	photos and photos in albums with searched tag
  *	Uses: tagdashboards_get_images_and_albums_with_tag()
  */
-function tagdashboards_photo_override_handler($hook, $type, $returnvalue, $params) {
+function tagdashboards_photo_override_handler($hook, $type, $value, $params) {
 	if ($type == 'image') {
 		$params['params']['tagdashboards_search_term'] = $params['search']; // Need to set this to use the hacky function
 		$params['params']['callback'] = "entity_row_to_elggstar";		
@@ -567,7 +567,7 @@ function tagdashboards_photo_override_handler($hook, $type, $returnvalue, $param
 /**
  * Handler to register a timeline icon for blogs 
  */
-function tagdashboards_timeline_blog_icon_handler($hook, $type, $returnvalue, $params) {
+function tagdashboards_timeline_blog_icon_handler($hook, $type, $value, $params) {
 	if ($type == 'blog') {
 		return elgg_get_site_url() . "mod/tagdashboards/images/blog.gif";
 	}
@@ -577,7 +577,7 @@ function tagdashboards_timeline_blog_icon_handler($hook, $type, $returnvalue, $p
 /**
  * Handler to register a timeline icon for images 
  */
-function tagdashboards_timeline_image_icon_handler($hook, $type, $returnvalue, $params) {
+function tagdashboards_timeline_image_icon_handler($hook, $type, $value, $params) {
 	if ($type == 'image') {
 		return elgg_get_site_url() . "mod/tagdashboards/images/image.gif";
 	}
@@ -587,7 +587,7 @@ function tagdashboards_timeline_image_icon_handler($hook, $type, $returnvalue, $
 /** 
  * Handler to register a timeline icon for tag dashboards 
  */
-function tagdashboards_timeline_tagdashboard_icon_handler($hook, $type, $returnvalue, $params) {
+function tagdashboards_timeline_tagdashboard_icon_handler($hook, $type, $value, $params) {
 	if ($type == 'tagdashboard') {
 		return elgg_get_site_url() . "mod/tagdashboards/images/tagdashboard.gif";
 	}
@@ -597,7 +597,7 @@ function tagdashboards_timeline_tagdashboard_icon_handler($hook, $type, $returnv
 /**
  * Handler to change name of Albums to Photos 
  */
-function tagdashboards_subtype_album_handler($hook, $type, $returnvalue, $params) {
+function tagdashboards_subtype_album_handler($hook, $type, $value, $params) {
 	if ($type == 'album') {
 		return 'Photos';
 	}
@@ -608,19 +608,19 @@ function tagdashboards_subtype_album_handler($hook, $type, $returnvalue, $params
 /**
  * Example for exceptions 
  */
-function tagdashboards_exception_example($hook, $type, $returnvalue, $params) {
+function tagdashboards_exception_example($hook, $type, $value, $params) {
 	// Unset a type (includes it in the list)
-	unset($returnvalue[array_search('plugin', $returnvalue)]);
+	unset($value[array_search('plugin', $value)]);
 	
 	// Add a new exception
-	$returnvalue[] = 'todo';
-	return $returnvalue;
+	$value[] = 'todo';
+	return $value;
 }
 
 /**
  * Example for subtypes 
  */
-function tagdashboards_subtype_example($hook, $type, $returnvalue, $params) {
+function tagdashboards_subtype_example($hook, $type, $value, $params) {
 	// return custom content
 	return "Test";
 }

@@ -22,7 +22,7 @@ if ($file) {
 
 	$info .= "<p class='entity_title'><a href=\"{$file->getURL()}\">{$title}</a></p>";
 
-	$info .= "<p class='entity_subtext'><a href=\"{$vars['url']}pg/document/{$owner->username}\">{$owner->name}</a> {$friendlytime}";
+	$info .= "<p class='entity_subtext'><a href=\"{$vars['url']}document/{$owner->username}\">{$owner->name}</a> {$friendlytime}";
 	// get the number of comments
 	$numcomments = elgg_count_comments($file);
 	if ($numcomments) {

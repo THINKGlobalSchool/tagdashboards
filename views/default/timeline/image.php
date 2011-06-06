@@ -17,13 +17,13 @@ if ($views) {
 	$views_string = sprintf(elgg_echo("tidypics:views"), $views);
 }
 
-$image_link = elgg_get_site_url() . "pg/photos/thumbnail/{$vars['entity']->getGUID()}/small";
+$image_link = elgg_get_site_url() . "photos/thumbnail/{$vars['entity']->getGUID()}/small";
 
 $comments_count = elgg_count_comments($vars['entity']);
 $likes_count = elgg_count_likes($vars['entity']);
 
 $id = $vars['entity']->getGUID();
-$src = elgg_get_site_url() . "pg/photos/thumbnail/{$vars['entity']->getGUID()}/large";
+$src = elgg_get_site_url() . "photos/thumbnail/{$vars['entity']->getGUID()}/large";
 
 echo "<div class='timeline-tidypics-image-container'>
 		<div style='display: none;' id='popup-dialog-$id' class='image-popup-dialog'></div>

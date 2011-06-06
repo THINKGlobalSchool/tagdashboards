@@ -62,7 +62,7 @@ if (@file_exists($faviconurl)) {
 
 
 $info .= "<p class='entity_title'>$a_tag_title</p>";
-$info .= "<p class='entity_subtext'>Bookmarked by <a href=\"".elgg_get_site_url()."pg/bookmarks/{$owner->username}\">{$owner->name}</a> {$friendlytime} {$view_notes}</p>";
+$info .= "<p class='entity_subtext'>Bookmarked by <a href=\"".elgg_get_site_url()."bookmarks/{$owner->username}\">{$owner->name}</a> {$friendlytime} {$view_notes}</p>";
 
 $tags = elgg_view('output/tags', array('tags' => $vars['entity']->tags));
 if (!empty($tags)) {

@@ -29,7 +29,7 @@ $upper_date = strtotime(get_input('tagdashboard_date_range_to', null));
 elgg_make_sticky_form('tagdashboards-save-form');
 if (!$title) {
 	register_error(elgg_echo('tagdashboards:error:requiredfields'));
-	forward(elgg_get_site_url() . 'pg/tagdashboards/add#' . $search);
+	forward(elgg_get_site_url() . 'tagdashboards/add#' . $search);
 }
 
 $tagdashboard = new ElggObject();
@@ -65,4 +65,4 @@ add_to_river('river/object/tagdashboard/create', 'create', get_loggedin_userid()
 
 // Forward on
 system_message(elgg_echo('tagdashboards:success:save'));
-forward('pg/tagdashboards');
+forward('tagdashboards');

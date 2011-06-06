@@ -20,7 +20,7 @@ if (isset($vars['entity'])) {
 	$icon = elgg_view("profile/icon",array('entity' => $vars['entity']->getOwnerEntity(), 'size' => 'tiny'), false, false, 'default');
 	
 	$desc = $vars['entity']->description;
-	//$desc = preg_replace('/\@([A-Za-z0-9\_\.\-]*)/i','@<a href="' . $vars['url'] . 'pg/thewire/$1">$1</a>',$desc);
+	//$desc = preg_replace('/\@([A-Za-z0-9\_\.\-]*)/i','@<a href="' . $vars['url'] . 'thewire/$1">$1</a>',$desc);
 	
 	// Strip out hashtags
 	$regex = '/#([A-Aa-z0-9_-]+)/is';

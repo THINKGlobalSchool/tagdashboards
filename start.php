@@ -31,12 +31,12 @@ function tagdashboards_init() {
 	// Extend Groups profile page
 	elgg_extend_view('groups/tool_latest','tagdashboards/group_dashboards');
 	
-	
 	// Page handler
-	register_page_handler('tagdashboards','tagdashboards_page_handler');
-
-	// Add to tools menu
-	add_menu(elgg_echo("tagdashboards"), elgg_get_site_url() . 'pg/tagdashboards');
+	elgg_register_page_handler('tagdashboards','tagdashboards_page_handler');
+	
+	// Add to main menu
+	$item = new ElggMenuItem('tagdashboards', elgg_echo('tagdashboards'), 'tagdashboards');
+	elgg_register_menu_item('site', $item);
 
 	// Add submenus
 	elgg_register_event_handler('pagesetup','system','tagdashboards_submenus');
@@ -45,7 +45,7 @@ function tagdashboards_init() {
 	elgg_register_event_handler('tagdashboard_url','object', 'tagdashboard');
 
 	// Register actions
-	$action_base = elgg_get_plugin_path() . 'tagdashboards/actions/tagdashboards';
+	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/tagdashboards';
 	elgg_register_action('tagdashboards/save', "$action_base/save.php");
 	elgg_register_action('tagdashboards/save_tag_portfolio', "$action_base/save_tag_portfolio.php");
 	elgg_register_action('tagdashboards/edit', "$action_base/edit.php");
@@ -53,14 +53,13 @@ function tagdashboards_init() {
 	elgg_register_action('tagdashboards/admin_enable_subtypes', "$action_base/admin_enable_subtypes.php", 'admin');
 	
 	// Setup url handler for tag dashboards
-	register_entity_url_handler('tagdashboards_url_handler','object', 'tagdashboard');
+	elgg_register_entity_url_handler('object', 'tagdashboard', 'tagdashboards_url_handler');
 	
 	// Comment handler
 	elgg_register_plugin_hook_handler('entity:annotate', 'object', 'tagdashboard_annotate_comments');
 	
 	// Provide the jquery resize plugin
 	elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js', 'jquery.resize');
-	
 	
 	// Icon handlers
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'blog', 'tagdashboards_timeline_blog_icon_handler');
@@ -274,7 +273,7 @@ function tagdashboards_page_handler($page) {
 	$body = elgg_view_layout($content_info['layout'], $params);
 	
 	// Register tag dashboards JS library
-	$url = elgg_view_get_simplecache_url('js', 'tagdashboards');
+	$url = elgg_get_simplecache_url('js', 'tagdashboards');
 	elgg_register_js($url, 'tagdashboards');
 
 	echo elgg_view_page($content_info['title'], $body, $content_info['layout'] == 'administration' ? 'admin' : 'default');
@@ -285,19 +284,22 @@ function tagdashboards_page_handler($page) {
  */
 function tagdashboards_submenus() {
 	// all/yours/friends 
+	/*
 	elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:menu:yourtagdashboards'), 
-								'href' => elgg_get_site_url() . 'pg/tagdashboards/' . get_loggedin_user()->username), 'tagdashboards');
+								'href' => elgg_get_site_url() . 'tagdashboards/' . get_loggedin_user()->username), 'tagdashboards');
 								
 	elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:menu:friendstagdashboards'), 
-								'href' => elgg_get_site_url() . 'pg/tagdashboards/friends' ), 'tagdashboards');
+								'href' => elgg_get_site_url() . 'tagdashboards/friends' ), 'tagdashboards');
 
 	elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:menu:alltagdashboards'), 
-								'href' => elgg_get_site_url() . 'pg/tagdashboards/' ), 'tagdashboards');
-	
+								'href' => elgg_get_site_url() . 'tagdashboards/' ), 'tagdashboards');
+	*/
+
 	// Admin 
-	if (isadminloggedin()) {
-		elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:title:adminsettings'), 
-									'href' => elgg_get_site_url() . "pg/tagdashboards/settings"), 'admin', 'z');
+	if (elgg_is_admin_logged_in()) {
+		/*elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:title:adminsettings'), 
+									'href' => elgg_get_site_url() . "tagdashboards/settings"), 'admin', 'z');
+		*/
 	}
 }
 	
@@ -308,40 +310,40 @@ function tagdashboards_submenus() {
  * @return string request url
  */
 function tagdashboards_url_handler($entity) {
-	return elgg_get_site_url() . "pg/tagdashboards/view/{$entity->guid}/";
+	return elgg_get_site_url() . "tagdashboards/view/{$entity->guid}/";
 }
 
 /**
  * Plugin hook to add tagdashboards to the profile block
  * 	
  * @param unknown_type $hook
- * @param unknown_type $entity_type
- * @param unknown_type $returnvalue
+ * @param unknown_type $type
+ * @param unknown_type $value
  * @param unknown_type $params
  * @return unknown
  */
-function tagdashboards_profile_menu($hook, $entity_type, $return_value, $params) {
+function tagdashboards_profile_menu($hook, $type, $value, $params) {
 	global $CONFIG;
 
 	if ($params['owner'] instanceof ElggUser || $params['owner']->tagdashboards_enable == 'yes') {
-		$return_value[] = array(
+		$value[] = array(
 			'text' => elgg_echo('tagdashboards'),
-			'href' => "{$CONFIG->url}pg/tagdashboards/{$params['owner']->username}",
+			'href' => elgg_get_site_url() . "tagdashboards/{$params['owner']->username}",
 		);
 	}
-	return $return_value;
+	return $value;
 }
 
 /**
  * Hook into the framework and provide comments on tag dashboards
  *
  * @param unknown_type $hook
- * @param unknown_type $entity_type
- * @param unknown_type $returnvalue
+ * @param unknown_type $type
+ * @param unknown_type $value
  * @param unknown_type $params
  * @return unknown
  */
-function tagdashboard_annotate_comments($hook, $entity_type, $returnvalue, $params) {
+function tagdashboard_annotate_comments($hook, $type, $value, $params) {
 	$entity = $params['entity'];
 	$full = $params['full'];
 	

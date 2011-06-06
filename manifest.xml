@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin_manifest>
-	<field key="name" value="Tag Dashboards" />
-    <field key="author" value="Jeff Tilson" />
-    <field key="version" value="SVN (1.8)" />
-    <field key="description" value="Tag Dashboards provided interesting ways to present content by tag" />
-    <field key="website" value="http://www.thinkglobalschool.com" />
-    <field key="copyright" value="(C) THINK Global School 2009-2010" />
-    <field key="licence" value="GNU Public License version 2" />
-    <field key="elgg_version" value="2010111501" />    
-	<field key="elgg_install_state" value="enabled" />
-	<field key="admin_interface" value="simple" />
+<plugin_manifest xmlns="http://www.elgg.org/plugin_manifest/1.8">
+	<name>Tag Dashboards</name>
+	<author>Jeff Tilson</author>
+	<version>1.8</version>
+	<category>content</category>
+	<category>enhancement</category>
+	<category>tgs</category>
+	<blurb>Tag Dashboards</blurb>
+	<description>Allows users to organize and group content by tags</description>
+	<website>http://www.thinkglobalschool.org/</website>
+	<copyright>See COPYRIGHT.txt</copyright>
+	<license>GNU Public License version 2</license>
+	<requires>
+		<type>elgg_version</type>
+		<version>2011032200</version>
+	</requires>
+	<requires>
+		<type>plugin</type>
+		<name>modules</name>
+		<version>1.8</version>
+		<comparison>ge</comparison>
+	</requires>
+	<admin_interface>simple</admin_interface>
+	<activate_on_install>true</activate_on_install>
 </plugin_manifest>

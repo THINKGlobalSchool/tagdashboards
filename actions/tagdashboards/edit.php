@@ -28,7 +28,7 @@ $upper_date = strtotime(get_input('tagdashboard_date_range_to', null));
 elgg_make_sticky_form('tagdashboards-save-form');
 if (!$title || !$search) {
 	register_error(elgg_echo('tagdashboards:error:requiredfields'));
-	forward(elgg_get_site_url() . 'pg/tagdashboards/edit/' . $tagdashboard_guid);
+	forward(elgg_get_site_url() . 'tagdashboards/edit/' . $tagdashboard_guid);
 }
 
 
@@ -56,4 +56,4 @@ elgg_clear_sticky_form('tagdashboards-save-form');
 
 // Forward on
 system_message(elgg_echo('tagdashboards:success:save'));
-forward('pg/tagdashboards/view/' . $tagdashboard_guid);
+forward('tagdashboards/view/' . $tagdashboard_guid);

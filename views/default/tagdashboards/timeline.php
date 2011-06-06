@@ -10,7 +10,7 @@
  * 
  */
 
-$json_data_url = elgg_get_site_url() . "pg/tagdashboards/timelinefeed/{$vars['entity']->getGUID()}";
+$json_data_url = elgg_get_site_url() . "tagdashboards/timelinefeed/{$vars['entity']->getGUID()}";
 
 
 $entity = tagdashboards_get_last_content($vars['entity']->getGUID());

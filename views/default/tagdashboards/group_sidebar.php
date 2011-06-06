@@ -11,7 +11,7 @@
  */
 
 $group = page_owner_entity();
-$view_by_activity_url = elgg_get_site_url() . 'pg/tagdashboards/group_activity/' . $group->getGUID(); 
+$view_by_activity_url = elgg_get_site_url() . 'tagdashboards/group_activity/' . $group->getGUID(); 
 
 ?>
 <div class="group_tool_widget" style='height: auto; margin-bottom: 5px; min-height: 100%;'>

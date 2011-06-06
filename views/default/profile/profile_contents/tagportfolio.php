@@ -11,7 +11,7 @@
  */
 
 // Register tag dashboards JS library
-$url = elgg_view_get_simplecache_url('js', 'tagdashboards');
+$url = elgg_get_simplecache_url('js', 'tagdashboards');
 elgg_register_js($url, 'tagdashboards');
 
 

@@ -10,5 +10,5 @@
  */
 ?>
 <div class="tidypics_album_images">
-	<a href="<?php echo $vars['entity']->getURL();?>"><img src="<?php echo elgg_get_site_url(); ?>pg/photos/thumbnail/<?php echo $vars['entity']->getGUID();?>/small/" alt="<?php echo $vars['entity']->title; ?>"/></a>
+	<a href="<?php echo $vars['entity']->getURL();?>"><img src="<?php echo elgg_get_site_url(); ?>photos/thumbnail/<?php echo $vars['entity']->getGUID();?>/small/" alt="<?php echo $vars['entity']->title; ?>"/></a>
 </div>

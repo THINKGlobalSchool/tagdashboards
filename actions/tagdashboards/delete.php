@@ -16,7 +16,7 @@ if (elgg_instanceof($tagdashboard, 'object', 'tagdashboard') && $tagdashboard->c
 	$container = get_entity($tagdashboard->container_guid);
 	if ($tagdashboard->delete()) {
 		system_message(elgg_echo('tagdashboards:success:delete'));
-		forward("pg/tagdashboards/{$container->username}");
+		forward("tagdashboards/{$container->username}");
 	} else {
 		register_error(elgg_echo('tagdashboards:error:delete'));
 	}

@@ -24,7 +24,7 @@ $tagdashboards = elgg_get_entities(array(
 ));
 ?>
 <div class="group_tool_widget tagdashboards">
-<span class="group_widget_link"><a href="<?php echo elgg_get_site_url() . "pg/tagdashboards/" . elgg_get_page_owner()->username; ?>"><?php echo elgg_echo('link:view:all')?></a></span>
+<span class="group_widget_link"><a href="<?php echo elgg_get_site_url() . "tagdashboards/" . elgg_get_page_owner()->username; ?>"><?php echo elgg_echo('link:view:all')?></a></span>
 <h3><?php echo elgg_echo('tagdashboards') ?></h3>
 <?php	
 if($tagdashboards){
@@ -49,7 +49,7 @@ if($tagdashboards){
 	} 
 } 
 if(elgg_get_page_owner()->isMember(get_loggedin_user())){ 
-	$add = elgg_get_site_url() . "pg/tagdashboards/add/" . $page_owner->getGUID();
+	$add = elgg_get_site_url() . "tagdashboards/add/" . $page_owner->getGUID();
 	echo "<p class='margin_top'><a href=\"{$add}\">" . elgg_echo("tagdashboard:new") . "</a></p>";
 }
 echo "</div>";

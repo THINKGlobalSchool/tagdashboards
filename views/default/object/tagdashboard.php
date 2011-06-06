@@ -34,7 +34,7 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 		
 
 		if ($vars['entity']->canEdit()) {
-			$edit_url = elgg_get_site_url()."pg/tagdashboards/edit/{$vars['entity']->getGUID()}/";
+			$edit_url = elgg_get_site_url()."tagdashboards/edit/{$vars['entity']->getGUID()}/";
 			$edit_link = "<span class='entity_edit'><a href=\"$edit_url\">" . elgg_echo('edit') . '</a></span> / ';
 		}
 		
@@ -48,8 +48,8 @@ if (elgg_instanceof($vars['entity'], 'object', 'tagdashboard')) {
 		// Display tag dashboard depending on the tag dashboards groupby option
 		$subtypes = unserialize($vars['entity']->subtypes);
 				
-		$timeline_load = elgg_get_site_url() . "pg/tagdashboards/loadtimeline/" . $vars['entity']->getGUID();
-		$timeline_data = elgg_get_site_url() . "pg/tagdashboards/timelinefeed/" . $vars['entity']->getGUID();
+		$timeline_load = elgg_get_site_url() . "tagdashboards/loadtimeline/" . $vars['entity']->getGUID();
+		$timeline_data = elgg_get_site_url() . "tagdashboards/timelinefeed/" . $vars['entity']->getGUID();
 
 		$entity = tagdashboards_get_last_content($vars['entity']->getGUID());
 		if ($last_entity) {
@@ -190,7 +190,7 @@ HTML;
 						'confirm' => elgg_echo("tagdashboards:label:deleteconfirm"),
 						)) . "</span>";
 
-			$edit_url = elgg_get_site_url()."pg/tagdashboards/edit/{$vars['entity']->getGUID()}/";
+			$edit_url = elgg_get_site_url()."tagdashboards/edit/{$vars['entity']->getGUID()}/";
 			$edit_link = "<span class='entity_edit'><a href=\"$edit_url\">" . elgg_echo('edit') . '</a></span>';
 
 			$edit .= "$edit_link $delete_link";
@@ -203,7 +203,7 @@ HTML;
 		$favorites .= elgg_view("favorites/form",array('entity' => $vars['entity']));
 		$likes .= elgg_view_likes($vars['entity']); // include likes
 		
-		$subtext = elgg_echo('tagdashboards:label:submitted_by', array("<a href=\"".elgg_get_site_url()."pg/tagdashboards/{$owner->username}\">{$owner->name}</a>")); 
+		$subtext = elgg_echo('tagdashboards:label:submitted_by', array("<a href=\"".elgg_get_site_url()."tagdashboards/{$owner->username}\">{$owner->name}</a>")); 
 
 		$tags = elgg_view('output/tags', array('tags' => $vars['entity']->tags));
 		if (!empty($tags)) {

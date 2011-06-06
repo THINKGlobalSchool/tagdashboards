@@ -62,7 +62,7 @@ if (!$user_picker_js_sent) {
 <script language="javascript" type="text/javascript" src="<?php echo elgg_get_site_url(); ?>vendors/jquery/jquery.autocomplete.min.js"></script>
 <script type="text/javascript">
 // set up a few required variables
-userPickerURL = '<?php echo elgg_get_site_url() ?>pg/livesearch';
+userPickerURL = '<?php echo elgg_get_site_url() ?>livesearch';
 userList = <?php echo $json_values ?>;
 
 function userPickerBindEvents() {
