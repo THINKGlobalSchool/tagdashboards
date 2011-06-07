@@ -10,15 +10,6 @@
  * @uses $vars['value']
  */
 
-// Get site tags
-$site_tags = elgg_get_tags(array(threshold=>0, limit=>100));
-$custom_tags_array = array();
-foreach ($site_tags as $site_tag) {
-	$custom_tags_array[] = $site_tag->tag;
-}
-
-$custom_tags_json = json_encode($custom_tags_array);
-
 $custom_tags = $vars['value'];
 $custom_value = '';
 // Create tag string from supplied value
@@ -43,9 +34,9 @@ if (elgg_is_sticky_form('tagdashboards-save-form')) {
 }
 
 $custom_input = elgg_view('input/text', array(
-	'internalname' => 'tagdashboards_custom',
-	'internalid' => 'tagdashboards-custom-input',
-	'class' => 'tagdashboards-text-input',
+	'name' => 'tagdashboards_custom',
+	'id' => 'tagdashboards-custom-input',
+	'class' => 'tagdashboards-text-input tagdashboards-autocomplete-tags',
 	'value' => $custom_value,
 ));
 	
@@ -53,18 +44,5 @@ echo "
 <div>	
 	$custom_input <br /><br />
 </div>
-<script type='text/javascript'>
-	$(document).ready(function() {	
-		// Typeahead for custom
-		var data = $.parseJSON('$custom_tags_json');
-		$('#tagdashboards-custom-input').autocomplete(data, {
-				highlight: false,
-				multiple: true,
-				multipleSeparator: ', ',
-				scroll: true,
-				scrollHeight: 300
-		});
-	});
-</script>
 ";
 

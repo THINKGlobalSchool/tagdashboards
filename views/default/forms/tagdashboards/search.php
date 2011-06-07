@@ -12,28 +12,18 @@
 
 $type = $vars['type'];
 
-// Get site tags
-$site_tags = elgg_get_tags(array(threshold => 0, limit => 100));
-$tags_array = array();
-foreach ($site_tags as $site_tag) {
-	$tags_array[] = $site_tag->tag;
-}
-
-$tags_json = json_encode($tags_array);
-
 $search_input = elgg_view('input/text', array(	
-	'internalname' => 'tagdashboards_search', 
-	'internalid' => 'tagdashboards-search-input',
-	'class' => 'tagdashboards-text-input',
+	'name' => 'tagdashboards_search', 
+	'id' => 'tagdashboards-search-input',
+	'class' => 'tagdashboards-text-input tagdashboards-autocomplete-tags',
 	'value' => get_input('tagdashboards_search')
 ));
 
-$submit_value = elgg_echo('tagdashboards:label:submitsearch');
-$search_submit = "<input type='submit' 
-						 name='tagdashboards_search_submit' 
-						 id='tagdashboards-search-submit' 
-						 value='$submit_value'
-						  />";	
+$search_submit = elgg_view('input/submit', array(
+	'name' => 'tagdashboards_search_submit',
+	'id' => 'tagdashboards-search-submit',
+	'value' => elgg_echo('tagdashboards:label:submitsearch'),
+));
 						
 									
 $save_form = elgg_view('forms/tagdashboards/save', $vars);
@@ -133,18 +123,6 @@ $script = <<<HTML
 					return false;
 				}
 			});
-			
-			// Typeahead
-			var data = $.parseJSON('$tags_json');
-			$("#tagdashboards-search-input").autocomplete(data, {
-											highlight: false,
-											multiple: false,
-											multipleSeparator: ", ",
-											scroll: true,
-											scrollHeight: 300
-			});	
-			
-
 		});
 	</script>
 

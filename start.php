@@ -14,14 +14,12 @@
  * Must:
  * - Profile portfolio
  * - Sort out all the included vendors (jquery, theme etc)
- * - Clean up JS/CSS regs
  * - Clean up language file
  *
  * If possible:
  * - Modules?
  * - Uberviews (maybe replace with module?)
  */
-
 
 elgg_register_event_handler('init', 'system', 'tagdashboards_init');
 
@@ -37,22 +35,31 @@ function tagdashboards_init() {
 	
 	// Register custom theme CSS
 	$ui_url = elgg_get_site_url() . 'mod/tagdashboards/vendors/smoothness/jquery-ui-1.7.3.custom.css';
-	elgg_register_css($ui_url, 'smoothness');
+	elgg_register_css('jquery.ui.smoothness', $ui_url);
 	
 	// Register datepicker css
 	$daterange_css = elgg_get_site_url(). 'mod/tagdashboards/vendors/ui.daterangepicker.css';
-	elgg_register_css($daterange_css, 'daterange');
+	elgg_register_css('jquery.daterangepicker', $daterange_css);
 		
 	// Register tag dashboards JS library
 	$td_js = elgg_get_simplecache_url('js', 'tagdashboards');
-	elgg_register_js($td_js, 'tagdashboards');
+	elgg_register_js('elgg.tagdashboards', $td_js);
+	
+	// Register remote timeline JS library
+	$timeline_remote = "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false";
+	elgg_register_js('simile.timeline', $timeline_remote);
+	
+	// Regsiter local timeline JS library
+	$timeline_js = elgg_get_simplecache_url('js', 'timeline');
+	elgg_register_js('elgg.tagdashboards.timeline', $timeline_is);
 	
 	// Register datepicker JS
 	$daterange_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
-	elgg_register_js($daterange_js, 'jquery.daterangepicker');
+	elgg_register_js('jquery.daterangepicker', $daterange_js);
 
 	// Provide the jquery resize plugin
-	elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js', 'jquery.resize');
+	$resize_js = elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js';
+	elgg_register_js($resize_js, 'jquery.resize');
 	
 	// Extend admin view to include some extra styles
 	elgg_extend_view('layouts/administration', 'tagdashboards/admin/css');
@@ -101,6 +108,9 @@ function tagdashboards_init() {
 	// Change display of photos
 	elgg_register_plugin_hook_handler('tagdashboards:subtype', 'image', 'tagdashboards_photo_override_handler');
 	
+	// Register for input/tddaterange view plugin hook 
+	elgg_register_plugin_hook_handler('view', 'input/tddaterange', 'tagdashboards_daterange_input_handler');
+	
 	// Register type
 	elgg_register_entity_type('object', 'tagdashboard');		
 
@@ -142,7 +152,7 @@ function tagdashboards_init() {
  */
 function tagdashboards_page_handler($page) {
 	elgg_set_context('tagdashboards');
-	
+
 	gatekeeper();
 	
 	$page_type = elgg_extract(0, $page, 'all');
@@ -224,6 +234,9 @@ function tagdashboards_page_handler($page) {
 				echo  elgg_view('tagdashboards/timeline', array('entity' => $timeline));
 				exit; // ajax load, exit
 				break;
+			case 'tags':
+				echo tagdashboards_get_json_tags(get_input('term'));
+				break;
 			case 'all':
 			default:
 				break;
@@ -232,7 +245,12 @@ function tagdashboards_page_handler($page) {
 		
 		// Load CSS
 		elgg_load_css('elgg.tagdashboards');
-				
+elgg_load_css('jquery.ui.smoothness');
+
+		// Load JS
+		elgg_load_js('elgg.tagdashboards');
+		elgg_load_js('jquery.resize');
+	
 		switch ($page_type) {
 			case 'owner': 
 				$user = get_user_by_username($page[1]);
@@ -246,27 +264,20 @@ function tagdashboards_page_handler($page) {
 				$params = tagdashboards_get_page_content_list($page[1]);
 				break;
 			case 'add':
-				$params = tagdashboards_get_page_content_add($page_type, $page[1]);
+				$params = tagdashboards_get_page_content_edit($page_type, $page[1]);
 				break;
 			case 'edit':
 				$params = tagdashboards_get_page_content_edit($page_type, $page[1]);
 				break;
 			case 'view': 
-				// Register JS 
-				// HAVE TO HAVE TO HAVE TO HAVE TO LOAD THE JS IN THE HEAD!!!
-				elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false", 'timeline');
-				elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/lib/tagdashboards-timeline.js', 'tagdashboards-timeline');
+				elgg_load_js('simile.timeline');
+				elgg_load_js('elgg.tagdashboards.timeline');
 				$params = tagdashboards_get_page_content_view($page[1]);
 				break;
 			case 'timeline':
-				// Register the js in the head, because that makes things work.
-				elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false", 'timeline');
-				elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/lib/tagdashboards-timeline.js', 'tagdashboards-timeline');
+				elgg_load_js('simile.timeline');
+				elgg_load_js('elgg.tagdashboards.timeline');
 				$params = tagdashboards_get_page_content_timeline($page[1]);
-				break;
-			case 'timeline_image_icon':
-				echo elgg_view('tagdashboards/timeline_image_icon', array('guid' => $page[1]));
-				exit;
 				break;
 			case 'group_activity':
 				elgg_set_context('group');
@@ -284,7 +295,7 @@ function tagdashboards_page_handler($page) {
 				break;
 		}
 		
-		$body = elgg_view_layout($params['layout'] ? $params['layout'] : 'content', $params);
+		$body = elgg_view_layout('content', $params);
 		echo elgg_view_page($params['title'], $body);
 	}
 	return;
@@ -333,3 +344,22 @@ function tagdashboards_owner_block_menu($hook, $type, $value, $params) {
 	}
 	return $value;
 }
+
+/**
+ * Plugin hook handler to load daterangepicker JS when 
+ * the the input/tddaterange view is loaded
+ *
+ * @param sting  $hook   view
+ * @param string $type   input/tags
+ * @param mixed  $value  Value
+ * @param mixed  $params Params
+ *
+ * @return array
+ */
+function tagdashboards_daterange_input_handler($hook, $type, $value, $params) {
+	elgg_load_css('jquery.daterangepicker');
+	elgg_load_css('jquery.ui.smoothness');	
+	elgg_load_js('jquery.daterangepicker');
+	return $value;
+}
+

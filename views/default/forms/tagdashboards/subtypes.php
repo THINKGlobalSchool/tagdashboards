@@ -42,8 +42,8 @@ foreach($subtypes as $subtype) {
 $subtypes_table .= "</tbody></table>";
 
 $subtypes_settings_submit = elgg_view('input/submit', array(
-	'internalname' => 'subtypes_settings_submit',
-	'internalid' => 'subtypes_settings_submit',
+	'name' => 'subtypes_settings_submit',
+	'id' => 'subtypes_settings_submit',
 	'value' => elgg_echo('tagdashboards:label:subtypes_settings_submit')
 ));
 

@@ -14,7 +14,26 @@ elgg.provide('elgg.tagdashboards');
 
 // Init function
 elgg.tagdashboards.init = function () {
-	// Nothing to do here at the moment
+	
+	// Init each element matching the autocomplete class
+	$('input.tagdashboards-autocomplete-tags').each(function() {
+		$(this).autocomplete({
+			source: function(request, response) {
+				var params = {term: $(this).val()};
+				elgg.get('tagdashboards/tags', {
+					data: params,
+					dataType: 'json',
+					success: function(data) {
+						response(data);
+					},
+				});
+			},
+			appendTo: $(this).parent(),
+			minLength: 2,
+			select: function() {},
+		});
+	});
+
 }
 
 /**
@@ -203,7 +222,5 @@ elgg.tagdashboards.tagdashboards_switch_groupby = function(tab_id, groupby_val) 
 	$("#tagdashboard-groupby").val(groupby_val);
 }
 
-
-
-elgg.register_event_handler('init', 'system', elgg.tagdashboards.init);
+elgg.register_hook_handler('init', 'system', elgg.tagdashboards.init);
 //</script>

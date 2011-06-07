@@ -19,15 +19,15 @@ $custom_input = elgg_view('forms/tagdashboards/custom_tags', array('value' => $t
 
 // Refresh button
 $refresh_input = elgg_view('input/submit', array(
-	'internalid' => 'tagdashboards-refresh-input',
-	'internalname' => 'tagdashboards_refresh_input',
+	'id' => 'tagdashboards-refresh-input',
+	'name' => 'tagdashboards_refresh_input',
 	'value' => elgg_echo('tagdashboards:label:refresh')
 ));
 
 // Refresh button
 $save_input = elgg_view('input/submit', array(
-	'internalid' => 'tagdashboards-save-input',
-	'internalname' => 'tagdashboards_save_input',
+	'id' => 'tagdashboards-save-input',
+	'name' => 'tagdashboards_save_input',
 	'value' => elgg_echo('tagdashboards:label:save')
 ));
 
@@ -42,8 +42,8 @@ $form_body = <<<HTML
 HTML;
 
 echo elgg_view('input/form', array(
-	'internalname' => 'tagdashboards-portfolio-save-form',
-	'internalid' => 'tagdashboards-portfolio-save-form',
+	'name' => 'tagdashboards-portfolio-save-form',
+	'id' => 'tagdashboards-portfolio-save-form',
 	'body' => $form_body,
 	'action' => $action
 ));

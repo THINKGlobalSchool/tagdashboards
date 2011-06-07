@@ -42,18 +42,11 @@ if ($vars['entity']) {
 	
 	
 	$search_label = elgg_echo('tagdashboards:label:searchtag');
-	// Get site tags
-	$site_tags = elgg_get_tags(array(threshold=>0, limit=>100));
-	$tags_array = array();
-	foreach ($site_tags as $site_tag) {
-		$tags_array[] = $site_tag->tag;
-	}
-
-	$tags_json = json_encode($tags_array);
 
 	$search_input = elgg_view('input/text', array(	
-		'internalname' => 'tagdashboard_search', 
-		'internalid' => 'tagdashboards-search',
+		'name' => 'tagdashboard_search', 
+		'id' => 'tagdashboards-search-input',
+		'class' => 'tagdashboards-autocomplete-tags',
 		'value' => $search
 	));
 	
@@ -66,8 +59,8 @@ if ($vars['entity']) {
 	
 	// Hidden field to identify tagdashboard
 	$tagdashboard_guid 	= elgg_view('input/hidden', array(
-		'internalid' => 'tagdashboard-guid', 
-		'internalname' => 'tagdashboard_guid',
+		'id' => 'tagdashboard-guid', 
+		'name' => 'tagdashboard_guid',
 		'value' => $vars['entity']->getGUID()
 	));
 		
@@ -81,21 +74,6 @@ if ($vars['entity']) {
 	// Show the form automatically
 	$display_form = 'block';
 	
-	// Typeahead tag search
-	$script = <<<HTML
-		<script type='text/javascript'>
-			// Typeahead
-			var data = $.parseJSON('$tags_json');
-			$("#tagdashboards-search").autocomplete(data, {
-											highlight: false,
-											multiple: false,
-											multipleSeparator: ", ",
-											scroll: true,
-											scrollHeight: 300
-			});
-		</script>
-HTML;
-
 } else { // Creating a new tagdashboard
 	$action = 'action/tagdashboards/save';
 	$enabled = tagdashboards_get_enabled_subtypes();
@@ -103,8 +81,8 @@ HTML;
 	
 	// Hidden search input
 	$hidden_search_input = elgg_view('input/hidden', array(
-		'internalid' => 'tagdashboard-search',
-		'internalname' => 'tagdashboard_search',
+		'id' => 'tagdashboard-search',
+		'name' => 'tagdashboard_search',
 		'value' => '' // Will be updated by JS
 	));
 	
@@ -113,14 +91,14 @@ HTML;
 	$display_form = 'none';
 	
 	$tagdashboards_refresh_input = elgg_view('input/submit', array(
-		'internalid' => 'tagdashboards-refresh-input',
-		'internalname' => 'tagdashboards_refresh_input',
+		'id' => 'tagdashboards-refresh-input',
+		'name' => 'tagdashboards_refresh_input',
 		'value' => elgg_echo('tagdashboards:label:refresh')
 	));
 }
 
 $container_guid_input = elgg_view('input/hidden', array(
-	'internalname' => 'container_guid',
+	'name' => 'container_guid',
 	'value' => $vars['container_guid'],
 ));
 
@@ -132,35 +110,35 @@ $subtypes = tagdashboards_get_enabled_subtypes();
 // Labels/Inputs
 $title_label = elgg_echo('tagdashboards:label:title');
 $title_input = elgg_view('input/text', array(
-	'internalid' => 'tagdashboard-title',
-	'internalname' => 'tagdashboard_title',
+	'id' => 'tagdashboard-title',
+	'name' => 'tagdashboard_title',
 	'value' => $title
 ));
 
 $description_label =  elgg_echo('tagdashboards:label:description');
 $description_input = elgg_view('input/longtext', array(
-	'internalid' => 'tagdashboard-description',
-	'internalname' => 'tagdashboard_description',
+	'id' => 'tagdashboard-description',
+	'name' => 'tagdashboard_description',
 	'value' => $description
 ));
 
 $tags_label =  elgg_echo('tagdashboards:label:tags');
 $tags_input = elgg_view('input/tags', array(
-	'internalid' => 'tagdashboard-tags',
-	'internalname' => 'tagdashboard_tags',
+	'id' => 'tagdashboard-tags',
+	'name' => 'tagdashboard_tags',
 	'value' => $tags
 ));
 
 $access_label =  elgg_echo('access');
 $access_input = elgg_view('input/access', array(
-	'internalid' => 'tagdashboard-access',
-	'internalname' => 'tagdashboard_access',
+	'id' => 'tagdashboard-access',
+	'name' => 'tagdashboard_access',
 	'value' => $access_id
 ));
 
 $tagdashboards_save_input = elgg_view('input/submit', array(
-	'internalid' => 'tagdashboards-save-input',
-	'internalname' => 'tagdashboards_save_input',
+	'id' => 'tagdashboards-save-input',
+	'name' => 'tagdashboards_save_input',
 	'value' => elgg_echo('tagdashboards:label:save')
 ));
 
@@ -222,15 +200,15 @@ for ($i = 0; $i < count($tabs); $i++) {
 }
 
 $hidden_groupby_input = elgg_view('input/hidden', array(
-	'internalid' => 'tagdashboard-groupby',
-	'internalname' => 'tagdashboard_groupby',
+	'id' => 'tagdashboard-groupby',
+	'name' => 'tagdashboard_groupby',
 	'value' => 'subtype', // default
 ));
 
 $filter_label = elgg_echo('tagdashboards:label:filter');
 $filter_owners .= elgg_echo('tagdashboards:label:filterowner');
-$filter_owners_input .= elgg_view('input/tduserpicker', array(
-	'internalname' => 'tagdashboard_owner_guids',
+$filter_owners_input .= elgg_view('input/userpicker', array(
+	'name' => 'tagdashboard_owner_guids',
 	'value' => $owner_guids,
 ));
 
@@ -365,7 +343,7 @@ $form_body = <<<HTML
 				count++;
 			});
 			
-			var search = $("#tagdashboards-search").val();
+			var search = $("#tagdashboards-search-input").val();
 			
 			if (!search) {
 				search = elgg.tagdashboards.get_tagdashboard_search_value();
@@ -400,8 +378,8 @@ HTML;
 
 
 echo elgg_view('input/form', array(
-	'internalname' => 'tagdashboards-save-form',
-	'internalid' => 'tagdashboards-save-form',
+	'name' => 'tagdashboards-save-form',
+	'id' => 'tagdashboards-save-form',
 	'body' => $form_body,
 	'action' => $action
 ));

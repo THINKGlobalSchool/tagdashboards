@@ -11,40 +11,43 @@
  */
 
 /**
- * Build content for the tagdashboard search page 
+ * Build content for editing/creating a tag dashboards
  */
-function tagdashboards_get_page_content_add($container_guid, $type) { 
-	if (!$type) {
-		$type = 'subtype';
-	}
+function tagdashboards_get_page_content_edit($page, $guid, $group_by = 'subtype') { 
+	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
+	$params['filter'] = false;
+	$params['buttons'] = false;
+	if ($page == 'edit') {
+		$tagdashboard = get_entity($guid);
 		
-	$content_info['title'] = elgg_echo('tagdashboards:title:search');
-	$content_info['layout'] = 'one_column_with_sidebar';
-	$content = elgg_view('forms/tagdashboards/search', array('type' => $type, 'container_guid' => $container_guid));
-	$content_info['content'] = elgg_view_title($content_info['title']) . $content;
-	return $content_info;
-}
+		$params['title'] = elgg_echo('tagdashboards:title:edit');
+		
+		if (elgg_instanceof($tagdashboard, 'object', 'tagdashboard') && $tagdashboard->canEdit()) {
+			$owner = get_entity($tagdashboard->container_guid);
+			
+			elgg_set_page_owner_guid($owner->getGUID());
+			
+			elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
+			elgg_push_breadcrumb('edit');
 
-/** 
- * Build content for editing an tagdashboard 
- */
-function tagdashboards_get_page_content_edit($guid) {
-	$tagdashboard = get_entity($guid);
-	if (elgg_instanceof($tagdashboard, 'object', 'tagdashboard') && $tagdashboard->canEdit()) {
-		$owner = get_entity($tagdashboard->container_guid);
-		set_page_owner($owner->getGUID());
-		elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
-		elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
-		elgg_push_breadcrumb('edit');
-		$content_info['title'] = elgg_echo('tagdashboards:title:edit');
-		$content_info['layout'] = 'one_column_with_sidebar';
-		$content = elgg_view('forms/tagdashboards/save', array('entity' => $tagdashboard));
-		$content_info['content'] = elgg_view_title($content_info['title']) . $content;
-		return $content_info;
+			$params['content'] = elgg_view_form('tagdashboards/save', array(),array('entity' => $tagdashboard));
+		} else {
+			register_error(elgg_echo('tagdashboards:error:notfound'));
+			forward(REFERER);
+		}
 	} else {
-		register_error(elgg_echo('tagdashboards:error:notfound'));
-		forward(REFERER);
-	}
+		if (!$guid) {
+			$container = elgg_get_logged_in_user_entity();
+		} else {
+			$container = get_entity($guid);
+		}
+		
+		elgg_push_breadcrumb(elgg_echo('search'));
+		
+		$params['title'] = elgg_echo('tagdashboards:title:search');
+		$params['content'] = elgg_view_form('tagdashboards/search', array(),array('type' => $group_by, 'container_guid' => $container->guid));
+	}	
+	return $params;
 }
 
 /**
@@ -147,11 +150,9 @@ function tagdashboards_get_page_content_view($guid) {
 	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
 	elgg_push_breadcrumb($owner->name, elgg_get_site_url() . 'tagdashboards/' . $owner->username);
 	elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
-	$content_info['title'] = $tagdashboard->title;
-	$content_info['content'] = elgg_view_entity($tagdashboard, true);
-	$content_info['layout'] = 'one_column_with_sidebar';
-	
-	return $content_info;
+	$params['title'] = $tagdashboard->title;
+	$params['content'] = elgg_view_entity($tagdashboard, true);	
+	return $params;
 }
 
 /** 
@@ -164,11 +165,10 @@ function tagdashboards_get_page_content_timeline($guid) {
 	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
 	elgg_push_breadcrumb($owner->name, elgg_get_site_url() . 'tagdashboards/' . $owner->username);
 	elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
-	$content_info['title'] = $tagdashboard->title;
-	$content_info['content'] = elgg_view('tagdashboards/timeline', array('entity' => $tagdashboard));
-	$content_info['layout'] = 'one_column_with_sidebar';
+	$params['title'] = $tagdashboard->title;
+	$params['content'] = elgg_view('tagdashboards/timeline', array('entity' => $tagdashboard));
 	
-	return $content_info;
+	return $params;
 }
 
 /**
@@ -176,17 +176,16 @@ function tagdashboards_get_page_content_timeline($guid) {
  */
 function tagdashboards_get_page_content_group_activity($guid) {
 	$group = get_entity($guid);
-	$content_info['title'] = elgg_echo('tagdashboards:title:groupbyactivity');
-	$content_info['layout'] = "one_column_with_sidebar";
+	$params['title'] = elgg_echo('tagdashboards:title:groupbyactivity');
 	if (elgg_instanceof($group, 'group')) {
 		elgg_set_page_owner_guid($guid);
-		$content_info['content'] = elgg_view_title($content_info['title']);
-		$content_info['content'] .= elgg_view('tagdashboards/group_activity', array('container_guid' => $guid));
+		$params['content'] = elgg_view_title($params['title']);
+		$params['content'] .= elgg_view('tagdashboards/group_activity', array('container_guid' => $guid));
 	} else {
-		$content_info['content'] = '';
+		$params['content'] = '';
 	}
-	$content_info['sidebar'] = elgg_view('tagdashboards/group_sidebar');
-	return $content_info;
+	$params['sidebar'] = elgg_view('tagdashboards/group_sidebar');
+	return $params;
 }
 
 /**
@@ -194,11 +193,10 @@ function tagdashboards_get_page_content_group_activity($guid) {
  */
 function tagdashboards_get_page_content_activity_tag() {
 	$search = get_input('search');
-	$content_info['title'] = elgg_echo('tagdashboards:title:activitytag');
-	$content_info['layout'] = "one_column_with_sidebar";
-	$content_info['content'] = elgg_view_title($content_info['title']);
-	$content_info['content'] .= elgg_view('tagdashboards/activity_tag', array('search' => $search));
-	return $content_info;
+	$params['title'] = elgg_echo('tagdashboards:title:activitytag');
+	$params['content'] = elgg_view_title($params['title']);
+	$params['content'] .= elgg_view('tagdashboards/activity_tag', array('search' => $search));
+	return $params;
 }
 
 /**
@@ -206,11 +204,35 @@ function tagdashboards_get_page_content_activity_tag() {
  */
 function tagdashboards_get_page_content_custom() {
 	$search = get_input('search');
-	$content_info['title'] = elgg_echo('tagdashboards:title:custom');
-	$content_info['layout'] = "one_column_with_sidebar";
-	$content_info['content'] = elgg_view_title($content_info['title']);
-	$content_info['content'] .= elgg_view('tagdashboards/custom', array('search' => $search));
-	return $content_info;
+	$params['title'] = elgg_echo('tagdashboards:title:custom');
+	$params['content'] = elgg_view_title($params['title']);
+	$params['content'] .= elgg_view('tagdashboards/custom', array('search' => $search));
+	return $params;
+}
+
+/**
+ * Get JSON tags for autocomplete
+ * 
+ * @param string $term
+ * @return string
+ */
+function tagdashboards_get_json_tags($term) {
+	// Only grab tags similar to the input
+	$wheres[] = "msv.string like '%$term%'";	
+
+	// Get site tags
+	$site_tags = elgg_get_tags(array(
+		'threshold' => 0, 
+		'limit' => 99999,
+		'wheres' => $wheres,
+	));
+
+	$tags_array = array();
+	foreach ($site_tags as $site_tag) {
+		$tags_array[] = $site_tag->tag;
+	}
+
+	return json_encode($tags_array);
 }
 
 /**
