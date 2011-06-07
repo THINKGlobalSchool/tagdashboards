@@ -49,36 +49,44 @@ function tagdashboards_get_page_content_edit($guid) {
 
 /**
  * Get tag dashboard listing content 
+ * @todo breadcrumbs 
  */
-function tagdashboards_get_page_content_list($user_guid = null) {
-	if ($user_guid) {
-		// Breadcrumbs
-		$user = get_entity($user_guid);
-		if ($user instanceof ElggGroup) {
-			// Got a group
-			elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
-			elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'tagdashboards/' . $user->username);
-			elgg_push_breadcrumb(elgg_echo('tagdashboards:label:grouptags'));
-			$container_guid = "/" .$user->getGUID();
-		} else {
-			elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
-			elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'tagdashboards/' . $user->username);
-		}
-		$header_context = 'mine';
-		$content = elgg_list_entities(array('type' => 'object', 'subtype' => 'tagdashboard', 'full_view' => false, 'container_guid' => $user_guid));
+function tagdashboards_get_page_content_list($container_guid = null) {
+	$logged_in_user_guid = elgg_get_logged_in_user_guid();
+	
+	$options = array(
+		'type' => 'object', 
+		'subtype' => 'tagdashboard', 
+		'full_view' => false, 
+	);
+
+	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
+	
+	if ($container_guid) {
+		$options['container_guid'] = $container_guid;
+		$entity = get_entity($container_guid);
+		elgg_push_breadcrumb($entity->name);
 		
-		// Different title if viewing another users tag dashboards
-		if ($user == get_loggedin_user()) {
-			$content_info['title'] = elgg_echo('tagdashboards:menu:yourtagdashboards');
+
+		
+		if (elgg_instanceof($entity, 'group')) {
+			$params['filter'] = false;
+
+		} else if ($container_guid == $logged_in_user_guid) {
+			$params['filter_context'] = 'mine';
 		} else {
-			$content_info['title'] = elgg_echo('tagdashboards:title:owneddashboards', array($user->name));
+			// do not show button or select a tab when viewing someone else's posts
+			$params['filter_context'] = 'none';
 		}
 		
+		$content = elgg_list_entities($options);
+		$params['title'] = elgg_echo('tagdashboards:title:owneddashboards', array($entity->name));
 			
 	} else {
-	 	$header_context = 'everyone';
-		$content = elgg_list_entities(array('type' => 'object', 'subtype' => 'tagdashboard', 'full_view' => false));
-		$content_info['title'] = elgg_echo('tagdashboards:menu:alltagdashboards');
+		
+		$content = elgg_list_entities($options);
+		$params['title'] = elgg_echo('tagdashboards:menu:alltagdashboards');
+		$params['filter_context'] = 'all';
 	}
 	
 	// If theres no content, display a nice message
@@ -86,42 +94,23 @@ function tagdashboards_get_page_content_list($user_guid = null) {
 		$content = elgg_view('tagdashboards/noresults');
 	}
 		
-	$header = elgg_view('page_elements/content_header', array(
-		'context' => $header_context,
-		'type' => 'tagdashboard',
-		'all_link' => elgg_get_site_url() . "tagdashboards",
-		'mine_link' => elgg_get_site_url() . "tagdashboards/" . get_loggedin_user()->username,
-		'friend_link' => elgg_get_site_url() . "tagdashboards/friends",
-		'new_link' => elgg_get_site_url() . "tagdashboards/add" . $container_guid,
-	));
-	
-	if ($user_guid && ($user_guid != $loggedin_userid) && !elgg_instanceof($user, 'group')) {
-		// do not show content header when viewing other users' posts
-		$header = elgg_view('page_elements/content_header_member', array('type' => 'tagdashboards'));
-	}
-		
-	$content_info['content'] = $header . $content;
-	$content_info['layout'] = 'one_column_with_sidebar';
-	return $content_info;
+	$params['content'] = $content;
+	return $params;
 }
 
 /**
  * Get friends tagdashboards 
  */
 function tagdashboards_get_page_content_friends($user_guid) {
-	$user = get_entity($user_guid);
-	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
-	elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'tagdashboards/' . $user->username);
-	elgg_push_breadcrumb(elgg_echo('friends'));
+	$user = get_user($user_guid);
 	
-	$content = elgg_view('page_elements/content_header', array(
-		'context' => 'friends',
-		'type' => 'tagdashboard',
-		'all_link' => elgg_get_site_url() . "tagdashboards",
-		'mine_link' => elgg_get_site_url() . "tagdashboards/" . get_loggedin_user()->username,
-		'friend_link' => elgg_get_site_url() . "tagdashboards/friends",
-		'new_link' => elgg_get_site_url() . "tagdashboards/add"
-	));
+	$params['filter_context'] = 'friends';
+	$params['title'] = elgg_echo('tagdashboards:menu:friendstagdashboards');
+	
+	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
+	elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'tagdashboards/owner/' . $user->username);
+	elgg_push_breadcrumb(elgg_echo('friends'));
+
 
 	if (!$friends = get_user_friends($user_guid, ELGG_ENTITIES_ANY_VALUE, 0)) {
 		$content .= elgg_echo('friends:none:you');
@@ -136,8 +125,6 @@ function tagdashboards_get_page_content_friends($user_guid) {
 			$options['container_guids'][] = $friend->getGUID();
 		}
 		
-		$content_info['title'] = elgg_echo('tagdashboards:menu:friendstagdashboards');
-		
 		$list = elgg_list_entities($options);
 		if (!$list) {
 			$content .= elgg_view('tagdashboards/noresults');
@@ -145,10 +132,9 @@ function tagdashboards_get_page_content_friends($user_guid) {
 			$content .= $list;
 		}
 	}
-	$content_info['content'] = $content;
-	$content_info['layout'] = 'one_column_with_sidebar';
+	$params['content'] = $content;
 	
-	return $content_info;
+	return $params;
 }
 
 /**

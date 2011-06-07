@@ -14,6 +14,8 @@
  * Must:
  * - Profile portfolio
  * - Sort out all the included vendors (jquery, theme etc)
+ * - Clean up JS/CSS regs
+ * - Clean up language file
  *
  * If possible:
  * - Modules?
@@ -33,11 +35,30 @@ function tagdashboards_init() {
 	$td_css = elgg_get_simplecache_url('css', 'tagdashboards/css');
 	elgg_register_css('elgg.tagdashboards', $td_css);
 	
+	// Register custom theme CSS
+	$ui_url = elgg_get_site_url() . 'mod/tagdashboards/vendors/smoothness/jquery-ui-1.7.3.custom.css';
+	elgg_register_css($ui_url, 'smoothness');
+	
+	// Register datepicker css
+	$daterange_css = elgg_get_site_url(). 'mod/tagdashboards/vendors/ui.daterangepicker.css';
+	elgg_register_css($daterange_css, 'daterange');
+		
+	// Register tag dashboards JS library
+	$td_js = elgg_get_simplecache_url('js', 'tagdashboards');
+	elgg_register_js($td_js, 'tagdashboards');
+	
+	// Register datepicker JS
+	$daterange_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
+	elgg_register_js($daterange_js, 'jquery.daterangepicker');
+
+	// Provide the jquery resize plugin
+	elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js', 'jquery.resize');
+	
 	// Extend admin view to include some extra styles
 	elgg_extend_view('layouts/administration', 'tagdashboards/admin/css');
 	
-	// Add tagdashboard activity to sidebar
-	elgg_extend_view('group-extender/sidebar','tagdashboards/group_sidebar', 0);
+	// Extend groups sidebar
+	elgg_extend_view('page/elements/sidebar', 'tagdashboards/group_sidebar');
 	
 	// Extend profile view (pre-18)
 	elgg_extend_view('profile_navigation/extend', 'tagdashboards/profile_tab');
@@ -49,7 +70,7 @@ function tagdashboards_init() {
 	elgg_register_page_handler('tagdashboards','tagdashboards_page_handler');
 	
 	// Add to main menu
-	$item = new ElggMenuItem('tagdashboards', elgg_echo('tagdashboards'), 'tagdashboards');
+	$item = new ElggMenuItem('tagdashboards', elgg_echo('tagdashboards'), 'tagdashboards/all');
 	elgg_register_menu_item('site', $item);
 
 	// Add submenus
@@ -68,13 +89,7 @@ function tagdashboards_init() {
 	
 	// Setup url handler for tag dashboards
 	elgg_register_entity_url_handler('object', 'tagdashboard', 'tagdashboards_url_handler');
-	
-	// Comment handler
-	elgg_register_plugin_hook_handler('entity:annotate', 'object', 'tagdashboard_annotate_comments');
-	
-	// Provide the jquery resize plugin
-	elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js', 'jquery.resize');
-	
+		
 	// Icon handlers
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'blog', 'tagdashboards_timeline_blog_icon_handler');
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'image', 'tagdashboards_timeline_image_icon_handler');
@@ -92,8 +107,8 @@ function tagdashboards_init() {
 	// Add group option
 	add_group_tool_option('tagdashboards',elgg_echo('tagdashboard:enablegroup'), TRUE);
 	
-	// Profile hook	
-	elgg_register_plugin_hook_handler('profile_menu', 'profile', 'tagdashboards_profile_menu');
+	// Profile block hook	
+	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'tagdashboards_owner_block_menu');
 
 	return true;
 }
@@ -101,7 +116,19 @@ function tagdashboards_init() {
 /**
  * Tag Dashboards page handler 
  *
- * @todo Ajax endpoints - Should be somewhere else? Somehow?
+ * URLs take the form of
+ *  All tag dashboards:       tagdashboards/all
+ *  User's tag dashboards:    tagdashboards/owner/<username>
+ *  Friends tag dashboards:   tagdashboards/friends/<username>
+ *  View tag dashboard:       tagdashboards/view/<guid>/<title>
+ *  New tag dashboard:        tagdashboards/add/<guid>
+ *  Edit tag dashboard:       tagdashboards/edit/<guid>
+ *  Group tag dashboard:      tagdashboards/group/<guid>/all
+ * 
+ * Special Views
+ * @todo docs 
+ *
+ * AJAX/XHR Types
  *	loadsubtype 		Load subtype content
  * 	loadactivity		Load activity content
  * 	loadactivitytag		Load activity/tag content
@@ -110,83 +137,70 @@ function tagdashboards_init() {
  * 	timelinefeed		Load timeline feed content
  * 	loadtimeline		Load timeline via ajax
  *
- * Title is ignored
  * @param array $page
  * @return NULL
  */
 function tagdashboards_page_handler($page) {
-	// Load CSS
-	elgg_load_css('elgg.tagdashboards');
-	
 	elgg_set_context('tagdashboards');
+	
 	gatekeeper();
 	
-	// Register datepicker
-	$daterange_url = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
-	elgg_register_js($daterange_url, 'jquery.daterangepicker');
+	$page_type = elgg_extract(0, $page, 'all');
 	
-	// Register datepicker css
-	$daterange_url = elgg_get_site_url(). 'mod/tagdashboards/vendors/ui.daterangepicker.css';
-	elgg_register_css($daterange_url, 'daterange');
-	
-	// Register custom theme CSS
-	$ui_url = elgg_get_site_url() . 'mod/tagdashboards/vendors/smoothness/jquery-ui-1.7.3.custom.css';
-	elgg_register_css($ui_url, 'smoothness');
-	
-	// Common options & inputs
-	$type = get_input('type', 'subtype');
-	$search = get_input('search', NULL);
-	$activity = get_input('activity');
-	$group = get_input('group');
-	$container_guid = get_input('container_guid');
-	$subtype = get_input('subtype');
-	$subtypes = get_input('subtypes', NULL);
-	$offset = get_input('offset', NULL);
-	$owner_guids = get_input('owner_guids', NULL);
-	$lower_date = get_input('lower_date', NULL);
-	$upper_date = get_input('upper_date', NULL);
-	$custom_tags = get_input('custom_tags');
-	
-	$dashboard_options = array(
-		'type' => $type,
-		'activity' => $activity, 
-		'group' => $group, 
-		'container_guid' => $container_guid, 
-		'subtype' => $subtype,
-		'subtypes' => $subtypes, 
-		'search' => $search, 
-		'offset' => $offset, 
-		'owner_guids' => $owner_guids,
-		'lower_date' => $lower_date,
-		'upper_date' => $upper_date,
-		'custom_tags' => $custom_tags,
-	);
-	
-	
-	if (isset($page[0]) && !empty($page[0])) {
-		switch ($page[0]) {
-			/* BEGIN AJAX ENDPOINTS */
-			//@TODO maybe a second page handler for the ajax? 
+	// Different process for ajax request vs regular load
+	if (elgg_is_xhr()) { // Is Ajax
+		
+		// Common options & inputs
+		$type = get_input('type', 'subtype');
+		$search = get_input('search', NULL);
+		$activity = get_input('activity');
+		$group = get_input('group');
+		$container_guid = get_input('container_guid');
+		$subtype = get_input('subtype');
+		$subtypes = get_input('subtypes', NULL);
+		$offset = get_input('offset', NULL);
+		$owner_guids = get_input('owner_guids', NULL);
+		$lower_date = get_input('lower_date', NULL);
+		$upper_date = get_input('upper_date', NULL);
+		$custom_tags = get_input('custom_tags');
+
+		$dashboard_options = array(
+			'type' => $type,
+			'activity' => $activity, 
+			'group' => $group, 
+			'container_guid' => $container_guid, 
+			'subtype' => $subtype,
+			'subtypes' => $subtypes, 
+			'search' => $search, 
+			'offset' => $offset, 
+			'owner_guids' => $owner_guids,
+			'lower_date' => $lower_date,
+			'upper_date' => $upper_date,
+			'custom_tags' => $custom_tags,
+		);
+		
+		// Ajax loads
+		switch ($page_type) {
 			case 'loadsubtype':				
 				echo elgg_view('tagdashboards/content/subtype', $dashboard_options);
 				// This is an ajax load, so exit
 				exit;
-			break;
+				break;
 			case 'loadactivity':
 				echo elgg_view('tagdashboards/content/activity', $dashboard_options);
 				// This is an ajax load, so exit
 				exit;
-			break;
+				break;
 			case 'loadactivitytag':
 				echo elgg_view('tagdashboards/content/activity_tag', $dashboard_options);
 				// This is an ajax load, so exit
 				exit;
-			break;
+				break;
 			case 'loadcustom':
 				echo elgg_view('tagdashboards/content/custom', $dashboard_options);
 				// This is an ajax load, so exit
 				exit;
-			break;
+				break;
 			case 'loadtagdashboard':
 				echo tagdashboards_get_load_content($dashboard_options);
 				// This ia an ajax load, so exit
@@ -204,84 +218,76 @@ function tagdashboards_page_handler($page) {
 				));
 				// This ia an ajax load, so exit
 				exit;
-			break;
+				break;
 			case 'loadtimeline':
 				$timeline = get_entity($page[1]);
 				echo  elgg_view('tagdashboards/timeline', array('entity' => $timeline));
 				exit; // ajax load, exit
-			break;
-			/* END AJAX ENDPOINTS */
-			/* BEGIN CONTENT */
+				break;
+			case 'all':
+			default:
+				break;
+		}
+	} else { // Regular request
+		
+		// Load CSS
+		elgg_load_css('elgg.tagdashboards');
+				
+		switch ($page_type) {
+			case 'owner': 
+				$user = get_user_by_username($page[1]);
+				$params = tagdashboards_get_page_content_list($user->guid);
+				break;
 			case 'friends': 
-				$content_info = tagdashboards_get_page_content_friends(get_loggedin_userid());
-			break;
+				$user = get_user_by_username($page[1]);
+				$params = tagdashboards_get_page_content_friends($user->guid);
+				break;
+			case 'group': 
+				$params = tagdashboards_get_page_content_list($page[1]);
+				break;
 			case 'add':
-				if ($page[1]) {
-					set_page_owner(get_entity($page[1])->getGUID());
-				}
-				$content_info = tagdashboards_get_page_content_add($page[1]);
-			break;
+				$params = tagdashboards_get_page_content_add($page_type, $page[1]);
+				break;
 			case 'edit':
-				$content_info = tagdashboards_get_page_content_edit($page[1]);
-			break;
+				$params = tagdashboards_get_page_content_edit($page_type, $page[1]);
+				break;
 			case 'view': 
 				// Register JS 
 				// HAVE TO HAVE TO HAVE TO HAVE TO LOAD THE JS IN THE HEAD!!!
 				elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false", 'timeline');
 				elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/lib/tagdashboards-timeline.js', 'tagdashboards-timeline');
-				$content_info = tagdashboards_get_page_content_view($page[1]);
-			break;
+				$params = tagdashboards_get_page_content_view($page[1]);
+				break;
 			case 'timeline':
 				// Register the js in the head, because that makes things work.
 				elgg_register_js("http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false", 'timeline');
 				elgg_register_js(elgg_get_site_url() . 'mod/tagdashboards/lib/tagdashboards-timeline.js', 'tagdashboards-timeline');
-				$content_info = tagdashboards_get_page_content_timeline($page[1]);
-			break;
+				$params = tagdashboards_get_page_content_timeline($page[1]);
+				break;
 			case 'timeline_image_icon':
 				echo elgg_view('tagdashboards/timeline_image_icon', array('guid' => $page[1]));
 				exit;
-			break;
+				break;
 			case 'group_activity':
 				elgg_set_context('group');
-				$content_info = tagdashboards_get_page_content_group_activity($page[1]);
-			break;
+				$params = tagdashboards_get_page_content_group_activity($page[1]);
+				break;
 			case 'activity_tag':
-				$content_info = tagdashboards_get_page_content_activity_tag();
-			break;
+				$params = tagdashboards_get_page_content_activity_tag();
+				break;
 			case 'custom':
-				$content_info = tagdashboards_get_page_content_custom();
-			break;
+				$params = tagdashboards_get_page_content_custom();
+				break;
+			case 'all':
 			default:
-				// Should be a username if we're here
-				if (isset($page[0])) {
-					$owner_name = $page[0];
-					set_input('username', $owner_name);
-				} else {
-					set_page_owner(get_loggedin_userid());
-				}
-				// grab the page owner
-				$owner = elgg_get_page_owner();
-				$content_info = tagdashboards_get_page_content_list($owner->getGUID());
-			break;
-			/* END CONTENT */
+				$params = tagdashboards_get_page_content_list();
+				break;
 		}
-	} else {
-		$content_info = tagdashboards_get_page_content_list();
+		
+		$body = elgg_view_layout($params['layout'] ? $params['layout'] : 'content', $params);
+		echo elgg_view_page($params['title'], $body);
 	}
-	
-	$sidebar = isset($content_info['sidebar']) ? $content_info['sidebar'] : '';
-
-	$params = array(
-		'content' => elgg_view('navigation/breadcrumbs') . $content_info['content'],
-		'sidebar' => $sidebar . elgg_view('tagdashboards/beta'),
-	);
-	$body = elgg_view_layout($content_info['layout'], $params);
-	
-	// Register tag dashboards JS library
-	$url = elgg_get_simplecache_url('js', 'tagdashboards');
-	elgg_register_js($url, 'tagdashboards');
-
-	echo elgg_view_page($content_info['title'], $body, $content_info['layout'] == 'administration' ? 'admin' : 'default');
+	return;
 }
 	
 /**
@@ -291,9 +297,6 @@ function tagdashboards_submenus() {
 	// Add admin link
 	if (elgg_in_context('admin')) {
 		elgg_register_admin_menu_item('administer', 'subtypes', 'tagdashboards');
-		/*elgg_add_submenu_item(array('text' => elgg_echo('tagdashboards:title:adminsettings'), 
-									'href' => elgg_get_site_url() . "tagdashboards/settings"), 'admin', 'z');
-		*/
 	}
 }
 	
@@ -316,38 +319,17 @@ function tagdashboards_url_handler($entity) {
  * @param unknown_type $params
  * @return unknown
  */
-function tagdashboards_profile_menu($hook, $type, $value, $params) {
-	global $CONFIG;
-
-	if ($params['owner'] instanceof ElggUser || $params['owner']->tagdashboards_enable == 'yes') {
-		$value[] = array(
-			'text' => elgg_echo('tagdashboards'),
-			'href' => elgg_get_site_url() . "tagdashboards/{$params['owner']->username}",
-		);
+function tagdashboards_owner_block_menu($hook, $type, $value, $params) {
+	if (elgg_instanceof($params['entity'], 'user')) {
+		$url = "tagdashboards/owner/{$params['entity']->username}";
+		$item = new ElggMenuItem('tagdashboards', elgg_echo('tagdashboards'), $url);
+		$value[] = $item;
+	} else {
+		if ($params['entity']->tagdashboards_enable == 'yes') {
+			$url = "tagdashboards/group/{$params['entity']->guid}/all";
+			$item = new ElggMenuItem('tagdashboards', elgg_echo('tagdashboards:label:grouptags'), $url);
+			$value[] = $item;
+		}
 	}
 	return $value;
-}
-
-/**
- * Hook into the framework and provide comments on tag dashboards
- * @todo get rid of this
- * @param unknown_type $hook
- * @param unknown_type $type
- * @param unknown_type $value
- * @param unknown_type $params
- * @return unknown
- */
-function tagdashboard_annotate_comments($hook, $type, $value, $params) {
-	$entity = $params['entity'];
-	$full = $params['full'];
-	
-	if (
-		($entity instanceof ElggEntity) &&	// Is the right type 
-		($entity->getSubtype() == 'tagdashboard') &&  // Is the right subtype
-		($full) // This is the full view
-	)
-	{
-		// Display comments
-		return elgg_view_comments($entity);
-	}
 }

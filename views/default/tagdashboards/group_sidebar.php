@@ -10,12 +10,12 @@
  * 
  */
 
-$group = page_owner_entity();
-$view_by_activity_url = elgg_get_site_url() . 'tagdashboards/group_activity/' . $group->getGUID(); 
+$group = elgg_get_page_owner_entity();
 
-?>
-<div class="group_tool_widget" style='height: auto; margin-bottom: 5px; min-height: 100%;'>
-	<h3><?php echo elgg_echo('tagdashboard') ?></h3>
-	<a href='<?php echo $view_by_activity_url; ?>'><?php echo elgg_echo('tagdashboards:label:groupbyactivity'); ?></a>
-</div>
+// Only display sidebar if tagdashboards are enabled
+if (elgg_instanceof($group, 'group') && $group->tagdashboards_enable == 'yes') {
+	$view_by_activity_url = elgg_get_site_url() . 'tagdashboards/group_activity/' . $group->getGUID(); 
+	$content = "<a href='$view_by_activity_url'>" . elgg_echo('tagdashboards:label:groupbyactivity') . "</a>";	
+	echo elgg_view_module('aside', elgg_echo('tagdashboards'), $content);
+}
 

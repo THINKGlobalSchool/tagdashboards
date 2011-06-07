@@ -14,9 +14,10 @@ $english = array(
 	// Generic
 	'tagdashboards' => 'Tag Dashboards',
 	'tagdashboard' => 'Tag Dashboard',
-	'tagdashboard:new' => 'Start New Tag Dashboard',
+	'tagdashboards:add' => 'Start New Tag Dashboard',
 	'item:object:tagdashboard' => 'Tag Dashboard',
 	'tagdashboard:enablegroup' => 'Enable group tag dashboards',
+	'tagdashboards:none' => 'No Tag Dashboards',
 	
 	'admin:tagdashboards' => 'Tag Dashboards',
 	'admin:tagdashboards:subtypes' => 'Entity Settings',
@@ -32,10 +33,8 @@ $english = array(
 	'tagdashboards:title:owneddashboards' => '%s\'s Tag Dashboards',
 	
 	// Menu items
-	'tagdashboards:menu:alltagdashboards' => 'All Tag Dashboards',
-	'tagdashboards:menu:yourtagdashboards' => 'Your Tag Dashboards',
+	'tagdashboards:menu:alltagdashboards' => 'Tag Dashboards',
 	'tagdashboards:menu:friendstagdashboards' => 'Friend\'s Tag Dashboards',
-
 
 	// Labels 
 	'tagdashboards:label:submitsearch' => 'GO',
@@ -52,7 +51,7 @@ $english = array(
 	'tagdashboards:label:saveform' => 'Edit Options',
 	'tagdashboards:label:showsave' => 'Show Save Form',
 	'tagdashboards:label:hidesave' => 'Hide Save Form',
-	'tagdashboards:label:grouptags' => 'Group Tag Dashboards', 
+	'tagdashboards:label:grouptags' => 'Group tag dashboards', 
 	'tagdashboards:label:deleteconfirm' => 'Are you sure you want to delete this Tag Dashboard?',
 	'tagdashboards:label:submitted_by' => 'Submitted by %s',
 	'tagdashboards:label:leaveacomment' => 'Leave a Comment ',

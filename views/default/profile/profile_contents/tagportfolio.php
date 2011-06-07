@@ -15,7 +15,7 @@ $url = elgg_get_simplecache_url('js', 'tagdashboards');
 elgg_register_js($url, 'tagdashboards');
 
 
-$page_owner = elgg_get_page_owner();
+$page_owner = elgg_get_page_owner_entity();
 $page_owner_guid = $page_owner->getGUID();
 $tag_portfolio = $page_owner->tag_portfolio;
 
