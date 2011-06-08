@@ -46,6 +46,10 @@ function tagdashboards_init() {
 	$td_js = elgg_get_simplecache_url('js', 'tagdashboards');
 	elgg_register_js('elgg.tagdashboards', $td_js);
 	
+	// Register tag dashboards JS library
+	$dr_js = elgg_get_simplecache_url('js', 'tddaterange');
+	elgg_register_js('elgg.tddaterange', $dr_js);
+	
 	// Register remote timeline JS library
 	$timeline_remote = "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false";
 	elgg_register_js('simile.timeline', $timeline_remote);
@@ -361,6 +365,7 @@ function tagdashboards_daterange_input_handler($hook, $type, $value, $params) {
 	elgg_load_css('jquery.daterangepicker');
 	elgg_load_css('jquery.ui.smoothness');	
 	elgg_load_js('jquery.daterangepicker');
+	elgg_load_js('elgg.tddaterange');
 	return $value;
 }
 

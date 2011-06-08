@@ -25,59 +25,7 @@ echo <<<HTML
 		<input class='tagdashboards-daterange' type="text" id="{$id}-from" name="lower_date" value="{$lower}" />
 		<label>to</label>
 		<input class='tagdashboards-daterange' type="text" id="{$id}-to" name="upper_date" value="{$upper}" />
-		<script type='text/javascript'>
-			$(function() {
-				$('.tagdashboards-daterange').daterangepicker({
-					appendTo: 		"div#daterange-container", 
-					posX: 			"0",
-					posY: 			"0",
-					earliestDate: 	Date.parse('-99years'),
-					latestDate: 	Date.parse('+99years'),
-					dateFormat: 	'MM d, yy',
-					onOpen: 		function() {
-						//$('input.tagdashboards-daterange').val('');
-					},
-					defaultDate: 	Date.today(),
-				}); 
-			});
-		</script>
 	</div>
 HTML;
 
 return;
-
-
-$name = $vars['name'];
-$id = $vars['id'];
-$cleartext = elgg_echo('tagdashboards:label:clear');
-
-echo <<<HTML
-	<script type='text/javascript'>
-		$(function() {
-				$('a.clear-daterange').click(function() {
-					$('input.tagdashboards-daterange').val('');
-					return false;
-				});
-			
-				var dates = $( "#{$id}-from, #{$id}-to" ).datepicker({
-					defaultDate: "+1w",
-					changeMonth: true,
-					numberOfMonths: 3,
-					onSelect: function( selectedDate ) {
-						var option = this.id == "{$id}-from" ? "minDate" : "maxDate",
-							instance = $( this ).data( "datepicker" ),
-							date = $.datepicker.parseDate(
-								instance.settings.dateFormat ||
-								$.datepicker._defaults.dateFormat,
-								selectedDate, instance.settings );
-						dates.not( this ).datepicker( "option", option, date );
-					}
-				});
-			});
-	</script>
-	<label>From</label>
-	<input class='tagdashboards-daterange' type="text" id="{$id}-from" name="{$name}_from"/>
-	<label>to</label>
-	<input class='tagdashboards-daterange' type="text" id="{$id}-to" name="{$name}_to"/>
-	<a class='clear-daterange' href='#'>$cleartext</a>
-HTML;
