@@ -15,6 +15,7 @@
  * - Profile portfolio
  * - Sort out all the included vendors (jquery, theme etc)
  * - Clean up language file
+ * - Test sticky form stuff
  *
  * If possible:
  * - Modules?
@@ -51,7 +52,7 @@ function tagdashboards_init() {
 	
 	// Regsiter local timeline JS library
 	$timeline_js = elgg_get_simplecache_url('js', 'timeline');
-	elgg_register_js('elgg.tagdashboards.timeline', $timeline_is);
+	elgg_register_js('elgg.tagdashboards.timeline', $timeline_js);
 	
 	// Register datepicker JS
 	$daterange_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
@@ -90,7 +91,6 @@ function tagdashboards_init() {
 	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/tagdashboards';
 	elgg_register_action('tagdashboards/save', "$action_base/save.php");
 	elgg_register_action('tagdashboards/save_tag_portfolio', "$action_base/save_tag_portfolio.php");
-	elgg_register_action('tagdashboards/edit', "$action_base/edit.php");
 	elgg_register_action('tagdashboards/delete', "$action_base/delete.php");
 	elgg_register_action('tagdashboards/subtypes', "$action_base/subtypes.php", 'admin');
 	
@@ -245,11 +245,12 @@ function tagdashboards_page_handler($page) {
 		
 		// Load CSS
 		elgg_load_css('elgg.tagdashboards');
-elgg_load_css('jquery.ui.smoothness');
+		elgg_load_css('jquery.ui.smoothness');
 
 		// Load JS
 		elgg_load_js('elgg.tagdashboards');
 		elgg_load_js('jquery.resize');
+		
 	
 		switch ($page_type) {
 			case 'owner': 
@@ -295,7 +296,7 @@ elgg_load_css('jquery.ui.smoothness');
 				break;
 		}
 		
-		$body = elgg_view_layout('content', $params);
+		$body = elgg_view_layout($params['layout'] ? $params['layout'] : 'content', $params);
 		echo elgg_view_page($params['title'], $body);
 	}
 	return;

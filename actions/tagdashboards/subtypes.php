@@ -10,9 +10,9 @@
  * 
  */
 
-$enabled_subtypes = get_input('subtypes_enabled');
+$enabled_subtypes = get_input('subtypes');
 
-set_plugin_setting('enabled_subtypes', serialize($enabled_subtypes), 'tagdashboards');
+elgg_set_plugin_setting('enabled_subtypes', serialize($enabled_subtypes), 'tagdashboards');
 
 system_message(elgg_echo('tagdashboards:success:setenabledsubtypes'));
 

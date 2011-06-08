@@ -35,7 +35,7 @@ foreach($subtypes as $subtype) {
 	}
 	$subtypes_table .= "<tr>";
 	$subtypes_table .= "<td>$subtype</td>";
-	$subtypes_table .= "<td><input type='checkbox' name='subtypes_enabled[]' value='$subtype' $checked /></td>";
+	$subtypes_table .= "<td><input type='checkbox' name='subtypes[]' value='$subtype' $checked /></td>";
 	$subtypes_table .= "</tr>";
 }
 

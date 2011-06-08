@@ -1,6 +1,6 @@
 <?php
 /**
- * Tag Dashboards admin enable entities action
+ * Tag Dashboards save action
  * 
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -10,20 +10,20 @@
  * 
  */
 
-
 // Get inputs
-$title = get_input('tagdashboard_title');
-$description = get_input('tagdashboard_description');
-$tags = string_to_tag_array(get_input('tagdashboard_tags'));
-$access = get_input('tagdashboard_access');
-$search = get_input('tagdashboard_search');
-$subtypes = get_input('subtypes_enabled');
-$groupby = get_input('tagdashboard_groupby');	// How are we grouping the content
-$custom_tags = string_to_tag_array(get_input('tagdashboards_custom')); // Custom fields
-$owner_guids = get_input('tagdashboard_owner_guids');
-$container_guid = get_input('container_guid', NULL);
-$lower_date = strtotime(get_input('tagdashboard_date_range_from', null));
-$upper_date = strtotime(get_input('tagdashboard_date_range_to', null));
+$guid 				= get_input('guid');
+$title 				= get_input('title');
+$description 		= get_input('description');
+$tags 				= string_to_tag_array(get_input('tags'));
+$access 			= get_input('access_id');
+$search 			= get_input('search');
+$subtypes 			= get_input('subtypes');
+$groupby 			= get_input('groupby');	// How are we grouping the content
+$custom_tags 		= string_to_tag_array(get_input('custom')); // Custom fields
+$owner_guids	 	= get_input('owner_guids');
+$container_guid 	= get_input('container_guid', NULL);
+$lower_date 		= strtotime(get_input('lower_date', null));
+$upper_date 		= strtotime(get_input('upper_date', null));
 
 // Sticky form
 elgg_make_sticky_form('tagdashboards-save-form');
@@ -32,8 +32,21 @@ if (!$title) {
 	forward(elgg_get_site_url() . 'tagdashboards/add#' . $search);
 }
 
-$tagdashboard = new ElggObject();
-$tagdashboard->subtype = 'tagdashboard';
+// Editing
+if ($guid) {
+	$entity = get_entity($guid);
+	if (elgg_instanceof($entity, 'object', 'tagdashboard') && $entity->canEdit()) {
+		$tagdashboard = $entity;
+	} else {
+		register_error(elgg_echo('tagdashboards:error:save'));
+		forward(REFERER);
+	}
+} else { // New 
+	$tagdashboard = new ElggObject();
+	$tagdashboard->subtype = 'tagdashboard';
+	$tagdashboard->container_guid = $container_guid;
+}
+
 $tagdashboard->title = $title;
 $tagdashboard->description = $description;
 $tagdashboard->tags = $tags;
@@ -45,11 +58,6 @@ $tagdashboard->custom_tags = $custom_tags;
 $tagdashboard->owner_guids = $owner_guids;
 $tagdashboard->lower_date = $lower_date;
 $tagdashboard->upper_date = $upper_date;
-
-
-if ($container_guid) {
-	$tagdashboard->container_guid = $container_guid;
-}
 
 // If error saving, register error and return
 if (!$tagdashboard->save()) {

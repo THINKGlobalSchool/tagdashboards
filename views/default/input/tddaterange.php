@@ -1,6 +1,6 @@
 <?php
 /**
- * tagdashboard entity view
+ * tagdashboard date range input
  * 
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -22,9 +22,9 @@ $upper 	= $vars['value_upper'] ? date("F j, Y",$vars['value_upper']) : '';
 echo <<<HTML
 	<div id='daterange-container' style='position:relative;'>
 		<label>From</label>
-		<input class='tagdashboards-daterange' type="text" id="{$id}-from" name="{$name}_from" value="{$lower}" />
+		<input class='tagdashboards-daterange' type="text" id="{$id}-from" name="lower_date" value="{$lower}" />
 		<label>to</label>
-		<input class='tagdashboards-daterange' type="text" id="{$id}-to" name="{$name}_to" value="{$upper}" />
+		<input class='tagdashboards-daterange' type="text" id="{$id}-to" name="upper_date" value="{$upper}" />
 		<script type='text/javascript'>
 			$(function() {
 				$('.tagdashboards-daterange').daterangepicker({

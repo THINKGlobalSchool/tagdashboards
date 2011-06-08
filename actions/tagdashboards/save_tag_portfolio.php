@@ -11,7 +11,7 @@
  */
 
 $user = get_loggedin_user();
-$custom = get_input('tagdashboards_custom');
+$custom = get_input('custom');
 $user->tag_portfolio = $custom;
 
 system_message(elgg_echo('tagdashboards:success:saveportfolio'));

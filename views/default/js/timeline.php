@@ -10,7 +10,9 @@
  */ 
 ?>
 //<script>
+console.log('tlloaded');
 elgg.provide('elgg.tagdashboards.timeline');
+
 
 // Elgg Timeline functions..
 /* Creates a popup out of a dialog with given id */

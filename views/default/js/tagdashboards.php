@@ -15,6 +15,15 @@ elgg.provide('elgg.tagdashboards');
 // Init function
 elgg.tagdashboards.init = function () {
 	
+	// Setup and initialize tag autocomplete inputs
+	elgg.tagdashboards.init_autocomplete_inputs();
+
+}
+
+/**	
+ * Convenience function to initialize autocompletes
+ */
+elgg.tagdashboards.init_autocomplete_inputs = function() {
 	// Init each element matching the autocomplete class
 	$('input.tagdashboards-autocomplete-tags').each(function() {
 		$(this).autocomplete({
@@ -33,7 +42,6 @@ elgg.tagdashboards.init = function () {
 			select: function() {},
 		});
 	});
-
 }
 
 /**
