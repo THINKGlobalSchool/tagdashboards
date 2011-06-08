@@ -17,7 +17,43 @@ elgg.tagdashboards.init = function () {
 	
 	// Setup and initialize tag autocomplete inputs
 	elgg.tagdashboards.init_autocomplete_inputs();
-
+	
+	// Setup and initialize tag dashboards
+	elgg.tagdashboards.init_dashboards();
+	
+	// Setup the save form
+	elgg.tagdashboards.init_save_form();
+	
+	// Misc features
+	
+	// Arrow toggler
+	$('.tagdashboards-arrow-toggler').each(function() {
+		$(this).html(elgg.echo($(this).attr('name')) + ' &#9660;');
+		$(this).click(elgg.tagdashboards.tdtoggler);
+	});
+	
+	// Groupby radio buttons show/hide
+	$('.tagdashboards-groupby-radio li label input').click(elgg.tagdashboards.groupby_switcher);
+	$('#tagdashboards-groupby-div-' + $('#tagdashboard-groupby-input:checked').val()).show();
+	
+				
+	// If we have a hash up in the address, search automatically
+	if (window.location.hash) {
+		$('a#tagdashboards-options-toggle').show();
+		$('#tagdashboards-save-input-container').show();
+		
+		var hash = decodeURI(window.location.hash.substring(1));
+		var value = $('#tagdashboards-search-input').val(hash);
+		elgg.tagdashboards.set_dashboard_title();
+		
+		// Set up options
+		var options = new Array();
+		options['search'] = hash;
+		options['type'] = $('#tagdashboard-groupby-input:checked').val();
+		options['custom_tags'] = $('#tagdashboards-custom-input').val();				
+		
+		elgg.tagdashboards.display(options);
+	}
 }
 
 /**	
@@ -26,9 +62,10 @@ elgg.tagdashboards.init = function () {
 elgg.tagdashboards.init_autocomplete_inputs = function() {
 	// Init each element matching the autocomplete class
 	$('input.tagdashboards-autocomplete-tags').each(function() {
+		var input = $(this);
 		$(this).autocomplete({
 			source: function(request, response) {
-				var params = {term: $(this).val()};
+				var params = {term: input.val()};
 				elgg.get('tagdashboards/tags', {
 					data: params,
 					dataType: 'json',
@@ -43,6 +80,145 @@ elgg.tagdashboards.init_autocomplete_inputs = function() {
 		});
 	});
 }
+
+/**
+ * Initialized tag dashboards data to be displayed
+ */
+elgg.tagdashboards.init_dashboards = function() {
+	$('div.tagdashboard-container').each(function() {
+		var options = {};
+		$(this).find('div.tagdashboard-options').find('input').each(function() {
+			var value = $(this).val();
+			// Try to parse JSON
+			try {
+				value = $.parseJSON(value);
+			} catch (e) {
+				// Do nothing
+			} finally {
+				options[$(this).attr('name')] = value;
+			}
+		});
+		
+		$(document).ready(function() {
+			elgg.tagdashboards.display(options);
+		});
+	});
+}
+
+elgg.tagdashboards.init_from_form = function() {
+	
+}
+
+/**	
+ * Helper function to setup events and init the save form
+ */
+elgg.tagdashboards.init_save_form = function() {
+	$('#tagdashboards-save-container').hide();
+	
+	$('#tagdashboards-search-submit').live('click', function(event){
+		elgg.tagdashboards.validate_search();
+		event.preventDefault();
+	});
+
+	$('#tagdashboards-search-input').keypress(function(e){
+		if (e.which == 13) {
+			elgg.tagdashboards.validate_search();
+			elgg.tagdashboards.init_from_form();
+			e.preventDefault();
+			return false;
+		}
+	});
+	
+	$('#tagdashboards-save-input').live('click', function() {
+		$('input#tagdashboard-search').val(elgg.tagdashboards.get_tagdashboard_search_value());
+	});
+	
+	$('#tagdashboards-refresh-input').live('click', function() {
+		// Grab selected subtypes
+		var inputs = $('.tagdashboards-subtype-input:checked');
+		var selected_subtypes = {};
+		count = 0;
+		inputs.each(function() {
+			selected_subtypes[count] = $(this).val();
+			count++;
+		});
+		
+		var search = $("#tagdashboards-search-input").val();
+		
+		if (!search) {
+			search = elgg.tagdashboards.get_tagdashboard_search_value();
+		}
+		
+		// Get owner guids
+		var userpicker_input = $('input[name="owner_guids[]"]');
+		var owner_guids = new Array();
+		count = 0;
+		userpicker_input.each(function() {
+			owner_guids[count] = $(this).val();
+			count++;
+		});
+		
+		// Set up options
+		var options = new Array();
+		options['search'] = search;
+		options['type'] = $('#tagdashboard-groupby').val();
+		options['subtypes'] = selected_subtypes;
+		options['custom_tags'] = $('#tagdashboards-custom-input').val();
+		options['owner_guids'] = owner_guids;
+		
+		// Get/parse dates
+		options['lower_date'] = Date.parse($('#tagdashboard-date-range-from').val()) / 1000;
+		options['upper_date'] = Date.parse($('#tagdashboard-date-range-to').val()) / 1000;
+	
+		elgg.tagdashboards.display(options);
+		return false;
+	});
+}
+
+// Set the title to the searched tag
+elgg.tagdashboards.set_dashboard_title = function() {
+	$('#tagdashboard-title').val(elgg.tagdashboards.get_tagdashboard_search_value);
+}
+
+// Validate and submit search
+elgg.tagdashboards.validate_search = function() {
+	if (!$('#tagdashboards-search-input').val()) {
+		elgg.tagdashboards.display_error('tagdashboards-search-error', 'Please enter search text');
+	} else {
+		$('a#tagdashboards-options-toggle').show();
+		$('span#tagdashboards-search-error').html('');
+		elgg.tagdashboards.set_dashboard_title();
+		
+		// Set up options
+		var options = new Array();
+		options['search'] = elgg.tagdashboards.get_tagdashboard_search_value();
+		options['type'] = '$groupby';
+		options['custom_tags'] = $('#tagdashboards-custom-input').val();
+		
+		elgg.tagdashboards.display(options);
+		window.location.hash = encodeURI(options['search']); // Hash magic for permalinks
+	}
+}
+
+/**
+ * Special Arrow Toggler
+ * uses: 
+ * 	href - id of div to toggle
+ * 	name - label for link
+ */
+elgg.tagdashboards.tdtoggler = function(event) {
+	var id = $(this).attr('href');
+	var label = $(this).attr('name');
+	
+	if ($(id).is(':visible')) {
+		$(this).html(elgg.echo(label) + " &#9660;");
+	} else {
+		$(this).html(elgg.echo(label) + " &#9650;");
+	}
+	$(id).toggle('slow');
+	event.preventDefault();
+}
+
 
 /**
  * Display tag dashboard based on given values
@@ -76,14 +252,14 @@ elgg.tagdashboards.display = function (options) {
 	}
 	
 	// Load in content
-	$('#tagdashboards-content-container').hide().load(url, { 
+	$('.tagdashboards-content-container').hide().load(url, { 
 		'custom_tags[]': 	custom_tags, 
 		'subtypes': 		subtypes , 
 		'owner_guids': 		owner_guids,
 		'lower_date': 		lower_date,
 		'upper_date': 		upper_date, 
 		}, 
-		function() {$('#tagdashboards-content-container').fadeIn('fast');}
+		function() {$('.tagdashboards-content-container').fadeIn('fast');}
 	);
 	$('#tagdashboards-save-input-container').show();
 }
@@ -95,7 +271,7 @@ elgg.tagdashboards.display_error = function(id, txt) {
 		$('a#tagdashboards-options-toggle').hide();
 		$('#tagdashboards-save-input-container').hide();
 		$('#' + id).html(txt);
-		$('#tagdashboards-content-container').html('');
+		$('.tagdashboards-content-container').html('');
 }
 
 // Get search value
@@ -218,16 +394,12 @@ elgg.tagdashboards.fade_div = function(id) {
 	});
 }
 
-elgg.tagdashboards.tagdashboards_switch_groupby = function(tab_id, groupby_val) {
-	var nav_name = "input#" + tab_id;
-	var tab_name = "div#" + tab_id;
-
-	$(".tagdashboards-groupby-div").hide();
-	$(tab_name).show();
-	$(".tagdashboards-groupby-radio").attr('checked', false);
-	
-	$(nav_name).attr('checked', true);
-	$("#tagdashboard-groupby").val(groupby_val);
+/** 
+ * Simple switcher function for the groupby inputs
+ */
+elgg.tagdashboards.groupby_switcher = function(event) {
+	$('.tagdashboards-groupby-div').hide();
+	$('#tagdashboards-groupby-div-' + $(this).val()).show();
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.init);

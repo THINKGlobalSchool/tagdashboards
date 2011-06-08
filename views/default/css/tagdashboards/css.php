@@ -24,7 +24,7 @@
 	visibility: hidden;
 }
 
-#tagdashboards-content-container {
+.tagdashboards-content-container {
 	position: relative;
 	top: 0;
 }
@@ -53,7 +53,7 @@ span#tagdashboards-search-error {
 	margin: 10px;
 }
 
-#tagdashboards-content-container.tagdashboards-left .tagdashboards-container {
+.tagdashboards-content-container.tagdashboards-left .tagdashboards-container {
 	float: left;
 }
 
@@ -137,6 +137,23 @@ div.tagdashboard-comment-block {
 .enabled-content-type label{
 	margin-right: 4px;
 	font-weight: bold;
+}
+
+.tagdashboards-groupby-radio li {
+	margin-right: 12px;
+	padding: 5px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	background: #cccccc;
+	cursor: pointer;	
+}
+
+.tagdashboards-groupby-radio li label {
+	cursor: pointer;
+}
+
+.tagdashboards-groupby-radio li label input {
+	margin-right: 6px;
 }
 
 a.switch-tagdashboards {

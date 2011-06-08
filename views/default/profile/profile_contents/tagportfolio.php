@@ -55,4 +55,4 @@ if (get_loggedin_userid() == $page_owner_guid) {
 	}
 }
 
-echo "<div id='tagdashboards-content-container' class='tagdashboards-left'></div>";
+echo "<div class='tagdashboards-content-container' class='tagdashboards-left'></div>";

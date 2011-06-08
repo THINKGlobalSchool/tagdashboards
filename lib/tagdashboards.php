@@ -15,15 +15,15 @@
  */
 function tagdashboards_get_page_content_edit($page, $guid) { 
 	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
-	$params['filter'] = false;
-	$params['buttons'] = false;
+	$params['filter'] = FALSE;
+	$params['buttons'] = FALSE;
 	
 	// General form vars
 	$form_vars = array(
 		'id' => 'tagdashboards-save-form', 
 		'name' => 'tagdashboards-save-form'
 	);
-	
+		
 	if ($page == 'edit') {
 		$tagdashboard = get_entity($guid);
 		
@@ -39,7 +39,7 @@ function tagdashboards_get_page_content_edit($page, $guid) {
 
 			$body_vars = tagdashboards_prepare_form_vars($tagdashboard);
 
-			$params['content'] = elgg_view_form('tagdashboards/save', $form_vars, $body_vars);
+			$params['content'] .= elgg_view_form('tagdashboards/save', $form_vars, $body_vars);
 		} else {
 			register_error(elgg_echo('tagdashboards:error:notfound'));
 			forward(REFERER);
@@ -56,8 +56,8 @@ function tagdashboards_get_page_content_edit($page, $guid) {
 		$params['title'] = elgg_echo('tagdashboards:title:search');
 		
 		$body_vars = tagdashboards_prepare_form_vars();
-		
-		$params['content'] = elgg_view_form('tagdashboards/save', $form_vars, $body_vars);
+
+		$params['content'] .= elgg_view_form('tagdashboards/save', $form_vars, $body_vars);
 	}	
 	return $params;
 }

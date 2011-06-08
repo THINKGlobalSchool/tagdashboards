@@ -31,4 +31,4 @@ elgg.tddaterange.init = function() {
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tddaterange.init);
-//<script>
+//</script>

@@ -78,6 +78,51 @@ if ($full) { // Full view
 	if ($last_entity) {
 		$latest_date = date('r', strtotime(strftime("%a %b %d %Y", $last_entity->time_created))); 
 	}
+		
+	// Tag Dashboard Content inputs
+	$td_type_input = elgg_view('input/hidden', array(
+		'name' => 'type', 
+		'id' => 'type', 
+		'value' => $tagdashboard->groupby)
+	);
+	
+	$td_search_input = elgg_view('input/hidden', array(
+		'name' => 'search', 
+		'id' => 'search', 
+		'value' => $tagdashboard->search
+	));
+	
+	$td_subtypes_input = elgg_view('input/hidden', array(
+		'name' => 'subtypes', 
+		'id' => 'subtypes', 
+		'value' => json_encode($subtypes)
+	));
+	
+	$td_custom_tags_input = elgg_view('input/hidden', array(
+		'name' => 'custom_tags', 
+		'id' => 'custom_tags', 
+		'value' => json_encode($tagdashboard->custom_tags)
+	));
+	
+	$td_owner_guids_input = elgg_view('input/hidden', array(
+		'name' => 'owner_guids', 
+		'id' => 'owner_guids', 
+		'value' => json_encode($tagdashboard->owner_guids)
+	));
+	
+	$td_lower_date_input = elgg_view('input/hidden', array(
+		'name' => 'lower_date', 
+		'id' => 'lower_date', 
+		'value' => $tagdashboard->lower_date
+	));
+	
+	$td_upper_date_input = elgg_view('input/hidden', array(
+		'name' => 'upper_date', 
+		'id' => 'lower_date', 
+		'value' => $tagdashboard->upper_date
+	));
+	
+	
 	
 	$content = <<<HTML
 		<div class='tagdashboard-big-title'>
@@ -95,43 +140,27 @@ if ($full) { // Full view
 		</div>
 		<div style='clear:both;'></div>
 		<div id='tagdashboards-timeline-container'></div>
-		<div id='tagdashboards-content-container'></div>
+		<!-- This is the tag dashboard itself, it will be later initted by JS -->
+		<div class='tagdashboard-container'>
+			<div class='tagdashboard-options'>
+				$td_type_input
+				$td_search_input
+				$td_subtypes_input
+				$td_custom_tags_input
+				$td_owner_guids_input
+				$td_lower_date_input
+				$td_upper_date_input
+			</div>
+			<div class='tagdashboards-content-container'></div>
+		</div>
 		<a name='annotations'></a><hr style='border: 1px solid #bbb' />
 HTML;
 
-	// Vars for JS
-	$js_type = $tagdashboard->groupby;
-	$js_search = $tagdashboard->search;
-	$js_subtypes = json_encode($subtypes);
-	$js_custom_tags = json_encode($tagdashboard->custom_tags);
-	$js_owner_guids = json_encode($tagdashboard->owner_guids);
-	$js_lower_date = $tagdashboard->lower_date;
-	$js_upper_date = $tagdashboard->upper_date;
-	
+
 	$script = <<<HTML
 		<script type='text/javascript'>
-			var type = '$js_type';
-			var search = '$js_search';
-			var subtypes = '$js_subtypes';
-			var custom_tags = '$js_custom_tags';
-			var owner_guids = '$js_owner_guids';
-			var lower_date = '$js_lower_date';
-			var upper_date = '$js_upper_date';
-			
-			// Set up options
-			var options = new Array();
-			options['search'] = search;
-			options['type'] = type;
-			options['subtypes'] = $.parseJSON(subtypes);
-			options['custom_tags'] = $.parseJSON(custom_tags);
-			options['owner_guids'] = $.parseJSON(owner_guids);
-			options['lower_date'] = lower_date;
-			options['upper_date'] = upper_date;
-			
-			$(document).ready(function() {
-				elgg.tagdashboards.display(options);
-			});
-			
+		
+			// This is all timeline related 
 			var is_tl_loaded = false;
 			var end_url = "$timeline_load";
 
@@ -139,14 +168,14 @@ HTML;
 			setLatestDate("$latest_date");
 
 			$("#tagdashboards-timeline-container").resize(function () {
-				$("#tagdashboards-content-container").css({top: -(	$("#tagdashboards-timeline-container").height())});
+				$(".tagdashboards-content-container").css({top: -(	$("#tagdashboards-timeline-container").height())});
 			});
 
 			// Grab height of the timeline container initially
 			tl_height = $('#tagdashboards-timeline-container').height();
 
 			// Set the top position of the content container to -(tl_heigh)
-			$("#tagdashboards-content-container").css({top: -(tl_height)});
+			$(".tagdashboards-content-container").css({top: -(tl_height)});
 
 
 			if (window.location.hash) {
@@ -160,7 +189,7 @@ HTML;
 				if ($(this).attr('id') == "switch-content") {
 					window.location.hash = "";
 					$("#tagdashboards-timeline-container").css({visibility: 'hidden'});
-					$("#tagdashboards-content-container").show();
+					$(".tagdashboards-content-container").show();
 				} else if ($(this).attr('id') == "switch-timeline") {
 					window.location.hash = "timeline";
 					loadTimeline();
@@ -175,12 +204,10 @@ HTML;
 					});
 				}
 				$("#tagdashboards-timeline-container").css({visibility: 'visible'});
-				$("#tagdashboards-content-container").hide();
+				$(".tagdashboards-content-container").hide();
 			}
 		</script>
 HTML;
-
-	
 
 	$subtitle = "<p>$author_text $date $comments_link</p>";
 
