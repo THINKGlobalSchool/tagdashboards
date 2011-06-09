@@ -16,10 +16,8 @@
  * - Sort out all the included vendors (jquery, theme etc)
  * - Clean up language file
  * - Test sticky form stuff
- *
- * If possible:
- * - Modules?
- * - Uberviews (maybe replace with module?)
+ * - Clean up CSS
+ * - Check for unused functions
  */
 
 elgg_register_event_handler('init', 'system', 'tagdashboards_init');

@@ -16,45 +16,38 @@ $search = $vars['search'];
 
 // Get subtypes
 $subtypes = $vars['subtypes'];
-$json_subtypes = json_encode($subtypes);
 
 // Get ownerguids
 $owner_guids = $vars['owner_guids'];
-$json_owner_guids = json_encode($owner_guids);
 
 // Dates
 $lower_date = $vars['lower_date'];
 $upper_date = $vars['upper_date'];
 
-$content = <<<HTML
-	<script type='text/javascript'>
-		var owner_guids = $.parseJSON('$json_owner_guids');
-		var subtypes = $.parseJSON('$json_subtypes');
-		var lower_date = '$lower_date';
-		var upper_date = '$upper_date';
-	</script>
-HTML;
-
 // Loop over each activity and build content
 foreach($activities as $activity) {
-	$activity_name = $activity['name'];
-	$activity_tag = $activity['tag'];
-
-	// Build container
-	$content .= elgg_view('tagdashboards/content/container', array(
-		'heading' => $activity_name,
-		'container_class' => 'tagdashboards-activity',
-		'id' => $activity_tag,
-	));
-
-	// Build JS
-	$content .= <<<HTML
-	<script type='text/javascript'>
-		$(document).ready(function() {
-			elgg.tagdashboards.load_tagdashboards_activity_tag_content("$activity_tag", "$search", subtypes, owner_guids, lower_date, upper_date, null);
-		});
-	</script>
-HTML;
+	
+	$params = array(
+		'created_time_upper' => $upper_date,
+		'created_time_lower' => $lower_date,
+		'owner_guids' => $owner_guids,
+		'types' => array('object'),
+		'subtypes' => $subtypes,
+		'limit' => 10,
+		'title' => $activity['name'],
+		'listing_type' => 'simpleicon',
+		'restrict_tag' => TRUE,
+		'module_type' => 'featured',
+		'module_id' => $activity['tag'],
+		'module_class' => 'tagdashboards-container',
+		'tags' => array($search, $activity['tag']),
+	);
+	
+	
+	// Default module
+	$content = elgg_view('modules/ajaxmodule', $params);
+	
+	echo $content;
 }
 
-echo $content . "<div style='clear: both;'></div>";
+echo "<script>elgg.modules.ajaxmodule.init();</script><div style='clear: both;'></div>";

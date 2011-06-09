@@ -18,7 +18,6 @@ $search = $vars['search'];
 
 // Owner guids
 $owner_guids = $vars['owner_guids'];
-$json_owner_guids = json_encode($owner_guids);
 
 // Dates
 $lower_date = $vars['lower_date'];
