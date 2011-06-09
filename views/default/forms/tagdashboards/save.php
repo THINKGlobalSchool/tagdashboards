@@ -46,15 +46,7 @@ if ($guid) {
 	
 } else { // Creating a new tagdashboard
 	$enabled = tagdashboards_get_enabled_subtypes();
-	$access_id = ACCESS_LOGGED_IN;
-	
-	// Hidden search input
-	$hidden_search_input = elgg_view('input/hidden', array(
-		'id' => 'tagdashboard-search',
-		'name' => 'search',
-		'value' => '' // Will be updated by JS
-	));
-	
+	$access_id = ACCESS_LOGGED_IN;	
 	$display_form = 'none';
 }
 
@@ -246,7 +238,6 @@ $form_body = <<<HTML
 		$tagdashboards_save_input
 	</div>
 	$container_guid_input
-	$hidden_search_input
 	$tagdashboard_guid
 	<div class='tagdashboards-content-container'>
 	</div>

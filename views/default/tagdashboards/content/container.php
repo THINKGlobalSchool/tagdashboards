@@ -12,6 +12,7 @@
  * @uses $vars['container_class'] - Container class
  */
 
+
 // Get values
 $heading 	= $vars['heading'];
 $class 		= $vars['container_class'];

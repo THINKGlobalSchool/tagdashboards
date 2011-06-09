@@ -24,43 +24,51 @@ $json_owner_guids = json_encode($owner_guids);
 $lower_date = $vars['lower_date'];
 $upper_date = $vars['upper_date'];
 
-$content = <<<HTML
-	<script type='text/javascript'>
-		var owner_guids = $.parseJSON('$json_owner_guids');
-		var lower_date = '$lower_date';
-		var upper_date = '$upper_date';
-	</script>
-HTML;
-
 // If we weren't supplied an array of subtypes, use defaults
 if (!is_array($subtypes)) {
 	$subtypes = tagdashboards_get_enabled_subtypes();
 }
 
-// Loop over and display each
-foreach ($subtypes as $subtype) {
-	// Check if anyone wants to change the heading for their subtype
-	$subtype_heading = trigger_plugin_hook('tagdashboards:subtype:heading', $subtype, array(), false);
-	if (!$subtype_heading) {
-		// Use default item:object:subtype as this is usually defined 
-		$subtype_heading = elgg_echo('item:object:' . $subtype);
-	}
-	
-	// Build container
-	$content .= elgg_view('tagdashboards/content/container', array(
-		'heading' => $subtype_heading,
-		'container_class' => 'tagdashboards-subtype',
-		'id' => $subtype,
-	));
-	
-	// Build JS
-	$content .= <<<HTML
-	<script type='text/javascript'>
-		$(document).ready(function() {
-			elgg.tagdashboards.load_tagdashboards_subtype_content("$subtype", "$search", owner_guids, lower_date, upper_date, null);
-		});
-	</script>
-HTML;
-}
 
-echo $content . "<div style='clear: both;'></div>";
+// Loop over and display each
+foreach ($subtypes as $subtype) {		
+
+	$entity_params = array(
+		'created_time_upper' => $upper_date,
+		'created_time_lower' => $lower_date,
+		'owner_guids' => $owner_guids,
+		'tag' => rawurldecode($search),
+		'types' => array('object'),
+		'subtypes' => array($subtype),
+		'limit' => 10,
+	);
+	
+	// See if anyone has registered a hook to display their subtype appropriately
+	if (!$content = trigger_plugin_hook('tagdashboards:subtype', $subtype, $entity_params, false)) {	
+			
+		// Check if anyone wants to change the heading for their subtype
+		$subtype_heading = trigger_plugin_hook('tagdashboards:subtype:heading', $subtype, array(), false);
+		if (!$subtype_heading) {
+			// Use default item:object:subtype as this is usually defined 
+			$subtype_heading = elgg_echo('item:object:' . $subtype);
+		}
+		
+		// Ajaxmodule params
+		$module_params = array(
+			'title' => $subtype_heading,
+			'listing_type' => 'simpleicon',
+			'restrict_tag' => TRUE,
+			'module_type' => 'featured',
+			'module_id' => $subtype,
+			'module_class' => 'tagdashboards-container',
+		);
+		
+		$params = array_merge($entity_params, $module_params);
+		
+		// Default module
+		$content = elgg_view('modules/ajaxmodule', $params);
+	}
+
+	echo $content;
+}
+echo "<script>elgg.modules.ajaxmodule.init();</script><div style='clear: both;'></div>";

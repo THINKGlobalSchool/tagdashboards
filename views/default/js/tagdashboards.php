@@ -24,36 +24,12 @@ elgg.tagdashboards.init = function () {
 	// Setup the save form
 	elgg.tagdashboards.init_save_form();
 	
-	// Misc features
+	// Check hashes
+	elgg.tagdashboards.handle_hash();
 	
+	// ** Misc features **
 	// Arrow toggler
-	$('.tagdashboards-arrow-toggler').each(function() {
-		$(this).html(elgg.echo($(this).attr('name')) + ' &#9660;');
-		$(this).click(elgg.tagdashboards.tdtoggler);
-	});
-	
-	// Groupby radio buttons show/hide
-	$('.tagdashboards-groupby-radio li label input').click(elgg.tagdashboards.groupby_switcher);
-	$('#tagdashboards-groupby-div-' + $('#tagdashboard-groupby-input:checked').val()).show();
-	
-				
-	// If we have a hash up in the address, search automatically
-	if (window.location.hash) {
-		$('a#tagdashboards-options-toggle').show();
-		$('#tagdashboards-save-input-container').show();
-		
-		var hash = decodeURI(window.location.hash.substring(1));
-		var value = $('#tagdashboards-search-input').val(hash);
-		elgg.tagdashboards.set_dashboard_title();
-		
-		// Set up options
-		var options = new Array();
-		options['search'] = hash;
-		options['type'] = $('#tagdashboard-groupby-input:checked').val();
-		options['custom_tags'] = $('#tagdashboards-custom-input').val();				
-		
-		elgg.tagdashboards.display(options);
-	}
+	$('.tagdashboards-arrow-toggler').each(elgg.tagdashboards.init_togglers);
 }
 
 /**	
@@ -105,120 +81,88 @@ elgg.tagdashboards.init_dashboards = function() {
 	});
 }
 
-elgg.tagdashboards.init_from_form = function() {
-	
-}
-
 /**	
  * Helper function to setup events and init the save form
  */
 elgg.tagdashboards.init_save_form = function() {
+	
+	// Groupby radio buttons show/hide
+	$('.tagdashboards-groupby-radio li label input').click(elgg.tagdashboards.groupby_switcher);
+	$('#tagdashboards-groupby-div-' + $('#tagdashboard-groupby-input:checked').val()).show();
+	
+	// Hide container by default
 	$('#tagdashboards-save-container').hide();
 	
+	
+	// Submit handler for search submit
 	$('#tagdashboards-search-submit').live('click', function(event){
 		elgg.tagdashboards.validate_search();
 		event.preventDefault();
 	});
 
-	$('#tagdashboards-search-input').keypress(function(e){
-		if (e.which == 13) {
+	// Process form on 'enter'
+	$('#tagdashboards-search-input').keypress(function(event){
+		if (event.which == 13) {
 			elgg.tagdashboards.validate_search();
-			elgg.tagdashboards.init_from_form();
-			e.preventDefault();
-			return false;
+			event.preventDefault();
 		}
 	});
 	
-	$('#tagdashboards-save-input').live('click', function() {
-		$('input#tagdashboard-search').val(elgg.tagdashboards.get_tagdashboard_search_value());
-	});
-	
-	$('#tagdashboards-refresh-input').live('click', function() {
-		// Grab selected subtypes
-		var inputs = $('.tagdashboards-subtype-input:checked');
-		var selected_subtypes = {};
-		count = 0;
-		inputs.each(function() {
-			selected_subtypes[count] = $(this).val();
-			count++;
-		});
-		
-		var search = $("#tagdashboards-search-input").val();
-		
-		if (!search) {
-			search = elgg.tagdashboards.get_tagdashboard_search_value();
-		}
-		
-		// Get owner guids
-		var userpicker_input = $('input[name="owner_guids[]"]');
-		var owner_guids = new Array();
-		count = 0;
-		userpicker_input.each(function() {
-			owner_guids[count] = $(this).val();
-			count++;
-		});
-		
-		// Set up options
-		var options = new Array();
-		options['search'] = search;
-		options['type'] = $('#tagdashboard-groupby').val();
-		options['subtypes'] = selected_subtypes;
-		options['custom_tags'] = $('#tagdashboards-custom-input').val();
-		options['owner_guids'] = owner_guids;
-		
-		// Get/parse dates
-		options['lower_date'] = Date.parse($('#tagdashboard-date-range-from').val()) / 1000;
-		options['upper_date'] = Date.parse($('#tagdashboard-date-range-to').val()) / 1000;
-	
-		elgg.tagdashboards.display(options);
-		return false;
-	});
-}
-
-// Set the title to the searched tag
-elgg.tagdashboards.set_dashboard_title = function() {
-	$('#tagdashboard-title').val(elgg.tagdashboards.get_tagdashboard_search_value);
-}
-
-// Validate and submit search
-elgg.tagdashboards.validate_search = function() {
-	if (!$('#tagdashboards-search-input').val()) {
-		elgg.tagdashboards.display_error('tagdashboards-search-error', 'Please enter search text');
-	} else {
-		$('a#tagdashboards-options-toggle').show();
-		$('span#tagdashboards-search-error').html('');
-		elgg.tagdashboards.set_dashboard_title();
-		
-		// Set up options
-		var options = new Array();
-		options['search'] = elgg.tagdashboards.get_tagdashboard_search_value();
-		options['type'] = '$groupby';
-		options['custom_tags'] = $('#tagdashboards-custom-input').val();
-		
-		elgg.tagdashboards.display(options);
-		window.location.hash = encodeURI(options['search']); // Hash magic for permalinks
-	}
+	// Refresh handler
+	$('#tagdashboards-refresh-input').live('click', elgg.tagdashboards.display_from_form);
 }
 
 /**
- * Special Arrow Toggler
- * uses: 
- * 	href - id of div to toggle
- * 	name - label for link
+ * Helper function to init arrow togglers
  */
-elgg.tagdashboards.tdtoggler = function(event) {
-	var id = $(this).attr('href');
-	var label = $(this).attr('name');
-	
-	if ($(id).is(':visible')) {
-		$(this).html(elgg.echo(label) + " &#9660;");
-	} else {
-		$(this).html(elgg.echo(label) + " &#9650;");
-	}
-	$(id).toggle('slow');
-	event.preventDefault();
+elgg.tagdashboards.init_togglers = function() {
+	$(this).html(elgg.echo($(this).attr('name')) + ' &#9660;');
+	$(this).click(elgg.tagdashboards.tdtoggler);
 }
 
+/**
+ * Helper function to grab form values and display a tag dashboard
+ */
+elgg.tagdashboards.display_from_form = function(event) {
+	// Grab selected subtypes
+	var inputs = $('.tagdashboards-subtype-input:checked');
+	var selected_subtypes = {};
+	count = 0;
+	inputs.each(function() {
+		selected_subtypes[count] = $(this).val();
+		count++;
+	});
+
+	// Get search value
+	search = elgg.tagdashboards.get_search();	
+	
+	// Get owner guids
+	var userpicker_input = $('input[name="owner_guids[]"]');
+	var owner_guids = new Array();
+	count = 0;
+	userpicker_input.each(function() {
+		owner_guids[count] = $(this).val();
+		count++;
+	});
+	
+	// Set up options
+	var options = new Array();
+	options['search'] = search;
+	options['type'] = $('#tagdashboard-groupby-input:checked').val();
+	options['subtypes'] = selected_subtypes;
+	options['custom_tags'] = $('#tagdashboards-custom-input').val();
+	options['owner_guids'] = owner_guids;
+	
+	// Get/parse dates
+	options['lower_date'] = Date.parse($('#tagdashboard-date-range-from').val()) / 1000;
+	options['upper_date'] = Date.parse($('#tagdashboard-date-range-to').val()) / 1000;
+
+	elgg.tagdashboards.display(options);
+	
+	if (event) {
+		event.preventDefault();
+	}
+}
 
 /**
  * Display tag dashboard based on given values
@@ -265,6 +209,82 @@ elgg.tagdashboards.display = function (options) {
 }
 
 /**
+ * Helper function to handle a window hash
+ */
+elgg.tagdashboards.handle_hash = function() {
+	// If we have a hash up in the address, search automatically
+	if (window.location.hash) {
+		$('a#tagdashboards-options-toggle').show();
+		$('#tagdashboards-save-input-container').show();
+		
+		var hash = decodeURI(window.location.hash.substring(1));
+		var value = $('#tagdashboards-search-input').val(hash);
+		elgg.tagdashboards.set_dashboard_title();
+		
+		// Display from form
+		elgg.tagdashboards.display_from_form(false);
+	}
+	return;
+}
+
+/**
+ * Validate and submit search, also handles hiding/showing UI elements
+ */
+elgg.tagdashboards.validate_search = function() {
+	if (!$('#tagdashboards-search-input').val()) {
+		elgg.tagdashboards.display_error('tagdashboards-search-error', 'Please enter search text');
+	} else {
+		$('a#tagdashboards-options-toggle').show();
+		$('span#tagdashboards-search-error').html('');
+		
+		// Set title
+		elgg.tagdashboards.set_dashboard_title();
+		
+		// Display from form
+		elgg.tagdashboards.display_from_form(false);
+		
+		window.location.hash = encodeURI(elgg.tagdashboards.get_search()); // Hash magic for permalinks
+	}
+}
+
+/**
+ * Set dashboard title input
+ */
+elgg.tagdashboards.set_dashboard_title = function() {
+	$('#tagdashboard-title').val(elgg.tagdashboards.get_search);
+}
+
+/**
+ * Get and format a forms search value
+ */
+elgg.tagdashboards.get_search = function () {
+	var value = $('#tagdashboards-search-input').val();
+	value = value.toLowerCase();
+	return value;
+}
+
+
+/**
+ * Special Arrow Toggler
+ * uses: 
+ * 	href - id of div to toggle
+ * 	name - label for link
+ */
+elgg.tagdashboards.tdtoggler = function(event) {
+	var id = $(this).attr('href');
+	var label = $(this).attr('name');
+	
+	if ($(id).is(':visible')) {
+		$(this).html(elgg.echo(label) + " &#9660;");
+	} else {
+		$(this).html(elgg.echo(label) + " &#9650;");
+	}
+	$(id).toggle('slow');
+	event.preventDefault();
+}
+
+
+/**
  * Display an error in the specified element (id) with given txt
  */
 elgg.tagdashboards.display_error = function(id, txt) {
@@ -272,13 +292,6 @@ elgg.tagdashboards.display_error = function(id, txt) {
 		$('#tagdashboards-save-input-container').hide();
 		$('#' + id).html(txt);
 		$('.tagdashboards-content-container').html('');
-}
-
-// Get search value
-elgg.tagdashboards.get_tagdashboard_search_value = function () {
-	var value = $('#tagdashboards-search-input').val();
-	value = value.toLowerCase();
-	return value;
 }
 
 // Validate, and format custom tag string as an array
@@ -314,11 +327,27 @@ elgg.tagdashboards.custom_tags_string_to_array = function (tag_string) {
 		tag_array[i] = $.trim(v);
 	});
 	
-	//var value = $('#tagdashboards-custom-input').val();
-	
 	return tag_array;
 }
 
+/** 
+ * Simple switcher function for the groupby inputs
+ */
+elgg.tagdashboards.groupby_switcher = function(event) {
+	$('.tagdashboards-groupby-div').hide();
+	$('#tagdashboards-groupby-div-' + $(this).val()).show();
+}
+
+/**
+ * Fade a div
+ */
+elgg.tagdashboards.fade_div = function(id) {
+	$("#uberview_entity_list_" + id).fadeOut('fast', function () {
+		$("#loading_" + id).show();
+	});
+}
+
+// ** Loading Functions **
 elgg.tagdashboards.load_tagdashboards_subtype_content = function (subtype, search, owner_guids, lower_date, upper_date, offset) {
 	var end_url = elgg.normalize_url('tagdashboards/loadsubtype/');
 	end_url += "?subtype=" + subtype + "&search=" + search;
@@ -330,19 +359,7 @@ elgg.tagdashboards.load_tagdashboards_subtype_content = function (subtype, searc
 	$("#" + subtype + "_content").load(end_url, {'owner_guids' : owner_guids, 'lower_date' : lower_date, 'upper_date' : upper_date}, function() {
 		$("#loading_" + subtype).hide();
 	});
-	
-	/** This was tricky.. not deleting this ever. 
-	
-	$("#loading_" + subtype).show();
-	$("#" + subtype + "_content").hide();
-	$("#" + subtype + "_content").load(end_url, '', function () {
-		$("#loading_" + subtype).fadeOut('fast', function () {
-			$("#" + subtype + "_content").fadeIn('fast');
-		});
-	});
-	
-	**/
-	
+		
 	return false;
 }
 
@@ -386,20 +403,6 @@ elgg.tagdashboards.load_tagdashboards_custom_content = function (group, search, 
 		$("#loading_" + group).hide();
 	});	
 	return false;
-}
-
-elgg.tagdashboards.fade_div = function(id) {
-	$("#uberview_entity_list_" + id).fadeOut('fast', function () {
-		$("#loading_" + id).show();
-	});
-}
-
-/** 
- * Simple switcher function for the groupby inputs
- */
-elgg.tagdashboards.groupby_switcher = function(event) {
-	$('.tagdashboards-groupby-div').hide();
-	$('#tagdashboards-groupby-div-' + $(this).val()).show();
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.init);

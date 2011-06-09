@@ -400,87 +400,6 @@ function tagdashboards_entity_to_timeline_event_array($entity, $type) {
 
 }
 
-/**
- * Screwy function name I know.. this is a hacked up entity getter
- * function that gets entities with given tag ($params['tagdashboards_search_term']) and
- * entities with a container guid with given tag. This is mostly for images, but 
- * could work on just about anything. I couldn't do this with any existing elgg
- * core functions, so I have this here custom query.
- *
- * @uses $params['tagdashboards_search_term']
- * @uses $params['callback'] - pass in a callback, or use none (return just data rows)
- * @return array
- */
-function tagdashboards_get_entities_from_tag_and_container_tag($params) {
-	global $CONFIG;
-	
-	$px = $CONFIG->dbprefix;
-		
-	$type_subtype_sql = elgg_get_entity_type_subtype_where_sql('e', $params['types'], $params['subtypes'], $params['type_subtype_pairs']);
-	
-	if (is_array($params['owner_guids'])) {
-		$owner_guids_sql = " AND " . elgg_get_entity_owner_where_sql('e', $params['owner_guids']) . " ";
-	}
-	
-	if ((int)$params['created_time_upper'] && (int)$params['created_time_lower']) {
-		$date_sql = " AND " . elgg_get_entity_time_where_sql(
-			'e', 
-			$params['created_time_upper'],
-			$params['created_time_lower'], 
-			$params['modified_time_upper'], 
-			$params['modified_time_lower']
-		);
-	}
-
-	$access_sql = get_access_sql_suffix('e');
-	
-	// Include additional wheres
-	if ($params['wheres']) {
-		foreach($params['wheres'] as $where) {
-			$wheres .= " AND $where";
-		}
-	}
-		
-	$query =   "(SELECT e.* FROM {$CONFIG->dbprefix}entities e 
-				JOIN {$px}metadata n_table1 on e.guid = n_table1.entity_guid 
-				JOIN {$px}metastrings msn1 on n_table1.name_id = msn1.id 
-				JOIN {$px}metastrings msv1 on n_table1.value_id = msv1.id 
-				WHERE (msn1.string = 'tags' AND msv1.string = '{$params['tagdashboards_search_term']}')
-					AND {$type_subtype_sql}
-					$owner_guids_sql
-					$date_sql
-					AND (e.site_guid IN ({$CONFIG->site_guid}))
-					AND $access_sql
-					$wheres) 
-				UNION DISTINCT
-				(SELECT e.* FROM {$CONFIG->dbprefix}entities e 
-				JOIN {$px}metadata c_table on e.container_guid = c_table.entity_guid 
-				JOIN {$px}metastrings cmsn on c_table.name_id = cmsn.id 
-				JOIN {$px}metastrings cmsv on c_table.value_id = cmsv.id 
-				WHERE (cmsn.string = 'tags' AND cmsv.string = '{$params['tagdashboards_search_term']}')
-					AND {$type_subtype_sql}
-					$owner_guids_sql
-					$date_sql
-					AND (e.site_guid IN ({$CONFIG->site_guid}))
-					AND $access_sql
-					$wheres) ";
-																							
-	if (!$params['count']) {
-		$query .= " ORDER BY time_created desc";
-		
-		if ($params['limit']) {
-			$limit = sanitise_int($params['limit']);
-			$offset = sanitise_int($params['offset']);
-			$query .= " LIMIT $offset, $limit";
-		}
-		$dt = get_data($query, $params['callback']);			
-		return $dt;
-	} else {
-		$dt = get_data($query);
-		return count($dt);
-	}
-}
-
 /** 
  * Helper function that takes rows from a query and creates no more than 
  * a defined limit of those entities created on the same day
@@ -607,13 +526,26 @@ function tagdashboards_timeline_photo_override_handler($hook, $type, $value, $pa
 /** 
  *	Override how photo's are listed to display both 
  *	photos and photos in albums with searched tag
- *	Uses: tagdashboards_get_images_and_albums_with_tag()
+ *  Uses ajaxmodule with 'albums_images' option
  */
 function tagdashboards_photo_override_handler($hook, $type, $value, $params) {
 	if ($type == 'image') {
-		$params['params']['tagdashboards_search_term'] = $params['search']; // Need to set this to use the hacky function
-		$params['params']['callback'] = "entity_row_to_elggstar";		
-		return elgg_list_entities($params['params'], 'tagdashboards_get_entities_from_tag_and_container_tag');
+		
+		// Ajaxmodule params
+		$module_params = array(
+			'title' => elgg_echo('item:object:' . $type),
+			//'listing_type' => 'simple',
+			'albums_images'=> TRUE,
+			'module_type' => 'featured',
+			'module_id' => $type,
+			'module_class' => 'tagdashboards-container',
+		);
+		
+		$params = array_merge($params, $module_params);
+		$params['limit'] = 6;
+
+		// Default module
+	 	return elgg_view('modules/ajaxmodule', $params);
 	}
 	return false;
 }
@@ -657,8 +589,6 @@ function tagdashboards_subtype_album_handler($hook, $type, $value, $params) {
 	}
 }
 
-
-
 /**
  * Example for exceptions 
  */
@@ -678,7 +608,6 @@ function tagdashboards_subtype_example($hook, $type, $value, $params) {
 	// return custom content
 	return "Test";
 }
-
 
 /** 
  * Helper function to use with array_filter()
