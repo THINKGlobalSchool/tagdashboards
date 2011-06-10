@@ -83,8 +83,8 @@ if ($full) { // Full view
 	$td_type_input = elgg_view('input/hidden', array(
 		'name' => 'type', 
 		'id' => 'type', 
-		'value' => $tagdashboard->groupby)
-	);
+		'value' => $tagdashboard->groupby
+	));
 	
 	$td_search_input = elgg_view('input/hidden', array(
 		'name' => 'search', 

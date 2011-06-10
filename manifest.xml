@@ -21,6 +21,11 @@
 		<version>1.8</version>
 		<comparison>ge</comparison>
 	</requires>
+	<suggests>
+		<type>plugin</type>
+		<name>tabbed_profile</name>
+		<version>1.8</version>
+	</suggests>
 	<admin_interface>simple</admin_interface>
 	<activate_on_install>true</activate_on_install>
 </plugin_manifest>

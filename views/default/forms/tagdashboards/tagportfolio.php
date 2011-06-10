@@ -17,6 +17,12 @@ $instructions = elgg_echo('tagdashboards:description:tagportfolio');
 // Tags search input
 $custom_input = elgg_view('forms/tagdashboards/custom_tags', array('value' => $tag_portfolio));
 
+$td_owner_guids_input = elgg_view('input/hidden', array(
+	'name' => 'owner_guids[]', 
+	'id' => 'owner_guids', 
+	'value' => elgg_get_page_owner_guid(),
+));
+
 // Refresh button
 $refresh_input = elgg_view('input/submit', array(
 	'id' => 'tagdashboards-refresh-input',
@@ -31,19 +37,13 @@ $save_input = elgg_view('input/submit', array(
 	'value' => elgg_echo('tagdashboards:label:save')
 ));
 
-$action = 'action/tagdashboards/save_tag_portfolio';
-
 $form_body = <<<HTML
 	<br />
 	<p>$instructions</p>
-	<form action=''>
 	$custom_input
 	$refresh_input $save_input
+	$td_owner_guids_input
+	<input type='checkbox' style='display: none;' id='tagdashboard-groupby-input' value='custom' checked />
 HTML;
 
-echo elgg_view('input/form', array(
-	'name' => 'tagdashboards-portfolio-save-form',
-	'id' => 'tagdashboards-portfolio-save-form',
-	'body' => $form_body,
-	'action' => $action
-));
+echo $form_body;

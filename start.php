@@ -12,12 +12,10 @@
 
 /************* 1.8 Update To Do's *****************
  * Must:
- * - Profile portfolio
- * - Sort out all the included vendors (jquery, theme etc)
  * - Clean up language file
- * - Test sticky form stuff
  * - Clean up CSS
  * - Check for unused functions
+ * - Comments
  */
 
 elgg_register_event_handler('init', 'system', 'tagdashboards_init');
@@ -64,14 +62,8 @@ function tagdashboards_init() {
 	$resize_js = elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js';
 	elgg_register_js($resize_js, 'jquery.resize');
 	
-	// Extend admin view to include some extra styles
-	elgg_extend_view('layouts/administration', 'tagdashboards/admin/css');
-	
 	// Extend groups sidebar
 	elgg_extend_view('page/elements/sidebar', 'tagdashboards/group_sidebar');
-	
-	// Extend profile view (pre-18)
-	elgg_extend_view('profile_navigation/extend', 'tagdashboards/profile_tab');
 	
 	// Extend Groups profile page
 	elgg_extend_view('groups/tool_latest','tagdashboards/group_dashboards');
@@ -92,12 +84,15 @@ function tagdashboards_init() {
 	// Register actions
 	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/tagdashboards';
 	elgg_register_action('tagdashboards/save', "$action_base/save.php");
-	elgg_register_action('tagdashboards/save_tag_portfolio', "$action_base/save_tag_portfolio.php");
+	elgg_register_action('tagdashboards/tagportfolio', "$action_base/tagportfolio.php");
 	elgg_register_action('tagdashboards/delete', "$action_base/delete.php");
 	elgg_register_action('tagdashboards/subtypes', "$action_base/subtypes.php", 'admin');
 	
 	// Setup url handler for tag dashboards
 	elgg_register_entity_url_handler('object', 'tagdashboard', 'tagdashboards_url_handler');
+		
+	// Add a new tab to the tabbed profile
+	elgg_register_plugin_hook_handler('tabs', 'profile', 'tagdashboards_profile_tab_hander');	
 		
 	// Icon handlers
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'blog', 'tagdashboards_timeline_blog_icon_handler');
@@ -308,11 +303,106 @@ function tagdashboards_page_handler($page) {
  * Setup tag dashboard submenus
  */
 function tagdashboards_submenus() {
-	// Add admin link
 	if (elgg_in_context('admin')) {
+		elgg_register_admin_menu_item('administer', 'tagdashboards');
 		elgg_register_admin_menu_item('administer', 'subtypes', 'tagdashboards');
 	}
 }
+
+
+/** 
+ *	Hook to change how photos are retrieved on the timeline
+ */
+function tagdashboards_timeline_photo_override_handler($hook, $type, $value, $params) {
+	if ($type == 'image') {
+		$params['params']['tagdashboards_search_term'] = $params['search']; // Need to set this to use the hacky function
+		$params['params']['limit'] = 0;
+		$params['params']['offset'] = 0;
+		$params['params']['types'] = array('object');
+		$params['params']['subtypes'] = array('image');
+		//$params['params']['callback'] = "entity_row_to_elggstar";
+
+		$rows = tagdashboards_get_entities_from_tag_and_container_tag($params['params']);
+		return tagdashboards_get_limited_entities_from_rows($rows);
+	}
+	return false;
+}
+
+/** 
+ *	Override how photo's are listed to display both 
+ *	photos and photos in albums with searched tag
+ *  Uses ajaxmodule with 'albums_images' option
+ */
+function tagdashboards_photo_override_handler($hook, $type, $value, $params) {
+	if ($type == 'image') {
+		
+		// Ajaxmodule params
+		$module_params = array(
+			'title' => elgg_echo('item:object:' . $type),
+			//'listing_type' => 'simple',
+			'albums_images'=> TRUE,
+			'module_type' => 'featured',
+			'module_id' => $type,
+			'module_class' => 'tagdashboards-container',
+		);
+		
+		$params = array_merge($params, $module_params);
+		$params['limit'] = 6;
+
+		// Default module
+	 	return elgg_view('modules/ajaxmodule', $params);
+	}
+	return false;
+}
+
+/**
+ * Handler to add a tag dashboards tab to the tabbed profile 
+ */
+function tagdashboards_profile_tab_hander($hook, $type, $value, $params) {
+	$value[] = 'tagportfolio';
+	return $value;
+}
+
+
+/**
+ * Handler to register a timeline icon for blogs 
+ */
+function tagdashboards_timeline_blog_icon_handler($hook, $type, $value, $params) {
+	if ($type == 'blog') {
+		return elgg_get_site_url() . "mod/tagdashboards/images/blog.gif";
+	}
+	return false;
+}
+
+/**
+ * Handler to register a timeline icon for images 
+ */
+function tagdashboards_timeline_image_icon_handler($hook, $type, $value, $params) {
+	if ($type == 'image') {
+		return elgg_get_site_url() . "mod/tagdashboards/images/image.gif";
+	}
+	return false;
+}
+
+/** 
+ * Handler to register a timeline icon for tag dashboards 
+ */
+function tagdashboards_timeline_tagdashboard_icon_handler($hook, $type, $value, $params) {
+	if ($type == 'tagdashboard') {
+		return elgg_get_site_url() . "mod/tagdashboards/images/tagdashboard.gif";
+	}
+	return false;
+}
+
+/**
+ * Handler to change name of Albums to Photos 
+ */
+function tagdashboards_subtype_album_handler($hook, $type, $value, $params) {
+	if ($type == 'album') {
+		return 'Photos';
+	}
+}
+
 	
 /**
  * Populates the ->getUrl() method for an tagdashboard

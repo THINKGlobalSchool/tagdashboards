@@ -18,8 +18,9 @@ $english = array(
 	'item:object:tagdashboard' => 'Tag Dashboard',
 	'tagdashboard:enablegroup' => 'Enable group tag dashboards',
 	'tagdashboards:none' => 'No Tag Dashboards',
+	'profile:tagportfolio' => 'Tag Portfolio',
 	
-	'admin:tagdashboards' => 'Tag Dashboards',
+	'admin:tagdashboards' => 'Tag dashboards',
 	'admin:tagdashboards:subtypes' => 'Entity Settings',
 	
 	// Page titles 
@@ -29,7 +30,6 @@ $english = array(
 	'tagdashboards:title:groupbyactivity' => 'Content grouped by student activity',
 	'tagdashboards:title:activitytag' => 'Searched tag, grouped by activity',
 	'tagdashboards:title:custom' => 'Searched tag, grouped by custom',
-	'tagdashboards:title:tagportfolio' => 'Tag Portfolio',
 	'tagdashboards:title:owneddashboards' => '%s\'s Tag Dashboards',
 	
 	// Menu items
@@ -68,7 +68,6 @@ $english = array(
 	'tagdashboards:label:filter' => 'Filter Settings',
 	'tagdashboards:label:filterowner' => 'Show content from selected users',
 	'tagdashboards:label:filterdate' => 'Show content created within date range',
-	'tagdashboards:label:tagportfolio' => 'Tag Portfolio',
 	'tagdashboards:label:clear' => 'Clear',
 
 

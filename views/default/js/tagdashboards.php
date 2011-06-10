@@ -185,9 +185,9 @@ elgg.tagdashboards.display = function (options) {
 	var subtypes 	= options['subtypes'];
 	var owner_guids	= options['owner_guids'];
 	var custom_tags	= elgg.tagdashboards.custom_tags_string_to_array(options['custom_tags']);
-	var lower_date 	= options['lower_date'];
-	var upper_date 	= options['upper_date'];
-
+	var lower_date 	= options['lower_date'] ? options['lower_date'] : '';
+	var upper_date 	= options['upper_date'] ? options['upper_date'] : '';
+	
 	// Create url to load
 	var url = elgg.normalize_url('tagdashboards/loadtagdashboard?type=' + type);
 	
@@ -259,8 +259,11 @@ elgg.tagdashboards.set_dashboard_title = function() {
  */
 elgg.tagdashboards.get_search = function () {
 	var value = $('#tagdashboards-search-input').val();
-	value = value.toLowerCase();
-	return value;
+	if (value) {
+		value = value.toLowerCase();
+		return value;
+	}
+	return false;
 }
 
 
