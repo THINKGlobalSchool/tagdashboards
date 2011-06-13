@@ -99,9 +99,6 @@ div.tagdashboard-big-title {
 }
 
 div.tagdashboard-description {
-	margin-left: auto;
-	margin-right: auto;
-	width: 88%;
 	margin-bottom: 10px;
 	color: #444;
 	font-weight: bold;

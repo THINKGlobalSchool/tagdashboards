@@ -59,7 +59,6 @@ $metadata = elgg_view_menu('entity', array(
 ));
 
 if ($full) { // Full view
-	
 	$subtitle = "<p>$author_text $date $comments_link</p>";
 	
 	$searchtag_label = elgg_echo('tagdashboards:label:searchtag');
@@ -122,21 +121,14 @@ if ($full) { // Full view
 		'value' => $tagdashboard->upper_date
 	));
 	
-	
+	$header = elgg_view_title($tagdashboard->title);
 	
 	$content = <<<HTML
-		<div class='tagdashboard-big-title'>
-			$title
-		</div>
 		<div class='tagdashboard-description'>
-			<i>$searchtag_label: $searchtag_content</i><br /><br />
 			$description
 		</div>
 		<div class='tagdashboard-view-block'>
 			<a class='switch-tagdashboards' id='switch-content'>$content_link_label</a> / <a class='switch-tagdashboards' id='switch-timeline'>$timeline_link_label</a>
-		</div>
-		<div class='tagdashboard-comment-block'>
-			$edit_link $comments_link
 		</div>
 		<div style='clear:both;'></div>
 		<div id='tagdashboards-timeline-container'></div>
@@ -209,18 +201,20 @@ HTML;
 		</script>
 HTML;
 
-	$subtitle = "<p>$author_text $date $comments_link</p>";
+	$subtitle = "<p>$author_text $date $comments_link<br /><strong>$searchtag_label: $searchtag_content</strong></p>";
 
 	$params = array(
 		'entity' => $tagdashboard,
 		'metadata' => $metadata,
 		'subtitle' => $subtitle,
 		'tags' => $tags,
+		'title' => FALSE,
 		'content' => $content . $script,
 	);
 	
 	$list_body = elgg_view('object/elements/summary', $params);
-
+	
+	echo $header;
 	echo elgg_view_image_block($owner_icon, $list_body);
 	
 } else { // Listing 

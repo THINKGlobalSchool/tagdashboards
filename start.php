@@ -15,7 +15,7 @@
  * - Clean up language file
  * - Clean up CSS
  * - Check for unused functions
- * - Comments
+ * - Timeline
  */
 
 elgg_register_event_handler('init', 'system', 'tagdashboards_init');
