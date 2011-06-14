@@ -26,7 +26,7 @@ elgg.tagdashboards.timeline.resizeTimerID = null;
 
 // Init function
 elgg.tagdashboards.timeline.init = function () {
-	
+	// On resize event
 	window.onresize = elgg.tagdashboards.timeline.on_resize; // Can't do this with jQuery for some reason... ie: $("body").resize(...)
 	
 	elgg.tagdashboards.timeline.guid = $('#tagdashboard-guid').val(); 
