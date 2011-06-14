@@ -13,8 +13,12 @@
 elgg.provide('elgg.tagdashboards.timeline');
 
 // Globals needed for local timeline code
-Timeline_ajax_url = elgg.get_site_url() + 'mod/tagdashboards/vendors/timeline_2.3.1/ajax/api/simile-ajax-api.js';
-Timeline_urlPrefix = elgg.get_site_url() + 'mod/tagdashboards/vendors/timeline_2.3.1/webapp/api/';       
+//Timeline_ajax_url = elgg.get_site_url() + 'mod/tagdashboards/vendors/timeline_2.3.1/ajax/api/simile-ajax-api.js';
+//Timeline_urlPrefix = elgg.get_site_url() + 'mod/tagdashboards/vendors/timeline_2.3.1/webapp/api/'; 
+
+Timeline_ajax_url = elgg.get_site_url() + 'mod/tagdashboards/vendors/timeline_lib/timeline_ajax/simile-ajax-api.js';
+Timeline_urlPrefix = elgg.get_site_url() + 'mod/tagdashboards/vendors/timeline_lib/timeline_js/';    
+Timeline_parameters='bundle=true';  
 
 // Vars
 elgg.tagdashboards.timeline.is_tl_loaded = false;

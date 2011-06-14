@@ -48,13 +48,13 @@ function tagdashboards_init() {
 	elgg_register_js('elgg.tddaterange', $dr_js);
 	
 	// Register timeline JS library
-	$timeline_lib_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/timeline_2.3.1/webapp/api/timeline-api.js';
+	$timeline_lib_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/timeline_lib/timeline_js/timeline-api.js';
 	elgg_register_js('simile.timeline', $timeline_lib_js);
 	
 	// Regsiter local timeline JS library
 	$timeline_js = elgg_get_simplecache_url('js', 'timeline');
 	elgg_register_js('elgg.tagdashboards.timeline', $timeline_js);
-		
+			
 	// Register datepicker JS
 	$daterange_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
 	elgg_register_js('jquery.daterangepicker', $daterange_js);
@@ -233,7 +233,6 @@ function tagdashboards_page_handler($page) {
 				break;
 		}
 	} else { // Regular request
-		
 		// Load CSS
 		elgg_load_css('elgg.tagdashboards');
 		elgg_load_css('jquery.ui.smoothness');
@@ -261,8 +260,8 @@ function tagdashboards_page_handler($page) {
 				$params = tagdashboards_get_page_content_edit($page_type, $page[1]);
 				break;
 			case 'view': 
-				elgg_load_js('elgg.tagdashboards.timeline');
 				elgg_load_js('simile.timeline');
+				elgg_load_js('elgg.tagdashboards.timeline');
 				$params = tagdashboards_get_page_content_view($page[1]);
 				break;
 			case 'group_activity':
