@@ -14,20 +14,18 @@ elgg.provide('elgg.tddaterange');
 
 // Init Daterange picker
 elgg.tddaterange.init = function() {
-	$(function() {
-		$('.tagdashboards-daterange').daterangepicker({
-			appendTo: 		"div#daterange-container", 
-			posX: 			"0",
-			posY: 			"0",
-			earliestDate: 	Date.parse('-99years'),
-			latestDate: 	Date.parse('+99years'),
-			dateFormat: 	'MM d, yy',
-			onOpen: 		function() {
-				//$('input.tagdashboards-daterange').val('');
-			},
-			defaultDate: 	Date.today(),
-		}); 
-	});
+	$('.tagdashboards-daterange').daterangepicker({
+		appendTo: 		"div#daterange-container", 
+		posX: 			"0",
+		posY: 			"0",
+		earliestDate: 	Date.parse('-99years'),
+		latestDate: 	Date.parse('+99years'),
+		dateFormat: 	'MM d, yy',
+		onOpen: 		function() {
+			//$('input.tagdashboards-daterange').val('');
+		},
+		defaultDate: 	Date.today(),
+	}); 
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tddaterange.init);

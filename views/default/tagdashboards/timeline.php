@@ -9,21 +9,7 @@
  * @link http://www.thinkglobalschool.com/
  * 
  */
-
-$json_data_url = elgg_get_site_url() . "tagdashboards/timelinefeed/{$vars['entity']->getGUID()}";
-
-
-$entity = tagdashboards_get_last_content($vars['entity']->getGUID());
-if ($entity) {
-	$latest_date = date('r', strtotime(strftime("%a %b %d %Y", $entity->time_created))); 
-}
-
-
 ?>
-<script>
-	setTimelineDataURL("<?php echo $json_data_url;?>");
-	//setLatestDate("<?php echo $latest_date;?>");
-</script>
 <div style='display: none;' id="info"></div>
 <div id="tagdashboard-timeline-wrapper">
 	<div id="tagdashboard-timeline" class='dark-theme'></div>

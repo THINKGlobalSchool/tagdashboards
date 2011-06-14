@@ -72,11 +72,6 @@ if ($full) { // Full view
 			
 	$timeline_load = elgg_get_site_url() . "tagdashboards/loadtimeline/" . $tagdashboard->getGUID();
 	$timeline_data = elgg_get_site_url() . "tagdashboards/timelinefeed/" . $tagdashboard->getGUID();
-
-	$last_entity = tagdashboards_get_last_content($tagdashboard->getGUID());
-	if ($last_entity) {
-		$latest_date = date('r', strtotime(strftime("%a %b %d %Y", $last_entity->time_created))); 
-	}
 		
 	// Tag Dashboard Content inputs
 	$td_type_input = elgg_view('input/hidden', array(
@@ -121,6 +116,12 @@ if ($full) { // Full view
 		'value' => $tagdashboard->upper_date
 	));
 	
+	$td_hidden_guid = elgg_view('input/hidden', array(
+		'name' => 'tagdashboard-guid', 
+		'id' => 'tagdashboard-guid', 
+		'value' => $tagdashboard->guid,
+	));
+	
 	$header = elgg_view_title($tagdashboard->title);
 	
 	$content = <<<HTML
@@ -146,59 +147,7 @@ if ($full) { // Full view
 			<div class='tagdashboards-content-container'></div>
 		</div>
 		<a name='annotations'></a><hr style='border: 1px solid #bbb' />
-HTML;
-
-
-	$script = <<<HTML
-		<script type='text/javascript'>
-		
-			// This is all timeline related 
-			var is_tl_loaded = false;
-			var end_url = "$timeline_load";
-
-			setTimelineDataURL("$timeline_data");
-			setLatestDate("$latest_date");
-
-			$("#tagdashboards-timeline-container").resize(function () {
-				$(".tagdashboards-content-container").css({top: -(	$("#tagdashboards-timeline-container").height())});
-			});
-
-			// Grab height of the timeline container initially
-			tl_height = $('#tagdashboards-timeline-container').height();
-
-			// Set the top position of the content container to -(tl_heigh)
-			$(".tagdashboards-content-container").css({top: -(tl_height)});
-
-
-			if (window.location.hash) {
-				var hash = decodeURI(window.location.hash.substring(1));
-				if (hash == "timeline") {
-					loadTimeline();
-				}
-			}
-
-			$('.switch-tagdashboards').click(function () {
-				if ($(this).attr('id') == "switch-content") {
-					window.location.hash = "";
-					$("#tagdashboards-timeline-container").css({visibility: 'hidden'});
-					$(".tagdashboards-content-container").show();
-				} else if ($(this).attr('id') == "switch-timeline") {
-					window.location.hash = "timeline";
-					loadTimeline();
-				}
-			});
-
-			function loadTimeline() {
-				if (!is_tl_loaded) {
-					$("#tagdashboards-timeline-container").load(end_url, function() {
-						is_tl_loaded = true;
-						onLoad(); // init timeline
-					});
-				}
-				$("#tagdashboards-timeline-container").css({visibility: 'visible'});
-				$(".tagdashboards-content-container").hide();
-			}
-		</script>
+		$td_hidden_guid
 HTML;
 
 	$subtitle = "<p>$author_text $date $comments_link<br /><strong>$searchtag_label: $searchtag_content</strong></p>";

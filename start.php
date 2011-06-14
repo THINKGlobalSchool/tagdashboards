@@ -16,6 +16,7 @@
  * - Clean up CSS
  * - Check for unused functions
  * - Timeline
+ * - Strip out tagdashboard input stuff into its own view?
  */
 
 elgg_register_event_handler('init', 'system', 'tagdashboards_init');
@@ -46,14 +47,14 @@ function tagdashboards_init() {
 	$dr_js = elgg_get_simplecache_url('js', 'tddaterange');
 	elgg_register_js('elgg.tddaterange', $dr_js);
 	
-	// Register remote timeline JS library
-	$timeline_remote = "http://static.simile.mit.edu/timeline/api-2.3.0/timeline-api.js?bundle=false";
-	elgg_register_js('simile.timeline', $timeline_remote);
+	// Register timeline JS library
+	$timeline_lib_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/timeline_2.3.1/webapp/api/timeline-api.js';
+	elgg_register_js('simile.timeline', $timeline_lib_js);
 	
 	// Regsiter local timeline JS library
 	$timeline_js = elgg_get_simplecache_url('js', 'timeline');
 	elgg_register_js('elgg.tagdashboards.timeline', $timeline_js);
-	
+		
 	// Register datepicker JS
 	$daterange_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
 	elgg_register_js('jquery.daterangepicker', $daterange_js);
@@ -155,8 +156,7 @@ function tagdashboards_page_handler($page) {
 	$page_type = elgg_extract(0, $page, 'all');
 	
 	// Different process for ajax request vs regular load
-	if (elgg_is_xhr()) { // Is Ajax
-		
+	if (elgg_is_xhr() || get_input('timeline_override', false)) { // Is Ajax
 		// Common options & inputs
 		$type = get_input('type', 'subtype');
 		$search = get_input('search', NULL);
@@ -217,7 +217,7 @@ function tagdashboards_page_handler($page) {
 				$type = get_input('type', 'overview');
 				$min = get_input('min');
 				$max = get_input('max');
-				echo elgg_view('tagdashboards/timeline_results_endpoint', array(
+				echo elgg_view('tagdashboards/timeline_feed', array(
 					'guid' => $page[1], 
 					'type' => $type,
 					'min' => $min,
@@ -248,7 +248,6 @@ function tagdashboards_page_handler($page) {
 		elgg_load_js('elgg.tagdashboards');
 		elgg_load_js('jquery.resize');
 		
-	
 		switch ($page_type) {
 			case 'owner': 
 				$user = get_user_by_username($page[1]);
@@ -268,14 +267,9 @@ function tagdashboards_page_handler($page) {
 				$params = tagdashboards_get_page_content_edit($page_type, $page[1]);
 				break;
 			case 'view': 
-				elgg_load_js('simile.timeline');
 				elgg_load_js('elgg.tagdashboards.timeline');
+				elgg_load_js('simile.timeline');
 				$params = tagdashboards_get_page_content_view($page[1]);
-				break;
-			case 'timeline':
-				elgg_load_js('simile.timeline');
-				elgg_load_js('elgg.tagdashboards.timeline');
-				$params = tagdashboards_get_page_content_timeline($page[1]);
 				break;
 			case 'group_activity':
 				elgg_set_context('group');
@@ -309,7 +303,6 @@ function tagdashboards_submenus() {
 	}
 }
 
-
 /** 
  *	Hook to change how photos are retrieved on the timeline
  */
@@ -322,7 +315,7 @@ function tagdashboards_timeline_photo_override_handler($hook, $type, $value, $pa
 		$params['params']['subtypes'] = array('image');
 		//$params['params']['callback'] = "entity_row_to_elggstar";
 
-		$rows = tagdashboards_get_entities_from_tag_and_container_tag($params['params']);
+		$rows = am_get_entities_from_tag_and_container_tag($params['params']);
 		return tagdashboards_get_limited_entities_from_rows($rows);
 	}
 	return false;
@@ -411,7 +404,10 @@ function tagdashboards_subtype_album_handler($hook, $type, $value, $params) {
  * @return string request url
  */
 function tagdashboards_url_handler($entity) {
-	return elgg_get_site_url() . "tagdashboards/view/{$entity->guid}/";
+	
+	$friendly_title = elgg_get_friendly_title($entity->title);
+	
+	return elgg_get_site_url() . "tagdashboards/view/{$entity->guid}/$friendly_title";
 }
 
 /**

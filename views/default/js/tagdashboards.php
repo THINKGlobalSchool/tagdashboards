@@ -14,19 +14,18 @@ elgg.provide('elgg.tagdashboards');
 
 // Init function
 elgg.tagdashboards.init = function () {
-	
 	// Setup and initialize tag autocomplete inputs
 	elgg.tagdashboards.init_autocomplete_inputs();
-	
+
 	// Setup and initialize tag dashboards
 	elgg.tagdashboards.init_dashboards();
-	
+
 	// Setup the save form
 	elgg.tagdashboards.init_save_form();
-	
+
 	// Check hashes
 	elgg.tagdashboards.handle_hash();
-	
+
 	// ** Misc features **
 	// Arrow toggler
 	$('.tagdashboards-arrow-toggler').each(elgg.tagdashboards.init_togglers);
@@ -74,10 +73,8 @@ elgg.tagdashboards.init_dashboards = function() {
 				options[$(this).attr('name')] = value;
 			}
 		});
-		
-		$(document).ready(function() {
-			elgg.tagdashboards.display(options);
-		});
+		// Display it
+		elgg.tagdashboards.display(options);
 	});
 }
 
@@ -213,7 +210,7 @@ elgg.tagdashboards.display = function (options) {
  */
 elgg.tagdashboards.handle_hash = function() {
 	// If we have a hash up in the address, search automatically
-	if (window.location.hash) {
+	if (window.location.hash && window.location.hash != '#comments') {
 		$('a#tagdashboards-options-toggle').show();
 		$('#tagdashboards-save-input-container').show();
 		

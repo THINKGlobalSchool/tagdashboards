@@ -10,7 +10,6 @@
  * 
  * INFO: http://simile.mit.edu/wiki/How_to_Create_Event_Source_Files#JSON_files
  */
-
 $tagdashboard = get_entity($vars['guid']);
 
 // Type determines how detailed the results will be, either 'overview' or 'detailed'

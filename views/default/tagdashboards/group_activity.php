@@ -28,9 +28,7 @@ foreach($activities as $activity) {
 	// Build JS
 	$content .= <<<HTML
 	<script type='text/javascript'>
-		$(document).ready(function() {
 			elgg.tagdashboards.load_tagdashboards_activity_content("$activity_tag", "$group_guid", null);
-		});
 	</script>
 HTML;
 }

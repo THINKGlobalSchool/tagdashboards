@@ -11,7 +11,7 @@
  */
 
 $comments_count = elgg_count_comments($vars['entity']);
-$likes_count = elgg_count_likes($vars['entity']);
+$likes_count = likes_count($vars['entity']);
 
 echo "<div class='entity_subtext timeline-entity-subtext'>
 		Likes: $likes_count $views_string Comments: $comments_count

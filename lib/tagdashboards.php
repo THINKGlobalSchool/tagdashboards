@@ -169,22 +169,6 @@ function tagdashboards_get_page_content_view($guid) {
 	return $params;
 }
 
-/** 
- * View a tagdashboard in timeline mode 
- */
-function tagdashboards_get_page_content_timeline($guid) {
-	$tagdashboard = get_entity($guid);
-	$owner = get_entity($tagdashboard->container_guid);
-	set_page_owner($owner->getGUID());
-	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
-	elgg_push_breadcrumb($owner->name, elgg_get_site_url() . 'tagdashboards/' . $owner->username);
-	elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
-	$params['title'] = $tagdashboard->title;
-	$params['content'] = elgg_view('tagdashboards/timeline', array('entity' => $tagdashboard));
-	
-	return $params;
-}
-
 /**
  * View a groups content grouped by student activity 
  */

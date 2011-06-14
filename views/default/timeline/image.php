@@ -20,7 +20,7 @@ if ($views) {
 $image_link = elgg_get_site_url() . "photos/thumbnail/{$vars['entity']->getGUID()}/small";
 
 $comments_count = elgg_count_comments($vars['entity']);
-$likes_count = elgg_count_likes($vars['entity']);
+$likes_count = likes_count($vars['entity']);
 
 $id = $vars['entity']->getGUID();
 $src = elgg_get_site_url() . "photos/thumbnail/{$vars['entity']->getGUID()}/large";
