@@ -70,9 +70,6 @@ if ($full) { // Full view
 	// Display tag dashboard depending on the tag dashboards groupby option
 	$subtypes = unserialize($tagdashboard->subtypes);
 			
-	$timeline_load = elgg_get_site_url() . "tagdashboards/loadtimeline/" . $tagdashboard->getGUID();
-	$timeline_data = elgg_get_site_url() . "tagdashboards/timelinefeed/" . $tagdashboard->getGUID();
-		
 	// Tag Dashboard Content inputs
 	$td_type_input = elgg_view('input/hidden', array(
 		'name' => 'type', 
@@ -122,6 +119,8 @@ if ($full) { // Full view
 		'value' => $tagdashboard->guid,
 	));
 	
+	$timeline = elgg_view('tagdashboards/timeline');
+	
 	$header = elgg_view_title($tagdashboard->title);
 	
 	$content = <<<HTML
@@ -129,10 +128,10 @@ if ($full) { // Full view
 			$description
 		</div>
 		<div class='tagdashboard-view-block'>
-			<a class='switch-tagdashboards' id='switch-content'>$content_link_label</a> / <a class='switch-tagdashboards' id='switch-timeline'>$timeline_link_label</a>
+			<a class='switch-tagdashboards' href='0'>$content_link_label</a> / <a class='switch-tagdashboards' href='1'>$timeline_link_label</a>
 		</div>
 		<div style='clear:both;'></div>
-		<div id='tagdashboards-timeline-container'></div>
+		$timeline
 		<!-- This is the tag dashboard itself, it will be later initted by JS -->
 		<div class='tagdashboard-container'>
 			<div class='tagdashboard-options'>
@@ -146,7 +145,7 @@ if ($full) { // Full view
 			</div>
 			<div class='tagdashboards-content-container'></div>
 		</div>
-		<a name='annotations'></a><hr style='border: 1px solid #bbb' />
+		<a name='annotations'>
 		$td_hidden_guid
 HTML;
 

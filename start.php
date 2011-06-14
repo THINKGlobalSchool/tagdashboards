@@ -143,7 +143,6 @@ function tagdashboards_init() {
  * 	loadcustom			Load custom content
  * 	loadtagdashboard	Load a tagdashboard
  * 	timelinefeed		Load timeline feed content
- * 	loadtimeline		Load timeline via ajax
  *
  * @param array $page
  * @return NULL
@@ -225,11 +224,6 @@ function tagdashboards_page_handler($page) {
 				));
 				// This ia an ajax load, so exit
 				exit;
-				break;
-			case 'loadtimeline':
-				$timeline = get_entity($page[1]);
-				echo  elgg_view('tagdashboards/timeline', array('entity' => $timeline));
-				exit; // ajax load, exit
 				break;
 			case 'tags':
 				echo tagdashboards_get_json_tags(get_input('term'));

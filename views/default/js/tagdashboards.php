@@ -23,12 +23,12 @@ elgg.tagdashboards.init = function () {
 	// Setup the save form
 	elgg.tagdashboards.init_save_form();
 
-	// Check hashes
-	elgg.tagdashboards.handle_hash();
-
 	// ** Misc features **
 	// Arrow toggler
 	$('.tagdashboards-arrow-toggler').each(elgg.tagdashboards.init_togglers);
+	
+	// Check hashes
+	elgg.tagdashboards.handle_hash();
 }
 
 /**	
@@ -200,7 +200,9 @@ elgg.tagdashboards.display = function (options) {
 		'lower_date': 		lower_date,
 		'upper_date': 		upper_date, 
 		}, 
-		function() {$('.tagdashboards-content-container').fadeIn('fast');}
+		function() {
+			$('.tagdashboards-content-container').fadeIn('fast');
+		}
 	);
 	$('#tagdashboards-save-input-container').show();
 }
@@ -210,7 +212,7 @@ elgg.tagdashboards.display = function (options) {
  */
 elgg.tagdashboards.handle_hash = function() {
 	// If we have a hash up in the address, search automatically
-	if (window.location.hash && window.location.hash != '#comments') {
+	if (window.location.hash && window.location.hash != '#comments' && window.location.hash != "#timeline") {
 		$('a#tagdashboards-options-toggle').show();
 		$('#tagdashboards-save-input-container').show();
 		
@@ -220,6 +222,8 @@ elgg.tagdashboards.handle_hash = function() {
 		
 		// Display from form
 		elgg.tagdashboards.display_from_form(false);
+	} else if (window.location.hash == '#timeline') {
+		elgg.tagdashboards.timeline.toggle(1);
 	}
 	return;
 }
@@ -336,73 +340,6 @@ elgg.tagdashboards.custom_tags_string_to_array = function (tag_string) {
 elgg.tagdashboards.groupby_switcher = function(event) {
 	$('.tagdashboards-groupby-div').hide();
 	$('#tagdashboards-groupby-div-' + $(this).val()).show();
-}
-
-/**
- * Fade a div
- */
-elgg.tagdashboards.fade_div = function(id) {
-	$("#uberview_entity_list_" + id).fadeOut('fast', function () {
-		$("#loading_" + id).show();
-	});
-}
-
-// ** Loading Functions **
-elgg.tagdashboards.load_tagdashboards_subtype_content = function (subtype, search, owner_guids, lower_date, upper_date, offset) {
-	var end_url = elgg.normalize_url('tagdashboards/loadsubtype/');
-	end_url += "?subtype=" + subtype + "&search=" + search;
-	if (offset) {
-		end_url += "&offset=" + offset;
-	}
-
-	/* Simple show/hide */
-	$("#" + subtype + "_content").load(end_url, {'owner_guids' : owner_guids, 'lower_date' : lower_date, 'upper_date' : upper_date}, function() {
-		$("#loading_" + subtype).hide();
-	});
-		
-	return false;
-}
-
-elgg.tagdashboards.load_tagdashboards_activity_content = function (activity, container_guid, offset) {
-	var end_url = elgg.normalize_url('tagdashboards/loadactivity/');
-	end_url += "?activity=" + activity + "&container_guid=" + container_guid;
-	if (offset) {
-		end_url += "&offset=" + offset;
-	}
-
-	/* Simple show/hide */
-	$("#" + activity + "_content").load(end_url, '', function() {
-		$("#loading_" + activity).hide();
-	});	
-	return false;
-}
-
-elgg.tagdashboards.load_tagdashboards_activity_tag_content = function (activity, search, subtypes, owner_guids, lower_date, upper_date, offset) {
-	var end_url = elgg.normalize_url('tagdashboards/loadactivitytag/');
-	end_url += "?activity=" + activity + "&search=" + search;
-	if (offset) {
-		end_url += "&offset=" + offset;
-	}
-
-	/* Simple show/hide */
-	$("#" + activity + "_content").load(end_url, { 'subtypes' : subtypes, 'owner_guids' : owner_guids, 'lower_date' : lower_date, 'upper_date' : upper_date}, function() {
-		$("#loading_" + activity).hide();
-	});	
-	return false;
-}
-
-elgg.tagdashboards.load_tagdashboards_custom_content = function (group, search, subtypes, owner_guids, lower_date, upper_date, offset) {
-	var end_url = elgg.normalize_url('tagdashboards/loadcustom/');
-	end_url += "?group=" + group + "&search=" + search;
-	if (offset) {
-		end_url += "&offset=" + offset;
-	}
-
-	/* Simple show/hide */
-	$("#" + group + "_content").load(end_url, { 'subtypes' : subtypes, 'owner_guids' : owner_guids, 'lower_date' : lower_date, 'upper_date' : upper_date }, function() {
-		$("#loading_" + group).hide();
-	});	
-	return false;
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.init);

@@ -10,7 +10,8 @@
  * 
  */
 ?>
-<div style='display: none;' id="info"></div>
-<div id="tagdashboard-timeline-wrapper">
-	<div id="tagdashboard-timeline" class='dark-theme'></div>
+<div id='tagdashboards-timeline-container'>
+	<div id="tagdashboard-timeline-wrapper">
+		<div id="tagdashboard-timeline" class='dark-theme'></div>
+	</div>
 </div>

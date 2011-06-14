@@ -21,7 +21,8 @@
 }
 
 #tagdashboards-timeline-container {
-	visibility: hidden;
+	/**visibility: hidden;**/
+	display: none;
 }
 
 .tagdashboards-content-container {

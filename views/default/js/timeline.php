@@ -18,8 +18,7 @@ Timeline_urlPrefix = elgg.get_site_url() + 'mod/tagdashboards/vendors/timeline_2
 
 // Vars
 elgg.tagdashboards.timeline.is_tl_loaded = false;
-elgg.tagdashboards.timeline.guid;
-elgg.tagdashboards.timeline.loadURL;
+elgg.tagdashboards.timeline.guid;;
 elgg.tagdashboards.timeline.feedURL;
 elgg.tagdashboards.timeline.element;
 elgg.tagdashboards.timeline.resizeTimerID = null;
@@ -30,54 +29,29 @@ elgg.tagdashboards.timeline.init = function () {
 	window.onresize = elgg.tagdashboards.timeline.on_resize; // Can't do this with jQuery for some reason... ie: $("body").resize(...)
 	
 	elgg.tagdashboards.timeline.guid = $('#tagdashboard-guid').val(); 
-	elgg.tagdashboards.timeline.loadURL = elgg.get_site_url() + "tagdashboards/loadtimeline/" + elgg.tagdashboards.timeline.guid;
 	elgg.tagdashboards.timeline.feedURL = elgg.get_site_url() + "tagdashboards/timelinefeed/" + elgg.tagdashboards.timeline.guid;
-
-	// Handle any location hashes
-	elgg.tagdashboards.timeline.handle_hash();
 	
 	// Handle click for timeline button
-	$('.switch-tagdashboards').live('click', function () {
-		if ($(this).attr('id') == "switch-content") {
-			window.location.hash = "";
-			$("#tagdashboards-timeline-container").css({visibility: 'hidden'});
-			$(".tagdashboards-content-container").show();
-		} else if ($(this).attr('id') == "switch-timeline") {
-			window.location.hash = "timeline";
-			elgg.tagdashboards.timeline.load_timeline();
-		}
-	});
-	
-	// Grab height of the timeline container initially
-	tl_height = $('#tagdashboards-timeline-container').height();
-
-	// Set the top position of the content container to -(tl_heigh)
-	$(".tagdashboards-content-container").css({top: -(tl_height)});
-
-	$("#tagdashboards-timeline-container").resize(function () {
-		$(".tagdashboards-content-container").css({top: -($("#tagdashboards-timeline-container").height())});
+	$('.switch-tagdashboards').live('click', function(event) {
+		elgg.tagdashboards.timeline.toggle($(this).attr('href'));
+		event.preventDefault();
 	});
 }
 
-// Process any location hashes
-elgg.tagdashboards.timeline.handle_hash = function() {
-	if (window.location.hash && window.location.hash != '#comments') {
-		var hash = decodeURI(window.location.hash.substring(1));
-		if (hash == "timeline") {
-			elgg.tagdashboards.timeline.load_timeline();
-		}
-	}
-}
-
-elgg.tagdashboards.timeline.load_timeline = function(guid) {
-	if (!elgg.tagdashboards.timeline.is_tl_loaded) {
-		$("#tagdashboards-timeline-container").load(elgg.tagdashboards.timeline.loadURL, function() {
+elgg.tagdashboards.timeline.toggle = function(on) {
+	if (Number(on)) {
+		window.location.hash = "timeline";
+		$("#tagdashboards-timeline-container").show();
+		$(".tagdashboard-container").hide();
+		if (!elgg.tagdashboards.timeline.is_tl_loaded) {
+			elgg.tagdashboards.timeline.init_timeline();
 			elgg.tagdashboards.timeline.is_tl_loaded = true;
-			elgg.tagdashboards.timeline.init_timeline(); // init timeline
-		});
+		}
+	} else {
+		window.location.hash = "";	
+		$("#tagdashboards-timeline-container").hide();
+		$(".tagdashboard-container").show();
 	}
-	$("#tagdashboards-timeline-container").css({visibility: 'visible'});
-	$(".tagdashboards-content-container").hide();
 }
 
 elgg.tagdashboards.timeline.init_timeline = function() {
