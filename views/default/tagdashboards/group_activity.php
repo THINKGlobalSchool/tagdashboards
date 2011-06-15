@@ -15,22 +15,23 @@ $group_guid = $vars['container_guid'];
 
 // Loop over each activity
 foreach($activities as $activity) {
-	$activity_name = $activity['name'];
-	$activity_tag = $activity['tag'];
 
-	// Build container
-	$content .= elgg_view('tagdashboards/content/container', array(
-		'heading' => $activity_name,
-		'container_class' => 'tagdashboards-activity',
-		'id' => $activity_tag,
-	));
+	$params = array(
+		'container_guid' => $group_guid,
+		'types' => array('object'),
+		'limit' => 10,
+		'title' => $activity['name'],
+		'listing_type' => 'simpleicon',
+		'restrict_tag' => TRUE,
+		'module_type' => 'featured',
+		'module_id' => $activity['tag'],
+		'module_class' => 'tagdashboards-container',
+		'tags' => array($search, $activity['tag']),
+	);
 	
-	// Build JS
-	$content .= <<<HTML
-	<script type='text/javascript'>
-			elgg.tagdashboards.load_tagdashboards_activity_content("$activity_tag", "$group_guid", null);
-	</script>
-HTML;
+	// Default module
+	$content = elgg_view('modules/ajaxmodule', $params);
+	
+	echo $content;
 }
-
-echo $content . "<div style='clear: both;'></div>";
+// Don't need to call the dashboard init here, because we're not ajax loading this view

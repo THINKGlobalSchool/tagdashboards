@@ -177,34 +177,13 @@ function tagdashboards_get_page_content_group_activity($guid) {
 	$params['title'] = elgg_echo('tagdashboards:title:groupbyactivity');
 	if (elgg_instanceof($group, 'group')) {
 		elgg_set_page_owner_guid($guid);
-		$params['content'] = elgg_view_title($params['title']);
 		$params['content'] .= elgg_view('tagdashboards/group_activity', array('container_guid' => $guid));
 	} else {
 		$params['content'] = '';
 	}
 	$params['sidebar'] = elgg_view('tagdashboards/group_sidebar');
-	return $params;
-}
-
-/**
- * View content grouped by student activity with specified tag 
- */
-function tagdashboards_get_page_content_activity_tag() {
-	$search = get_input('search');
-	$params['title'] = elgg_echo('tagdashboards:title:activitytag');
-	$params['content'] = elgg_view_title($params['title']);
-	$params['content'] .= elgg_view('tagdashboards/activity_tag', array('search' => $search));
-	return $params;
-}
-
-/**
- * View content grouped by user defined tag with specified search 
- */
-function tagdashboards_get_page_content_custom() {
-	$search = get_input('search');
-	$params['title'] = elgg_echo('tagdashboards:title:custom');
-	$params['content'] = elgg_view_title($params['title']);
-	$params['content'] .= elgg_view('tagdashboards/custom', array('search' => $search));
+	$params['filter'] = FALSE;
+	$params['buttons'] = FALSE;
 	return $params;
 }
 

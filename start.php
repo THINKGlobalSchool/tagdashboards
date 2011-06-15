@@ -15,7 +15,6 @@
  * - Clean up language file
  * - Clean up CSS
  * - Check for unused functions
- * - Timeline
  * - Strip out tagdashboard input stuff into its own view?
  */
 
@@ -137,13 +136,9 @@ function tagdashboards_init() {
  * @todo docs 
  *
  * AJAX/XHR Types
- *	loadsubtype 		Load subtype content
- * 	loadactivity		Load activity content
- * 	loadactivitytag		Load activity/tag content
- * 	loadcustom			Load custom content
  * 	loadtagdashboard	Load a tagdashboard
  * 	timelinefeed		Load timeline feed content
- *
+ *  tags				Tags livesearch
  * @param array $page
  * @return NULL
  */
@@ -187,30 +182,9 @@ function tagdashboards_page_handler($page) {
 		
 		// Ajax loads
 		switch ($page_type) {
-			case 'loadsubtype':				
-				echo elgg_view('tagdashboards/content/subtype', $dashboard_options);
-				// This is an ajax load, so exit
-				exit;
-				break;
-			case 'loadactivity':
-				echo elgg_view('tagdashboards/content/activity', $dashboard_options);
-				// This is an ajax load, so exit
-				exit;
-				break;
-			case 'loadactivitytag':
-				echo elgg_view('tagdashboards/content/activity_tag', $dashboard_options);
-				// This is an ajax load, so exit
-				exit;
-				break;
-			case 'loadcustom':
-				echo elgg_view('tagdashboards/content/custom', $dashboard_options);
-				// This is an ajax load, so exit
-				exit;
-				break;
 			case 'loadtagdashboard':
 				echo tagdashboards_get_load_content($dashboard_options);
-				// This ia an ajax load, so exit
-				exit;
+				break;
 			case 'timelinefeed':
 				// Grab a type so we can differentiate
 				$type = get_input('type', 'overview');
@@ -222,16 +196,15 @@ function tagdashboards_page_handler($page) {
 					'min' => $min,
 					'max' => $max
 				));
-				// This ia an ajax load, so exit
-				exit;
 				break;
 			case 'tags':
 				echo tagdashboards_get_json_tags(get_input('term'));
 				break;
-			case 'all':
 			default:
 				break;
 		}
+		// Just exit
+		exit;
 	} else { // Regular request
 		// Load CSS
 		elgg_load_css('elgg.tagdashboards');
@@ -267,12 +240,6 @@ function tagdashboards_page_handler($page) {
 			case 'group_activity':
 				elgg_set_context('group');
 				$params = tagdashboards_get_page_content_group_activity($page[1]);
-				break;
-			case 'activity_tag':
-				$params = tagdashboards_get_page_content_activity_tag();
-				break;
-			case 'custom':
-				$params = tagdashboards_get_page_content_custom();
 				break;
 			case 'all':
 			default:
