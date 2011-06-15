@@ -12,7 +12,6 @@
 
 /************* 1.8 Update To Do's *****************
  * Must:
- * - Clean up CSS
  * - Strip out tagdashboard input stuff into its own view?
  */
 

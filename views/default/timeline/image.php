@@ -28,7 +28,7 @@ $src = elgg_get_site_url() . "photos/thumbnail/{$vars['entity']->getGUID()}/larg
 echo "<div class='timeline-tidypics-image-container'>
 		<div style='display: none;' id='popup-dialog-$id' class='image-popup-dialog'></div>
 		<img onclick='javascript:timeline_show_image_popup_by_id(\"popup-dialog-$id\", \"$src\")' src='$image_link' /><br />
-		<div class='entity_subtext timeline-entity-subtext'>
+		<div class='elgg-subtext timeline-entity-subtext'>
 			Likes: $likes_count $views_string Comments: $comments_count
 		</div>"
 		.  elgg_get_excerpt($vars['entity']->description) . 

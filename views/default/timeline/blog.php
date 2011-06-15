@@ -13,7 +13,7 @@
 $comments_count = elgg_count_comments($vars['entity']);
 $likes_count = likes_count($vars['entity']);
 
-echo "<div class='entity_subtext timeline-entity-subtext'>
+echo "<div class='elgg-subtext timeline-entity-subtext'>
 		Likes: $likes_count $views_string Comments: $comments_count
 	</div>". elgg_get_excerpt(elgg_view('output/longtext', array('value' => $vars['entity']->description))) .
 	 "<br /><a href='" . $vars['entity']->getURL() . "'><i>" . elgg_echo('tagdashboards:label:viewfull') . "</i></a>";
