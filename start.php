@@ -12,9 +12,7 @@
 
 /************* 1.8 Update To Do's *****************
  * Must:
- * - Clean up language file
  * - Clean up CSS
- * - Check for unused functions
  * - Strip out tagdashboard input stuff into its own view?
  */
 
@@ -213,6 +211,9 @@ function tagdashboards_page_handler($page) {
 		// Load JS
 		elgg_load_js('elgg.tagdashboards');
 		elgg_load_js('jquery.resize');
+		
+		// 'All' breadcrumb
+		elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
 		
 		switch ($page_type) {
 			case 'owner': 

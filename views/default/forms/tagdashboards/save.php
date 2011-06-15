@@ -20,7 +20,7 @@ $custom_tags	= elgg_extract('custom_tags', $vars);
 $owner_guids 	= elgg_extract('owner_guids', $vars);
 $lower_date 	= elgg_extract('lower_date', $vars);
 $upper_date 	= elgg_extract('upper_date', $vars);
-$container_guid = elgg_extract('container_guid', $vars);
+$container_guid = elgg_extract('container_guid', $vars, elgg_get_page_owner_guid());
 $groupby 		= elgg_extract('groupby', $vars);
 $guid 		 	= elgg_extract('guid', $vars);
 		

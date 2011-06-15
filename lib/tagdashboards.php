@@ -14,7 +14,6 @@
  * Build content for editing/creating a tag dashboards
  */
 function tagdashboards_get_page_content_edit($page, $guid) { 
-	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
 	$params['filter'] = FALSE;
 	$params['buttons'] = FALSE;
 	
@@ -74,16 +73,12 @@ function tagdashboards_get_page_content_list($container_guid = null) {
 		'subtype' => 'tagdashboard', 
 		'full_view' => false, 
 	);
-
-	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
 	
 	if ($container_guid) {
 		$options['container_guid'] = $container_guid;
 		$entity = get_entity($container_guid);
 		elgg_push_breadcrumb($entity->name);
-		
-
-		
+	
 		if (elgg_instanceof($entity, 'group')) {
 			$params['filter'] = false;
 
@@ -121,11 +116,9 @@ function tagdashboards_get_page_content_friends($user_guid) {
 	
 	$params['filter_context'] = 'friends';
 	$params['title'] = elgg_echo('tagdashboards:menu:friendstagdashboards');
-	
-	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
+
 	elgg_push_breadcrumb($user->name, elgg_get_site_url() . 'tagdashboards/owner/' . $user->username);
 	elgg_push_breadcrumb(elgg_echo('friends'));
-
 
 	if (!$friends = get_user_friends($user_guid, ELGG_ENTITIES_ANY_VALUE, 0)) {
 		$content .= elgg_echo('friends:none:you');
@@ -159,11 +152,11 @@ function tagdashboards_get_page_content_view($guid) {
 	$tagdashboard = get_entity($guid);
 	$container = get_entity($tagdashboard->container_guid);
 	elgg_set_page_owner_guid($container->getGUID());
-	elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
-	elgg_push_breadcrumb($container->name, elgg_get_site_url() . 'tagdashboards/' . $container->username);
+	elgg_push_breadcrumb($container->name, elgg_get_site_url() . 'tagdashboards/owner/' . $container->username);
 	elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
 	$params['title'] = $tagdashboard->title;
-	$params['content'] = elgg_view_entity($tagdashboard, true);	
+	$params['content'] = elgg_view('navigation/breadcrumbs') . "</br>";
+	$params['content'] .= elgg_view_entity($tagdashboard, true);	
 	$params['content'] .= "<a name='comments'></a>" . elgg_view_comments($tagdashboard);
 	$params['layout'] = 'one_column';
 	return $params;
@@ -177,6 +170,7 @@ function tagdashboards_get_page_content_group_activity($guid) {
 	$params['title'] = elgg_echo('tagdashboards:title:groupbyactivity');
 	if (elgg_instanceof($group, 'group')) {
 		elgg_set_page_owner_guid($guid);
+		elgg_push_breadcrumb($group->name);
 		$params['content'] .= elgg_view('tagdashboards/group_activity', array('container_guid' => $guid));
 	} else {
 		$params['content'] = '';
@@ -468,7 +462,6 @@ function tagdashboards_get_activities() {
 }
 
 /** HOOKS */
-
 /**
  * Example for exceptions 
  */
