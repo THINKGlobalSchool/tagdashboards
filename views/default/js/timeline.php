@@ -19,7 +19,7 @@ Timeline_parameters='bundle=true';
 
 // Vars
 elgg.tagdashboards.timeline.is_tl_loaded = false;
-elgg.tagdashboards.timeline.guid;;
+elgg.tagdashboards.timeline.guid;
 elgg.tagdashboards.timeline.feedURL;
 elgg.tagdashboards.timeline.element;
 elgg.tagdashboards.timeline.resizeTimerID = null;
