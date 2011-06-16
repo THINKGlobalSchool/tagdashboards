@@ -144,46 +144,5 @@ elgg.tagdashboards.timeline.on_resize = function() {
     }
 }
 
-/**
- * Creates a popup out of a dialog with given id 
- */
-elgg.tagdashboards.timeline.timeline_create_popup_with_id = function (id, width) {
-	if (!width) {
-		width = 'auto';
-	}
-	
-	elgg.tagdashboards.timeline.dlg = $("#" + id).dialog({
-						autoOpen: false,
-						width: width, 
-						height: 'auto',
-						modal: true,
-						open: function(event, ui) { 
-							$(".ui-dialog-titlebar-close").hide(); 	
-						},
-						buttons: {
-							"X": function() { 
-								$(this).dialog("close"); 
-							} 
-	}});
-}
-
-/**
- * Loads a popup with given url *
- */
-elgg.tagdashboards.timeline.timeline_load_popup_by_id = function (id, load_url) {
-	elgg.tagdashboards.timeline.timeline_create_popup_with_id(id, 500);
-	$("#" + id).dialog("open");
-	$("#" + id).load(load_url);
-}
-
-/**
- * Creates an image popup with given src 
- */
-elgg.tagdashboards.timeline.timeline_show_image_popup_by_id = function (id, src) {
-	elgg.tagdashboards.timeline.timeline_create_popup_with_id(id, 640);
-	$("#" + id).dialog("open");
-	$("#" + id).html("<img src='" + src + "' />");
-}
-
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.timeline.init);
 //</script>
