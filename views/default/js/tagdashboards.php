@@ -29,6 +29,12 @@ elgg.tagdashboards.init = function () {
 	
 	// Check hashes
 	elgg.tagdashboards.handle_hash();
+	
+	// Make lightboxes
+	$(".tagdashboards-lightbox").live('mouseover', function(event) {
+		$(this).fancybox();
+		$(this).die('mouseover');
+	});
 }
 
 /**	

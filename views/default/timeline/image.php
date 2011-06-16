@@ -24,7 +24,7 @@ $likes_count = likes_count($vars['entity']);
 
 $src = elgg_get_site_url() . "photos/thumbnail/{$vars['entity']->getGUID()}/large";
 
-echo "<a href='$src/image.jpeg' class='timeline-lightbox'><img src='$image_link' /></a><br />
+echo "<a href='$src/image.jpeg' class='tagdashboards-lightbox'><img src='$image_link' /></a><br />
 		<div class='elgg-subtext timeline-entity-subtext'>
 			Likes: $likes_count $views_string Comments: $comments_count
 		</div>"
