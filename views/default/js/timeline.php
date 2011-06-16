@@ -37,6 +37,12 @@ elgg.tagdashboards.timeline.init = function () {
 		elgg.tagdashboards.timeline.toggle($(this).attr('href'));
 		event.preventDefault();
 	});
+	
+	// Make lightboxes
+	$(".timeline-lightbox").live('mouseover', function(event) {
+		$(this).fancybox();
+		$(this).die('mouseover');
+	});
 }
 
 elgg.tagdashboards.timeline.toggle = function(on) {

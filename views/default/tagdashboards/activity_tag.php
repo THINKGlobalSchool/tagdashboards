@@ -26,7 +26,6 @@ $upper_date = $vars['upper_date'];
 
 // Loop over each activity and build content
 foreach($activities as $activity) {
-	
 	$params = array(
 		'created_time_upper' => $upper_date,
 		'created_time_lower' => $lower_date,
@@ -39,10 +38,9 @@ foreach($activities as $activity) {
 		'restrict_tag' => TRUE,
 		'module_type' => 'featured',
 		'module_id' => $activity['tag'],
-		'module_class' => 'tagdashboards-container',
+		'module_class' => 'tagdashboard-module',
 		'tags' => array($search, $activity['tag']),
 	);
-	
 	
 	// Default module
 	$content = elgg_view('modules/ajaxmodule', $params);

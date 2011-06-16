@@ -28,7 +28,7 @@ span#tagdashboards-search-error {
 	font-weight: bold;
 }
 
-.tagdashboards-container {
+.tagdashboard-module {
 	float: left;
 	width: 47%;
 	margin: 4px;

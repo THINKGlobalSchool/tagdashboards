@@ -28,10 +28,9 @@ if (!is_array($subtypes)) {
 	$subtypes = tagdashboards_get_enabled_subtypes();
 }
 
-
 // Loop over and display each
-foreach ($subtypes as $subtype) {		
 
+foreach ($subtypes as $subtype) {		
 	$entity_params = array(
 		'created_time_upper' => $upper_date,
 		'created_time_lower' => $lower_date,
@@ -59,7 +58,7 @@ foreach ($subtypes as $subtype) {
 			'restrict_tag' => TRUE,
 			'module_type' => 'featured',
 			'module_id' => $subtype,
-			'module_class' => 'tagdashboards-container',
+			'module_class' => 'tagdashboard-module',
 		);
 		
 		$params = array_merge($entity_params, $module_params);
@@ -67,7 +66,6 @@ foreach ($subtypes as $subtype) {
 		// Default module
 		$content = elgg_view('modules/ajaxmodule', $params);
 	}
-
 	echo $content;
 }
 echo "<script>elgg.modules.ajaxmodule.init();</script><div style='clear: both;'></div>";

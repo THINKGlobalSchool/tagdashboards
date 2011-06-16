@@ -25,7 +25,7 @@ foreach($activities as $activity) {
 		'restrict_tag' => TRUE,
 		'module_type' => 'featured',
 		'module_id' => $activity['tag'],
-		'module_class' => 'tagdashboards-container',
+		'module_class' => 'tagdashboard-module',
 		'tags' => array($search, $activity['tag']),
 	);
 	

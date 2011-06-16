@@ -24,8 +24,7 @@ $owner_guids = $vars['owner_guids'];
 $lower_date = $vars['lower_date'];
 $upper_date = $vars['upper_date'];
 
-foreach($custom as $tag) {
-	
+foreach($custom as $tag) {	
 	$params = array(
 		'created_time_upper' => $upper_date,
 		'created_time_lower' => $lower_date,
@@ -38,7 +37,7 @@ foreach($custom as $tag) {
 		'restrict_tag' => TRUE,
 		'module_type' => 'featured',
 		'module_id' => $tag,
-		'module_class' => 'tagdashboards-container',
+		'module_class' => 'tagdashboard-module',
 		'tags' => array($search, $tag),
 	);
 	

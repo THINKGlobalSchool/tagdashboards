@@ -73,4 +73,4 @@ add_to_river('river/object/tagdashboard/create', 'create', get_loggedin_userid()
 
 // Forward on
 system_message(elgg_echo('tagdashboards:success:save'));
-forward('tagdashboards');
+forward($tagdashboard->getURL());
