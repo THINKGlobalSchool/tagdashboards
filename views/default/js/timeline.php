@@ -32,6 +32,11 @@ elgg.tagdashboards.timeline.init = function () {
 	elgg.tagdashboards.timeline.guid = $('#tagdashboard-guid').val(); 
 	elgg.tagdashboards.timeline.feedURL = elgg.get_site_url() + "tagdashboards/timelinefeed/" + elgg.tagdashboards.timeline.guid;
 	
+	// Check for timeline hash
+	if (window.location.hash == '#timeline') {
+		elgg.tagdashboards.timeline.toggle(1);
+	}
+	
 	// Handle click for timeline button
 	$('.switch-tagdashboards').live('click', function(event) {
 		elgg.tagdashboards.timeline.toggle($(this).attr('href'));

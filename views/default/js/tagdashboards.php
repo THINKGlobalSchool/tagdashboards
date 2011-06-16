@@ -222,9 +222,7 @@ elgg.tagdashboards.handle_hash = function() {
 		
 		// Display from form
 		elgg.tagdashboards.display_from_form(false);
-	} else if (window.location.hash == '#timeline') {
-		elgg.tagdashboards.timeline.toggle(1);
-	}
+	} 
 	return;
 }
 
