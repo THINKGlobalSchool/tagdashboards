@@ -50,9 +50,6 @@ function tagdashboards_init() {
 	$daterange_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
 	elgg_register_js('jquery.daterangepicker', $daterange_js);
 	
-	$fb_js = elgg_get_site_url() . "vendors/jquery/fancybox/jquery.fancybox-1.3.4.pack.js";
-	elgg_register_js('jquery.fancybox', $fb_js);
-
 	// Provide the jquery resize plugin
 	$resize_js = elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js';
 	elgg_register_js($resize_js, 'jquery.resize');
@@ -233,8 +230,6 @@ function tagdashboards_page_handler($page) {
 			case 'view': 
 				elgg_load_js('simile.timeline');
 				elgg_load_js('elgg.tagdashboards.timeline');
-				elgg_load_js('jquery.fancybox');
-				elgg_load_css('lightbox');
 				$params = tagdashboards_get_page_content_view($page[1]);
 				break;
 			case 'group_activity':
