@@ -22,14 +22,10 @@ $image_link = elgg_get_site_url() . "photos/thumbnail/{$vars['entity']->getGUID(
 $comments_count = elgg_count_comments($vars['entity']);
 $likes_count = likes_count($vars['entity']);
 
-$id = $vars['entity']->getGUID();
 $src = elgg_get_site_url() . "photos/thumbnail/{$vars['entity']->getGUID()}/large";
 
-echo "<div class='timeline-tidypics-image-container'>
-		<div style='display: none;' id='popup-dialog-$id' class='image-popup-dialog'></div>
-		<a href='$src/image.jpeg' class='timeline-lightbox'><img src='$image_link' /></a><br />
+echo "<a href='$src/image.jpeg' class='timeline-lightbox'><img src='$image_link' /></a><br />
 		<div class='elgg-subtext timeline-entity-subtext'>
 			Likes: $likes_count $views_string Comments: $comments_count
 		</div>"
-		.  elgg_get_excerpt($vars['entity']->description) . 
-	"</div>";
+		.  elgg_get_excerpt($vars['entity']->description);
