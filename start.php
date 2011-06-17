@@ -39,7 +39,7 @@ function tagdashboards_init() {
 	elgg_register_js('elgg.tddaterange', $dr_js);
 	
 	// Register timeline JS library
-	$timeline_lib_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/timeline_lib/timeline_js/timeline-api.js';
+	$timeline_lib_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/timeline_lib/timeline_js/timeline-api.js?bundle=true';
 	elgg_register_js('simile.timeline', $timeline_lib_js);
 	
 	// Regsiter local timeline JS library
@@ -228,6 +228,8 @@ function tagdashboards_page_handler($page) {
 				$params = tagdashboards_get_page_content_edit($page_type, $page[1]);
 				break;
 			case 'view': 
+				// For some reason the form, lightbox, and timeline JS cannot co-exist here..
+				elgg_unregister_js('jquery.form'); // Bye bye form.. don't need it
 				elgg_load_js('simile.timeline');
 				elgg_load_js('elgg.tagdashboards.timeline');
 				$params = tagdashboards_get_page_content_view($page[1]);
