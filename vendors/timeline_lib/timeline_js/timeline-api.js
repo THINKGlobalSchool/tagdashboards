@@ -52,6 +52,11 @@
  *================================================== 
  */
 
+// Globals needed for local timeline code
+Timeline_ajax_url = elgg.get_site_url() + 'mod/tagdashboards/vendors/timeline_lib/timeline_ajax/simile-ajax-api.js';
+Timeline_urlPrefix = elgg.get_site_url() + 'mod/tagdashboards/vendors/timeline_lib/timeline_js/';    
+Timeline_parameters='bundle=true';
+
 (function() {
     var useLocalResources = false;
     if (document.location.search.length > 0) {
