@@ -59,7 +59,7 @@ $entities = array();
 foreach ($subtypes as $subtype) {
 	$params['subtypes'] = array($subtype);
 	
-	if(!$return = trigger_plugin_hook('tagdashboards:timeline:subtype', $subtype, array('search' => $search, 'params' => $params))) {
+	if(!$return = elgg_trigger_plugin_hook('tagdashboards:timeline:subtype', $subtype, array('search' => $search, 'params' => $params))) {
 		$return = elgg_get_entities_from_metadata($params);
 	}
 

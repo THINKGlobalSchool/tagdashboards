@@ -156,7 +156,7 @@ function tagdashboards_get_page_content_view($guid) {
 	elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
 	$params['title'] = $tagdashboard->title;
 	$params['content'] = elgg_view('navigation/breadcrumbs') . "</br>";
-	$params['content'] .= elgg_view_entity($tagdashboard, true);	
+	$params['content'] .= elgg_view_entity($tagdashboard, array('full_view' => TRUE));	
 	$params['content'] .= "<a name='comments'></a>" . elgg_view_comments($tagdashboard);
 	$params['layout'] = 'one_column';
 	return $params;
@@ -286,7 +286,7 @@ function tagdashboards_get_load_content($options) {
  * Helper function tog grab the plugins enabled subtypes 
  */
 function tagdashboards_get_enabled_subtypes() {
-	return unserialize(get_plugin_setting('enabled_subtypes', 'tagdashboards'));
+	return unserialize(elgg_get_plugin_setting('enabled_subtypes', 'tagdashboards'));
 }
 
 /* Get all registered subtypes (for admins) */
@@ -304,7 +304,7 @@ function tagdashboards_get_site_subtypes() {
 	);
 	
 	// Allow exceptions to be modified
-	$exceptions = trigger_plugin_hook('tagdashboards','exceptions', array(), $exceptions);
+	$exceptions = elgg_trigger_plugin_hook('tagdashboards','exceptions', array(), $exceptions);
 		
 	// Query to grab subtypes
 	$query = "SELECT subtype FROM elgg_entity_subtypes WHERE type = 'object';";
@@ -334,7 +334,7 @@ function tagdashboards_get_site_subtype_callback($data) {
  */
 function tagdashboards_entity_to_timeline_event_array($entity, $type) {
 	// Allow customization of event data for different entity subtypes
-	if (!$event = trigger_plugin_hook('tagdashboards:event:subtype', $entity->getSubtype(), array('entity' => $entity, 'type' => $type), FALSE)) {
+	if (!$event = elgg_trigger_plugin_hook('tagdashboards:event:subtype', $entity->getSubtype(), array('entity' => $entity, 'type' => $type), FALSE)) {
 		// Load these no matter what the type, (overview and detailed)
 		$event['start'] = date('r', strtotime(strftime("%a %b %d %Y", $entity->time_created))); // full date format
 		$event['isDuration'] = FALSE;
@@ -345,7 +345,7 @@ function tagdashboards_entity_to_timeline_event_array($entity, $type) {
 
 			
 			// See if any subtypes have registered for an icon
-			if (!$icon = trigger_plugin_hook('tagdashboards:timeline:icon', $entity->getSubtype(), array('entity' => $entity), FALSE)) {
+			if (!$icon = elgg_trigger_plugin_hook('tagdashboards:timeline:icon', $entity->getSubtype(), array('entity' => $entity), FALSE)) {
 				$icon = elgg_get_site_url() . "mod/tagdashboards/images/generic_icon.gif";
 			}
 

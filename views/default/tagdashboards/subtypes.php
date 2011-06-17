@@ -42,10 +42,10 @@ foreach ($subtypes as $subtype) {
 	);
 	
 	// See if anyone has registered a hook to display their subtype appropriately
-	if (!$content = trigger_plugin_hook('tagdashboards:subtype', $subtype, $entity_params, false)) {	
+	if (!$content = elgg_trigger_plugin_hook('tagdashboards:subtype', $subtype, $entity_params, false)) {	
 			
 		// Check if anyone wants to change the heading for their subtype
-		$subtype_heading = trigger_plugin_hook('tagdashboards:subtype:heading', $subtype, array(), false);
+		$subtype_heading = elgg_trigger_plugin_hook('tagdashboards:subtype:heading', $subtype, array(), false);
 		if (!$subtype_heading) {
 			// Use default item:object:subtype as this is usually defined 
 			$subtype_heading = elgg_echo('item:object:' . $subtype);

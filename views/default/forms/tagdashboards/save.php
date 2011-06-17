@@ -114,7 +114,7 @@ $tagdashboards_refresh_input = elgg_view('input/submit', array(
 $subtypes_input = '';
 
 foreach($subtypes as $subtype) {
-	$label = trigger_plugin_hook('tagdashboards:subtype:heading', $subtype, array(), $subtype);
+	$label = elgg_trigger_plugin_hook('tagdashboards:subtype:heading', $subtype, array(), $subtype);
 	$checked = '';
 	if (in_array($subtype, $enabled)) {
 		$checked = "checked";
