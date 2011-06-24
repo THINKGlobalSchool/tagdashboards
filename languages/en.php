@@ -82,9 +82,8 @@ $english = array(
 	'tagdashboards:activity:scribe' => 'Official Scribes',
 
 	// River
-	'river:created:object:tagdashboard' => 'created a Tag Dashboard titled ',
-	'river:commented:object:tagdashboard' => 'a Tag Dashboard titled ',
-	'river:tagdashboards:ingroup' => 'in the group %s',
+	'river:create:object:tagdashboard' => '%s created a Tag Dashboard titled %s',
+
 	
 	// Messages
 	'tagdashboards:success:setenabledsubtypes' => 'Enabled subtypes set',
