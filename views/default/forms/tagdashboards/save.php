@@ -233,7 +233,7 @@ $form_body = <<<HTML
 		</p>
 	</div>
 
-	<div class="elgg-form-footer" style='display: $display_form;' id="tagdashboards-save-input-container">
+	<div class="elgg-foot" style='display: $display_form;' id="tagdashboards-save-input-container">
 		$tagdashboards_refresh_input
 		$tagdashboards_save_input
 	</div>
