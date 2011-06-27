@@ -121,8 +121,6 @@ if ($full) { // Full view
 	
 	$timeline = elgg_view('tagdashboards/timeline');
 	
-	$header = elgg_view_title($tagdashboard->title);
-	
 	$content = <<<HTML
 		<div class='tagdashboard-description'>
 			$description
@@ -161,8 +159,7 @@ HTML;
 	);
 	
 	$list_body = elgg_view('object/elements/summary', $params);
-	
-	echo $header;
+
 	echo elgg_view_image_block($owner_icon, $list_body);
 	
 } else { // Listing 
