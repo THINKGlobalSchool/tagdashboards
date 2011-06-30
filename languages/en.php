@@ -83,6 +83,7 @@ $english = array(
 
 	// River
 	'river:create:object:tagdashboard' => '%s created a Tag Dashboard titled %s',
+	'river:comment:object:tagdashboard' => '%s commented on a Tag Dashboard titled %s',
 
 	
 	// Messages
