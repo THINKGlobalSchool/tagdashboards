@@ -80,10 +80,10 @@ function tagdashboards_get_page_content_list($container_guid = null) {
 	
 		if (elgg_instanceof($entity, 'group')) {
 			$params['filter'] = false;
-			elgg_register_add_button();
+			elgg_register_title_button();
 		} else if ($container_guid == $logged_in_user_guid) {
 			$params['filter_context'] = 'mine';
-			elgg_register_add_button();
+			elgg_register_title_button();
 		} else {
 			// do not show button or select a tab when viewing someone else's posts
 			$params['filter_context'] = 'none';
@@ -93,7 +93,7 @@ function tagdashboards_get_page_content_list($container_guid = null) {
 		$params['title'] = elgg_echo('tagdashboards:title:owneddashboards', array($entity->name));
 			
 	} else {
-		elgg_register_add_button();
+		elgg_register_title_button();
 		$content = elgg_list_entities($options);
 		$params['title'] = elgg_echo('tagdashboards:menu:alltagdashboards');
 		$params['filter_context'] = 'all';
@@ -140,7 +140,7 @@ function tagdashboards_get_page_content_friends($user_guid) {
 			$content .= $list;
 		}
 	}
-	elgg_register_add_button();
+	elgg_register_title_button();
 	
 	$params['content'] = $content;
 	
