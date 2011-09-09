@@ -54,9 +54,6 @@ function tagdashboards_init() {
 	$resize_js = elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js';
 	elgg_register_js($resize_js, 'jquery.resize');
 	
-	// Extend groups sidebar
-	elgg_extend_view('page/elements/sidebar', 'tagdashboards/group_sidebar');
-	
 	// Extend Groups profile page
 	elgg_extend_view('groups/tool_latest','tagdashboards/group_dashboards');
 	
