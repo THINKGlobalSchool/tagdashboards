@@ -98,7 +98,7 @@ $english = array(
 	
 	
 	// Other content
-	'item:object:file' => 'Files', // Files will be disabled, but including the language string just in case
+	'item:object:document' => 'Documents', // Documents will be disabled, but including the language string just in case
 );
 
 add_translation('en',$english);
