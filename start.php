@@ -97,6 +97,8 @@ function tagdashboards_init() {
 	// Register for input/tddaterange view plugin hook 
 	elgg_register_plugin_hook_handler('view', 'input/tddaterange', 'tagdashboards_daterange_input_handler');
 	
+	elgg_register_event_handler('upgrade', 'system', 'tagdashboards_run_upgrades');
+	
 	// Register type
 	elgg_register_entity_type('object', 'tagdashboard');		
 
@@ -407,3 +409,13 @@ function tagdashboards_daterange_input_handler($hook, $type, $value, $params) {
 	return $value;
 }
 
+/**
+ * Process upgrades for the tagdashboards plugin
+ */
+function tagdashboards_run_upgrades() {
+	$path = elgg_get_plugins_path() . 'tagdashboards/upgrades/';
+	$files = elgg_get_upgrade_files($path);
+	foreach ($files as $file) {
+		include "$path{$file}";
+	}
+}
