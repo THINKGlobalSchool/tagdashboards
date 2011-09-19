@@ -161,6 +161,24 @@ div.timeline-event-icon-default {
 	-webkit-border-radius: 5px 5px 5px 5px;
 }
 
+/** Tidypics Overrides **/
+.tagdashboard-module .tidypics_album_images,
+.tagdashboard-module .tidypics_album_gallery_item {
+	text-align:center;
+	width:130px; 
+	height:130px;
+}
+
+.tagdashboard-module .tidypics_album_images img,
+.tagdashboard-module .tidypics_album_gallery_item img {
+	width: 130px;
+	height: 130px;
+}
+
+.tagdashboard-module .elgg-gallery {
+	text-align: center;
+}
+
 /** Timeline dark theme **/
 /*---------------------------------*/
 
