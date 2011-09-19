@@ -24,6 +24,7 @@ $owner_guids	 	= get_input('owner_guids');
 $container_guid 	= get_input('container_guid', NULL);
 $lower_date 		= strtotime(get_input('lower_date', null));
 $upper_date 		= strtotime(get_input('upper_date', null));
+$column_count		= get_input('columns');
 
 // Sticky form
 elgg_make_sticky_form('tagdashboards-save-form');
@@ -58,6 +59,13 @@ $tagdashboard->custom_tags = $custom_tags;
 $tagdashboard->owner_guids = $owner_guids;
 $tagdashboard->lower_date = $lower_date;
 $tagdashboard->upper_date = $upper_date;
+
+// If column count is checked, set to 1
+if ($column_count) {
+	$tagdashboard->column_count = 1;
+} else {
+	$tagdashboard->column_count = 2;
+}
 
 // If error saving, register error and return
 if (!$tagdashboard->save()) {

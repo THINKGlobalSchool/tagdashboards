@@ -27,6 +27,8 @@ elgg.tagdashboards.init = function () {
 	// Arrow toggler
 	$('.tagdashboards-arrow-toggler').each(elgg.tagdashboards.init_togglers);
 	
+	$('.tagdashboards-check-column').live('click', elgg.tagdashboards.toggle_column);
+	
 	// Check hashes
 	elgg.tagdashboards.handle_hash();
 }
@@ -331,6 +333,21 @@ elgg.tagdashboards.custom_tags_string_to_array = function (tag_string) {
 	
 	return tag_array;
 }
+
+/** 
+ * Toggle columns
+ */
+elgg.tagdashboards.toggle_column = function (event) {
+	$('.tagdashboards-content-container').each(function() {
+		console.log($(this));
+		if ($(this).hasClass('no-float')) {
+			$(this).removeClass('no-float');
+		} else {
+			$(this).addClass('no-float');
+		}
+	});
+}
+
 
 /** 
  * Simple switcher function for the groupby inputs

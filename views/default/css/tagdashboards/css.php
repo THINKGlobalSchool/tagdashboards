@@ -34,6 +34,11 @@ span#tagdashboards-search-error {
 	margin: 4px;
 }
 
+div.no-float .tagdashboard-module {
+	width: auto;
+	float: none;
+}
+
 .tagdashboards-groupby-div {
 	display: none;
 }

@@ -121,6 +121,11 @@ if ($full) { // Full view
 	
 	$timeline = elgg_view('tagdashboards/timeline');
 	
+	// Display one or two column
+	if ($tagdashboard->column_count && $tagdashboard->column_count < 2) {
+		$float = "no-float";
+	}
+	
 	$content = <<<HTML
 		<div class='tagdashboard-description'>
 			$description
@@ -141,7 +146,7 @@ if ($full) { // Full view
 				$td_lower_date_input
 				$td_upper_date_input
 			</div>
-			<div class='tagdashboards-content-container'></div>
+			<div class='tagdashboards-content-container $float'></div>
 		</div>
 		<a name='annotations'>
 		$td_hidden_guid

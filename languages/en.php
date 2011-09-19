@@ -57,6 +57,7 @@ $english = array(
 	'tagdashboards:label:filter' => 'Filter Settings',
 	'tagdashboards:label:filterowner' => 'Show content from selected users',
 	'tagdashboards:label:filterdate' => 'Show content created within date range',
+	'tagdashboards:label:columns' => 'Display only one column',
 
 	// Descriptions
 	'tagdashboards:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',

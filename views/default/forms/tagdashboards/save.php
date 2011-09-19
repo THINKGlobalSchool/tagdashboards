@@ -23,6 +23,7 @@ $upper_date 	= elgg_extract('upper_date', $vars);
 $container_guid = elgg_extract('container_guid', $vars, elgg_get_page_owner_guid());
 $groupby 		= elgg_extract('groupby', $vars);
 $guid 		 	= elgg_extract('guid', $vars);
+$column_count 	= elgg_extract('column_count', $vars);
 		
 // If we have an entity, we're editing
 if ($guid) {
@@ -152,6 +153,18 @@ $groupby_input = elgg_view('input/radio', array(
 	'class' => 'elgg-input-radio elgg-horizontal tagdashboards-groupby-radio',
 ));
 
+$column_checked = ($column_count && $column_count < 2) ? 'checked' : NULL;
+if ($column_checked) {
+	$float = 'no-float';
+}
+
+$column_label = elgg_echo('tagdashboards:label:columns');
+$column_input = elgg_view('input/checkbox', array(
+	'name' => 'columns',
+	'checked' => $column_checked,
+	'class' => 'tagdashboards-check-column',
+));
+
 $filter_owners .= elgg_echo('tagdashboards:label:filterowner');
 $filter_owners_input .= elgg_view('input/userpicker', array(
 	'name' => 'owner_guids',
@@ -207,6 +220,10 @@ $form_body = <<<HTML
 				<div class='tagdashboards-groupby-div' id='tagdashboards-groupby-div-subtype'>$group_subtype</div>
 				<div class='tagdashboards-groupby-div' id='tagdashboards-groupby-div-activity'>$group_activity</div>
 				<div class='tagdashboards-groupby-div' id='tagdashboards-groupby-div-custom'>$group_custom</div>
+				<div>
+					<label>$column_label</label>
+					$column_input
+				</div>
 			</div>
 		</p>
 		<br />
@@ -239,7 +256,7 @@ $form_body = <<<HTML
 	</div>
 	$container_guid_input
 	$tagdashboard_guid
-	<div class='tagdashboards-content-container'>
+	<div class='tagdashboards-content-container $float'>
 	</div>
 HTML;
 
