@@ -20,6 +20,7 @@ function tagdashboards_init() {
 		
 	// Register CSS
 	$td_css = elgg_get_simplecache_url('css', 'tagdashboards/css');
+	elgg_register_simplecache_view('css/tagdashboards/css');	
 	elgg_register_css('elgg.tagdashboards', $td_css);
 	
 	// Register custom theme CSS
@@ -32,10 +33,12 @@ function tagdashboards_init() {
 		
 	// Register tag dashboards JS library
 	$td_js = elgg_get_simplecache_url('js', 'tagdashboards');
+	elgg_register_simplecache_view('js/tagdashboards');	
 	elgg_register_js('elgg.tagdashboards', $td_js);
 	
 	// Register tag dashboards JS library
 	$dr_js = elgg_get_simplecache_url('js', 'tddaterange');
+	elgg_register_simplecache_view('js/tddaterange');	
 	elgg_register_js('elgg.tddaterange', $dr_js);
 	
 	// Register timeline JS library
