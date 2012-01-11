@@ -249,7 +249,7 @@ function tagdashboards_page_handler($page) {
 		$body = elgg_view_layout($params['layout'] ? $params['layout'] : 'content', $params);
 		echo elgg_view_page($params['title'], $body);
 	}
-	return;
+	return TRUE;
 }
 	
 /**
