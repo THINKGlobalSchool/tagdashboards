@@ -79,7 +79,7 @@ elgg_clear_sticky_form('tagdashboards-save-form');
 // If we have a new tagdashboard, add river entry
 if (!$guid) {
 	// Add to river
-	add_to_river('river/object/tagdashboard/create', 'create', get_loggedin_userid(), $tagdashboard->getGUID());
+	add_to_river('river/object/tagdashboard/create', 'create', elgg_get_logged_in_user_guid(), $tagdashboard->getGUID());
 }
 
 // Forward on

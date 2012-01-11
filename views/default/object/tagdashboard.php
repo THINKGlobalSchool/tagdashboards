@@ -148,7 +148,7 @@ if ($full) { // Full view
 			</div>
 			<div class='tagdashboards-content-container $float'></div>
 		</div>
-		<a name='annotations'>
+		<a name='annotations'></a>
 		$td_hidden_guid
 HTML;
 
