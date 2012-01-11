@@ -11,7 +11,12 @@
  */
 
 // Description will contain the img link, likes, views, comments and excerpt
-$views = count_annotations($vars['entity']->getGUID(), "object", "image", "tp_view");
+$views = elgg_get_annotations(array(
+	'guid' => $vars['entity']->getGUID(), 
+	'type' => "object", 
+	'subtype' => "image", 
+	'annotation_names' => array("tp_view")
+));
 
 if ($views) {
 	$views_string = sprintf(elgg_echo("tidypics:views"), $views);
@@ -19,7 +24,7 @@ if ($views) {
 
 $image_link = elgg_get_site_url() . "photos/thumbnail/{$vars['entity']->getGUID()}/small";
 
-$comments_count = elgg_count_comments($vars['entity']);
+$comments_count = $vars['entity']->countComments();
 $likes_count = likes_count($vars['entity']);
 
 $src = elgg_get_site_url() . "photos/thumbnail/{$vars['entity']->getGUID()}/large";

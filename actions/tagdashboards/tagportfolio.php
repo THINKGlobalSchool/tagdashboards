@@ -10,7 +10,7 @@
  * 
  */
 
-$user = get_loggedin_user();
+$user = elgg_get_logged_in_user_entity();
 $custom = get_input('custom');
 $user->tag_portfolio = $custom;
 
