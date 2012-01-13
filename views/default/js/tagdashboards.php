@@ -136,7 +136,7 @@ elgg.tagdashboards.display_from_form = function(event) {
 	search = elgg.tagdashboards.get_search();	
 	
 	// Get owner guids
-	var userpicker_input = $('input[name="owner_guids[]"]');
+	var userpicker_input = $('input[name="members[]"]');
 	var owner_guids = new Array();
 	count = 0;
 	userpicker_input.each(function() {
@@ -193,6 +193,13 @@ elgg.tagdashboards.display = function (options) {
 	if (search) {
 		url += '&search=' + search;
 	}
+
+	// Make sure owner guids is an array (if set)
+	if (owner_guids && !$.isArray(owner_guids)) {
+		owner_guids = [owner_guids];
+	}
+	
+	console.log(owner_guids);
 	
 	// Load in content
 	$('.tagdashboards-content-container').hide().load(url, { 

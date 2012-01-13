@@ -15,7 +15,8 @@ $views = elgg_get_annotations(array(
 	'guid' => $vars['entity']->getGUID(), 
 	'type' => "object", 
 	'subtype' => "image", 
-	'annotation_names' => array("tp_view")
+	'annotation_names' => array("tp_view"),
+	'count' => TRUE,
 ));
 
 if ($views) {

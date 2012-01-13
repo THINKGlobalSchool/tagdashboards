@@ -167,7 +167,6 @@ $column_input = elgg_view('input/checkbox', array(
 
 $filter_owners .= elgg_echo('tagdashboards:label:filterowner');
 $filter_owners_input .= elgg_view('input/userpicker', array(
-	'name' => 'owner_guids',
 	'value' => $owner_guids,
 ));
 
