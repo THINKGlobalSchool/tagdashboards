@@ -20,19 +20,20 @@ if (!elgg_instanceof($entity, 'object')) {
 	forward(REFERER);
 }
 
-// Ignore access to allow any user to add the recommended metadata
-$ia = elgg_get_ignore_access();
-elgg_set_ignore_access(TRUE);
 if (!$remove) {
 	if (!$entity->recommended_portfolio) {
+		// Ignore access to allow any user to add the recommended metadata
+		$ia = elgg_get_ignore_access();
+		elgg_set_ignore_access(TRUE);
 		$entity->recommended_portfolio = 1;
 		$success = $entity->save();
+		elgg_set_ignore_access($ia);
 	}
-} else {
+} else if ($remove && $entity->getOwnerGUID() == elgg_get_logged_in_user_guid()) {
 	// Remove the recommended metadata
 	tagdashboards_remove_recommended_metadata($entity->guid);
 }
-elgg_set_ignore_access($ia);
+
 if ($success) {
 	system_message(elgg_echo('tagdashboards:success:recommendportfolio', array($entity->getOwnerEntity()->name)));
 }

@@ -524,28 +524,32 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 function portfolio_setup_simpleicon_entity_menu($hook, $type, $return, $params) {
 	if (get_input('recommended_portfolio')) {
 		$entity = $params['entity'];
-		// Item to add object to portfolio
-		$options = array(
-			'name' => 'add_to_portfolio',
-			'text' => elgg_echo('tagdashboards:label:addtoportfolio'),
-			'title' => 'add_to_portfolio',
-			'href' => "#{$entity->guid}",
-			'class' => 'portfolio-add-profile',
-			'section' => 'info',
-		);
-		$return[] = ElggMenuItem::factory($options);
+		
+		// Make sure entity belongs to the viewing user
+		if ($entity->getOwnerEntity() == elgg_get_logged_in_user_entity()) {
+			// Item to add object to portfolio
+			$options = array(
+				'name' => 'add_to_portfolio',
+				'text' => elgg_echo('tagdashboards:label:addtoportfolio'),
+				'title' => 'add_to_portfolio',
+				'href' => "#{$entity->guid}",
+				'class' => 'portfolio-add-profile',
+				'section' => 'info',
+			);
+			$return[] = ElggMenuItem::factory($options);
 
-		// Item to add object to portfolio
-		$options = array(
-			'name' => 'ignore_portfolio',
-			'text' => elgg_echo('tagdashboards:label:ignoreportfolio'),
-			'title' => 'ignore_portfolio',
-			'href' => "#{$entity->guid}",
-			'class' => 'portfolio-ignore-profile',
-			'section' => 'info',
-			'priority' => 600,
-		);
-		$return[] = ElggMenuItem::factory($options);
+			// Item to add object to portfolio
+			$options = array(
+				'name' => 'ignore_portfolio',
+				'text' => elgg_echo('tagdashboards:label:ignoreportfolio'),
+				'title' => 'ignore_portfolio',
+				'href' => "#{$entity->guid}",
+				'class' => 'portfolio-ignore-profile',
+				'section' => 'info',
+				'priority' => 600,
+			);
+			$return[] = ElggMenuItem::factory($options);
+		}
 	}
 	return $return;
 }

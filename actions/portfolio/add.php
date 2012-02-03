@@ -16,7 +16,7 @@ $entity = get_entity($guid);
 $remove_recommended = get_input('remove_recommended', FALSE);
 
 // Make sure this is a valid object and that we own it
-if (!elgg_instanceof($entity, 'object') || elgg_get_logged_in_user_entity() != $entity->getOwnerEntity()) {
+if (!elgg_instanceof($entity, 'object') || elgg_get_logged_in_user_guid() != $entity->getOwnerGUID()) {
 	register_error(elgg_echo('tagdashboards:error:invalidentity'));
 	forward(REFERER);
 }

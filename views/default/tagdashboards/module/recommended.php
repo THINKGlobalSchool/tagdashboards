@@ -8,10 +8,11 @@
  * @copyright THINK Global School 2010
  * @link http://www.thinkglobalschool.com/
  * 
+ * @uses $vars['user_guid']
  */
 
 $options = array(
-	'owner_guid' => $user->guid,
+	'owner_guid' => $vars['user_guid'],
 	'metadata_name_value_pairs' => array(array(
 		'name' => 'recommended_portfolio', 
 		'value' => '1', 
