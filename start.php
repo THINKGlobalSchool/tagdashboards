@@ -129,8 +129,10 @@ function tagdashboards_init() {
 	// Profile block hook	
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'tagdashboards_owner_block_menu');
 	
-	// Register Ajax View
+	// Register Ajax Views
 	elgg_register_ajax_view('tagdashboards/module/recommended');
+
+	elgg_register_ajax_view('tagdashboards/portfolio/content');
 
 	return true;
 }
@@ -448,8 +450,15 @@ function tagdashboards_daterange_input_handler($hook, $type, $value, $params) {
  */
 function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 	$entity = $params['entity'];
+	
+	// Ignore these subtypes
+	$exceptions = array(
+		'forum',
+		'forum_topic',
+		'forum_reply',
+	);
 
-	if (elgg_instanceof($entity, 'object') && elgg_is_logged_in()) {		
+	if (elgg_instanceof($entity, 'object') && elgg_is_logged_in() && !in_array($entity->getSubtype(), $exceptions)) {		
 		// Check if entity has portfolio tag
 		$params = array(
 			'guid' => $entity->guid,

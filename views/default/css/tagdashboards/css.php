@@ -188,7 +188,7 @@ div.timeline-event-icon-default {
 .tagdashboards-recommended-button {
 	min-width: 225px;
 	float: right;
-	margin-right: 5px;
+	margin-right: 26px;
 }
 
 #tagdashboards-recommended-dropdown {

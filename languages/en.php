@@ -106,6 +106,7 @@ $english = array(
 	'tagdashboards:error:notfound' => 'Tag Dashboard not found',
 	'tagdashboards:error:requiredfields' => 'One or more required fields are missing',
 	'tagdashboards:error:invalidentity' => 'Invalid Entity',
+	'tagdashboards:error:invaliduser' => 'Invalid User',
 	
 	// Other content
 	'item:object:document' => 'Documents', // Documents will be disabled, but including the language string just in case

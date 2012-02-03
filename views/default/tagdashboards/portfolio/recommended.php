@@ -29,8 +29,8 @@ if (elgg_instanceof($user, 'user')) {
 		'text' => elgg_echo('tagdashboards:label:showrecommended', array($count)),
 	));
 
-	echo "<div class='no-float'>" . elgg_view_module('dropdown', $title, $module, array(
+	echo elgg_view_module('dropdown', $title, $module, array(
 		'class' => 'tagdashboard-module',
 		'id' => 'tagdashboards-recommended-dropdown',
-	)) . "</div>";
+	));
 }

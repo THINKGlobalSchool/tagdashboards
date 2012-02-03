@@ -462,6 +462,46 @@ function tagdashboards_get_activities() {
 	);
 }
 
+/**
+ * Get unique subtypes based on given options (compatible with elgg_get_entities_from_metadata atm)
+ */
+function tagdashboards_get_entity_subtypes_from_metadata(array $options = array()) {
+	$db_prefix = get_config('dbprefix');
+
+	$defaults = array(
+		'selects' => array('es.subtype'),
+		'joins' => array("JOIN {$db_prefix}entity_subtypes es on es.id = e.subtype"),
+		'group_by' => 'e.subtype',
+		'limit' => 0,
+		'callback' => 'tagdashboards_row_to_subtype'
+	);
+	
+	$options = array_merge($defaults, $options);
+
+	$subtypes = elgg_get_entities_from_metadata($options);
+
+	return $subtypes;
+}
+
+/**
+ * Return unique array of subtype id/names from row
+ *
+ * @param stdClass $row The row of the entry in the entities table.
+ *
+ * @return array|false
+ */
+function tagdashboards_row_to_subtype($row) {
+	if (!($row instanceof stdClass)) {
+		return $row;
+	}
+
+	if ((!isset($row->guid)) || (!isset($row->subtype))) {
+		return $row;
+	}
+
+	return $row->subtype;
+}
+
 /** HOOKS */
 /**
  * Example for exceptions 

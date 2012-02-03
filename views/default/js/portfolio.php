@@ -25,6 +25,9 @@ elgg.portfolio.init = function () {
 
 	// Click handler for profile add to portfolio
 	$(document).delegate('.portfolio-ignore-profile', 'click', elgg.portfolio.profileIgnoreClick);
+
+	// Ajax load the portfolio content
+	elgg.portfolio.loadContent();
 }
 
 // Click handler for portfolio add 
@@ -146,9 +149,12 @@ elgg.portfolio.profileAddClick = function(event) {
 			},
 			success: function(data) {
 				if (data.status != -1) {
-					// Refresh modules
+					// Refresh module
 					elgg.modules.genericmodule.init();
-					elgg.tagdashboards.init();
+					
+					// Re-load content
+					elgg.portfolio.loadContent();
+
 				} else {
 					// Error
 					$_this.removeClass('disabled');
@@ -186,6 +192,24 @@ elgg.portfolio.profileIgnoreClick = function(event) {
 		});
 	}
 	event.preventDefault();
+}
+
+/**	
+ * Load portfolio content 
+ */
+elgg.portfolio.loadContent = function() {
+	var user_guid = $('input#portfolio-user').val();
+	var url = elgg.get_site_url() + 'ajax/view/tagdashboards/portfolio/content'
+	var $container = $('#tagdashboards-portfolio-container');
+	
+	elgg.get(url, {
+		data: {
+			user_guid: user_guid
+		},
+		success: function(data){
+			$container.html(data);
+		}
+	});
 }
 
 /**
