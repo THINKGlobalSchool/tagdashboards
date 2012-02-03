@@ -497,3 +497,17 @@ function tagdashboards_image_unique($object) {
 	$idList[] = $object->getGUID();
 	return true;
 }
+
+/**
+ * Helper function to remove recommended (portfolio) metadata from an entity
+ * 
+ * @param int  $guid Entity Guid
+ * @return bool
+ */
+function tagdashboards_remove_recommended_metadata($guid) {
+	$options = array(
+		'guid' => $guid,
+		'metadata_name' => 'recommended_portfolio'
+	);
+	return elgg_delete_metadata($options);
+}

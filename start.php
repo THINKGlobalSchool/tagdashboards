@@ -13,79 +13,90 @@
 elgg_register_event_handler('init', 'system', 'tagdashboards_init');
 
 function tagdashboards_init() {	
-	
+
 	// Register and load library
 	elgg_register_library('tagdashboards', elgg_get_plugins_path() . 'tagdashboards/lib/tagdashboards.php');
 	elgg_load_library('tagdashboards');
-		
+	
 	// Register CSS
 	$td_css = elgg_get_simplecache_url('css', 'tagdashboards/css');
 	elgg_register_simplecache_view('css/tagdashboards/css');	
 	elgg_register_css('elgg.tagdashboards', $td_css);
-	
+
 	// Register custom theme CSS
 	$ui_url = elgg_get_site_url() . 'mod/tagdashboards/vendors/smoothness/jquery-ui-1.7.3.custom.css';
 	elgg_register_css('jquery.ui.smoothness', $ui_url);
-	
+
 	// Register datepicker css
 	$daterange_css = elgg_get_site_url(). 'mod/tagdashboards/vendors/ui.daterangepicker.css';
 	elgg_register_css('jquery.daterangepicker', $daterange_css);
-		
+
 	// Register tag dashboards JS library
 	$td_js = elgg_get_simplecache_url('js', 'tagdashboards');
 	elgg_register_simplecache_view('js/tagdashboards');	
 	elgg_register_js('elgg.tagdashboards', $td_js);
-	
-	// Register tag dashboards JS library
+
+	// Register portfolio JS library
+	$p_js = elgg_get_simplecache_url('js', 'portfolio');
+	elgg_register_simplecache_view('js/portfolio');	
+	elgg_register_js('elgg.portfolio', $p_js);
+	elgg_load_js('elgg.portfolio');
+
+	// Register daterange JS library
 	$dr_js = elgg_get_simplecache_url('js', 'tddaterange');
 	elgg_register_simplecache_view('js/tddaterange');	
 	elgg_register_js('elgg.tddaterange', $dr_js);
-	
+
 	// Register timeline JS library
 	$timeline_lib_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/timeline_lib/timeline_js/timeline-api.js?bundle=true';
 	elgg_register_js('simile.timeline', $timeline_lib_js);
-	
+
 	// Regsiter local timeline JS library
 	$timeline_js = elgg_get_simplecache_url('js', 'timeline');
 	elgg_register_js('elgg.tagdashboards.timeline', $timeline_js);
-			
+
 	// Register datepicker JS
 	$daterange_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
 	elgg_register_js('jquery.daterangepicker', $daterange_js);
-	
+
 	// Provide the jquery resize plugin
 	$resize_js = elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js';
 	elgg_register_js($resize_js, 'jquery.resize');
-	
+
 	// Extend Groups profile page
 	elgg_extend_view('groups/tool_latest','tagdashboards/group_dashboards');
-	
+
 	// Page handler
 	elgg_register_page_handler('tagdashboards','tagdashboards_page_handler');
-	
+
 	// Add to main menu
 	$item = new ElggMenuItem('tagdashboards', elgg_echo('tagdashboards'), 'tagdashboards/all');
 	elgg_register_menu_item('site', $item);
 
 	// Add submenus
 	elgg_register_event_handler('pagesetup','system','tagdashboards_submenus');
-					
+
 	// Set up url handlers
 	elgg_register_event_handler('tagdashboard_url','object', 'tagdashboard');
 
 	// Register actions
 	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/tagdashboards';
 	elgg_register_action('tagdashboards/save', "$action_base/save.php");
-	elgg_register_action('tagdashboards/tagportfolio', "$action_base/tagportfolio.php");
+	elgg_register_action('tagdashboards/portfolio', "$action_base/portfolio.php");
 	elgg_register_action('tagdashboards/delete', "$action_base/delete.php");
 	elgg_register_action('tagdashboards/subtypes', "$action_base/subtypes.php", 'admin');
-	
+
+	// Portfolio actions
+	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/portfolio';
+	elgg_register_action('portfolio/add', "$action_base/add.php");
+	elgg_register_action('portfolio/recommend', "$action_base/recommend.php");
+
 	// Setup url handler for tag dashboards
 	elgg_register_entity_url_handler('object', 'tagdashboard', 'tagdashboards_url_handler');
-		
+
 	// Add a new tab to the tabbed profile
 	elgg_register_plugin_hook_handler('tabs', 'profile', 'tagdashboards_profile_tab_hander');	
-		
+
 	// Icon handlers
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'blog', 'tagdashboards_timeline_blog_icon_handler');
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'image', 'tagdashboards_timeline_image_icon_handler');
@@ -93,23 +104,33 @@ function tagdashboards_init() {
 
 	// Change how photos are retrieved for the timeline 
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:subtype', 'image', 'tagdashboards_timeline_photo_override_handler');
-	
+
 	// Change display of photos
 	elgg_register_plugin_hook_handler('tagdashboards:subtype', 'image', 'tagdashboards_photo_override_handler');
-	
+
 	// Register for input/tddaterange view plugin hook 
 	elgg_register_plugin_hook_handler('view', 'input/tddaterange', 'tagdashboards_daterange_input_handler');
-	
+
+	// Modify entity menu for recommended portfolio items
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'portfolio_setup_entity_menu', 999);
+
+	// Register simpleicon menu items
+	elgg_register_plugin_hook_handler('register', 'menu:simpleicon-entity', 'portfolio_setup_simpleicon_entity_menu');
+
+	// Upgrade Event Handler
 	elgg_register_event_handler('upgrade', 'system', 'tagdashboards_run_upgrades');
-	
+
 	// Register type
 	elgg_register_entity_type('object', 'tagdashboard');		
 
 	// Add group option
 	add_group_tool_option('tagdashboards',elgg_echo('tagdashboard:enablegroup'), TRUE);
-	
+
 	// Profile block hook	
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'tagdashboards_owner_block_menu');
+	
+	// Register Ajax View
+	elgg_register_ajax_view('tagdashboards/module/recommended');
 
 	return true;
 }
@@ -311,7 +332,7 @@ function tagdashboards_photo_override_handler($hook, $type, $value, $params) {
  * Handler to add a tag dashboards tab to the tabbed profile 
  */
 function tagdashboards_profile_tab_hander($hook, $type, $value, $params) {
-	$value[] = 'tagportfolio';
+	$value[] = 'portfolio';
 	return $value;
 }
 
@@ -410,6 +431,123 @@ function tagdashboards_daterange_input_handler($hook, $type, $value, $params) {
 	elgg_load_js('jquery.daterangepicker');
 	elgg_load_js('elgg.tddaterange');
 	return $value;
+}
+
+/**
+ * Removes all items from the entity menu when 
+ * viewing an entity in the recommended portfolio list. 
+ * 
+ * Adds an add to portfolio and recommend for portfolio button
+ *
+ * @param sting  $hook   view
+ * @param string $type   input/tags
+ * @param mixed  $return  Value
+ * @param mixed  $params Params
+ *
+ * @return array
+ */
+function portfolio_setup_entity_menu($hook, $type, $return, $params) {
+	$entity = $params['entity'];
+
+	if (elgg_instanceof($entity, 'object') && elgg_is_logged_in()) {		
+		// Check if entity has portfolio tag
+		$params = array(
+			'guid' => $entity->guid,
+			'limit' => 1,
+			'metadata_name_value_pairs' => array(
+				'name' => 'tags', 
+				'value' => 'portfolio', 
+				'operand' => '=',
+				'case_sensitive' => FALSE
+			),
+			'count' => TRUE
+		);
+
+		$has_portfolio_tag = (int)elgg_get_entities_from_metadata($params);
+		
+		// Check if entity has recommended metadata tag
+		$params = array(
+			'guid' => $entity->guid,
+			'limit' => 1,
+			'metadata_name_value_pairs' => array(
+				'name' => 'recommended_portfolio', 
+				'value' => '1', 
+				'operand' => '=',
+				'case_sensitive' => FALSE
+			),
+			'count' => TRUE
+		);
+
+		$has_recommended_metadata = (int)elgg_get_entities_from_metadata($params);
+		
+		if (elgg_get_logged_in_user_guid() == $entity->owner_guid) {			
+			// If we don't have the portfolio tag, show the add button
+			if (!$has_portfolio_tag) {
+				$options = array(
+					'name' => 'add_to_portfolio',
+					'text' => elgg_echo('tagdashboards:label:addtoportfolio'),
+					'title' => 'add_to_portfolio',
+					'href' => "#{$entity->guid}",
+					'class' => 'portfolio-add',
+					'section' => 'actions',
+				);
+				$return[] = ElggMenuItem::factory($options);
+			}
+		} else {
+			// If we don't have the recommended metadata or the portfolio tag, show the recommend button
+			if (!$has_portfolio_tag && !$has_recommended_metadata) {
+				$options = array(
+					'name' => 'recommend_for_portfolio',
+					'text' => elgg_echo('tagdashboards:label:recommendforportfolio'),
+					'title' => 'recommend_for_portfolio',
+					'href' => "#{$entity->guid}",
+					'class' => 'portfolio-recommend',
+					'section' => 'actions',
+				);
+				$return[] = ElggMenuItem::factory($options);
+			}
+		}
+	} 
+	return $return;
+}
+
+/**
+ * Register items for the simpleicon entity menu
+ *
+ * @param sting  $hook   view
+ * @param string $type   input/tags
+ * @param mixed  $return  Value
+ * @param mixed  $params Params
+ *
+ * @return array
+ */
+function portfolio_setup_simpleicon_entity_menu($hook, $type, $return, $params) {
+	if (get_input('recommended_portfolio')) {
+		$entity = $params['entity'];
+		// Item to add object to portfolio
+		$options = array(
+			'name' => 'add_to_portfolio',
+			'text' => elgg_echo('tagdashboards:label:addtoportfolio'),
+			'title' => 'add_to_portfolio',
+			'href' => "#{$entity->guid}",
+			'class' => 'portfolio-add-profile',
+			'section' => 'info',
+		);
+		$return[] = ElggMenuItem::factory($options);
+
+		// Item to add object to portfolio
+		$options = array(
+			'name' => 'ignore_portfolio',
+			'text' => elgg_echo('tagdashboards:label:ignoreportfolio'),
+			'title' => 'ignore_portfolio',
+			'href' => "#{$entity->guid}",
+			'class' => 'portfolio-ignore-profile',
+			'section' => 'info',
+			'priority' => 600,
+		);
+		$return[] = ElggMenuItem::factory($options);
+	}
+	return $return;
 }
 
 /**

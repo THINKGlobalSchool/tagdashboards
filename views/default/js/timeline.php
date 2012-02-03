@@ -145,4 +145,3 @@ elgg.tagdashboards.timeline.on_resize = function() {
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.timeline.init);
-//</script>

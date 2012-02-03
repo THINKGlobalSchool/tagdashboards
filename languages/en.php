@@ -17,7 +17,7 @@ $english = array(
 	'item:object:tagdashboard' => 'Tag Dashboard',
 	'tagdashboard:enablegroup' => 'Enable group tag dashboards',
 	'tagdashboards:none' => 'No Tag Dashboards',
-	'profile:tagportfolio' => 'Tag Portfolio',
+	'profile:portfolio' => 'Portfolio',
 	'admin:tagdashboards' => 'Tag dashboards',
 	'admin:tagdashboards:subtypes' => 'Entity Settings',
 	
@@ -58,6 +58,13 @@ $english = array(
 	'tagdashboards:label:filterowner' => 'Show content from selected users',
 	'tagdashboards:label:filterdate' => 'Show content created within date range',
 	'tagdashboards:label:columns' => 'Display only one column',
+	'tagdashboards:label:recommended' => 'Recommended Items',
+	'tagdashboards:label:addtoportfolio' => 'Add To Portfolio',
+	'tagdashboards:label:recommendforportfolio' => 'Recommend For Portfolio',
+	'tagdashboards:label:addedportfolio' => 'Added to portfolio!',
+	'tagdashboards:label:userportfolio' => '%s\'s Portfolio',
+	'tagdashboards:label:showrecommended' => 'Show Recommended Items',
+	'tagdashboards:label:ignoreportfolio' => 'Ignore',
 
 	// Descriptions
 	'tagdashboards:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',
@@ -92,11 +99,13 @@ $english = array(
 	'tagdashboards:success:save' => 'Succesfully saved Tag Dashboard',
 	'tagdashboards:success:saveportfolio' => 'Succesfully saved Tag Portfolio',
 	'tagdashboards:success:delete' => 'Tag Dashboard succesfully deleted',
+	'tagdashboards:success:addedportfolio' => 'Successfully added item to your portfolio',
+	'tagdashboards:success:recommendportfolio' => 'Successfully recommended for %s\'s portfolio',
 	'tagdashboards:error:save' => 'Error saving Tag Dashboard',
 	'tagdashboards:error:delete' => 'There wasn an error deleting the Tag Dashboard',
 	'tagdashboards:error:notfound' => 'Tag Dashboard not found',
 	'tagdashboards:error:requiredfields' => 'One or more required fields are missing',
-	
+	'tagdashboards:error:invalidentity' => 'Invalid Entity',
 	
 	// Other content
 	'item:object:document' => 'Documents', // Documents will be disabled, but including the language string just in case

@@ -134,16 +134,18 @@ elgg.tagdashboards.display_from_form = function(event) {
 
 	// Get search value
 	search = elgg.tagdashboards.get_search();	
-	
-	// Get owner guids
-	var userpicker_input = $('input[name="members[]"]');
-	var owner_guids = new Array();
+
+	// Get owner guids (check both inputs called members, for userpicker and any called owner_guids)
+	var userpicker_input = $('input[name="members[]"], input[name="owner_guids[]"]');
+
+	var owner_guids = [];
+
 	count = 0;
 	userpicker_input.each(function() {
 		owner_guids[count] = $(this).val();
 		count++;
 	});
-	
+
 	// Set up options
 	var options = new Array();
 	options['search'] = search;
@@ -198,8 +200,6 @@ elgg.tagdashboards.display = function (options) {
 	if (owner_guids && !$.isArray(owner_guids)) {
 		owner_guids = [owner_guids];
 	}
-	
-	console.log(owner_guids);
 	
 	// Load in content
 	$('.tagdashboards-content-container').hide().load(url, { 
@@ -346,7 +346,6 @@ elgg.tagdashboards.custom_tags_string_to_array = function (tag_string) {
  */
 elgg.tagdashboards.toggle_column = function (event) {
 	$('.tagdashboards-content-container').each(function() {
-		console.log($(this));
 		if ($(this).hasClass('no-float')) {
 			$(this).removeClass('no-float');
 		} else {
@@ -365,4 +364,3 @@ elgg.tagdashboards.groupby_switcher = function(event) {
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.init);
-//</script>

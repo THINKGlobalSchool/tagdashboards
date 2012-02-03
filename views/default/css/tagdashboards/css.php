@@ -184,6 +184,18 @@ div.timeline-event-icon-default {
 	text-align: center;
 }
 
+/** Portfolio **/
+.tagdashboards-recommended-button {
+	min-width: 225px;
+	float: right;
+	margin-right: 5px;
+}
+
+#tagdashboards-recommended-dropdown {
+	width: 500px;
+}
+
+
 /** Timeline dark theme **/
 /*---------------------------------*/
 
