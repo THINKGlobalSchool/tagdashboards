@@ -155,6 +155,10 @@ elgg.portfolio.profileAddClick = function(event) {
 					// Re-load content
 					elgg.portfolio.loadContent();
 
+					// Update count for recommended button
+					if (data.output.count !== null) {
+						$('#portfolio-recommended-count').html(data.output.count);
+					}
 				} else {
 					// Error
 					$_this.removeClass('disabled');
@@ -184,6 +188,11 @@ elgg.portfolio.profileIgnoreClick = function(event) {
 				if (data.status != -1) {
 					// Refresh recommended module
 					elgg.modules.genericmodule.init();
+					
+					// Update count for recommended button
+					if (data.output.count !== null) {
+						$('#portfolio-recommended-count').html(data.output.count);
+					}
 				} else {
 					// Error
 					$_this.removeClass('disabled');
@@ -223,11 +232,9 @@ elgg.portfolio.loadContent = function() {
  * @return {Object}
  */
 elgg.portfolio.recommendedHandler = function(hook, type, params, options) {
-	// Woot. using a hook..
 	if (params.target.attr('id') == 'tagdashboards-recommended-dropdown') {
 		options.my = 'right top';
 		options.at = 'right bottom';
-		options.offset = "0 -5";
 		return options;
 	}
 	return null;

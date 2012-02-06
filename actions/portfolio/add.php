@@ -47,6 +47,21 @@ if (!$tags) { // Empty tags
 // Remove recommended metadata if set
 if ($remove_recommended) {
 	tagdashboards_remove_recommended_metadata($entity->guid);
+	
+	// Count items to update view
+	$options = array(
+		'owner_guid' => elgg_get_logged_in_user_guid(),
+		'metadata_name_value_pairs' => array(array(
+			'name' => 'recommended_portfolio', 
+			'value' => '1', 
+			'operand' => '=',
+			'case_sensitive' => FALSE
+		)),
+		'count' => TRUE,
+	);
+
+	$count = elgg_get_entities_from_metadata($options);
+	echo json_encode(array('count' => (int)$count));
 }
 
 if ($success) {

@@ -186,15 +186,31 @@ div.timeline-event-icon-default {
 
 /** Portfolio **/
 .tagdashboards-recommended-button {
-	min-width: 225px;
 	float: right;
 	margin-right: 26px;
+	color: #333333 !important;
+	font-size: 1em;
+	padding: 3px 3px 3px 5px !important;
+}
+
+.tagdashboards-recommended-button:hover, .tagdashboards-recommended-button:focus {
+	color: #FFFFFF !important;
 }
 
 #tagdashboards-recommended-dropdown {
 	width: 500px;
 }
 
+span.portfolio-recommended-caret {
+	position: relative;
+	bottom: 1px;
+	margin-left: 3px;
+}
+
+span.portfolio-recommended-text {
+	border-right: 1px dotted #999999;
+	padding-right: 3px;
+}
 
 /** Timeline dark theme **/
 /*---------------------------------*/

@@ -63,7 +63,7 @@ $english = array(
 	'tagdashboards:label:recommendforportfolio' => 'Recommend For Portfolio',
 	'tagdashboards:label:addedportfolio' => 'Added to portfolio!',
 	'tagdashboards:label:userportfolio' => '%s\'s Portfolio',
-	'tagdashboards:label:showrecommended' => 'Show Recommended Items',
+	'tagdashboards:label:showrecommended' => 'Show Recommended Items (%s)',
 	'tagdashboards:label:ignoreportfolio' => 'Ignore',
 
 	// Descriptions

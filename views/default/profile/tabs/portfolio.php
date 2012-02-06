@@ -18,7 +18,7 @@ $page_owner = elgg_get_page_owner_entity();
 
 $title = elgg_view_title(elgg_echo('tagdashboards:label:userportfolio', array($page_owner->name)));
 
-if ($page_owner == elgg_get_logged_in_user_entity()) {
+if ($page_owner->guid == elgg_get_logged_in_user_guid()) {
 	$recommended = elgg_view('tagdashboards/portfolio/recommended', array(
 		'user_guid' => $page_owner->guid
 	));
