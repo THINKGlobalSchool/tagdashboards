@@ -61,7 +61,7 @@ $english = array(
 	'tagdashboards:label:recommended' => 'Recommended Items',
 	'tagdashboards:label:addtoportfolio' => 'Add To Portfolio',
 	'tagdashboards:label:recommendforportfolio' => 'Recommend For Portfolio',
-	'tagdashboards:label:addedportfolio' => 'Added to portfolio!',
+	'tagdashboards:label:tagforyearbook' => 'Tag For Yearbook',
 	'tagdashboards:label:userportfolio' => '%s\'s Portfolio',
 	'tagdashboards:label:showrecommended' => 'Show Recommended Items (%s)',
 	'tagdashboards:label:ignoreportfolio' => 'Ignore',
@@ -101,12 +101,15 @@ $english = array(
 	'tagdashboards:success:delete' => 'Tag Dashboard succesfully deleted',
 	'tagdashboards:success:addedportfolio' => 'Successfully added item to your portfolio',
 	'tagdashboards:success:recommendportfolio' => 'Successfully recommended for %s\'s portfolio',
+	'tagdashboards:success:addtag' => 'Successfully added "%s" tag',
 	'tagdashboards:error:save' => 'Error saving Tag Dashboard',
 	'tagdashboards:error:delete' => 'There wasn an error deleting the Tag Dashboard',
 	'tagdashboards:error:notfound' => 'Tag Dashboard not found',
 	'tagdashboards:error:requiredfields' => 'One or more required fields are missing',
 	'tagdashboards:error:invalidentity' => 'Invalid Entity',
 	'tagdashboards:error:invaliduser' => 'Invalid User',
+	'tagdashboards:error:invalidtag' => 'Invalid Tag',
+	
 	
 	// Other content
 	'item:object:document' => 'Documents', // Documents will be disabled, but including the language string just in case

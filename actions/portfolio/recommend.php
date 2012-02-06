@@ -14,7 +14,7 @@ $remove = get_input('remove', FALSE);
 
 $entity = get_entity($guid);
 
-// Make sure this is a valid object and that we own it
+// Make sure this is a valid object
 if (!elgg_instanceof($entity, 'object')) {
 	register_error(elgg_echo('tagdashboards:error:invalidentity'));
 	forward(REFERER);

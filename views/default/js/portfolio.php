@@ -26,6 +26,9 @@ elgg.portfolio.init = function () {
 	// Click handler for profile add to portfolio
 	$(document).delegate('.portfolio-ignore-profile', 'click', elgg.portfolio.profileIgnoreClick);
 
+	// Click handler for yearbook tag 
+	$(document).delegate('.yearbook-tag', 'click', elgg.portfolio.yearbookClick);	
+
 	// Ajax load the portfolio content
 	elgg.portfolio.loadContent();
 }
@@ -48,17 +51,16 @@ elgg.portfolio.addClick = function(event) {
 				if (data.status != -1) {
 					// Try to add tag to the entity info block
 					var $tag_item = $(document.createElement('li'));
-				
 					var $tag = $(document.createElement('a'));
-					$tag.attr('href', elgg.get_site_url() + 'tagdashboards/add/#portfolio');
+					$tag.attr('href', elgg.get_site_url() + 'tagdashboards/add/#' + 'portfolio');
 					$tag.attr('rel', 'tag');
 					$tag.text('portfolio');
 					$tag.appendTo($tag_item);
-				
+
 					var $elgg_body = $_this.closest('.elgg-body');
-				
+
 					var $tags = $elgg_body.find('ul.elgg-tags');
-				
+
 					// If we have a tag container, add the tag
 					if ($tags.length != 0) {
 						$tag_item.css('display', 'none');
@@ -73,23 +75,19 @@ elgg.portfolio.addClick = function(event) {
 						var $icon_span = $(document.createElement('span'));
 						$icon_span.attr('class', 'elgg-icon elgg-icon-tag');
 						$icon_span.appendTo($tag_div);
-					
+
 						var $tag_ul = $(document.createElement('ul'));
 						$tag_ul.attr('class', 'elgg-tags');
 						$tag_ul.appendTo($tag_div);
-					
+
 						$tag_item.appendTo($tag_ul);
-					
+
 						$elgg_body.find('div.elgg-subtext').after($tag_div);
 						$tag_div.fadeIn();
 					}
-				
+
 					// Remove link from actions menu
-					var width = $_this.parent().outerWidth(true);
-					$menu = $_this.closest('.tgstheme-entity-menu-actions');
-					$menu.width($menu.width() - width);
-					$menu.css('left', $menu.position().left + width);
-					$_this.parent().remove();
+					elgg.portfolio.removeFromMenu($_this.attr('id'));
 				} else {
 					// Error
 					$_this.removeClass('disabled');
@@ -117,11 +115,7 @@ elgg.portfolio.recommendClick = function(event) {
 			success: function(data) {
 				if (data.status != -1) {
 					// Remove link from actions menu
-					var width = $_this.parent().outerWidth(true);
-					$menu = $_this.closest('.tgstheme-entity-menu-actions');
-					$menu.width($menu.width() - width);
-					$menu.css('left', $menu.position().left + width);
-					$_this.parent().remove();
+					elgg.portfolio.removeFromMenu($_this.attr('id'));
 				} else {
 					// Error
 					$_this.removeClass('disabled');
@@ -203,22 +197,110 @@ elgg.portfolio.profileIgnoreClick = function(event) {
 	event.preventDefault();
 }
 
+// Click handler for yearbook tag 
+elgg.portfolio.yearbookClick = function(event) {	
+	if (!$(this).hasClass('disabled')) {
+		// href will be #{guid}
+		var entity_guid = $(this).attr('href').substring(1);
+
+		$(this).addClass('disabled');
+
+		$_this = $(this);
+
+		elgg.action('tagdashboards/tag', {
+			data: {
+				guid: entity_guid,
+				tag: 'yearbook',
+				ignore_access: true,
+			},
+			success: function(data) {
+				if (data.status != -1) {
+					// Try to add tag to the entity info block
+					var $tag_item = $(document.createElement('li'));
+					var $tag = $(document.createElement('a'));
+					$tag.attr('href', elgg.get_site_url() + 'tagdashboards/add/#' + 'yearbook');
+					$tag.attr('rel', 'tag');
+					$tag.text('yearbook');
+					$tag.appendTo($tag_item);
+
+					var $elgg_body = $_this.closest('.elgg-body');
+
+					var $tags = $elgg_body.find('ul.elgg-tags');
+
+					// If we have a tag container, add the tag
+					if ($tags.length != 0) {
+						$tag_item.css('display', 'none');
+						$tag_item.appendTo($tags);
+						$tag_item.fadeIn();
+					} else {
+						// No tag container make a new tag div and try to add it 
+						// after the elgg-subtext div 
+						var $tag_div = $(document.createElement('div'));
+						$tag_div.css('display', 'none');
+
+						var $icon_span = $(document.createElement('span'));
+						$icon_span.attr('class', 'elgg-icon elgg-icon-tag');
+						$icon_span.appendTo($tag_div);
+
+						var $tag_ul = $(document.createElement('ul'));
+						$tag_ul.attr('class', 'elgg-tags');
+						$tag_ul.appendTo($tag_div);
+
+						$tag_item.appendTo($tag_ul);
+
+						$elgg_body.find('div.elgg-subtext').after($tag_div);
+						$tag_div.fadeIn();
+					}
+				
+					// Remove link from actions menu
+					elgg.portfolio.removeFromMenu($_this.attr('id'));
+				} else {
+					// Error
+					$_this.removeClass('disabled');
+				}
+			}
+		});
+	}
+	event.preventDefault();
+}
+
 /**	
  * Load portfolio content 
  */
 elgg.portfolio.loadContent = function() {
-	var user_guid = $('input#portfolio-user').val();
-	var url = elgg.get_site_url() + 'ajax/view/tagdashboards/portfolio/content'
 	var $container = $('#tagdashboards-portfolio-container');
-	
-	elgg.get(url, {
-		data: {
-			user_guid: user_guid
-		},
-		success: function(data){
-			$container.html(data);
-		}
-	});
+
+	// Don't load unless we have the container
+	if ($container.length) {
+		var user_guid = $('input#portfolio-user').val();
+		var url = elgg.get_site_url() + 'ajax/view/tagdashboards/portfolio/content'
+
+
+		elgg.get(url, {
+			data: {
+				user_guid: user_guid
+			},
+			success: function(data){
+				$container.html(data);
+			}
+		});
+	}
+}
+
+/**
+ * Helper function to remove a link from the entity menu
+ *
+ * @param {String} id Link id to remove
+ *
+ * @return {void}
+ */
+elgg.portfolio.removeFromMenu = function(id) {
+	var $link = $('#' + id);
+	var width = $link.parent().outerWidth(true);
+	$menu = $link.closest('.tgstheme-entity-menu-actions');
+	$menu.width($menu.width() - width + 2); // +2 Extra pixels, to fix weirdness
+	$menu.css('left', $menu.position().left + width - 2);
+	$link.parent().remove();
 }
 
 /**

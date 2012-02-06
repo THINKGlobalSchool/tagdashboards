@@ -85,6 +85,7 @@ function tagdashboards_init() {
 	elgg_register_action('tagdashboards/portfolio', "$action_base/portfolio.php");
 	elgg_register_action('tagdashboards/delete', "$action_base/delete.php");
 	elgg_register_action('tagdashboards/subtypes', "$action_base/subtypes.php", 'admin');
+	elgg_register_action('tagdashboards/tag', "$action_base/tag.php");
 
 	// Portfolio actions
 	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/portfolio';
@@ -113,6 +114,9 @@ function tagdashboards_init() {
 
 	// Modify entity menu for recommended portfolio items
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'portfolio_setup_entity_menu', 999);
+	
+	// Modify general entity menu items
+	elgg_register_plugin_hook_handler('register', 'menu:entity', 'tagdashboards_setup_entity_menu', 999);
 
 	// Register simpleicon menu items
 	elgg_register_plugin_hook_handler('register', 'menu:simpleicon-entity', 'portfolio_setup_simpleicon_entity_menu');
@@ -436,10 +440,7 @@ function tagdashboards_daterange_input_handler($hook, $type, $value, $params) {
 }
 
 /**
- * Removes all items from the entity menu when 
- * viewing an entity in the recommended portfolio list. 
- * 
- * Adds an add to portfolio and recommend for portfolio button
+ * Adds an 'add to portfolio' and 'recommend for portfolio' button
  *
  * @param sting  $hook   view
  * @param string $type   input/tags
@@ -499,6 +500,7 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'href' => "#{$entity->guid}",
 					'class' => 'portfolio-add',
 					'section' => 'actions',
+					'id' => "portfolio-add-{$entity->guid}",
 				);
 				$return[] = ElggMenuItem::factory($options);
 			}
@@ -512,9 +514,62 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'href' => "#{$entity->guid}",
 					'class' => 'portfolio-recommend',
 					'section' => 'actions',
+					'id' => "portfolio-recommend-{$entity->guid}",
 				);
 				$return[] = ElggMenuItem::factory($options);
 			}
+		}
+	} 
+	return $return;
+}
+
+/**
+ * Adds general items to the entity menu
+ *
+ * @param sting  $hook   view
+ * @param string $type   input/tags
+ * @param mixed  $return  Value
+ * @param mixed  $params Params
+ *
+ * @return array
+ */
+function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
+	$entity = $params['entity'];
+	
+	// Ignore these subtypes
+	$exceptions = array(
+		'forum',
+	);
+
+	if (elgg_instanceof($entity, 'object') && elgg_is_logged_in() && !in_array($entity->getSubtype(), $exceptions)) {		
+		// Check if entity has yearbook tag
+		$params = array(
+			'guid' => $entity->guid,
+			'limit' => 1,
+			'metadata_name_value_pairs' => array(
+				'name' => 'tags', 
+				'value' => 'yearbook', 
+				'operand' => '=',
+				'case_sensitive' => FALSE
+			),
+			'count' => TRUE
+		);
+
+		$has_yearbook_tag = (int)elgg_get_entities_from_metadata($params);
+
+		// If we don't have the recommended metadata or the portfolio tag, show the recommend button
+		if (!$has_yearbook_tag) {
+			$options = array(
+				'name' => 'tag_for_yearbook',
+				'text' => elgg_echo('tagdashboards:label:tagforyearbook'),
+				'title' => 'tag_for_yearbook',
+				'href' => "#{$entity->guid}",
+				'class' => 'yearbook-tag',
+				'section' => 'actions',
+				'priority' => 100,
+				'id' => "yearbook-tag-{$entity->guid}",
+			);
+			$return[] = ElggMenuItem::factory($options);
 		}
 	} 
 	return $return;
