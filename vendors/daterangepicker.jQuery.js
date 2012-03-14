@@ -86,7 +86,7 @@ jQuery.fn.daterangepicker = function(settings){
 					if(!rp.find('li.ui-state-active').is('.ui-daterangepicker-dateRange') && !rp.is(':animated') ){
 						hideRP();
 					}
-				}	
+				}
 				options.onChange();			
 			},
 			defaultDate: +0
