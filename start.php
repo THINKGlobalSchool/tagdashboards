@@ -108,6 +108,9 @@ function tagdashboards_init() {
 
 	// Change display of photos
 	elgg_register_plugin_hook_handler('tagdashboards:subtype', 'image', 'tagdashboards_photo_override_handler');
+	
+	// Change display of pages (combine pages_top and pages)
+	elgg_register_plugin_hook_handler('tagdashboards:subtype', 'page', 'tagdashboards_page_override_handler');
 
 	// Register for input/tddaterange view plugin hook 
 	elgg_register_plugin_hook_handler('view', 'input/tddaterange', 'tagdashboards_daterange_input_handler');
@@ -333,6 +336,43 @@ function tagdashboards_photo_override_handler($hook, $type, $value, $params) {
 	}
 	return false;
 }
+
+/** 
+ *	Override how photo's are listed to display both 
+ *	photos and photos in albums with searched tag
+ *  Uses ajaxmodule with 'albums_images' option
+ */
+function tagdashboards_page_override_handler($hook, $type, $value, $params) {
+	if ($type == 'page') {
+		$params['subtypes'] = array('page', 'page_top');
+
+		// Check if anyone wants to change the heading for their subtype
+		$subtype_heading = elgg_trigger_plugin_hook('tagdashboards:subtype:heading', $type, array(), false);
+		if (!$subtype_heading) {
+			// Use default item:object:subtype as this is usually defined 
+			$subtype_heading = elgg_echo('item:object:' . $type);
+		}
+		
+		// Ajaxmodule params
+		$module_params = array(
+			'title' => $subtype_heading,
+			'listing_type' => 'simpleicon',
+			'restrict_tag' => TRUE,
+			'module_type' => 'featured',
+			'module_id' => $type,
+			'module_class' => 'tagdashboard-module',
+		);
+
+		$params = array_merge($params, $module_params);
+
+		// Default module
+		$content = elgg_view('modules/ajaxmodule', $params);
+		
+		return $content;
+	}
+	return false;
+}
+
 
 /**
  * Handler to add a tag dashboards tab to the tabbed profile 
