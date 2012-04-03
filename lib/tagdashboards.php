@@ -299,7 +299,7 @@ function tagdashboards_get_site_subtypes() {
 		'plugin', 
 		'widget', 
 		'sitepages_page', 
-		'page_top', 
+		//'page_top', 
 		'test_subtype',
 		'site'
 	);
