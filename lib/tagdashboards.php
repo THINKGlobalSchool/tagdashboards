@@ -257,7 +257,7 @@ function tagdashboards_prepare_form_vars($tagdashboard = NULL) {
  *
  * search => NULL|string search for tag
  * 
- * type => string type of search (custom, activity, subtype (default))
+ * type => string type of search (custom, activity, group, subtype (default))
  * 
  * subtypes => NULL|array of subtypes to include
  * 
@@ -274,6 +274,9 @@ function tagdashboards_get_load_content($options) {
 		break;
 		case 'custom': 
 			$content = elgg_view('tagdashboards/custom', $options);
+		break;
+		case 'group': 
+			$content = elgg_view('tagdashboards/group', $options);
 		break;
 		default: 
 		case 'subtype': 

@@ -181,13 +181,14 @@ elgg.tagdashboards.display_from_form = function(event) {
  */
 elgg.tagdashboards.display = function (options) {
 	// Get options
-	var type 		= options['type'];
-	var search 		= options['search'];
-	var subtypes 	= options['subtypes'];
-	var owner_guids	= options['owner_guids'];
-	var custom_tags	= elgg.tagdashboards.custom_tags_string_to_array(options['custom_tags']);
-	var lower_date 	= options['lower_date'] ? options['lower_date'] : '';
-	var upper_date 	= options['upper_date'] ? options['upper_date'] : '';
+	var type 		   = options['type'];
+	var search 		   = options['search'];
+	var subtypes 	   = options['subtypes'];
+	var owner_guids	   = options['owner_guids'];
+	var container_guid = options['container_guid'] ? options['container_guid'] : '';
+	var custom_tags	   = elgg.tagdashboards.custom_tags_string_to_array(options['custom_tags']);
+	var lower_date 	   = options['lower_date'] ? options['lower_date'] : '';
+	var upper_date 	   = options['upper_date'] ? options['upper_date'] : '';
 	
 	// Create url to load
 	var url = elgg.normalize_url('tagdashboards/loadtagdashboard?type=' + type);
@@ -206,6 +207,7 @@ elgg.tagdashboards.display = function (options) {
 		'custom_tags[]': 	custom_tags, 
 		'subtypes': 		subtypes , 
 		'owner_guids': 		owner_guids,
+		'container_guid':   container_guid,
 		'lower_date': 		lower_date,
 		'upper_date': 		upper_date, 
 		}, 

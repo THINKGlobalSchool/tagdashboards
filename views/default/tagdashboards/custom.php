@@ -20,6 +20,9 @@ $subtypes = $vars['subtypes'];
 // Get ownerguids
 $owner_guids = $vars['owner_guids'];
 
+// Container guid
+$container_guid = $vars['container_guid'];
+
 // Dates
 $lower_date = $vars['lower_date'];
 $upper_date = $vars['upper_date'];
@@ -29,6 +32,7 @@ foreach($custom as $tag) {
 		'created_time_upper' => $upper_date,
 		'created_time_lower' => $lower_date,
 		'owner_guids' => $owner_guids,
+		'container_guid' => $container_guid,
 		'types' => array('object'),
 		'subtypes' => $subtypes,
 		'limit' => 10,

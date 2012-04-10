@@ -1,6 +1,6 @@
 <?php
 /**
- * Tag Dashboards subtypes content container
+ * Tag Dashboards group subtypes content container
  * 
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -59,7 +59,7 @@ foreach ($subtypes as $subtype) {
 		$module_params = array(
 			'title' => $subtype_heading,
 			'listing_type' => 'simpleicon',
-			'restrict_tag' => TRUE,
+			'restrict_tag' => FALSE,
 			'module_type' => 'featured',
 			'module_id' => $subtype,
 			'module_class' => 'tagdashboard-module',
