@@ -152,8 +152,8 @@ function tagdashboards_get_page_content_friends($user_guid) {
  */
 function tagdashboards_get_page_content_view($guid) {
 	$tagdashboard = get_entity($guid);
-
-	if (!elgg_instanceof($blog, 'object', 'tagdashboard')) {
+	
+	if (!elgg_instanceof($tagdashboard, 'object', 'tagdashboard')) {
 		$params['content'] = elgg_echo('tagdashboards:error:invalidentity');
 		$params['layout'] = 'one_column';
 		return $params;
