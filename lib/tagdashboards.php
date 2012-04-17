@@ -152,6 +152,13 @@ function tagdashboards_get_page_content_friends($user_guid) {
  */
 function tagdashboards_get_page_content_view($guid) {
 	$tagdashboard = get_entity($guid);
+
+	if (!elgg_instanceof($blog, 'object', 'tagdashboard')) {
+		$params['content'] = elgg_echo('tagdashboards:error:invalidentity');
+		$params['layout'] = 'one_column';
+		return $params;
+	}
+
 	$container = get_entity($tagdashboard->container_guid);
 	elgg_set_page_owner_guid($container->getGUID());
 	elgg_push_breadcrumb($container->name, elgg_get_site_url() . 'tagdashboards/owner/' . $container->username);
