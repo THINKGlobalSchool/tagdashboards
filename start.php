@@ -53,6 +53,7 @@ function tagdashboards_init() {
 
 	// Regsiter local timeline JS library
 	$timeline_js = elgg_get_simplecache_url('js', 'timeline');
+	elgg_register_simplecache_view('js/timeline');
 	elgg_register_js('elgg.tagdashboards.timeline', $timeline_js);
 
 	// Register datepicker JS
