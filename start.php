@@ -169,8 +169,6 @@ function tagdashboards_init() {
  */
 function tagdashboards_page_handler($page) {
 	elgg_set_context('tagdashboards');
-
-	gatekeeper();
 	
 	$page_type = elgg_extract(0, $page, 'all');
 	
