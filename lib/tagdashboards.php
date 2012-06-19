@@ -294,7 +294,7 @@ function tagdashboards_get_load_content($options) {
 }
 
 /**
- * Helper function tog grab the plugins enabled subtypes 
+ * Helper function to grab the plugins enabled subtypes 
  */
 function tagdashboards_get_enabled_subtypes() {
 	return unserialize(elgg_get_plugin_setting('enabled_subtypes', 'tagdashboards'));
@@ -302,8 +302,6 @@ function tagdashboards_get_enabled_subtypes() {
 
 /* Get all registered subtypes (for admins) */
 function tagdashboards_get_site_subtypes() {
-	
-	
 	// Set up some exceptions
 	$exceptions = array(
 		'plugin', 
