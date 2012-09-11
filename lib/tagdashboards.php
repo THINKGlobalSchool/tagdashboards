@@ -442,32 +442,50 @@ function tagdashboards_get_last_content($guid) {
  * Helper function to grab an array of predefined group activities 
  */
 function tagdashboards_get_activities() {
-	return array(
-		array(	
-			'name' => elgg_echo('tagdashboards:activity:research'), 
-			'tag' => 'research'
-		), 
-		array(	
-			'name' => elgg_echo('tagdashboards:activity:curriculum'), 
-			'tag' => 'curriculum'
-		),
-		array(	
-			'name' => elgg_echo('tagdashboards:activity:collabco'), 
-			'tag' => 'collabco'
-		),
-		array(	
-			'name' => elgg_echo('tagdashboards:activity:tutorial'), 
-			'tag' => 'tutorial'
-		),
-		array(	
-			'name' => elgg_echo('tagdashboards:activity:society'), 
-			'tag' => 'society'
-		),
-		array(	
-			'name' => elgg_echo('tagdashboards:activity:scribe'), 
-			'tag' => 'scribe'
-		),
-	);
+	if ($custom_jobs = elgg_get_plugin_setting('customjobs', 'tagdashboards')) {
+		// Get contacts from plugin settings
+
+		$custom_jobs = explode("\n", $custom_jobs);
+		$jobs_array = array();
+		foreach ($custom_jobs as $idx => $job) {
+			$custom_jobs[$idx] = explode("-", $job);
+			foreach ($custom_jobs[$idx] as $key => $info) {
+					$custom_jobs[$idx][$key]= trim($info);
+			}
+			$jobs_array[] = array(
+				'name' => $custom_jobs[$idx][1],
+				'tag' => $custom_jobs[$idx][0],
+			);
+		}
+		return $jobs_array;
+	} else {
+		return array(
+			array(	
+				'name' => elgg_echo('tagdashboards:activity:researcher'), 
+				'tag' => 'researcher'
+			), 
+			array(	
+				'name' => elgg_echo('tagdashboards:activity:coordinator'), 
+				'tag' => 'coordinator'
+			),
+			array(	
+				'name' => elgg_echo('tagdashboards:activity:reviewer'), 
+				'tag' => 'reviewer'
+			),
+			array(	
+				'name' => elgg_echo('tagdashboards:activity:designer'), 
+				'tag' => 'designer'
+			),
+			array(	
+				'name' => elgg_echo('tagdashboards:activity:builder'), 
+				'tag' => 'builder'
+			),
+			array(	
+				'name' => elgg_echo('tagdashboards:activity:scribe'), 
+				'tag' => 'scribe'
+			),
+		);
+	}
 }
 
 /**

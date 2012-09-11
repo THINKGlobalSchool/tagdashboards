@@ -131,8 +131,19 @@ $group_subtype = elgg_view('tagdashboards/groupby', array(
 	'description' => elgg_echo('tagdashboards:description:subtype')
 ));
 
+
+$activity_description = "<ul>";
+
+$activities = tagdashboards_get_activities();
+
+foreach ($activities as $activity) {
+	$activity_description .= "<li>" . $activity['name'] . "</li>";
+}
+
+$activity_description .= "</ul><br />";
+
 $group_activity = elgg_view('tagdashboards/groupby', array(
-	'description' => elgg_echo('tagdashboards:description:activity')
+	'description' => elgg_echo('tagdashboards:description:activity', array($activity_description))
 ));
 
 $group_custom = elgg_view('tagdashboards/groupby', array(

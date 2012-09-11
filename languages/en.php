@@ -65,29 +65,23 @@ $english = array(
 	'tagdashboards:label:userportfolio' => '%s\'s Portfolio',
 	'tagdashboards:label:showrecommended' => 'Show Recommended Items (%s)',
 	'tagdashboards:label:ignoreportfolio' => 'Ignore',
+	'tagdashboards:label:customjobs' => 'Custom Jobs',
 
 	// Descriptions
 	'tagdashboards:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',
 	'tagdashboards:description:activity' => 'Grouping by role will group content matching your search term by these tags based on Alan November\'s 6 jobs for students::<br /><br />
-	<ul>
-		<li>research - Researchers</li>
-		<li>curriculum - Curriculum Reviewers</li>
-		<li>collabco - Collaboration Coordinators</li>
-		<li>tutorial - Tutorial Designers</li>
-		<li>society - Contributing to Society</li>
-		<li>scribe - Official Scribes</li>
-	</ul><br />
+	%s
 	For more information on the 6 jobs for students, see the article on <a href="http://novemberlearning.com/wp-content/uploads/2009/02/students-as-contributors.pdf">novemberlearning.com</a>',
 	'tagdashboards:description:custom' => 'Grouping by tag will group content matching your search term and by the tags you enter below.',
 	'tagdashboards:description:tagportfolio' => 'Your tag portfolio contains all of your content organized by your chosen tags.',
 
 	// Activities
-	'tagdashboards:activity:research' => 'Researcher',
-	'tagdashboards:activity:curriculum' => 'Curriculum Reviewer',
-	'tagdashboards:activity:collabco' => 'Collaboration Coordinator',
-	'tagdashboards:activity:tutorial' => 'Tutorial Designers',
-	'tagdashboards:activity:society' => 'Contributors To Society',
-	'tagdashboards:activity:scribe' => 'Official Scribes',
+	'tagdashboards:activity:researcher' => 'Researcher',
+	'tagdashboards:activity:coordinator' => 'Coordinator',
+	'tagdashboards:activity:reviewer' => 'Reviewer',
+	'tagdashboards:activity:designer' => 'Designer',
+	'tagdashboards:activity:builder' => 'Builder',
+	'tagdashboards:activity:scribe' => 'Scribe',
 
 	// River
 	'river:create:object:tagdashboard' => '%s created a Tag Dashboard titled %s',
