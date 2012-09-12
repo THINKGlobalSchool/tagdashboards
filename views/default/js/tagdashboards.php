@@ -187,6 +187,7 @@ elgg.tagdashboards.display = function (options) {
 	var owner_guids	   = options['owner_guids'];
 	var container_guid = options['container_guid'] ? options['container_guid'] : '';
 	var custom_tags	   = elgg.tagdashboards.custom_tags_string_to_array(options['custom_tags']);
+	var custom_titles  = elgg.tagdashboards.custom_tags_string_to_array(options['custom_titles']);
 	var lower_date 	   = options['lower_date'] ? options['lower_date'] : '';
 	var upper_date 	   = options['upper_date'] ? options['upper_date'] : '';
 	
@@ -205,6 +206,7 @@ elgg.tagdashboards.display = function (options) {
 	// Load in content
 	$('.tagdashboards-content-container').hide().load(url, { 
 		'custom_tags[]': 	custom_tags, 
+		'custom_titles[]':  custom_titles,
 		'subtypes': 		subtypes , 
 		'owner_guids': 		owner_guids,
 		'container_guid':   container_guid,

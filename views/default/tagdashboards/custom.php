@@ -12,6 +12,9 @@
 
 // Custom tags
 $custom = $vars['custom_tags'];
+
+$custom_titles = $vars['custom_titles'];
+
 $search = $vars['search'];
 
 // Get Subtypes
@@ -27,7 +30,9 @@ $container_guid = $vars['container_guid'];
 $lower_date = $vars['lower_date'];
 $upper_date = $vars['upper_date'];
 
-foreach($custom as $tag) {	
+foreach($custom as $idx => $tag) {
+	$title = $custom_titles ? $custom_titles[$idx] : ucfirst($tag);
+	
 	$params = array(
 		'created_time_upper' => $upper_date,
 		'created_time_lower' => $lower_date,
@@ -36,7 +41,7 @@ foreach($custom as $tag) {
 		'types' => array('object'),
 		'subtypes' => $subtypes,
 		'limit' => 10,
-		'title' => ucfirst($tag),
+		'title' => $title,
 		'listing_type' => 'simpleicon',
 		'restrict_tag' => TRUE,
 		'module_type' => 'featured',

@@ -187,6 +187,7 @@ function tagdashboards_page_handler($page) {
 		$lower_date = get_input('lower_date', NULL);
 		$upper_date = get_input('upper_date', NULL);
 		$custom_tags = get_input('custom_tags');
+		$custom_titles = get_input('custom_titles');
 
 		$dashboard_options = array(
 			'type' => $type,
@@ -201,6 +202,7 @@ function tagdashboards_page_handler($page) {
 			'lower_date' => $lower_date,
 			'upper_date' => $upper_date,
 			'custom_tags' => $custom_tags,
+			'custom_titles' => $custom_titles,
 		);
 		
 		// Ajax loads
