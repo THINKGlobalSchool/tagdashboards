@@ -80,7 +80,7 @@ if ($full) { // Full view
 	$td_search_input = elgg_view('input/hidden', array(
 		'name' => 'search', 
 		'id' => 'search', 
-		'value' => $tagdashboard->search
+		'value' => urlencode($tagdashboard->search),
 	));
 	
 	$td_subtypes_input = elgg_view('input/hidden', array(

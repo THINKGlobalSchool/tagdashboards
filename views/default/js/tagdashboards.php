@@ -255,7 +255,7 @@ elgg.tagdashboards.validate_search = function() {
 		// Display from form
 		elgg.tagdashboards.display_from_form(false);
 		
-		window.location.hash = encodeURI(elgg.tagdashboards.get_search()); // Hash magic for permalinks
+		window.location.hash = elgg.tagdashboards.get_search(); // Hash magic for permalinks
 	}
 }
 
@@ -263,7 +263,7 @@ elgg.tagdashboards.validate_search = function() {
  * Set dashboard title input
  */
 elgg.tagdashboards.set_dashboard_title = function() {
-	$('#tagdashboard-title').val(elgg.tagdashboards.get_search);
+	$('#tagdashboard-title').val(decodeURI(elgg.tagdashboards.get_search()));
 }
 
 /**
@@ -273,6 +273,7 @@ elgg.tagdashboards.get_search = function () {
 	var value = $('#tagdashboards-search-input').val();
 	if (value) {
 		value = value.toLowerCase();
+		value = encodeURI(value);
 		return value;
 	}
 	return false;
