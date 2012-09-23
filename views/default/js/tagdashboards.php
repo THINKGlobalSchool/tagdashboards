@@ -63,21 +63,28 @@ elgg.tagdashboards.init_autocomplete_inputs = function() {
  */
 elgg.tagdashboards.init_dashboards = function() {
 	$('div.tagdashboard-container').each(function() {
-		var options = {};
-		$(this).find('div.tagdashboard-options').find('input').each(function() {
-			var value = $(this).val();
-			// Try to parse JSON
-			try {
-				value = $.parseJSON(value);
-			} catch (e) {
-				// Do nothing
-			} finally {
-				options[$(this).attr('name')] = value;
-			}
-		});
-		// Display it
-		elgg.tagdashboards.display(options);
+		elgg.tagdashboards.init_dashboards_with_container($(this));
 	});
+}
+
+/**
+ * Initialize specific tagdashboard
+ */
+elgg.tagdashboards.init_dashboards_with_container = function(container) {
+	var options = {};
+	container.find('div.tagdashboard-options').find('input').each(function() {
+		var value = $(this).val();
+		// Try to parse JSON
+		try {
+			value = $.parseJSON(value);
+		} catch (e) {
+			// Do nothing
+		} finally {
+			options[$(this).attr('name')] = value;
+		}
+	});
+	// Display it
+	elgg.tagdashboards.display(options);
 }
 
 /**	
