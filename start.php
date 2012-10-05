@@ -67,6 +67,9 @@ function tagdashboards_init() {
 	// Extend Groups profile page
 	elgg_extend_view('groups/tool_latest','tagdashboards/group_dashboards');
 
+	// Global CSS
+	elgg_extend_view('css/elgg','css/tagdashboards/global');
+
 	// Page handler
 	elgg_register_page_handler('tagdashboards','tagdashboards_page_handler');
 
@@ -612,6 +615,44 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 			);
 			$return[] = ElggMenuItem::factory($options);
 		}
+
+		// If 'tag for emag' enabled, add a meny item
+		if (elgg_get_plugin_setting('enable_emag', 'tagdashboards')) {
+			$params['metadata_name_value_pairs'] = array(
+				'name' => 'tags', 
+				'value' => 'emagazine', 
+				'operand' => '=',
+				'case_sensitive' => FALSE
+			);
+			
+			$has_emag_tag = (int)elgg_get_entities_from_metadata($params);
+			
+			if (!$has_emag_tag) {
+				$options = array(
+					'name' => 'tag_for_emag',
+					'text' => elgg_echo('tagdashboards:label:tagforemag'),
+					'title' => 'tag_for_emag',
+					'href' => "#{$entity->guid}",
+					'class' => 'emag-tag',
+					'section' => 'actions',
+					'priority' => 101,
+					'id' => "emag-tag-{$entity->guid}",
+				);
+				$return[] = ElggMenuItem::factory($options);
+			}
+		}
+		
+		$options = array(
+			'name' => 'entity_anchor',
+			'text' => 'sdssd',
+			'title' => 'entity_anchor',
+			'href' => '#',
+			'item_class' => 'entity_anchor_hidden',
+			'section' => 'info',
+			'id' => 'entity-anchor-' . $entity->guid,
+			'priority' => 0,
+		);
+		$return[] = ElggMenuItem::factory($options);
 	} 
 	return $return;
 }

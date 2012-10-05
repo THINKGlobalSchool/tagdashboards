@@ -17,11 +17,27 @@ $jobs_input = elgg_view('input/plaintext', array(
 	'value' => $vars['entity']->customjobs)
 );
 
+// Tag for Emag label
+$emag_tag_label = elgg_echo('tagdashboards:label:enabletagforemag');
+$emag_tag_input = elgg_view('input/dropdown', array(
+	'id' => 'enable_emag',
+	'name' => 'params[enable_emag]',
+	'options_values' => array(
+		0 => elgg_echo('No'), 
+		1 => elgg_echo('Yes')
+	),
+	'value' => $vars['entity']->enable_emag,
+));
+
 $content = <<<HTML
 	<br />
 	<div>
 		<label>$jobs_label</label><br />
 		$jobs_input
+	</div>
+	<div>
+		<label>$emag_tag_label</label>
+		$emag_tag_input
 	</div>
 HTML;
 

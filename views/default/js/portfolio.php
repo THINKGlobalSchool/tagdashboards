@@ -28,6 +28,9 @@ elgg.portfolio.init = function () {
 
 	// Click handler for yearbook tag 
 	$(document).delegate('.yearbook-tag', 'click', elgg.portfolio.yearbookClick);	
+	
+	// Click handler for emag tag (Note: sticking this here for now..)
+	$(document).delegate('.emag-tag', 'click', elgg.portfolio.emagClick);
 
 	// Ajax load the portfolio content
 	elgg.portfolio.loadContent();
@@ -202,66 +205,80 @@ elgg.portfolio.yearbookClick = function(event) {
 	if (!$(this).hasClass('disabled')) {
 		// href will be #{guid}
 		var entity_guid = $(this).attr('href').substring(1);
-
-		$(this).addClass('disabled');
-
-		$_this = $(this);
-
-		elgg.action('tagdashboards/tag', {
-			data: {
-				guid: entity_guid,
-				tag: 'yearbook',
-				ignore_access: true,
-			},
-			success: function(data) {
-				if (data.status != -1) {
-					// Try to add tag to the entity info block
-					var $tag_item = $(document.createElement('li'));
-					var $tag = $(document.createElement('a'));
-					$tag.attr('href', elgg.get_site_url() + 'tagdashboards/add/#' + 'yearbook');
-					$tag.attr('rel', 'tag');
-					$tag.text('yearbook');
-					$tag.appendTo($tag_item);
-
-					var $elgg_body = $_this.closest('.elgg-body');
-
-					var $tags = $elgg_body.find('ul.elgg-tags');
-
-					// If we have a tag container, add the tag
-					if ($tags.length != 0) {
-						$tag_item.css('display', 'none');
-						$tag_item.appendTo($tags);
-						$tag_item.fadeIn();
-					} else {
-						// No tag container make a new tag div and try to add it 
-						// after the elgg-subtext div 
-						var $tag_div = $(document.createElement('div'));
-						$tag_div.css('display', 'none');
-
-						var $icon_span = $(document.createElement('span'));
-						$icon_span.attr('class', 'elgg-icon elgg-icon-tag');
-						$icon_span.appendTo($tag_div);
-
-						var $tag_ul = $(document.createElement('ul'));
-						$tag_ul.attr('class', 'elgg-tags');
-						$tag_ul.appendTo($tag_div);
-
-						$tag_item.appendTo($tag_ul);
-
-						$elgg_body.find('div.elgg-subtext').after($tag_div);
-						$tag_div.fadeIn();
-					}
-				
-					// Remove link from actions menu
-					elgg.portfolio.removeFromMenu($_this.attr('id'));
-				} else {
-					// Error
-					$_this.removeClass('disabled');
-				}
-			}
-		});
+		elgg.portfolio.tagEntity($(this), entity_guid, 'yearbook');
 	}
 	event.preventDefault();
+}
+
+// Click handler for yearbook tag 
+elgg.portfolio.emagClick = function(event) {	
+	if (!$(this).hasClass('disabled')) {
+		// href will be #{guid}
+		var entity_guid = $(this).attr('href').substring(1);
+		elgg.portfolio.tagEntity($(this), entity_guid, 'emagazine');
+	}
+	event.preventDefault();
+}
+
+// Helper function to tag an entity with given tag
+elgg.portfolio.tagEntity = function($sender, guid, tag) {
+	$sender.addClass('disabled');
+	
+	elgg.action('tagdashboards/tag', {
+		data: {
+			guid: guid,
+			tag: tag,
+			ignore_access: true,
+		},
+		success: function(data) {
+			if (data.status != -1) {
+				// Try to add tag to the entity info block
+				var $tag_item = $(document.createElement('li'));
+				var $tag = $(document.createElement('a'));
+				$tag.attr('href', elgg.get_site_url() + 'tagdashboards/add/#' + tag);
+				$tag.attr('rel', 'tag');
+				$tag.text(tag);
+				$tag.appendTo($tag_item);
+				
+				$entity_anchor = $(document).find('#entity-anchor-' + guid);
+
+				var $elgg_body = $entity_anchor.closest('.elgg-body');
+
+				var $tags = $elgg_body.find('ul.elgg-tags');
+
+				// If we have a tag container, add the tag
+				if ($tags.length != 0) {
+					$tag_item.css('display', 'none');
+					$tag_item.appendTo($tags);
+					$tag_item.fadeIn();
+				} else {
+					// No tag container make a new tag div and try to add it 
+					// after the elgg-subtext div 
+					var $tag_div = $(document.createElement('div'));
+					$tag_div.css('display', 'none');
+
+					var $icon_span = $(document.createElement('span'));
+					$icon_span.attr('class', 'elgg-icon elgg-icon-tag');
+					$icon_span.appendTo($tag_div);
+
+					var $tag_ul = $(document.createElement('ul'));
+					$tag_ul.attr('class', 'elgg-tags');
+					$tag_ul.appendTo($tag_div);
+
+					$tag_item.appendTo($tag_ul);
+
+					$elgg_body.find('div.elgg-subtext').after($tag_div);
+					$tag_div.fadeIn();
+				}
+			
+				// Remove link from actions menu
+				elgg.portfolio.removeFromMenu($sender.attr('id'));
+			} else {
+				// Error
+				$sender.removeClass('disabled');
+			}
+		}
+	});
 }
 
 /**	
