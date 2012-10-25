@@ -10,6 +10,10 @@
  * 
  */
 ?>
-.entity_anchor_hidden {
-	display: none !important;
+.elgg-menu-item-tag-for-yearbook,
+.elgg-menu-item-tag-for-emag,
+.elgg-menu-item-add-to-portfolio,
+.elgg-menu-item-recommend-for-portfolio,
+.elgg-menu-item-tag-for-weekly {
+	background-position: 0 -1044px !important;
 }

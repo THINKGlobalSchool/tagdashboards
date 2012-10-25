@@ -29,8 +29,11 @@ elgg.portfolio.init = function () {
 	// Click handler for yearbook tag 
 	$(document).delegate('.yearbook-tag', 'click', elgg.portfolio.yearbookClick);	
 	
-	// Click handler for emag tag (Note: sticking this here for now..)
+	// Click handler for emag tag
 	$(document).delegate('.emag-tag', 'click', elgg.portfolio.emagClick);
+	
+	// Click handler for weekly tag
+	$(document).delegate('.weekly-tag', 'click', elgg.portfolio.weeklyClick);
 
 	// Ajax load the portfolio content
 	elgg.portfolio.loadContent();
@@ -52,42 +55,8 @@ elgg.portfolio.addClick = function(event) {
 			},
 			success: function(data) {
 				if (data.status != -1) {
-					// Try to add tag to the entity info block
-					var $tag_item = $(document.createElement('li'));
-					var $tag = $(document.createElement('a'));
-					$tag.attr('href', elgg.get_site_url() + 'tagdashboards/add/#' + 'portfolio');
-					$tag.attr('rel', 'tag');
-					$tag.text('portfolio');
-					$tag.appendTo($tag_item);
-
-					var $elgg_body = $_this.closest('.elgg-body');
-
-					var $tags = $elgg_body.find('ul.elgg-tags');
-
-					// If we have a tag container, add the tag
-					if ($tags.length != 0) {
-						$tag_item.css('display', 'none');
-						$tag_item.appendTo($tags);
-						$tag_item.fadeIn();
-					} else {
-						// No tag container make a new tag div and try to add it 
-						// after the elgg-subtext div 
-						var $tag_div = $(document.createElement('div'));
-						$tag_div.css('display', 'none');
-
-						var $icon_span = $(document.createElement('span'));
-						$icon_span.attr('class', 'elgg-icon elgg-icon-tag');
-						$icon_span.appendTo($tag_div);
-
-						var $tag_ul = $(document.createElement('ul'));
-						$tag_ul.attr('class', 'elgg-tags');
-						$tag_ul.appendTo($tag_div);
-
-						$tag_item.appendTo($tag_ul);
-
-						$elgg_body.find('div.elgg-subtext').after($tag_div);
-						$tag_div.fadeIn();
-					}
+					// Add tag metadata
+					elgg.portfolio.addTagMetadata(entity_guid, 'portfolio');
 
 					// Remove link from actions menu
 					elgg.portfolio.removeFromMenu($_this.attr('id'));
@@ -210,12 +179,22 @@ elgg.portfolio.yearbookClick = function(event) {
 	event.preventDefault();
 }
 
-// Click handler for yearbook tag 
+// Click handler for emag tag 
 elgg.portfolio.emagClick = function(event) {	
 	if (!$(this).hasClass('disabled')) {
 		// href will be #{guid}
 		var entity_guid = $(this).attr('href').substring(1);
 		elgg.portfolio.tagEntity($(this), entity_guid, 'emagazine');
+	}
+	event.preventDefault();
+}
+
+// Click handler for weekly tag 
+elgg.portfolio.weeklyClick = function(event) {	
+	if (!$(this).hasClass('disabled')) {
+		// href will be #{guid}
+		var entity_guid = $(this).attr('href').substring(1);
+		elgg.portfolio.tagEntity($(this), entity_guid, 'weekly');
 	}
 	event.preventDefault();
 }
@@ -232,44 +211,8 @@ elgg.portfolio.tagEntity = function($sender, guid, tag) {
 		},
 		success: function(data) {
 			if (data.status != -1) {
-				// Try to add tag to the entity info block
-				var $tag_item = $(document.createElement('li'));
-				var $tag = $(document.createElement('a'));
-				$tag.attr('href', elgg.get_site_url() + 'tagdashboards/add/#' + tag);
-				$tag.attr('rel', 'tag');
-				$tag.text(tag);
-				$tag.appendTo($tag_item);
-				
-				$entity_anchor = $(document).find('#entity-anchor-' + guid);
-
-				var $elgg_body = $entity_anchor.closest('.elgg-body');
-
-				var $tags = $elgg_body.find('ul.elgg-tags');
-
-				// If we have a tag container, add the tag
-				if ($tags.length != 0) {
-					$tag_item.css('display', 'none');
-					$tag_item.appendTo($tags);
-					$tag_item.fadeIn();
-				} else {
-					// No tag container make a new tag div and try to add it 
-					// after the elgg-subtext div 
-					var $tag_div = $(document.createElement('div'));
-					$tag_div.css('display', 'none');
-
-					var $icon_span = $(document.createElement('span'));
-					$icon_span.attr('class', 'elgg-icon elgg-icon-tag');
-					$icon_span.appendTo($tag_div);
-
-					var $tag_ul = $(document.createElement('ul'));
-					$tag_ul.attr('class', 'elgg-tags');
-					$tag_ul.appendTo($tag_div);
-
-					$tag_item.appendTo($tag_ul);
-
-					$elgg_body.find('div.elgg-subtext').after($tag_div);
-					$tag_div.fadeIn();
-				}
+				// Add tag metadata
+				elgg.portfolio.addTagMetadata(guid, tag);
 			
 				// Remove link from actions menu
 				elgg.portfolio.removeFromMenu($sender.attr('id'));
@@ -279,6 +222,48 @@ elgg.portfolio.tagEntity = function($sender, guid, tag) {
 			}
 		}
 	});
+}
+
+// Helper function to add tag html content to entity metadata
+elgg.portfolio.addTagMetadata = function(guid, tag) {
+	// Try to add tag to the entity info block
+	var $tag_item = $(document.createElement('li'));
+	var $tag = $(document.createElement('a'));
+	$tag.attr('href', elgg.get_site_url() + 'tagdashboards/add/#' + tag);
+	$tag.attr('rel', 'tag');
+	$tag.text(tag);
+	$tag.appendTo($tag_item);
+	
+	$entity_anchor = $(document).find('#entity-anchor-' + guid);
+
+	var $elgg_body = $entity_anchor.closest('.elgg-body');
+
+	var $tags = $elgg_body.find('ul.elgg-tags');
+
+	// If we have a tag container, add the tag
+	if ($tags.length != 0) {
+		$tag_item.css('display', 'none');
+		$tag_item.appendTo($tags);
+		$tag_item.fadeIn();
+	} else {
+		// No tag container make a new tag div and try to add it 
+		// after the elgg-subtext div 
+		var $tag_div = $(document.createElement('div'));
+		$tag_div.css('display', 'none');
+
+		var $icon_span = $(document.createElement('span'));
+		$icon_span.attr('class', 'elgg-icon elgg-icon-tag');
+		$icon_span.appendTo($tag_div);
+
+		var $tag_ul = $(document.createElement('ul'));
+		$tag_ul.attr('class', 'elgg-tags');
+		$tag_ul.appendTo($tag_div);
+
+		$tag_item.appendTo($tag_ul);
+
+		$elgg_body.find('div.elgg-subtext').after($tag_div);
+		$tag_div.fadeIn();
+	}
 }
 
 /**	
@@ -313,10 +298,6 @@ elgg.portfolio.loadContent = function() {
  */
 elgg.portfolio.removeFromMenu = function(id) {
 	var $link = $('#' + id);
-	var width = $link.parent().outerWidth(true);
-	$menu = $link.closest('.tgstheme-entity-menu-actions');
-	$menu.width($menu.width() - width + 2); // +2 Extra pixels, to fix weirdness
-	$menu.css('left', $menu.position().left + width - 2);
 	$link.parent().remove();
 }
 

@@ -69,6 +69,7 @@ function tagdashboards_init() {
 
 	// Global CSS
 	elgg_extend_view('css/elgg','css/tagdashboards/global');
+	elgg_extend_view('css/admin','css/tagdashboards/global');
 
 	// Page handler
 	elgg_register_page_handler('tagdashboards','tagdashboards_page_handler');
@@ -544,6 +545,7 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'href' => "#{$entity->guid}",
 					'class' => 'portfolio-add',
 					'section' => 'actions',
+					'priority' => 102,
 					'id' => "portfolio-add-{$entity->guid}",
 				);
 				$return[] = ElggMenuItem::factory($options);
@@ -558,6 +560,7 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'href' => "#{$entity->guid}",
 					'class' => 'portfolio-recommend',
 					'section' => 'actions',
+					'priority' => 102,
 					'id' => "portfolio-recommend-{$entity->guid}",
 				);
 				$return[] = ElggMenuItem::factory($options);
@@ -616,7 +619,7 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 			$return[] = ElggMenuItem::factory($options);
 		}
 
-		// If 'tag for emag' enabled, add a meny item
+		// If 'tag for emag' enabled, add a menu item
 		if (elgg_get_plugin_setting('enable_emag', 'tagdashboards')) {
 			$params['metadata_name_value_pairs'] = array(
 				'name' => 'tags', 
@@ -642,17 +645,31 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 			}
 		}
 		
-		$options = array(
-			'name' => 'entity_anchor',
-			'text' => 'sdssd',
-			'title' => 'entity_anchor',
-			'href' => '#',
-			'item_class' => 'entity_anchor_hidden',
-			'section' => 'info',
-			'id' => 'entity-anchor-' . $entity->guid,
-			'priority' => 0,
-		);
-		$return[] = ElggMenuItem::factory($options);
+		// If 'tag for tgs weekly' enabled, add a menu item
+		if (elgg_get_plugin_setting('enable_tgsweekly', 'tagdashboards')) {
+			$params['metadata_name_value_pairs'] = array(
+				'name' => 'tags', 
+				'value' => 'weekly', 
+				'operand' => '=',
+				'case_sensitive' => FALSE
+			);
+			
+			$has_weekly_tag = (int)elgg_get_entities_from_metadata($params);
+			
+			if (!$has_weekly_tag) {
+				$options = array(
+					'name' => 'tag_for_weekly',
+					'text' => elgg_echo('tagdashboards:label:tagforweekly'),
+					'title' => 'tag_for_weekly',
+					'href' => "#{$entity->guid}",
+					'class' => 'weekly-tag',
+					'section' => 'actions',
+					'priority' => 102,
+					'id' => "weekly-tag-{$entity->guid}",
+				);
+				$return[] = ElggMenuItem::factory($options);
+			}
+		}
 	} 
 	return $return;
 }

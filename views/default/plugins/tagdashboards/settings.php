@@ -29,6 +29,18 @@ $emag_tag_input = elgg_view('input/dropdown', array(
 	'value' => $vars['entity']->enable_emag,
 ));
 
+// Tag for TGS Weekly label
+$weekly_tag_label = elgg_echo('tagdashboards:label:enabletgsweekly');
+$weekly_tag_input = elgg_view('input/dropdown', array(
+	'id' => 'enable_tgsweekly',
+	'name' => 'params[enable_tgsweekly]',
+	'options_values' => array(
+		0 => elgg_echo('No'), 
+		1 => elgg_echo('Yes')
+	),
+	'value' => $vars['entity']->enable_tgsweekly,
+));
+
 $content = <<<HTML
 	<br />
 	<div>
@@ -38,6 +50,10 @@ $content = <<<HTML
 	<div>
 		<label>$emag_tag_label</label>
 		$emag_tag_input
+	</div>
+	<div>
+		<label>$weekly_tag_label</label>
+		$weekly_tag_input
 	</div>
 HTML;
 
