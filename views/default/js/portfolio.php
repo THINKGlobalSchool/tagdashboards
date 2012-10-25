@@ -298,7 +298,10 @@ elgg.portfolio.loadContent = function() {
  */
 elgg.portfolio.removeFromMenu = function(id) {
 	var $link = $('#' + id);
+	var $menu = $link.closest('.tgstheme-entity-menu-actions');
+	var width = $menu.width();
 	$link.parent().remove();
+	$menu.width(width);
 }
 
 /**
