@@ -161,7 +161,14 @@ function tagdashboards_get_page_content_view($guid) {
 
 	$container = get_entity($tagdashboard->container_guid);
 	elgg_set_page_owner_guid($container->getGUID());
-	elgg_push_breadcrumb($container->name, elgg_get_site_url() . 'tagdashboards/owner/' . $container->username);
+	
+	if (elgg_instanceof($container, 'group')) {
+		$url = elgg_get_site_url() . "tagdashboards/group/{$container->guid}/all";
+	} else {
+		$url = elgg_get_site_url() . 'tagdashboards/owner/' . $container->username;
+	}
+	
+	elgg_push_breadcrumb($container->name, $url);
 	elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
 	$params['title'] = $tagdashboard->title;
 	$params['content'] .= elgg_view_entity($tagdashboard, array('full_view' => TRUE));	

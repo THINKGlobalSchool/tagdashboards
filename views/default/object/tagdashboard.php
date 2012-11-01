@@ -29,7 +29,7 @@ $description = $tagdashboard->description;
 
 $owner_icon = elgg_view_entity_icon($owner, 'tiny');
 $owner_link = elgg_view('output/url', array(
-	'href' => "todo/owner/$owner->username",
+	'href' => "tagdashboards/owner/$owner->username",
 	'text' => $owner->name,
 ));
 
