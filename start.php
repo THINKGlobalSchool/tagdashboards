@@ -117,6 +117,9 @@ function tagdashboards_init() {
 	// Change display of pages (combine pages_top and pages)
 	elgg_register_plugin_hook_handler('tagdashboards:subtype', 'page', 'tagdashboards_page_override_handler');
 
+	// Include top level pages when trying to grab pages 
+	elgg_register_plugin_hook_handler('tagdashboards:subtype', 'custom', 'tagdashboards_custom_page_override_handler');
+
 	// Register for input/tddaterange view plugin hook 
 	elgg_register_plugin_hook_handler('view', 'input/tddaterange', 'tagdashboards_daterange_input_handler');
 
@@ -343,9 +346,8 @@ function tagdashboards_photo_override_handler($hook, $type, $value, $params) {
 }
 
 /** 
- *	Override how photo's are listed to display both 
- *	photos and photos in albums with searched tag
- *  Uses ajaxmodule with 'albums_images' option
+ *	Override how pagess are listed to display both 
+ *	pages and top level pages
  */
 function tagdashboards_page_override_handler($hook, $type, $value, $params) {
 	if ($type == 'page') {
@@ -376,6 +378,19 @@ function tagdashboards_page_override_handler($hook, $type, $value, $params) {
 		return $content;
 	}
 	return false;
+}
+
+/** 
+ *	Override how pages are listed when grouped by custom tags to display both 
+ *	pages and top level pages
+ */
+function tagdashboards_custom_page_override_handler($hook, $type, $value, $params) {
+	// Check to see if we're including pages
+	if (in_array('page', $value)) {
+		// Add 'page_top' subtype
+		$value[] = 'page_top';
+	}
+	return $value;
 }
 
 

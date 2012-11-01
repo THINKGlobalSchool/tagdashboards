@@ -20,6 +20,9 @@ $search = $vars['search'];
 // Get Subtypes
 $subtypes = $vars['subtypes'];
 
+// Trigger a handler for grabbing subtypes when grouped by custom tags
+$subtypes = elgg_trigger_plugin_hook('tagdashboards:subtype', 'custom', NULL, $subtypes);
+
 // Get ownerguids
 $owner_guids = $vars['owner_guids'];
 
