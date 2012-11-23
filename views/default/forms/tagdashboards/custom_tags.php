@@ -33,10 +33,9 @@ if (elgg_is_sticky_form('tagdashboards-save-form')) {
 	$custom_value = elgg_get_sticky_value('tagdashboards-save-form', 'custom');
 }
 
-$custom_input = elgg_view('input/text', array(
+$custom_input = elgg_view('input/tags', array(
 	'name' => 'custom',
 	'id' => 'tagdashboards-custom-input',
-	'class' => 'tagdashboards-text-input tagdashboards-autocomplete-tags',
 	'value' => $custom_value,
 ));
 	

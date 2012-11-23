@@ -158,7 +158,7 @@ elgg.tagdashboards.display_from_form = function(event) {
 	options['search'] = search;
 	options['type'] = $('#tagdashboard-groupby-input:checked').val();
 	options['subtypes'] = selected_subtypes;
-	options['custom_tags'] = $('#tagdashboards-custom-input').val();
+	options['custom_tags'] = $('input[name=custom]').val();
 	options['owner_guids'] = owner_guids;
 	
 	// Get/parse dates
