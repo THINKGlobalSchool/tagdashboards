@@ -91,6 +91,10 @@ $english = array(
 	'river:create:object:tagdashboard' => '%s created a Tag Dashboard titled %s',
 	'river:comment:object:tagdashboard' => '%s commented on a Tag Dashboard titled %s',
 
+	// Notifications
+	'tagdashboards:notification:subject' => 'New Tag Dashboard',
+	'tagdashboards:notification:body' => "%s created a new Tag Dashboard titled: %s\n\n%s\n\nTo view the tag dashboard click here:\n%s
+",
 	
 	// Messages
 	'tagdashboards:success:setenabledsubtypes' => 'Enabled subtypes set',

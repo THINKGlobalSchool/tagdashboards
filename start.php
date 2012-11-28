@@ -84,6 +84,10 @@ function tagdashboards_init() {
 	// Set up url handlers
 	elgg_register_event_handler('tagdashboard_url','object', 'tagdashboard');
 
+	// notifications
+	register_notification_object('object', 'tagdashboard', elgg_echo('tagdashboards:notification:subject'));
+	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'tagdashboards_notify_message');
+
 	// Register actions
 	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/tagdashboards';
 	elgg_register_action('tagdashboards/save', "$action_base/save.php");
@@ -741,4 +745,31 @@ function tagdashboards_run_upgrades() {
 	foreach ($files as $file) {
 		include "$path{$file}";
 	}
+}
+
+/**
+ * Set the notification message for tag dashboards
+ * 
+ * @param string $hook    Hook name
+ * @param string $type    Hook type
+ * @param string $message The current message body
+ * @param array  $params  Parameters about the blog posted
+ * @return string
+ */
+function tagdashboards_notify_message($hook, $type, $message, $params) {
+	$entity = $params['entity'];
+	$to_entity = $params['to_entity'];
+	$method = $params['method'];
+	if (elgg_instanceof($entity, 'object', 'tagdashboard')) {
+		$descr = $entity->description;
+		$title = $entity->title;
+		$owner = $entity->getOwnerEntity();
+		return elgg_echo('tagdashboards:notification:body', array(
+			$owner->name,
+			$title,
+			$descr,
+			$entity->getURL()
+		));
+	}
+	return null;
 }
