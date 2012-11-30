@@ -154,9 +154,9 @@ function tagdashboards_get_page_content_view($guid) {
 	$tagdashboard = get_entity($guid);
 	
 	if (!elgg_instanceof($tagdashboard, 'object', 'tagdashboard')) {
-		$params['content'] = elgg_echo('tagdashboards:error:invalidentity');
-		$params['layout'] = 'one_column';
-		return $params;
+		register_error(elgg_echo('noaccess'));
+		$_SESSION['last_forward_from'] = current_page_url();
+		forward('');
 	}
 
 	$container = get_entity($tagdashboard->container_guid);
