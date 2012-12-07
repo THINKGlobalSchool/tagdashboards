@@ -513,6 +513,9 @@ function tagdashboards_get_entity_subtypes_from_metadata(array $options = array(
 
 	$subtypes = elgg_get_entities_from_metadata($options);
 
+	// Check and see if we have subtypes that need the container checked for another container (ie: photos/albums)
+	$subtypes = elgg_trigger_plugin_hook('tagdashboards:metadata:subtypes', 'container_check', array(), $subtypes);
+
 	return $subtypes;
 }
 
