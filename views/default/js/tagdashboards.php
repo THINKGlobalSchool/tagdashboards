@@ -285,8 +285,10 @@ elgg.tagdashboards.validate_search = function() {
 		
 		// Display from form
 		elgg.tagdashboards.display_from_form(false);
-		
-		window.location.hash = elgg.tagdashboards.get_search(); // Hash magic for permalinks
+
+		if (window.location.href.indexOf("tagdashboards/edit") === -1) {
+			window.location.hash = elgg.tagdashboards.get_search(); // Hash magic for permalinks
+		}
 	}
 }
 

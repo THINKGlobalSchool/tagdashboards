@@ -236,6 +236,7 @@ function tagdashboards_prepare_form_vars($tagdashboard = NULL) {
 		'search' => NULL,
 		'custom_tags' => NULL,
 		'owner_guids' => NULL,
+		'user_guids' => NULL,
 		'lower_date' => NULL,
 		'upper_date' => NULL,
 		'container_guid' => NULL,

@@ -19,13 +19,14 @@ $search			= elgg_extract('search', $vars);
 $custom_tags	= elgg_extract('custom_tags', $vars);
 $users          = elgg_extract('users', $vars);
 $owner_guids 	= elgg_extract('owner_guids', $vars);
+$user_guids 	= elgg_extract('user_guids', $vars);
 $lower_date 	= elgg_extract('lower_date', $vars);
 $upper_date 	= elgg_extract('upper_date', $vars);
 $container_guid = elgg_extract('container_guid', $vars, elgg_get_page_owner_guid());
 $groupby 		= elgg_extract('groupby', $vars);
 $guid 		 	= elgg_extract('guid', $vars);
 $column_count 	= elgg_extract('column_count', $vars);
-		
+
 // If we have an entity, we're editing
 if ($guid) {
 	$tagdashboard = get_entity($guid);
@@ -153,7 +154,7 @@ $group_custom = elgg_view('tagdashboards/groupby', array(
 
 $group_users = elgg_view('tagdashboards/groupby', array(
 	'description' => elgg_echo('tagdashboards:description:users'), 
-	'form' => elgg_view('forms/tagdashboards/users', array('value' => $users))
+	'form' => elgg_view('forms/tagdashboards/users', array('value' => $user_guids))
 ));
 
 

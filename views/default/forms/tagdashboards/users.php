@@ -11,23 +11,6 @@
  */
 
 $users = $vars['value'];
-$users_value = '';
-
-// Create users string from supplied value
-if ($users) {
-	if (!is_array($users)) {
-		$users = array($users);
-	}
-
-	foreach($users as $tag) {
-		if (!empty($users_value)) {
-			$users_value .= ", ";
-		}
-		if (is_string($tag)) {
-			$users_value .= $tag;
-		}
-	}
-}
 
 // Load sticky form values
 if (elgg_is_sticky_form('tagdashboards-save-form')) {
@@ -37,7 +20,7 @@ if (elgg_is_sticky_form('tagdashboards-save-form')) {
 $users_input = elgg_view('input/userpicker', array(
 	'name' => 'users',
 	'id' => 'tagdashboards-users-input',
-	'value' => $users_value,
+	'value' => $users,
 ));
 	
 echo "
