@@ -15,11 +15,20 @@
 	display: none;
 }
 
-.tagdashboards-text-input {
-	width: 80%;
-	margin-top: 10px;
-	display: inline;
-	font-size: 1em;
+.tagdashboards-search-left {
+	width: 90%;
+	float: left;
+}
+
+.tagdashboards-search-right {
+	width: 8%;
+	float: right;
+}
+
+#tagdashboards-search-submit {
+	height: 36px;
+	width: 36px;
+	font-weight: bold;
 }
 
 span#tagdashboards-search-error {

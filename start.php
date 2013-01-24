@@ -195,6 +195,7 @@ function tagdashboards_page_handler($page) {
 		$subtypes = get_input('subtypes', NULL);
 		$offset = get_input('offset', NULL);
 		$owner_guids = get_input('owner_guids', NULL);
+		$user_guids = get_input('user_guids', NULL);
 		$lower_date = get_input('lower_date', NULL);
 		$upper_date = get_input('upper_date', NULL);
 		$custom_tags = get_input('custom_tags');
@@ -210,6 +211,7 @@ function tagdashboards_page_handler($page) {
 			'search' => $search, 
 			'offset' => $offset, 
 			'owner_guids' => $owner_guids,
+			'user_guids' => $user_guids,
 			'lower_date' => $lower_date,
 			'upper_date' => $upper_date,
 			'custom_tags' => $custom_tags,
@@ -309,12 +311,19 @@ function tagdashboards_submenus() {
  */
 function tagdashboards_timeline_photo_override_handler($hook, $type, $value, $params) {
 	if ($type == 'image') {
-		$params['params']['tagdashboards_search_term'] = $params['search']; // Need to set this to use the hacky function
+		//$params['params']['tagdashboards_search_term'] = $params['search']; // Need to set this to use the hacky function
 		$params['params']['limit'] = 0;
 		$params['params']['offset'] = 0;
 		$params['params']['types'] = array('object');
 		$params['params']['subtypes'] = array('image');
-		//$params['params']['callback'] = "entity_row_to_elggstar";
+
+		unset($params['params']['metadata_name_value_pairs']);
+
+		if (is_array($params['search'])) {
+			$params['params']['tags'] = $params['search'];
+		} else {
+			$params['params']['tag'] = $params['search'];
+		}
 
 		$rows = am_get_entities_from_tag_and_container_tag($params['params']);
 		return tagdashboards_get_limited_entities_from_rows($rows);

@@ -17,6 +17,7 @@ $tags 			= elgg_extract('tags', $vars);
 $access_id 		= elgg_extract('access_id', $vars);
 $search			= elgg_extract('search', $vars);
 $custom_tags	= elgg_extract('custom_tags', $vars);
+$users          = elgg_extract('users', $vars);
 $owner_guids 	= elgg_extract('owner_guids', $vars);
 $lower_date 	= elgg_extract('lower_date', $vars);
 $upper_date 	= elgg_extract('upper_date', $vars);
@@ -51,10 +52,9 @@ if ($guid) {
 	$display_form = 'none';
 }
 
-$search_input = elgg_view('input/text', array(	
+$search_input = elgg_view('input/tags', array(	
 	'name' => 'search', 
 	'id' => 'tagdashboards-search-input',
-	'class' => 'tagdashboards-text-input tagdashboards-autocomplete-tags',
 	'value' => $search,
 ));
 
@@ -151,6 +151,11 @@ $group_custom = elgg_view('tagdashboards/groupby', array(
 	'form' => elgg_view('forms/tagdashboards/custom_tags', array('value' => $custom_tags))
 ));
 
+$group_users = elgg_view('tagdashboards/groupby', array(
+	'description' => elgg_echo('tagdashboards:description:users'), 
+	'form' => elgg_view('forms/tagdashboards/users', array('value' => $users))
+));
+
 
 $groupby_input = elgg_view('input/radio', array(
 	'id' => 'tagdashboard-groupby-input',
@@ -158,7 +163,8 @@ $groupby_input = elgg_view('input/radio', array(
 	'options' => array(
 		elgg_echo('tagdashboards:label:subtype') => 'subtype',
 		elgg_echo('tagdashboards:label:activity') => 'activity',
-		elgg_echo('tagdashboards:label:customtags') => 'custom'
+		elgg_echo('tagdashboards:label:customtags') => 'custom',
+		elgg_echo('tagdashboards:label:users') => 'users'
 	),
 	'value' => $groupby,
 	'class' => 'elgg-input-radio elgg-horizontal tagdashboards-groupby-radio',
@@ -198,11 +204,15 @@ $save_link = "<a style='display: $display_form;' class='tagdashboards-arrow-togg
 
 $form_body = <<<HTML
 	<div id='tagdashboards-search-container'>
-		<div>	
-			$search_input $search_submit<br />
-			<span id='tagdashboards-search-error'></span>
+		<div class='tagdashboards-search-left'>
+			$search_input
+		</div>
+		<div class='tagdashboards-search-right'>
+			$search_submit
 		</div>
 	</div>
+	<br />
+	<div class='clearfix'><span id='tagdashboards-search-error'></span></div>
 	<p>$save_link</p>
 	<div id='tagdashboards-save-container' style='display: $display_form;'>
 		$search_content
@@ -230,6 +240,7 @@ $form_body = <<<HTML
 				<div class='tagdashboards-groupby-div' id='tagdashboards-groupby-div-subtype'>$group_subtype</div>
 				<div class='tagdashboards-groupby-div' id='tagdashboards-groupby-div-activity'>$group_activity</div>
 				<div class='tagdashboards-groupby-div' id='tagdashboards-groupby-div-custom'>$group_custom</div>
+				<div class='tagdashboards-groupby-div' id='tagdashboards-groupby-div-users'>$group_users</div>
 				<div>
 					<label>$column_label</label>
 					$column_input

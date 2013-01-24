@@ -100,6 +100,12 @@ if ($full) { // Full view
 		'id' => 'owner_guids', 
 		'value' => json_encode($tagdashboard->owner_guids)
 	));
+
+	$td_user_guids_input = elgg_view('input/hidden', array(
+		'name' => 'user_guids', 
+		'id' => 'user_guids', 
+		'value' => json_encode($tagdashboard->user_guids)
+	));
 	
 	$td_lower_date_input = elgg_view('input/hidden', array(
 		'name' => 'lower_date', 
@@ -143,6 +149,7 @@ if ($full) { // Full view
 				$td_subtypes_input
 				$td_custom_tags_input
 				$td_owner_guids_input
+				$td_user_guids_input
 				$td_lower_date_input
 				$td_upper_date_input
 			</div>

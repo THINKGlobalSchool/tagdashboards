@@ -27,16 +27,37 @@ if (!is_array($subtypes)) {
 // Params
 $params = array(
 	'types' => array('object'),
-	'owner' => ELGG_ENTITIES_ANY_VALUE,
 	'limit' => 0,						
 );
 
-$params['metadata_name_value_pairs'] = array(array(
-	'name' => 'tags', 
-	'value' => $search, 
-	'operand' => '=',
-	'case_sensitive' => FALSE
-));
+if ($tagdashboard->type == 'users') {
+	$params['user_guids'] = $tagdashboard->user_guids;
+	error_log('uo');
+} else {
+	$params['owner_guids'] = $tagdashboard->owner_guids;
+}
+
+// Support for multiple tags
+$multi_tags = string_to_tag_array($search);
+if (is_array($multi_tags) && count($multi_tags) > 1) {
+	foreach ($multi_tags as $tag) {
+		$params['metadata_name_value_pairs'][] = array(
+			'name' => 'tags',
+			'value' => $tag,
+			'operand' => '=',
+			'case_sensitive' => FALSE
+		);
+	}
+
+	$search = $multi_tags;
+} else {
+	$params['metadata_name_value_pairs'] = array(array(
+		'name' => 'tags', 
+		'value' => $search, 
+		'operand' => '=',
+		'case_sensitive' => FALSE
+	));
+}
 
 // Need to use wheres here, because 'time_created' isn't metadata..
 if ($vars['min']) {

@@ -53,6 +53,7 @@ $english = array(
 	'tagdashboards:label:customtags' => 'Group by tags',
 	'tagdashboards:label:activity' => 'Group by role',
 	'tagdashboards:label:subtype' => 'Group by subtype',
+	'tagdashboards:label:users' => 'Group by users',
 	'tagdashboards:label:grouping' => 'Grouping Settings',
 	'tagdashboards:label:filter' => 'Filter Settings',
 	'tagdashboards:label:filterowner' => 'Show content from selected users',
@@ -77,6 +78,7 @@ $english = array(
 	%s
 	For more information on the 6 jobs for students, see the article on <a href="http://novemberlearning.com/wp-content/uploads/2009/02/students-as-contributors.pdf">novemberlearning.com</a>',
 	'tagdashboards:description:custom' => 'Grouping by tag will group content matching your search term and by the tags you enter below.',
+	'tagdashboards:description:users' => 'Grouping by users will group content matching your search term and by the selected users',
 	'tagdashboards:description:tagportfolio' => 'Your tag portfolio contains all of your content organized by your chosen tags.',
 
 	// Activities
@@ -111,6 +113,7 @@ $english = array(
 	'tagdashboards:error:invalidentity' => 'Invalid Entity',
 	'tagdashboards:error:invaliduser' => 'Invalid User',
 	'tagdashboards:error:invalidtag' => 'Invalid Tag',
+	'tagdashboards:error:nosearch' => 'Please enter search text',
 	
 	
 	// Other content

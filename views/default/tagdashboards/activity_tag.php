@@ -24,6 +24,8 @@ $owner_guids = $vars['owner_guids'];
 $lower_date = $vars['lower_date'];
 $upper_date = $vars['upper_date'];
 
+$search = rawurldecode($search);
+
 // Loop over each activity and build content
 foreach($activities as $activity) {
 	$params = array(
@@ -39,8 +41,16 @@ foreach($activities as $activity) {
 		'module_type' => 'featured',
 		'module_id' => $activity['tag'],
 		'module_class' => 'tagdashboard-module',
-		'tags' => array($search, $activity['tag']),
+		//'tags' => array($search, $activity['tag']),
 	);
+
+	// Support for matching on multiple tags
+	if (is_array($multi_tags = string_to_tag_array($search))) {
+		array_push($multi_tags, $activity['tag']);
+		$params['tags'] = $multi_tags;
+	} else {
+		$params['tags'] = array($search, $activity['tag']);
+	}
 	
 	// Default module
 	$content = elgg_view('modules/ajaxmodule', $params);

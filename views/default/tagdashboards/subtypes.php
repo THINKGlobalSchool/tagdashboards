@@ -31,19 +31,30 @@ if (!is_array($subtypes)) {
 	$subtypes = tagdashboards_get_enabled_subtypes();
 }
 
-// Loop over and display each
+$search = rawurldecode($search);
 
+// Support for matching on multiple tags
+if (is_array($tags = string_to_tag_array($search)) && count($tags) > 1) {
+	$param = 'tags';
+	$search = $tags;
+} else {
+	$param = 'tag';
+}
+
+// Loop over and display each
 foreach ($subtypes as $subtype) {		
 	$entity_params = array(
 		'created_time_upper' => $upper_date,
 		'created_time_lower' => $lower_date,
 		'owner_guids' => $owner_guids,
 		'container_guid' => $container_guid,
-		'tag' => rawurldecode($search),
+		//'tag' => rawurldecode($search),
 		'types' => array('object'),
 		'subtypes' => array($subtype),
 		'limit' => 10,
 	);
+
+	$entity_params[$param] = $search;
 	
 	// See if anyone has registered a hook to display their subtype appropriately
 	if (!$content = elgg_trigger_plugin_hook('tagdashboards:subtype', $subtype, $entity_params, false)) {	

@@ -285,17 +285,20 @@ function tagdashboards_get_load_content($options) {
 	switch ($options['type']) {
 		case 'activity': 
 			$content = elgg_view('tagdashboards/activity_tag', $options);
-		break;
+			break;
 		case 'custom': 
 			$content = elgg_view('tagdashboards/custom', $options);
-		break;
+			break;
 		case 'group': 
 			$content = elgg_view('tagdashboards/group', $options);
-		break;
+			break;
+		case 'users':
+			$content = elgg_view('tagdashboards/users', $options);
+			break;
 		default: 
 		case 'subtype': 
 			$content = elgg_view('tagdashboards/subtypes', $options);
-		break;
+			break;
 	}
 	echo $content;
 }

@@ -20,7 +20,6 @@ $search 			= get_input('search');
 $subtypes 			= get_input('subtypes');
 $groupby 			= get_input('groupby');	// How are we grouping the content
 $custom_tags 		= string_to_tag_array(get_input('custom')); // Custom fields
-$owner_guids	 	= get_input('members');
 $container_guid 	= get_input('container_guid', NULL);
 $lower_date 		= strtotime(get_input('lower_date', null));
 $upper_date 		= strtotime(get_input('upper_date', null));
@@ -56,9 +55,17 @@ $tagdashboard->search = $search;
 $tagdashboard->subtypes = serialize($subtypes);
 $tagdashboard->groupby = $groupby;
 $tagdashboard->custom_tags = $custom_tags;
-$tagdashboard->owner_guids = $owner_guids;
 $tagdashboard->lower_date = $lower_date;
 $tagdashboard->upper_date = $upper_date;
+
+// If we're grouping by users, the 'members' input will be user guids instead of owner guids
+if ($groupby == 'users') {
+	$user_guids = get_input('members');
+	$tagdashboard->user_guids = $user_guids;
+} else {
+	$owner_guids = get_input('members');
+	$tagdashboard->owner_guids = $owner_guids;
+}
 
 // If column count is checked, set to 1
 if ($column_count) {

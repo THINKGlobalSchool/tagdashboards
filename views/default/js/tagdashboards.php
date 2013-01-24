@@ -107,12 +107,12 @@ elgg.tagdashboards.init_save_form = function() {
 	});
 
 	// Process form on 'enter'
-	$('#tagdashboards-search-input').keypress(function(event){
-		if (event.which == 13) {
-			elgg.tagdashboards.validate_search();
-			event.preventDefault();
-		}
-	});
+	// $('#tagdashboards-search-input').keypress(function(event){
+	// 	if (event.which == 13) {
+	// 		elgg.tagdashboards.validate_search();
+	// 		event.preventDefault();
+	// 	}
+	// });
 	
 	// Refresh handler
 	$('#tagdashboards-refresh-input').live('click', elgg.tagdashboards.display_from_form);
@@ -143,13 +143,24 @@ elgg.tagdashboards.display_from_form = function(event) {
 	search = elgg.tagdashboards.get_search();	
 
 	// Get owner guids (check both inputs called members, for userpicker and any called owner_guids)
-	var userpicker_input = $('input[name="members[]"], input[name="owner_guids[]"]');
+	var owner_guids_input = $('#tagdashboards-filter-input input[name="members[]"], #tagdashboards-filter-input input[name="owner_guids[]"]');
 
 	var owner_guids = [];
 
 	count = 0;
-	userpicker_input.each(function() {
+	owner_guids_input.each(function() {
 		owner_guids[count] = $(this).val();
+		count++;
+	});
+
+	// Get user guids for users group option
+	var user_guids_input =  $('#tagdashboards-groupby-div-users input[name="members[]"]');
+
+	var user_guids = [];
+
+	count = 0;
+	user_guids_input.each(function() {
+		user_guids[count] = $(this).val();
 		count++;
 	});
 
@@ -160,6 +171,7 @@ elgg.tagdashboards.display_from_form = function(event) {
 	options['subtypes'] = selected_subtypes;
 	options['custom_tags'] = $('input[name=custom]').val();
 	options['owner_guids'] = owner_guids;
+	options['user_guids'] = user_guids;
 	
 	// Get/parse dates
 	options['lower_date'] = Date.parse($('#tagdashboard-date-range-from').val()) / 1000;
@@ -192,12 +204,13 @@ elgg.tagdashboards.display = function (options) {
 	var search 		   = options['search'];
 	var subtypes 	   = options['subtypes'];
 	var owner_guids	   = options['owner_guids'];
+	var user_guids	   = options['user_guids'];
 	var container_guid = options['container_guid'] ? options['container_guid'] : '';
 	var custom_tags	   = elgg.tagdashboards.custom_tags_string_to_array(options['custom_tags']);
 	var custom_titles  = elgg.tagdashboards.custom_tags_string_to_array(options['custom_titles']);
 	var lower_date 	   = options['lower_date'] ? options['lower_date'] : '';
 	var upper_date 	   = options['upper_date'] ? options['upper_date'] : '';
-	
+
 	// Create url to load
 	var url = elgg.normalize_url('tagdashboards/loadtagdashboard?type=' + type);
 	
@@ -209,6 +222,11 @@ elgg.tagdashboards.display = function (options) {
 	if (owner_guids && !$.isArray(owner_guids)) {
 		owner_guids = [owner_guids];
 	}
+
+	// Make sure user guids is an array (if set)
+	if (user_guids && !$.isArray(user_guids)) {
+		user_guids = [user_guids];
+	}
 	
 	// Load in content
 	$('.tagdashboards-content-container').hide().load(url, { 
@@ -216,6 +234,7 @@ elgg.tagdashboards.display = function (options) {
 		'custom_titles[]':  custom_titles,
 		'subtypes': 		subtypes , 
 		'owner_guids': 		owner_guids,
+		'user_guids': 		user_guids,
 		'container_guid':   container_guid,
 		'lower_date': 		lower_date,
 		'upper_date': 		upper_date, 
@@ -237,7 +256,12 @@ elgg.tagdashboards.handle_hash = function() {
 		$('#tagdashboards-save-input-container').show();
 		
 		var hash = decodeURI(window.location.hash.substring(1));
-		var value = $('#tagdashboards-search-input').val(hash);
+		var input = $('#tagdashboards-search-container input[name=search]');
+		tags = hash.split(',');
+		$.each(tags, function(idx, value){
+			elgg.typeaheadtags.addTag(value, input);
+		});
+
 		elgg.tagdashboards.set_dashboard_title();
 		
 		// Display from form
@@ -250,8 +274,8 @@ elgg.tagdashboards.handle_hash = function() {
  * Validate and submit search, also handles hiding/showing UI elements
  */
 elgg.tagdashboards.validate_search = function() {
-	if (!$('#tagdashboards-search-input').val()) {
-		elgg.tagdashboards.display_error('tagdashboards-search-error', 'Please enter search text');
+	if (!$('#tagdashboards-search-container input[name=search]').val()) {
+		elgg.register_error(elgg.echo('tagdashboards:error:nosearch'));
 	} else {
 		$('a#tagdashboards-options-toggle').show();
 		$('span#tagdashboards-search-error').html('');
@@ -277,9 +301,10 @@ elgg.tagdashboards.set_dashboard_title = function() {
  * Get and format a forms search value
  */
 elgg.tagdashboards.get_search = function () {
-	var value = $('#tagdashboards-search-input').val();
+	var value = $('#tagdashboards-search-container input[name=search]').val();
 	if (value) {
 		value = value.toLowerCase();
+		value = value.substring(0, value.lastIndexOf(','));
 		value = encodeURI(value);
 		return value;
 	}
@@ -304,17 +329,6 @@ elgg.tagdashboards.tdtoggler = function(event) {
 	}
 	$(id).toggle('slow');
 	event.preventDefault();
-}
-
-
-/**
- * Display an error in the specified element (id) with given txt
- */
-elgg.tagdashboards.display_error = function(id, txt) {
-		$('a#tagdashboards-options-toggle').hide();
-		$('#tagdashboards-save-input-container').hide();
-		$('#' + id).html(txt);
-		$('.tagdashboards-content-container').html('');
 }
 
 // Validate, and format custom tag string as an array
