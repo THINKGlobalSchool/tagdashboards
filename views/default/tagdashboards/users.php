@@ -33,7 +33,11 @@ $search = rawurldecode($search);
 foreach($users as $idx => $guid) {
 	$user = get_entity($guid);
 
-	$title = $user->name;
+	$title = elgg_view('output/url', array(
+		'text' => $user->name,
+		'href' => $user->getURL(),
+		'target' => '_blank', 
+	));
 	
 	$params = array(
 		'created_time_upper' => $upper_date,
