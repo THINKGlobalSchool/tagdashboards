@@ -25,6 +25,9 @@ $lower_date 		= strtotime(get_input('lower_date', null));
 $upper_date 		= strtotime(get_input('upper_date', null));
 $column_count		= get_input('columns');
 
+// Trim any trailing commas from search tag
+$search = rtrim($search, ',');
+
 // Sticky form
 elgg_make_sticky_form('tagdashboards-save-form');
 if (!$title) {
