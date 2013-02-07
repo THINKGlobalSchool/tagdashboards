@@ -251,6 +251,17 @@ function tagdashboards_page_handler($page) {
 		// Load JS
 		elgg_load_js('elgg.tagdashboards');
 		elgg_load_js('jquery.resize');
+
+		// Load tidypics related JS
+		if (elgg_is_active_plugin('tidypics')) {
+			elgg_load_js('tidypics:lightbox');
+			elgg_load_js('tidypics:tagging');
+			elgg_load_js('jquery.imgareaselect');
+			elgg_load_js('jquery-fancybox2');
+			elgg_load_css('jquery-fancybox2');
+			elgg_load_js('elgg.autocomplete');
+			elgg_load_js('jquery.ui.autocomplete.html');
+		}
 		
 		// 'All' breadcrumb
 		elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
