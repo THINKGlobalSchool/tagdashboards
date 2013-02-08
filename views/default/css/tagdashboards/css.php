@@ -252,3 +252,9 @@ span.portfolio-recommended-text {
 .dark-theme .timeline-event-tape,
 .dark-theme .timeline-small-event-tape { background: #f60; }
 .dark-theme .timeline-ether-weekends { background: #111; }
+
+
+/** FIX DISAPPEARING IMAGE ISSUE **/
+.tagdashboard-module .elgg-gallery > li {
+	position: static;
+}
