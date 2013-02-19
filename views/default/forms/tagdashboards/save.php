@@ -26,6 +26,10 @@ $container_guid = elgg_extract('container_guid', $vars, elgg_get_page_owner_guid
 $groupby 		= elgg_extract('groupby', $vars);
 $guid 		 	= elgg_extract('guid', $vars);
 $column_count 	= elgg_extract('column_count', $vars);
+$group_content  = elgg_extract('group_content', $vars);
+
+// Get page owner for group content filter
+$page_owner = elgg_get_page_owner_entity();
 
 // If we have an entity, we're editing
 if ($guid) {
@@ -196,6 +200,18 @@ $filter_date_input .= elgg_view('input/tddaterange', array(
 	'value_upper' => $upper_date,
 ));
 
+// Filter group content option
+if (elgg_instanceof($page_owner, 'group')) {
+	$filter_group = elgg_echo('tagdashboards:label:filtergroup');
+	$filter_group_content = "<br /><label>$filter_group&nbsp;</label>";
+
+	$filter_group_content .= elgg_view('input/checkbox', array(
+		'name' => 'group_content',
+		'checked' => $group_content ? 'checked' : null,
+	));
+
+}
+
 // Togglers
 $subtypes_label = elgg_echo('tagdashboards:label:contenttypes');
 $groupby_label = elgg_echo('tagdashboards:label:grouping');
@@ -257,6 +273,7 @@ $form_body = <<<HTML
 				<div style='clear: both;'></div><br />
 				<strong>$filter_date</strong><br /><br />
 				$filter_date_input
+				$filter_group_content
 			</div>
 		</p>
 		<div style='clear: both;'></div>

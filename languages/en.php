@@ -58,6 +58,7 @@ $english = array(
 	'tagdashboards:label:filter' => 'Filter Settings',
 	'tagdashboards:label:filterowner' => 'Show content from selected users',
 	'tagdashboards:label:filterdate' => 'Show content created within date range',
+	'tagdashboards:label:filtergroup' => 'Show only group content',
 	'tagdashboards:label:columns' => 'Display only one column',
 	'tagdashboards:label:recommended' => 'Recommended Items',
 	'tagdashboards:label:addtoportfolio' => 'Add To Portfolio',

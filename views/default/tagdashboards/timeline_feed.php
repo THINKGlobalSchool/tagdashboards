@@ -32,9 +32,13 @@ $params = array(
 
 if ($tagdashboard->type == 'users') {
 	$params['user_guids'] = $tagdashboard->user_guids;
-	error_log('uo');
 } else {
 	$params['owner_guids'] = $tagdashboard->owner_guids;
+}
+
+// If group content is enabled
+if ($tagdashboard->group_content) {
+	$params['container_guid'] = $tagdashboard->container_guid;
 }
 
 // Support for multiple tags

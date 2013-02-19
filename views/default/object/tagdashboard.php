@@ -124,6 +124,14 @@ if ($full) { // Full view
 		'id' => 'tagdashboard-guid', 
 		'value' => $tagdashboard->guid,
 	));
+
+	if ($tagdashboard->group_content) {
+		$td_group_content_input = elgg_view('input/hidden', array(
+			'name' => 'container_guid',
+			'id' => 'container_guid',
+			'value' => $tagdashboard->container_guid,
+		));
+	}
 	
 	$timeline = elgg_view('tagdashboards/timeline');
 	
@@ -152,6 +160,7 @@ if ($full) { // Full view
 				$td_user_guids_input
 				$td_lower_date_input
 				$td_upper_date_input
+				$td_group_content_input
 			</div>
 			<div class='tagdashboards-content-container $float'></div>
 		</div>

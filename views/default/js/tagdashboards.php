@@ -172,7 +172,12 @@ elgg.tagdashboards.display_from_form = function(event) {
 	options['custom_tags'] = $('input[name=custom]').val();
 	options['owner_guids'] = owner_guids;
 	options['user_guids'] = user_guids;
-	
+
+	// Check for group content option
+	var $group_content_checked = $('#tagdashboards-filter-input input:checkbox[name="group_content"]');
+	if ($group_content_checked.is(':checked')) {
+		options['container_guid'] = $('input:hidden[name="container_guid"]').val();
+	}
 	// Get/parse dates
 	options['lower_date'] = Date.parse($('#tagdashboard-date-range-from').val()) / 1000;
 	options['upper_date'] = Date.parse($('#tagdashboard-date-range-to').val()) / 1000;

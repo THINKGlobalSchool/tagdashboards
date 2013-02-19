@@ -243,6 +243,7 @@ function tagdashboards_prepare_form_vars($tagdashboard = NULL) {
 		'groupby' => 'subtype',
 		'guid' => NULL,
 		'column_count' => NULL,
+		'group_content' => NULL,
 	);
 	
 	
