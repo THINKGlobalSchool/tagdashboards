@@ -258,3 +258,111 @@ span.portfolio-recommended-text {
 .tagdashboard-module .elgg-gallery > li {
 	position: static;
 }
+
+
+/** Media dashboard **/
+.tagdashboards-media-content-container {
+
+}
+
+.tagdashboards-media-content-container .tagdashboards-media-videos-container {
+	width: 100%;
+	clear: both;
+}
+
+.tagdashboards-media-content-container .tagdashboards-media-videos-container .elgg-body {
+	padding: 0px;
+}
+
+.tagdashboards-media-content-container .tagdashboards-media-blogs-container,
+.tagdashboards-media-content-container .tagdashboards-media-images-container {
+	float: left;
+}
+
+.tagdashboards-media-content-container .tagdashboards-media-blogs-container {
+	width: 43%;
+	padding-right: 16px;
+}
+
+.tagdashboards-media-content-container .tagdashboards-media-images-container {
+	width: 55%;
+}
+
+.tagdashboards-blog-preview-image {
+	-webkit-box-shadow: 1px 2px 5px #666;
+	-moz-box-shadow: 1px 2px 5px #666;
+	box-shadow: 1px 2px 5px #666;
+	width: 100px;
+	margin-right: 10px;
+}
+
+/** Coverflow **/
+.tagdashboards-media-content-container .coverflow {
+	/**z-index: 10;**/
+	position: relative;
+	opacity: 1;
+	overflow: hidden;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	-webkit-touch-callout: none;
+	-webkit-transition: opacity .7s;
+	-moz-transition: opacity .7s;
+	-ms-transition: opacity .7s;
+	-o-transition: opacity .7s;
+	transition: opacity .7s;
+}
+
+.tagdashboards-media-content-container .coverflow .coverflow-wrap {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+}
+
+.tagdashboards-media-content-container .coverflow .coverflow-wrap,
+.tagdashboards-media-content-container .coverflow .coverflow-tray {
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	-o-transform-style: preserve-3d;
+	-ms-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+.tagdashboards-media-content-container .coverflow .coverflow-tray,
+.tagdashboards-media-content-container .coverflow .coverflow-cell {
+	position: absolute;
+	-webkit-backface-visibility: hidden;
+	-webkit-transition: -webkit-transform .8s cubic-bezier(0.190,1.000,0.220,1.000);
+	-moz-transition: -moz-transform .8s cubic-bezier(0.190,1.000,0.220,1.000);
+	-ms-transition: -ms-transform .8s cubic-bezier(0.190,1.000,0.220,1.000);
+	-o-transition: -o-transform .8s cubic-bezier(0.190,1.000,0.220,1.000);
+	transition: transform .8s cubic-bezier(0.190,1.000,0.220,1.000);
+}
+
+.tagdashboards-media-content-container .coverflow .coverflow-cell canvas {
+	outline: 1px solid transparent;
+	position: absolute;
+	opacity: 1;
+	-webkit-transition: opacity .7s;
+	-moz-transition: opacity .7s;
+	-ms-transition: opacity .7s;
+	-o-transition: opacity .7s;
+	transition: opacity .7s;
+}
+
+.tagdashboards-media-content-container .coverflow-text {
+	position: absolute;
+	opacity: 1;
+	-webkit-transition: opacity .7s;
+	-moz-transition: opacity .7s;
+	-ms-transition: opacity .7s;
+	-o-transition: opacity .7s;
+	transition: opacity .7s;
+	width: 100%;
+}
+
+.tagdashboards-media-content-container .coverflow-text h1,
+.tagdashboards-media-content-container .coverflow-text h2 {
+	margin: 0;
+	color: #EEEEEE;
+}

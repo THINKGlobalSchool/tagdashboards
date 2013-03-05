@@ -48,7 +48,6 @@ foreach ($subtypes as $subtype) {
 		'created_time_lower' => $lower_date,
 		'owner_guids' => $owner_guids,
 		'container_guid' => $container_guid,
-		//'tag' => rawurldecode($search),
 		'types' => array('object'),
 		'subtypes' => array($subtype),
 		'limit' => 10,

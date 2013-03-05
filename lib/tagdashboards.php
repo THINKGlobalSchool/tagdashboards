@@ -196,6 +196,84 @@ function tagdashboards_get_page_content_group_activity($guid) {
 }
 
 /**
+ * Experiemental 'media' dashboard view
+ */
+function tagdashboards_get_page_content_static_media($guid) {
+	$dashboard = get_entity($guid);
+
+	if (!$dashboard) {
+		register_error(elgg_echo('tagdashboards:error:invalidentity'));
+		forward();		
+	}
+
+	$params['filter'] = ' ';
+	$params['title'] = $dashboard->title;
+	$params['layout'] = 'one_column';
+
+
+	// Load necessary JS
+	elgg_load_js('jscoverflow');
+	elgg_load_js('lightbox');
+	elgg_load_css('lightbox');
+
+	elgg_load_js('simplekaltura:html5');
+	elgg_load_js('simplekaltura:utility');
+
+	elgg_push_breadcrumb($params['title']);
+
+	//$guid = elgg_get_plugin_setting('static_dashboard_guid', 'tagdashboards');
+
+
+	$params['content'] = elgg_view('tagdashboards/media/content', array('dashboard_guid' => $dashboard->guid));
+
+	return $params;
+}
+
+function tagdashboards_get_media_entities_options($dashboard_guid, $options = array()) {
+	$dashboard = get_entity($dashboard_guid);
+
+	$search = $dashboard->search;
+
+	$defaults = array(
+		'created_time_upper' => $dashboard->upper_date,
+		'created_time_lower' => $dashboard->lower_date,
+		'owner_guids' => $dashboard->owner_guids,
+		'types' => array('object'),
+		'limit' => 0,
+	);
+
+	$options = array_merge($defaults, $options);
+
+	// If set to group by users, we need to limit to those users
+	if ($dashboard->groupby == 'users') {
+		$options['owner_guids'] = $dashboard->user_guids;
+	}
+
+	// If there's a container guid
+	if ($dashboard->group_content) {
+		$options['container_guid'] = $dashboard->container_guid;
+	}
+
+	// Support for matching on multiple tags
+	if (is_array($search_tags = string_to_tag_array($search)) && count($search_tags) > 1) {
+		$tags = $search_tags;
+	} else {
+		$tags = array($search);
+	}
+
+	foreach($tags as $tag) {
+		$options['metadata_name_value_pairs'][] = array(	
+			'name' => 'tags', 
+			'value' => $tag, 
+			'operand' => '=',
+			'case_sensitive' => FALSE
+		);
+	}
+
+	return $options;
+}
+
+/**
  * Get JSON tags for autocomplete
  * 
  * @param string $term
@@ -543,27 +621,6 @@ function tagdashboards_row_to_subtype($row) {
 	return $row->subtype;
 }
 
-/** HOOKS */
-/**
- * Example for exceptions 
- */
-function tagdashboards_exception_example($hook, $type, $value, $params) {
-	// Unset a type (includes it in the list)
-	unset($value[array_search('plugin', $value)]);
-	
-	// Add a new exception
-	$value[] = 'todo';
-	return $value;
-}
-
-/**
- * Example for subtypes 
- */
-function tagdashboards_subtype_example($hook, $type, $value, $params) {
-	// return custom content
-	return "Test";
-}
-
 /** 
  * Helper function to use with array_filter()
  * to determine if tidypics images are unique
@@ -591,4 +648,48 @@ function tagdashboards_remove_recommended_metadata($guid) {
 		'metadata_name' => 'recommended_portfolio'
 	);
 	return elgg_delete_metadata($options);
+}
+
+function tagdashboards_get_blog_preview_image($blog) {
+	$default_url = elgg_get_site_url() . 'mod/tagdashboards/images/blog_preview_default.png';
+
+	$dom = new domDocument;
+	$dom->loadHTML($blog->description);
+
+	$dom->preserveWhiteSpace = false;
+	$images = $dom->getElementsByTagName('img');
+
+	foreach ($images as $img) {
+		$img_src = $img->getAttribute('src');
+		break;
+	}
+
+	$image_url = $img_src ? $img_src : $default_url;
+
+	return elgg_view('output/url', array(
+		'text' => "<img class='tagdashboards-blog-preview-image' src='{$image_url}' />",
+		'href' => $blog->getURL(),
+		'target' => '_blank',
+	));
+}
+
+/** HOOK EXAMPLES */
+/**
+ * Example for exceptions 
+ */
+function tagdashboards_exception_example($hook, $type, $value, $params) {
+	// Unset a type (includes it in the list)
+	unset($value[array_search('plugin', $value)]);
+	
+	// Add a new exception
+	$value[] = 'todo';
+	return $value;
+}
+
+/**
+ * Example for subtypes 
+ */
+function tagdashboards_subtype_example($hook, $type, $value, $params) {
+	// return custom content
+	return "Test";
 }

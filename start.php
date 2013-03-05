@@ -51,7 +51,7 @@ function tagdashboards_init() {
 	$timeline_lib_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/timeline_lib/timeline_js/timeline-api.js?bundle=true';
 	elgg_register_js('simile.timeline', $timeline_lib_js);
 
-	// Regsiter local timeline JS library
+	// Register local timeline JS library
 	$timeline_js = elgg_get_simplecache_url('js', 'timeline');
 	elgg_register_simplecache_view('js/timeline');
 	elgg_register_js('elgg.tagdashboards.timeline', $timeline_js);
@@ -63,6 +63,11 @@ function tagdashboards_init() {
 	// Provide the jquery resize plugin
 	$resize_js = elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js';
 	elgg_register_js($resize_js, 'jquery.resize');
+
+	// Register js coverflow library
+	$cf_js = elgg_get_simplecache_url('js', 'jscoverflow');
+	elgg_register_simplecache_view('js/jscoverflow');
+	elgg_register_js('jscoverflow', $cf_js);
 
 	// Extend Groups profile page
 	elgg_extend_view('groups/tool_latest','tagdashboards/group_dashboards');
@@ -136,6 +141,9 @@ function tagdashboards_init() {
 	// Register simpleicon menu items
 	elgg_register_plugin_hook_handler('register', 'menu:simpleicon-entity', 'portfolio_setup_simpleicon_entity_menu');
 
+	// Register blog content view hook handler
+	elgg_register_plugin_hook_handler('view', 'object/blog', 'tagdashboards_blog_view_hook_handler');
+
 	// Upgrade Event Handler
 	elgg_register_event_handler('upgrade', 'system', 'tagdashboards_run_upgrades');
 
@@ -152,6 +160,8 @@ function tagdashboards_init() {
 	elgg_register_ajax_view('tagdashboards/module/recommended');
 
 	elgg_register_ajax_view('tagdashboards/portfolio/content');
+
+	elgg_register_ajax_view('tagdashboards/media/modules/blogs');
 
 	return true;
 }
@@ -294,6 +304,9 @@ function tagdashboards_page_handler($page) {
 			case 'group_activity':
 				elgg_set_context('group');
 				$params = tagdashboards_get_page_content_group_activity($page[1]);
+				break;
+			case 'mediadashboard':
+				$params = tagdashboards_get_page_content_static_media($page[1]);
 				break;
 			case 'all':
 			default:
@@ -792,4 +805,22 @@ function tagdashboards_notify_message($hook, $type, $message, $params) {
 		));
 	}
 	return null;
+}
+
+/**
+ * Register blogs content teaser view
+ *
+ * @param sting  $hook   view
+ * @param string $type   type
+ * @param mixed  $return value
+ * @param mixed  $params params
+ *
+ * @return array
+ */
+function tagdashboards_blog_view_hook_handler($hook, $type, $return, $params) {
+	// Only dealing with object views here
+	if (get_input('content_teaser_view') && strpos($params['view'], 'object/blog') === 0) {
+		return elgg_view('tagdashboards/media/content_teaser', $params['vars']);	
+	}
+	return $value;
 }
