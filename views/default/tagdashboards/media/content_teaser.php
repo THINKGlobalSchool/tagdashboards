@@ -19,6 +19,12 @@ if (!$blog) {
 $owner = $blog->getOwnerEntity();
 $container = $blog->getContainerEntity();
 
+$owner_link = elgg_view('output/url', array(
+	'href' => "blog/owner/$owner->username",
+	'text' => $owner->name,
+	'is_trusted' => true,
+));
+
 $excerpt = $blog->excerpt;
 if (!$excerpt) {
 	$excerpt = elgg_get_excerpt($blog->description);
