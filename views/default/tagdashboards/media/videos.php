@@ -75,5 +75,6 @@ JAVASCRIPT;
 
 	echo $script;
 } else {
-	echo elgg_view_module('info', 'Videos', "No results");
+	$content = "<div style='width: 100%; text-align: center; margin: 10px;'><strong>No results</strong></div>";
+	echo elgg_view_module('info', 'Videos', $content);
 }
