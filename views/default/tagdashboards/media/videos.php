@@ -17,7 +17,15 @@ $videos = new ElggBatch('elgg_get_entities_from_metadata', tagdashboards_get_med
 	'subtype' => 'simplekaltura_video'
 )));
 
+
 foreach ($videos as $idx => $video) {
+	// Get entry info
+	$entry_info = unserialize($video->raw_entry);
+	
+	if ($entry_info->status == -1) {
+		continue;
+	}
+
 	$pop_url = elgg_get_site_url() . 'videos/popup/' . $video->guid;
 	$video_playlist[$idx]['title'] = $video->title;
 	$video_playlist[$idx]['image'] = $video->getIconURL() . "/width/200/height/150";

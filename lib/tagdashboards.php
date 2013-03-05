@@ -219,10 +219,9 @@ function tagdashboards_get_page_content_static_media($guid) {
 	elgg_load_js('simplekaltura:html5');
 	elgg_load_js('simplekaltura:utility');
 
+	elgg_load_library('KalturaClient');
+
 	elgg_push_breadcrumb($params['title']);
-
-	//$guid = elgg_get_plugin_setting('static_dashboard_guid', 'tagdashboards');
-
 
 	$params['content'] = elgg_view('tagdashboards/media/content', array('dashboard_guid' => $dashboard->guid));
 
