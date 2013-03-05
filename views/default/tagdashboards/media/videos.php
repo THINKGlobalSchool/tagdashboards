@@ -68,7 +68,8 @@ if (count($video_playlist)) {
 					lightbox.attr('href', link);
 					lightbox.fancybox(elgg.simplekaltura_utility.get_lightbox_init()).trigger('click');
 				});
-			});;
+			});
+		setTimeout(function() {coverflow().to(0);}, 1000);
 	</script>
 JAVASCRIPT;
 
