@@ -72,6 +72,7 @@ $english = array(
 	'tagdashboards:label:showrecommended' => 'Show Recommended Items (%s)',
 	'tagdashboards:label:ignoreportfolio' => 'Ignore',
 	'tagdashboards:label:customjobs' => 'Custom Jobs',
+	'tagdashboards:label:viewvideo' => 'View Original Video',
 
 	// Descriptions
 	'tagdashboards:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',

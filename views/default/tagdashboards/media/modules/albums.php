@@ -1,6 +1,6 @@
 <?php
 /**
- * Tag Dashboards Blogs Module View
+ * Tag Dashboards Albums Module View
  * 
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
@@ -14,12 +14,12 @@
 $dashboard_guid = elgg_extract('dashboard_guid', $vars);
 
 $options = tagdashboards_get_media_entities_options($dashboard_guid, array(
-	'subtype' => 'blog',
-	'limit' => 5,
+	'subtype' => 'album',
+	'limit' => 0,
 	'full_view' => FALSE,
+	'list_type' => 'gallery',
+	'enable_lightbox' => TRUE,
 ));
-
-set_input('content_teaser_view', 1);
 
 $content = elgg_list_entities_from_metadata($options);
 

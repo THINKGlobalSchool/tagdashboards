@@ -21,14 +21,17 @@ $videos = new ElggBatch('elgg_get_entities_from_metadata', tagdashboards_get_med
 foreach ($videos as $idx => $video) {
 	// Get entry info
 	$entry_info = unserialize($video->raw_entry);
-	
+
 	if ($entry_info->status == -1) {
 		continue;
 	}
 
+	$owner = $video->getOwnerEntity();
+
 	$pop_url = elgg_get_site_url() . 'videos/popup/' . $video->guid;
 	$video_playlist[$idx]['title'] = $video->title;
-	$video_playlist[$idx]['image'] = $video->getIconURL() . "/width/200/height/150";
+	$video_playlist[$idx]['description'] = $owner->name;
+	$video_playlist[$idx]['image'] = $video->getIconURL() . "/width/307/height/230";
 	$video_playlist[$idx]['link'] = $pop_url;
 	$video_playlist[$idx]['duration'] = $video->duration;
 }
@@ -48,16 +51,17 @@ if (count($video_playlist)) {
 		coverflow('tagdashboards-media-videos-coverflow').setup({
 				item: 0,
 				backgroundcolor: '000000',
-				backgroundopacity: 0.7,
+				backgroundopacity: 0.5,
 				wmode: 'transparent',
 				showduration: true,
 				width: '100%',
 				height: '300px',
 				playlist: playlist,
-				coverwidth: 266,
-				coverheight: 200,
+				coverwidth: 307,
+				coverheight: 230,
 				fixedsize: true,
-				textoffset: 50, 
+				textoffset: 40,
+				y: -10,
 			}).on('ready', function() {
 				// Focus
 				this.on('focus', function(index) {});

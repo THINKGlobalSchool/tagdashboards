@@ -280,12 +280,12 @@ span.portfolio-recommended-text {
 }
 
 .tagdashboards-media-content-container .tagdashboards-media-blogs-container {
-	width: 43%;
+	width: 42%;
 	padding-right: 16px;
 }
 
 .tagdashboards-media-content-container .tagdashboards-media-images-container {
-	width: 55%;
+	width: 54%;
 }
 
 .tagdashboards-blog-preview-image {
@@ -302,6 +302,9 @@ span.portfolio-recommended-text {
 	position: relative;
 	opacity: 1;
 	overflow: hidden;
+	-webkit-border-radius: 4px 4px 4px 4px;
+	-moz-border-radius: 4px 4px 4px 4px;
+	border-radius: 4px 4px 4px 4px;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 	-webkit-text-size-adjust: none;
 	-ms-text-size-adjust: none;

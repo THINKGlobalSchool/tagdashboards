@@ -14,7 +14,7 @@
 $dashboard_guid = elgg_extract('dashboard_guid', $vars);
 
 $blogs = elgg_view('tagdashboards/media/blogs', $vars);
-$images = elgg_view('tagdashboards/media/images', $vars);
+$images = elgg_view('tagdashboards/media/albums', $vars);
 $videos = elgg_view('tagdashboards/media/videos', $vars);
 
 $content = <<<HTML

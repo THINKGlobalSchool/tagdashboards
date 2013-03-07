@@ -41,7 +41,7 @@ $module_options = array(
 );
 
 $options = array_merge($entity_options, $module_options);
-$options['limit'] = 999; // @todo limit 0 is showing pagination for some reason..
+$options['limit'] = 12; // @todo limit 0 is showing pagination for some reason..
 
 // Default module
 echo elgg_view('modules/ajaxmodule', $options);

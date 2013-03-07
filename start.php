@@ -76,6 +76,9 @@ function tagdashboards_init() {
 	elgg_extend_view('css/elgg','css/tagdashboards/global');
 	elgg_extend_view('css/admin','css/tagdashboards/global');
 
+	// Extend simplekaltura popup view
+	elgg_extend_view('simplekaltura/popup', 'tagdashboards/media/video_popup');
+
 	// Page handler
 	elgg_register_page_handler('tagdashboards','tagdashboards_page_handler');
 
@@ -162,6 +165,8 @@ function tagdashboards_init() {
 	elgg_register_ajax_view('tagdashboards/portfolio/content');
 
 	elgg_register_ajax_view('tagdashboards/media/modules/blogs');
+
+	elgg_register_ajax_view('tagdashboards/media/modules/albums');
 
 	return true;
 }
