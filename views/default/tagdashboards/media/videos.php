@@ -73,7 +73,12 @@ if (count($video_playlist)) {
 					lightbox.fancybox(elgg.simplekaltura_utility.get_lightbox_init()).trigger('click');
 				});
 			});
-		setTimeout(function() {coverflow().to(0);}, 1000);
+		setTimeout(function() {
+			// Focus the middle item
+			var mid = Math.ceil(playlist.length/2);
+			coverflow().to(mid - 1);
+		}, 1000
+		);
 	</script>
 JAVASCRIPT;
 
