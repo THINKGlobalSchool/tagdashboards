@@ -269,6 +269,7 @@ function tagdashboards_page_handler($page) {
 
 		// Load tidypics related JS
 		if (elgg_is_active_plugin('tidypics')) {
+			elgg_load_js('tidypics');
 			elgg_load_js('tidypics:lightbox');
 			elgg_load_js('tidypics:tagging');
 			elgg_load_js('jquery.imgareaselect');
