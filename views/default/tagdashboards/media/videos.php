@@ -31,7 +31,7 @@ foreach ($videos as $idx => $video) {
 	$pop_url = elgg_get_site_url() . 'videos/popup/' . $video->guid;
 	$video_playlist[$idx]['title'] = $video->title;
 	$video_playlist[$idx]['description'] = $owner->name;
-	$video_playlist[$idx]['image'] = $video->getIconURL() . "/width/307/height/230";
+	$video_playlist[$idx]['image'] = $video->getIconURL('large');
 	$video_playlist[$idx]['link'] = $pop_url;
 	$video_playlist[$idx]['duration'] = $video->duration;
 }
