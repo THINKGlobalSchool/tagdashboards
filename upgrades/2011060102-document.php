@@ -13,6 +13,8 @@ foreach ($subtypes as $idx => $type) {
 	}
 }
 
+elgg_set_plugin_setting('enabled_subtypes', serialize($subtypes), 'tagdashboards');
+
 // Grab all tagdashboards
 $tagdashboards = elgg_get_entities(array(
 	'type' => 'object',
@@ -22,15 +24,13 @@ $tagdashboards = elgg_get_entities(array(
 
 // Disable documents and enable files for all dashboards
 foreach ($tagdashboards as $dashboard) {
-	$subtypes = unserialize($dashboard->subtypes);
-	foreach ($subtypes as $idx => $type) {
+	$dashboard_subtypes = unserialize($dashboard->subtypes);
+	foreach ($dashboard_subtypes as $idx => $type) {
 		if ($type == 'document') {
-			unset($subtypes[$idx]);
-			$subtypes[] = 'file';
-			$dashboard->subtypes = serialize($subtypes);
+			unset($dashboard_subtypes[$idx]);
+			$dashboard_subtypes[] = 'file';
+			$dashboard->subtypes = serialize($dashboard_subtypes);
 			$dashboard->save();
 		}
 	}
 }
-
-elgg_set_plugin_setting('enabled_subtypes', serialize($subtypes), 'tagdashboards');

@@ -779,11 +779,26 @@ function portfolio_setup_simpleicon_entity_menu($hook, $type, $return, $params) 
  * Process upgrades for the tagdashboards plugin
  */
 function tagdashboards_run_upgrades() {
+	$plugin = elgg_get_plugin_from_id('tagdashboards');
+
+	$processed = unserialize($plugin->getSetting('upgrades_processed'));
+
+	if (!$processed) {
+		$processed = array();
+	}
+
 	$path = elgg_get_plugins_path() . 'tagdashboards/upgrades/';
 	$files = elgg_get_upgrade_files($path);
+
 	foreach ($files as $file) {
-		include "$path{$file}";
-	}
+		if (!in_array($file, $processed)) {
+			var_dump('processing ' . $file);
+			include "$path{$file}";
+			$processed[] = $file;
+		}
+	} 
+
+	$plugin->setSetting('upgrades_processed', serialize($processed));
 }
 
 /**
