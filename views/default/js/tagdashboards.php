@@ -31,6 +31,9 @@ elgg.tagdashboards.init = function () {
 	
 	// Check hashes
 	elgg.tagdashboards.handle_hash();
+
+	// Register modules populated hook for simplekaltura videos
+	elgg.register_hook_handler('populated', 'modules', elgg.simplekaltura_utility.lightbox_init);
 }
 
 /**	
