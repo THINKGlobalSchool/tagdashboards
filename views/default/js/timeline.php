@@ -144,4 +144,8 @@ elgg.tagdashboards.timeline.on_resize = function() {
     }
 }
 
+elgg.tagdashboards.timeline.initVideoLightbox = function(guid) {
+	$(".simplekaltura-lightbox-" + guid).fancybox(elgg.simplekaltura_utility.get_lightbox_init());
+}
+
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.timeline.init);

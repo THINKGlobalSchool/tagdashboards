@@ -119,6 +119,7 @@ function tagdashboards_init() {
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'blog', 'tagdashboards_timeline_blog_icon_handler');
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'image', 'tagdashboards_timeline_image_icon_handler');
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'tagdashboard', 'tagdashboards_timeline_tagdashboard_icon_handler');
+	elgg_register_plugin_hook_handler('tagdashboards:timeline:icon', 'simplekaltura_video', 'tagdashboards_timeline_video_icon_handler');
 
 	// Change how photos are retrieved for the timeline 
 	elgg_register_plugin_hook_handler('tagdashboards:timeline:subtype', 'image', 'tagdashboards_timeline_photo_override_handler');
@@ -131,6 +132,9 @@ function tagdashboards_init() {
 
 	// Include top level pages when trying to grab pages 
 	elgg_register_plugin_hook_handler('tagdashboards:subtype', 'custom', 'tagdashboards_custom_page_override_handler');
+
+	// Change heading for simplekaltura videos
+	elgg_register_plugin_hook_handler('tagdashboards:subtype:heading', 'simplekaltura_video', 'tagdashboards_simplekaltura_subtype_title_handler');
 
 	// Register for input/tddaterange view plugin hook 
 	elgg_register_plugin_hook_handler('view', 'input/tddaterange', 'tagdashboards_daterange_input_handler');
@@ -436,6 +440,14 @@ function tagdashboards_custom_page_override_handler($hook, $type, $value, $param
 	return $value;
 }
 
+/**
+ * Handler to set name of videos in tagdashboards 
+ */
+function tagdashboards_simplekaltura_subtype_title_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'simplekaltura_video') {
+		return 'Spot Videos';
+	}
+}
 
 /**
  * Handler to add a tag dashboards tab to the tabbed profile 
@@ -472,6 +484,16 @@ function tagdashboards_timeline_image_icon_handler($hook, $type, $value, $params
 function tagdashboards_timeline_tagdashboard_icon_handler($hook, $type, $value, $params) {
 	if ($type == 'tagdashboard') {
 		return elgg_get_site_url() . "mod/tagdashboards/images/tagdashboard.gif";
+	}
+	return false;
+}
+
+/**
+ * Handler to register a timeline icon for simplekaltura videos
+ */
+function tagdashboards_timeline_video_icon_handler($hook, $type, $returnvalue, $params) {
+	if ($type == 'simplekaltura_video') {
+		return elgg_get_site_url() . "mod/tagdashboards/images/simplekaltura_video.gif";
 	}
 	return false;
 }
