@@ -15,7 +15,7 @@ elgg_load_library('simplekaltura');
 $video = $vars['entity'];
 $guid = $video->guid;
 
-$pop_url = elgg_get_site_url() . 'videos/popup/' . $guid;
+$pop_url = elgg_get_site_url() . 'ajax/view/simplekaltura/popup?entity_guid=' . $guid;
 
 $icon = elgg_view_entity_icon($video, 'medium', array(
 	'href' => $pop_url,

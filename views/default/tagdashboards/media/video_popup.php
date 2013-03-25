@@ -11,8 +11,6 @@
  * @uses $vars['entity']
  */
 
-$video = elgg_extract('entity', $vars);
-
 echo elgg_view('output/url', array(
 	'text' => elgg_echo('tagdashboards:label:viewvideo'),
 	'href' => $video->getURL(),

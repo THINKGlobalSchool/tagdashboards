@@ -28,7 +28,8 @@ foreach ($videos as $idx => $video) {
 
 	$owner = $video->getOwnerEntity();
 
-	$pop_url = elgg_get_site_url() . 'videos/popup/' . $video->guid;
+	$pop_url = elgg_get_site_url() . 'ajax/view/simplekaltura/popup?entity_guid=' . $video->guid;
+
 	$video_playlist[$idx]['title'] = $video->title;
 	$video_playlist[$idx]['description'] = $owner->name;
 	$video_playlist[$idx]['image'] = $video->getIconURL('large');
