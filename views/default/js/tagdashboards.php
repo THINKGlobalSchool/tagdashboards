@@ -32,6 +32,34 @@ elgg.tagdashboards.init = function () {
 	// Check hashes
 	elgg.tagdashboards.handle_hash();
 
+	// Handle click for timeline/media/content buttons
+	$('.switch-tagdashboards').live('click', function(event) {		
+		var params = {
+			href: $(this).attr('href'),
+		}
+
+		$(".tagdashboard-container").hide();
+		$(".tagdashboard-media-container").hide();
+
+		if (params.href === '#content') {
+			$(".tagdashboard-container").show();
+			window.location.hash = '';
+		} 
+
+		if (params.href === "#media") {
+			$(".tagdashboard-media-container").show();
+			window.location.hash = "media";
+
+			$('#tagdashboards-media-videos-coverflow').html('');
+			if (typeof init_coverflow == 'function') {
+				init_coverflow(playlist, mid);
+			}
+		}
+
+		elgg.trigger_hook('toggle_view', 'tagdashboards', params);
+		event.preventDefault();
+	});
+
 	// Register modules populated hook for simplekaltura videos
 	elgg.register_hook_handler('populated', 'modules', elgg.simplekaltura_utility.lightbox_init);
 }
@@ -259,7 +287,7 @@ elgg.tagdashboards.display = function (options) {
  */
 elgg.tagdashboards.handle_hash = function() {
 	// If we have a hash up in the address, search automatically
-	if (window.location.hash && window.location.hash != '#comments' && window.location.hash != "#timeline") {
+	if (window.location.hash && window.location.hash != '#comments' && window.location.hash != "#timeline" && window.location.hash != '#media') {
 		$('a#tagdashboards-options-toggle').show();
 		$('#tagdashboards-save-input-container').show();
 		
@@ -275,6 +303,20 @@ elgg.tagdashboards.handle_hash = function() {
 		// Display from form
 		elgg.tagdashboards.display_from_form(false);
 	} 
+
+	if (window.location.hash === '#media') {
+		$(".tagdashboard-container").hide();
+		$(".tagdashboard-media-container").show();
+
+		if (typeof init_coverflow == 'function') {
+			init_coverflow(playlist, mid);
+		}
+	} 
+
+	if (window.location.hash === '#timeline') {
+		$(".tagdashboard-media-container").hide();
+		$(".tagdashboard-container").hide();
+	}
 	return;
 }
 

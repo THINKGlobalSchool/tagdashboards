@@ -31,27 +31,27 @@ elgg.tagdashboards.timeline.init = function () {
 	if (window.location.hash == '#timeline') {
 		elgg.tagdashboards.timeline.toggle(1);
 	}
-	
-	// Handle click for timeline button
-	$('.switch-tagdashboards').live('click', function(event) {
-		elgg.tagdashboards.timeline.toggle($(this).attr('href'));
-		event.preventDefault();
-	});
+}
+
+elgg.tagdashboards.timeline.toggle_view = function(hook, type, params, value) {
+	if (params.href === '#timeline') {
+		elgg.tagdashboards.timeline.toggle(1);
+	} else {
+		elgg.tagdashboards.timeline.toggle(0);
+	}
+	return value;
 }
 
 elgg.tagdashboards.timeline.toggle = function(on) {
 	if (Number(on)) {
 		window.location.hash = "timeline";
 		$("#tagdashboards-timeline-container").show();
-		$(".tagdashboard-container").hide();
 		if (!elgg.tagdashboards.timeline.is_tl_loaded) {
 			elgg.tagdashboards.timeline.init_timeline();
 			elgg.tagdashboards.timeline.is_tl_loaded = true;
 		}
-	} else {
-		window.location.hash = "";	
+	} else {	
 		$("#tagdashboards-timeline-container").hide();
-		$(".tagdashboard-container").show();
 	}
 }
 
@@ -149,3 +149,4 @@ elgg.tagdashboards.timeline.initVideoLightbox = function(guid) {
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.timeline.init);
+elgg.register_hook_handler('toggle_view', 'tagdashboards', elgg.tagdashboards.timeline.toggle_view);

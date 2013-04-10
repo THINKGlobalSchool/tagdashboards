@@ -53,7 +53,8 @@ if (count($video_playlist)) {
 		// Focus the middle item
 		var mid = Math.ceil(playlist.length / 2);
 
-		coverflow('tagdashboards-media-videos-coverflow').setup({
+		var init_coverflow = function(playlist, mid) {
+			coverflow('tagdashboards-media-videos-coverflow').setup({
 				item: mid - 1,
 				backgroundcolor: '000000',
 				backgroundopacity: 0.5,
@@ -78,8 +79,10 @@ if (count($video_playlist)) {
 					lightbox.fancybox(elgg.simplekaltura_utility.get_lightbox_init()).trigger('click');
 				});
 			});
+			setTimeout(function() {coverflow().to(mid -1)}, 1000);
+		}
 
-		setTimeout(function() {coverflow().to(mid -1)}, 1000);
+		init_coverflow(playlist, mid);	
 	</script>
 JAVASCRIPT;
 

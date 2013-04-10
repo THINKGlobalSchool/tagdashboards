@@ -309,6 +309,16 @@ function tagdashboards_page_handler($page) {
 				elgg_unregister_js('jquery.form'); // Bye bye form.. don't need it
 				elgg_load_js('simile.timeline');
 				elgg_load_js('elgg.tagdashboards.timeline');
+
+				// Load JS for mediadashboard
+				elgg_load_js('jscoverflow');
+				elgg_load_js('lightbox');
+				elgg_load_css('lightbox');
+
+				elgg_load_js('simplekaltura:html5');
+				elgg_load_js('simplekaltura:utility');
+
+				elgg_load_library('KalturaClient');
 				$params = tagdashboards_get_page_content_view($page[1]);
 				break;
 			case 'group_activity':

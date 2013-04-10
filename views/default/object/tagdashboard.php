@@ -66,6 +66,7 @@ if ($full) { // Full view
 
 	$content_link_label = elgg_echo('tagdashboards:label:contentview');
 	$timeline_link_label = elgg_echo('tagdashboards:label:timelineview');
+	$media_link_label = elgg_echo('tagdashboards:label:mediaview');
 			
 	// Display tag dashboard depending on the tag dashboards groupby option
 	$subtypes = unserialize($tagdashboard->subtypes);
@@ -139,13 +140,17 @@ if ($full) { // Full view
 	if ($tagdashboard->column_count && $tagdashboard->column_count < 2) {
 		$float = "no-float";
 	}
+
+	$media_view = elgg_view('tagdashboards/media/content', array('dashboard_guid' => $tagdashboard->guid));
 	
 	$content = <<<HTML
 		<div class='tagdashboard-description'>
 			$description
 		</div>
 		<div class='tagdashboard-view-block'>
-			<a class='switch-tagdashboards' href='0'>$content_link_label</a> / <a class='switch-tagdashboards' href='1'>$timeline_link_label</a>
+			<a class='switch-tagdashboards' href='#content'>$content_link_label</a> / 
+			<a class='switch-tagdashboards' href='#timeline'>$timeline_link_label</a> /
+			<a class='switch-tagdashboards' href='#media'>$media_link_label</a>
 		</div>
 		<div style='clear:both;'></div>
 		$timeline
@@ -163,6 +168,9 @@ if ($full) { // Full view
 				$td_group_content_input
 			</div>
 			<div class='tagdashboards-content-container $float'></div>
+		</div>
+		<div class='tagdashboard-media-container hidden'>
+			$media_view
 		</div>
 		<a name='annotations'></a>
 		$td_hidden_guid

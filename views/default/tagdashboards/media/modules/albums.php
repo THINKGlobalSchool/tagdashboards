@@ -15,7 +15,7 @@ $dashboard_guid = elgg_extract('dashboard_guid', $vars);
 
 $options = tagdashboards_get_media_entities_options($dashboard_guid, array(
 	'subtype' => 'album',
-	'limit' => 0,
+	'limit' => 9999, // Doesn't like limit 0 for some reason..
 	'full_view' => FALSE,
 	'list_type' => 'gallery',
 	'enable_lightbox' => TRUE,

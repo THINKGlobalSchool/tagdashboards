@@ -12,9 +12,9 @@
  */
 
 // Create ajax module				
-$blogs = elgg_view('modules/genericmodule', array(
+$albums = elgg_view('modules/genericmodule', array(
 	'view' => 'tagdashboards/media/modules/albums',
 	'view_vars' => $vars,
 ));
 
-echo elgg_view_module('info', 'Albums', $blogs, array('class' => 'tagdashboards-media-images-container'));
+echo elgg_view_module('info', 'Albums', $albums, array('class' => 'tagdashboards-media-images-container'));

@@ -49,6 +49,7 @@ $english = array(
 	'tagdashboards:label:searchtag' => 'Search Tag',
 	'tagdashboards:label:contentview' => 'Content View',
 	'tagdashboards:label:timelineview' => 'Timeline View',
+	'tagdashboards:label:mediaview' => 'Media View',
 	'tagdashboards:label:groupbyactivity' => 'View by activity',
 	'tagdashboards:label:customtags' => 'Group by tags',
 	'tagdashboards:label:activity' => 'Group by role',

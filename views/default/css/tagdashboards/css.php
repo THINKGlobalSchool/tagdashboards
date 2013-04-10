@@ -73,7 +73,7 @@ div.tagdashboard-description {
 }
 
 div.tagdashboard-view-block {
-	width: 200px;
+	min-width: 200px;
 	margin-left: auto;
 	margin-right: auto;
 	font-size: 11px;

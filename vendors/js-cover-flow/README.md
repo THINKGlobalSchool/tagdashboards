@@ -1,5 +1,7 @@
 # JS Cover Flow
 
+#### http://luwes.co/labs/js-cover-flow/
+
 A Cover Flow component made for the web.
 
 Licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 3.0](http://creativecommons.org/licenses/by-nc-sa/3.0/)
