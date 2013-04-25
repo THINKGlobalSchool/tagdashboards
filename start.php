@@ -103,6 +103,7 @@ function tagdashboards_init() {
 	elgg_register_action('tagdashboards/delete', "$action_base/delete.php");
 	elgg_register_action('tagdashboards/subtypes', "$action_base/subtypes.php", 'admin');
 	elgg_register_action('tagdashboards/tag', "$action_base/tag.php");
+	elgg_register_action('tagdashboards/featured', "$action_base/featured.php", 'admin');
 
 	// Portfolio actions
 	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/portfolio';
@@ -333,7 +334,7 @@ function tagdashboards_page_handler($page) {
 				$params = tagdashboards_get_page_content_list();
 				break;
 		}
-		
+		$params['sidebar'] = $params['sidebar'] ? $params['sidebar'] : elgg_view('tagdashboards/sidebar');
 		$body = elgg_view_layout($params['layout'] ? $params['layout'] : 'content', $params);
 		echo elgg_view_page($params['title'], $body);
 	}
@@ -657,6 +658,27 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 			}
 		}
 	} 
+
+	// feature link
+	if (elgg_is_admin_logged_in()) {
+		if ($entity->featured_dashboard == "yes") {
+			$url = "action/tagdashboards/featured?guid={$entity->guid}&action_type=unfeature";
+			$wording = elgg_echo("tagdashboards:label:makeunfeatured");
+		} else {
+			$url = "action/tagdashboards/featured?guid={$entity->guid}&action_type=feature";
+			$wording = elgg_echo("tagdashboards:label:makefeatured");
+		}
+		$options = array(
+			'name' => 'feature',
+			'text' => $wording,
+			'href' => $url,
+			'priority' => 300,
+			'is_action' => true,
+			'section' => 'info'
+		);
+		$return[] = ElggMenuItem::factory($options);
+	}
+
 	return $return;
 }
 

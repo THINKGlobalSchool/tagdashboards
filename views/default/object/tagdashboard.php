@@ -58,6 +58,10 @@ $metadata = elgg_view_menu('entity', array(
 	'class' => 'elgg-menu-hz',
 ));
 
+if (elgg_in_context('widgets')) {
+	$metadata = '';
+}
+
 if ($full) { // Full view
 	$subtitle = "<p>$author_text $date $comments_link</p>";
 	
@@ -192,12 +196,6 @@ HTML;
 	echo elgg_view_image_block($owner_icon, $list_body);
 	
 } else { // Listing 
-	if($description != '') {
-		$view_desc = "| <a class='elgg-toggler' href='#desc-{$tagdashboard->guid}'>" . elgg_echo('description') . "</a>";
-		$description = "<div style='display: none;' id='desc-{$tagdashboard->guid}'>$description</div>"; 
-	} else {
-		$view_desc = '';
-	}
 	
 	$subtitle = "<p>$author_text $date $comments_link $view_desc</p>";
 
@@ -206,7 +204,6 @@ HTML;
 		'metadata' => $metadata,
 		'subtitle' => $subtitle,
 		'tags' => $tags,
-		'content' => $description,
 	);
 
 	$list_body = elgg_view('object/elements/summary', $params);

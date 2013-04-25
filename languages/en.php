@@ -74,6 +74,9 @@ $english = array(
 	'tagdashboards:label:ignoreportfolio' => 'Ignore',
 	'tagdashboards:label:customjobs' => 'Custom Jobs',
 	'tagdashboards:label:viewvideo' => 'View Original Video',
+	'tagdashboards:label:featured' => 'Featured Dashboards',
+	'tagdashboards:label:makeunfeatured' => 'Unfeature',
+	'tagdashboards:label:makefeatured' => 'Make featured',
 
 	// Descriptions
 	'tagdashboards:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',
@@ -109,6 +112,9 @@ $english = array(
 	'tagdashboards:success:addedportfolio' => 'Successfully added item to your portfolio',
 	'tagdashboards:success:recommendportfolio' => 'Successfully recommended for %s\'s portfolio',
 	'tagdashboards:success:addtag' => 'Successfully added "%s" tag',
+	'tagdashboards:success:featuredon' => '%s is now a featured dashboard.',
+	'tagdashboards:success:featuredoff' => '%s has been removed from the featured dashboards.',
+	'tagdashboards:error:featured' => 'Invalid dashboard.',
 	'tagdashboards:error:save' => 'Error saving Tag Dashboard',
 	'tagdashboards:error:delete' => 'There wasn an error deleting the Tag Dashboard',
 	'tagdashboards:error:notfound' => 'Tag Dashboard not found',
