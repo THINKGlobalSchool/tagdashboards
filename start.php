@@ -660,7 +660,7 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 	} 
 
 	// feature link
-	if (elgg_is_admin_logged_in()) {
+	if (elgg_is_admin_logged_in() && elgg_instanceof($entity, 'object', 'tagdashboard')) {
 		if ($entity->featured_dashboard == "yes") {
 			$url = "action/tagdashboards/featured?guid={$entity->guid}&action_type=unfeature";
 			$wording = elgg_echo("tagdashboards:label:makeunfeatured");
