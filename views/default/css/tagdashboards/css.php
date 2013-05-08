@@ -369,3 +369,31 @@ span.portfolio-recommended-text {
 	margin: 0;
 	color: #EEEEEE;
 }
+
+/** Group select lightbox **/
+#tagdashboards-group-select-container {
+	width: 450px;
+	overflow: hidden;
+}
+
+#tagdashboards-group-select-container .elgg-image-block {
+	border-bottom: 1px dotted #DDDDDD;
+	margin: 4px 0;
+}
+
+#tagdashboards-group-select-container .elgg-image-block:first-child {
+	border-top: 1px dotted #DDDDDD;
+	padding-top: 5px;
+}
+
+#tagdashboards-group-select-container .elgg-image-block .elgg-body {
+	color: #444444;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 8px;
+}
+
+#tagdashboards-group-select-container .elgg-image-block .elgg-image {
+	padding: 8px;
+}
+

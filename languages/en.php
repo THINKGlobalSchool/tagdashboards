@@ -77,6 +77,10 @@ $english = array(
 	'tagdashboards:label:featured' => 'Featured Dashboards',
 	'tagdashboards:label:makeunfeatured' => 'Unfeature',
 	'tagdashboards:label:makefeatured' => 'Make featured',
+	'tagdashboards:label:selectusersfromgroup' => 'Select users from group?',
+	'tagdashboards:label:selectusersthisgroup' => 'Select users from this group?',
+	'tagdashboards:label:selectgroup' => 'Select group',
+	'tagdashboards:label:select' => 'Select',
 
 	// Descriptions
 	'tagdashboards:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',
@@ -120,8 +124,10 @@ $english = array(
 	'tagdashboards:error:notfound' => 'Tag Dashboard not found',
 	'tagdashboards:error:requiredfields' => 'One or more required fields are missing',
 	'tagdashboards:error:invalidentity' => 'Invalid Entity',
+	'tagdashboards:error:invalidgroup' => 'Invalid Group',
 	'tagdashboards:error:invaliduser' => 'Invalid User',
 	'tagdashboards:error:invalidtag' => 'Invalid Tag',
+	'tagdashboards:error:selectgroup' => 'Please select a group',
 	'tagdashboards:error:nosearch' => 'Please enter search text',
 	
 	

@@ -104,6 +104,7 @@ function tagdashboards_init() {
 	elgg_register_action('tagdashboards/subtypes', "$action_base/subtypes.php", 'admin');
 	elgg_register_action('tagdashboards/tag', "$action_base/tag.php");
 	elgg_register_action('tagdashboards/featured', "$action_base/featured.php", 'admin');
+	elgg_register_action('tagdashboards/group_members', "$action_base/group_members.php");
 
 	// Portfolio actions
 	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/portfolio';
@@ -172,6 +173,9 @@ function tagdashboards_init() {
 	elgg_register_ajax_view('tagdashboards/media/modules/blogs');
 
 	elgg_register_ajax_view('tagdashboards/media/modules/albums');
+
+	elgg_register_ajax_view('tagdashboards/group_select');
+	elgg_register_ajax_view('forms/tagdashboards/group_list');
 
 	return true;
 }
@@ -300,9 +304,13 @@ function tagdashboards_page_handler($page) {
 				$params = tagdashboards_get_page_content_list($page[1]);
 				break;
 			case 'add':
+				elgg_load_js('lightbox');
+				elgg_load_css('lightbox');
 				$params = tagdashboards_get_page_content_edit($page_type, $page[1]);
 				break;
 			case 'edit':
+				elgg_load_js('lightbox');
+				elgg_load_css('lightbox');
 				$params = tagdashboards_get_page_content_edit($page_type, $page[1]);
 				break;
 			case 'view': 

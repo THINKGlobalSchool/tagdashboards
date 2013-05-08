@@ -12,6 +12,9 @@
 //<script>
 elgg.provide('elgg.tagdashboards');
 
+// Flag for group selected
+elgg.tagdashboards.group_selected = false;
+
 // Init function
 elgg.tagdashboards.init = function () {
 	// Setup and initialize tag autocomplete inputs
@@ -28,7 +31,46 @@ elgg.tagdashboards.init = function () {
 	$('.tagdashboards-arrow-toggler').each(elgg.tagdashboards.init_togglers);
 	
 	$('.tagdashboards-check-column').live('click', elgg.tagdashboards.toggle_column);
+
+	// Group select
+	$('.tagdashboards-group-select-link').fancybox({
+		'onClosed' : function() {
+			// Uncheck the group select toggle if no group was selected
+			if (!elgg.tagdashboards.group_selected) {
+				$('.tagdashboards-toggle-group-select').attr('checked', false);
+			}
+		}
+	});
+
+	// Toggle group select
+	$('.tagdashboards-toggle-group-select').live('click', elgg.tagdashboards.toggle_group_select);
 	
+	// Toggle 'this' group select
+	$('.tagdashboards-toggle-this-group-select').live('click', elgg.tagdashboards.toggle_this_group_select);
+
+	// Fix userpickers.. 
+	elgg.tagdashboards.fixUserPickers();
+
+	// Make group pagination load in the container 
+	$(document).delegate('#tagdashboards-group-select-container .elgg-pagination a','click', function(event) {
+		$container = $(this).closest('#tagdashboards-group-select-list');
+
+		var height = $container.height();
+
+		$container.html("<div style='height: " + height + "px' class='elgg-ajax-loader'></div>").css({
+			'height': height,
+		}).load($(this).attr('href'), function() {
+			$(this).css({'height':'auto'});
+		});
+
+		event.stopPropagation(); // Don't propagate the click event.. this messes with popups, etc
+		event.preventDefault();
+	});
+
+	$(document).delegate('#tagdashboards-group-select-submit', 'click', elgg.tagdashboards.group_select_click);
+
+	/** End group select **/
+
 	// Check hashes
 	elgg.tagdashboards.handle_hash();
 
@@ -422,7 +464,7 @@ elgg.tagdashboards.custom_tags_string_to_array = function (tag_string) {
 /** 
  * Toggle columns
  */
-elgg.tagdashboards.toggle_column = function (event) {
+elgg.tagdashboards.toggle_column = function(event) {
 	$('.tagdashboards-content-container').each(function() {
 		if ($(this).hasClass('no-float')) {
 			$(this).removeClass('no-float');
@@ -432,6 +474,117 @@ elgg.tagdashboards.toggle_column = function (event) {
 	});
 }
 
+/**
+ * Toggle group users select
+ */
+elgg.tagdashboards.toggle_group_select = function(event) {
+	if ($(this).is(':checked')) {
+		elgg.tagdashboards.group_selected = false;
+		$('.tagdashboards-group-select-link').trigger('click');
+	} else {
+		// Clear userpicker data
+		elgg.userpicker.userList = [];
+		$('.tagdashboards-groupby-description .elgg-user-picker-list').children().remove();
+	}
+}
+
+/**
+ * Toggle this group users select
+ */
+elgg.tagdashboards.toggle_this_group_select = function(event) {
+	if ($(this).is(':checked')) {
+		var guid = $(this).attr('id');
+
+		var _this = $(this);
+		
+		// Get group members
+		elgg.action('tagdashboards/group_members', {
+			data: {
+				group_guid: guid
+			},
+			success: function(response) {
+				if (response.status == 0) {
+					// Clear any user pickers
+					$('ul.elgg-user-picker-list').children().remove();
+
+					// Rebuild the user list
+					elgg.userpicker.userList = {};
+					var picker_list = _this.parent().find('div.elgg-user-picker').find('ul.elgg-user-picker-list');
+					picker_list.children().each(function() {
+						elgg.userpicker.userList[$(this).find('input').val()] = true;
+					});
+
+					elgg.tagdashboards.group_selected = true;
+					for (idx in response.output) {
+						elgg.tagdashboards.addUserToPicker(response.output[idx]);
+					}
+				} else {
+					// Error..
+				}
+				$.fancybox.close();
+			}
+		});
+	} else {
+		// Clear userpicker data
+		elgg.userpicker.userList = [];
+		$('.tagdashboards-groupby-description .elgg-user-picker-list').children().remove();
+	}
+}
+
+/**
+ * Group select click handler
+ */
+elgg.tagdashboards.group_select_click = function(event) {
+	var value = $('input[name="select_group_guid"]:checked').val();
+
+	var checkbox = $('.tagdashboards-toggle-group-select');
+
+	if (!value) {
+		elgg.register_error(elgg.echo('tagdashboards:error:selectgroup'));
+	} else {
+		// Get group members
+		elgg.action('tagdashboards/group_members', {
+			data: {
+				group_guid: value
+			},
+			success: function(response) {
+				if (response.status == 0) {
+					// Clear any user pickers
+					$('ul.elgg-user-picker-list').children().remove();
+
+					// Rebuild the user list
+					elgg.userpicker.userList = {};
+					var picker_list = checkbox.parent().find('div.elgg-user-picker').find('ul.elgg-user-picker-list');
+					picker_list.children().each(function() {
+						elgg.userpicker.userList[$(this).find('input').val()] = true;
+					});
+
+					elgg.tagdashboards.group_selected = true;
+					for (idx in response.output) {
+						elgg.tagdashboards.addUserToPicker(response.output[idx]);
+					}
+				} else {
+					// Error..
+				}
+				$.fancybox.close();
+			}
+		});
+	}
+	event.preventDefault();
+}
+
+/**
+ * Helper function to reproduce the userpicker addUser function
+ */
+elgg.tagdashboards.addUserToPicker = function(user_info) {
+	if (!(user_info.guid in elgg.userpicker.userList)) {
+		elgg.userpicker.userList[user_info.guid] = true;
+		var users = $('.tagdashboards-groupby-description .elgg-user-picker-list');
+		var li = '<input type="hidden" name="members[]" value="' + user_info.guid + '" />';
+		li += elgg.userpicker.viewUser(user_info);
+		$('<li>').html(li).appendTo(users);
+	}
+}
 
 /** 
  * Simple switcher function for the groupby inputs
@@ -439,6 +592,25 @@ elgg.tagdashboards.toggle_column = function (event) {
 elgg.tagdashboards.groupby_switcher = function(event) {
 	$('.tagdashboards-groupby-div').hide();
 	$('#tagdashboards-groupby-div-' + $(this).val()).show();
+}
+
+// Temporary fix for multiple user pickers on tag dashboard edit form 
+elgg.tagdashboards.fixUserPickers = function(event) {
+	var pickers = $('#tagdashboards-save-container').find('.elgg-input-user-picker').bind('mousedown', function(event){
+		var _this = $(this);
+		$('#tagdashboards-save-container').find('.elgg-input-user-picker').each(function(idx, value) {
+			// Clear the OTHER userpicker
+			if (!$(this).is(_this)) {
+				$(this).parent().find('ul.elgg-user-picker-list').children().remove();
+			} else {
+				// Rebuild the user list
+				elgg.userpicker.userList = {};
+				$(this).parent().find('ul.elgg-user-picker-list').children().each(function() {
+					elgg.userpicker.userList[$(this).find('input').val()] = true;
+				});
+			}
+		});
+	});
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.init);
