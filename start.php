@@ -342,7 +342,9 @@ function tagdashboards_page_handler($page) {
 				$params = tagdashboards_get_page_content_list();
 				break;
 		}
+		// This looks crazy, but I need to supply both sidebars (for now)
 		$params['sidebar'] = $params['sidebar'] ? $params['sidebar'] : elgg_view('tagdashboards/sidebar');
+		$params['sidebar_alt'] = $params['sidebar'];
 		$body = elgg_view_layout($params['layout'] ? $params['layout'] : 'content', $params);
 		echo elgg_view_page($params['title'], $body);
 	}
