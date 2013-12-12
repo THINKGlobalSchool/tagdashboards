@@ -214,6 +214,7 @@ div.timeline-event-icon-default {
 
 #tagdashboards-recommended-dropdown {
 	width: 500px;
+	display: none;
 }
 
 span.portfolio-recommended-caret {
