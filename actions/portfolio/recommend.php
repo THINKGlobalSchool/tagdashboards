@@ -28,6 +28,20 @@ if (!$remove) {
 		$entity->recommended_portfolio = 1;
 		$success = $entity->save();
 		elgg_set_ignore_access($ia);
+
+		$entity_owner = $entity->getOwnerEntity();
+
+		$logged_in_user_name = elgg_get_logged_in_user_entity()->name;
+
+		$portfolio_url = elgg_get_site_url() . 'profile/' . $entity_owner->username . '/portfolio'; 
+
+		notify_user($entity->owner_guid,
+			elgg_get_site_entity()->guid,
+			elgg_echo('tagdashboards:notification:recommend_subj', array($logged_in_user_name)),
+			elgg_echo('tagdashboards:notification:recommend_body', array($logged_in_user_name, $entity->getURL(), $portfolio_url)),
+			NULL,
+			'email'
+		);
 	}
 } else if ($remove && $entity->getOwnerGUID() == elgg_get_logged_in_user_guid()) {
 	// Remove the recommended metadata

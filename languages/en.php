@@ -108,6 +108,10 @@ $english = array(
 	'tagdashboards:notification:body' => "%s created a new Tag Dashboard titled: %s\n\n%s\n\nTo view the tag dashboard click here:\n%s
 ",
 	
+	'tagdashboards:notification:recommend_subj' => '%s has recommended content for your Spot Portfolio!',
+	'tagdashboards:notification:recommend_body' => "%s recommends adding: %s\n\nTo view your portfolio and manage your portfolio items, click here: %s",
+	
+
 	// Messages
 	'tagdashboards:success:setenabledsubtypes' => 'Enabled subtypes set',
 	'tagdashboards:success:save' => 'Succesfully saved Tag Dashboard',
