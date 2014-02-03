@@ -52,6 +52,12 @@ if (elgg_instanceof($user, 'user')) {
 		'value' => json_encode(array($user->guid))
 	));
 
+	$td_portfolio_context = elgg_view('input/hidden', array(
+		'name' => 'context', 
+		'id' => 'context', 
+		'value' => 'portfolio_context'
+	));
+
 	$content .= <<<HTML
 		<div class='clearfix'></div>
 		<div class='tagdashboard-container portfolio-left'>
@@ -60,6 +66,7 @@ if (elgg_instanceof($user, 'user')) {
 				$td_subtypes_input
 				$td_search_input
 				$td_owner_guids_input
+				$td_portfolio_context
 			</div>
 			<div class='tagdashboards-content-container'></div>
 		</div>

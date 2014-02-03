@@ -17,6 +17,9 @@ elgg.portfolio.init = function () {
 	// Click handler for portfolio add 
 	$(document).delegate('.portfolio-add', 'click', elgg.portfolio.addClick);
 
+	// Click handler for portfolio remove
+	$(document).delegate('.portfolio-remove', 'click', elgg.portfolio.removeClick);
+
 	// Click handler for porftolio recommend
 	$(document).delegate('.portfolio-recommend', 'click', elgg.portfolio.recommendClick);
 
@@ -58,8 +61,53 @@ elgg.portfolio.addClick = function(event) {
 					// Add tag metadata
 					elgg.portfolio.addTagMetadata(entity_guid, 'portfolio');
 
-					// Remove link from actions menu
-					elgg.portfolio.removeFromMenu($_this.attr('id'));
+					$_this.html(elgg.echo('tagdashboards:label:removeportfolio'));
+					$_this.removeClass('portfolio-add');
+					$_this.addClass('portfolio-remove');
+					$_this.removeClass('disabled');
+
+					elgg.portfolio.repositionMenu(entity_guid);
+
+				} else {
+					// Error
+					$_this.removeClass('disabled');
+				}
+			}
+		});
+	}
+	event.preventDefault();
+}
+
+// Click handler for portfolio remove 
+elgg.portfolio.removeClick = function(event) {
+	if (!$(this).hasClass('disabled')) {
+		// href will be #{guid}
+		var entity_guid = $(this).attr('href').substring(1);
+
+		$(this).addClass('disabled');
+
+		$_this = $(this);
+
+		elgg.action('portfolio/remove', {
+			data: {
+				guid: entity_guid,
+			},
+			success: function(data) {
+				if (data.status != -1) {
+					// If this link is in a module, remove it
+					if ($_this.hasClass('portfolio-remove-module')) {
+						$_this.closest('li.elgg-item').fadeOut().remove();
+					} else {
+						elgg.portfolio.removeTagMetadata(entity_guid, 'portfolio');
+
+						// Swap out the link with the add button
+						$_this.html(elgg.echo('tagdashboards:label:addtoportfolio'));
+						$_this.addClass('portfolio-add');
+						$_this.removeClass('portfolio-remove');
+
+						elgg.portfolio.repositionMenu(entity_guid);
+					}
+					$_this.removeClass('disabled');
 				} else {
 					// Error
 					$_this.removeClass('disabled');
@@ -87,7 +135,7 @@ elgg.portfolio.recommendClick = function(event) {
 			success: function(data) {
 				if (data.status != -1) {
 					// Remove link from actions menu
-					elgg.portfolio.removeFromMenu($_this.attr('id'));
+					elgg.portfolio.removeFromMenu($_this.attr('id'), entity_guid);
 				} else {
 					// Error
 					$_this.removeClass('disabled');
@@ -215,7 +263,7 @@ elgg.portfolio.tagEntity = function($sender, guid, tag) {
 				elgg.portfolio.addTagMetadata(guid, tag);
 			
 				// Remove link from actions menu
-				elgg.portfolio.removeFromMenu($sender.attr('id'));
+				elgg.portfolio.removeFromMenu($sender.attr('id'), guid);
 			} else {
 				// Error
 				$sender.removeClass('disabled');
@@ -266,6 +314,28 @@ elgg.portfolio.addTagMetadata = function(guid, tag) {
 	}
 }
 
+// Helper function to remove tag html content to entity metadata
+elgg.portfolio.removeTagMetadata = function(guid, tag) {
+	$entity_anchor = $(document).find('#entity-anchor-' + guid);
+
+	var $elgg_body = $entity_anchor.closest('.elgg-body');
+
+	var $tags = $elgg_body.find('ul.elgg-tags');
+
+	var count = $tags.find('li').length;
+
+	// Check for existing tags
+	if (count == 1) {
+		$tags.closest('div').fadeOut('fast', function() {
+			$(this).remove();
+		});
+	} else {
+		$tags.find('li:contains("portfolio")').fadeOut('fast', function() {
+			$(this).remove();
+		});
+	}
+}
+
 /**	
  * Load portfolio content 
  */
@@ -280,7 +350,8 @@ elgg.portfolio.loadContent = function() {
 
 		elgg.get(url, {
 			data: {
-				user_guid: user_guid
+				'user_guid': user_guid,
+				'context': 'portfolio'
 			},
 			success: function(data){
 				$container.html(data);
@@ -296,12 +367,13 @@ elgg.portfolio.loadContent = function() {
  *
  * @return {void}
  */
-elgg.portfolio.removeFromMenu = function(id) {
+elgg.portfolio.removeFromMenu = function(id, guid) {
 	var $link = $('#' + id);
 	var $menu = $link.closest('.tgstheme-entity-menu-actions');
 	var width = $menu.width();
 	$link.parent().remove();
-	$menu.width(width);
+
+	elgg.portfolio.repositionMenu(guid);
 }
 
 /**
@@ -322,6 +394,22 @@ elgg.portfolio.recommendedHandler = function(hook, type, params, options) {
 	}
 	return null;
 };
+
+/**
+ * Helper function to reposition the entity menu when a link is removed/changes
+ */
+elgg.portfolio.repositionMenu = function(entity_guid) {
+	var $entity_anchor = $(document).find('#entity-anchor-' + entity_guid);
+	var $toggler = $entity_anchor.closest('.elgg-menu-entity').find('.entity-action-toggler');
+	var $menu = $_this.closest('.tgstheme-entity-menu-actions');
+	
+	$menu.position({
+		of: $toggler,
+		my: 'right top',
+		at: 'right bottom',
+		offset: '0 15'
+	});
+}
 
 elgg.register_hook_handler('getOptions', 'ui.popup', elgg.portfolio.recommendedHandler);
 elgg.register_hook_handler('init', 'system', elgg.portfolio.init);

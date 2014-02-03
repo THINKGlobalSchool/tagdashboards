@@ -109,6 +109,7 @@ function tagdashboards_init() {
 	// Portfolio actions
 	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/portfolio';
 	elgg_register_action('portfolio/add', "$action_base/add.php");
+	elgg_register_action('portfolio/remove', "$action_base/remove.php");
 	elgg_register_action('portfolio/recommend', "$action_base/recommend.php");
 
 	// Setup url handler for tag dashboards
@@ -224,6 +225,7 @@ function tagdashboards_page_handler($page) {
 		$upper_date = get_input('upper_date', NULL);
 		$custom_tags = get_input('custom_tags');
 		$custom_titles = get_input('custom_titles');
+		$context = get_input('context');
 
 		$dashboard_options = array(
 			'type' => $type,
@@ -240,8 +242,9 @@ function tagdashboards_page_handler($page) {
 			'upper_date' => $upper_date,
 			'custom_tags' => $custom_tags,
 			'custom_titles' => $custom_titles,
+			'context' => $context
 		);
-		
+
 		// Ajax loads
 		switch ($page_type) {
 			case 'loadtagdashboard':
@@ -650,6 +653,18 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'id' => "portfolio-add-{$entity->guid}",
 				);
 				$return[] = ElggMenuItem::factory($options);
+			} else {
+				$options = array(
+					'name' => 'remove_from_portfolio',
+					'text' => elgg_echo('tagdashboards:label:removeportfolio'),
+					'title' => 'remove_fromportfolio',
+					'href' => "#{$entity->guid}",
+					'class' => 'portfolio-remove',
+					'section' => 'actions',
+					'priority' => 102,
+					'id' => "portfolio-remove-{$entity->guid}",
+				);
+				$return[] = ElggMenuItem::factory($options);
 			}
 		} else {
 			// If we don't have the recommended metadata or the portfolio tag, show the recommend button
@@ -807,6 +822,20 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
  * @return array
  */
 function portfolio_setup_simpleicon_entity_menu($hook, $type, $return, $params) {
+	// If we're in the portfolio context, add a 'remove' link
+	if (get_input('context') == 'portfolio_context') {
+		$entity = $params['entity'];
+		$options = array(
+			'name' => 'remove_from_portfolio',
+			'text' => elgg_echo('tagdashboards:label:remove'),
+			'title' => 'remove_fromportfolio',
+			'href' => "#{$entity->guid}",
+			'class' => 'portfolio-remove portfolio-remove-module',
+			'section' => 'info',
+		);
+		$return[] = ElggMenuItem::factory($options);
+	}
+
 	if (get_input('recommended_portfolio')) {
 		$entity = $params['entity'];
 		

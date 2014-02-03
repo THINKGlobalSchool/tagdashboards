@@ -51,6 +51,7 @@ foreach ($subtypes as $subtype) {
 		'types' => array('object'),
 		'subtypes' => array($subtype),
 		'limit' => 10,
+		'context' => $vars['context']
 	);
 
 	$entity_params[$param] = $search;
@@ -76,7 +77,7 @@ foreach ($subtypes as $subtype) {
 		);
 		
 		$params = array_merge($entity_params, $module_params);
-		
+	
 		// Default module
 		$content = elgg_view('modules/ajaxmodule', $params);
 	}

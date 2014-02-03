@@ -156,6 +156,7 @@ elgg.tagdashboards.init_dashboards_with_container = function(container) {
 			options[$(this).attr('name')] = value;
 		}
 	});
+
 	// Display it
 	elgg.tagdashboards.display(options);
 }
@@ -288,6 +289,7 @@ elgg.tagdashboards.display = function (options) {
 	var custom_titles  = elgg.tagdashboards.custom_tags_string_to_array(options['custom_titles']);
 	var lower_date 	   = options['lower_date'] ? options['lower_date'] : '';
 	var upper_date 	   = options['upper_date'] ? options['upper_date'] : '';
+	var context        = options['context'];
 
 	// Create url to load
 	var url = elgg.normalize_url('tagdashboards/loadtagdashboard?type=' + type);
@@ -305,7 +307,7 @@ elgg.tagdashboards.display = function (options) {
 	if (user_guids && !$.isArray(user_guids)) {
 		user_guids = [user_guids];
 	}
-	
+
 	// Load in content
 	$('.tagdashboards-content-container').hide().load(url, { 
 		'custom_tags[]': 	custom_tags, 
@@ -316,6 +318,7 @@ elgg.tagdashboards.display = function (options) {
 		'container_guid':   container_guid,
 		'lower_date': 		lower_date,
 		'upper_date': 		upper_date, 
+		'context': 			context
 		}, 
 		function() {
 			$('.tagdashboards-content-container').fadeIn('fast');
