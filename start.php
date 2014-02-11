@@ -154,6 +154,9 @@ function tagdashboards_init() {
 	// Register blog content view hook handler
 	elgg_register_plugin_hook_handler('view', 'object/blog', 'tagdashboards_blog_view_hook_handler');
 
+	// Register exception for typeaheadtags
+	elgg_register_plugin_hook_handler('get_exceptions', 'typeaheadtags', 'tagdashboards_tags_exceptions_handler');
+
 	// Upgrade Event Handler
 	elgg_register_event_handler('upgrade', 'system', 'tagdashboards_run_upgrades');
 
@@ -937,4 +940,19 @@ function tagdashboards_blog_view_hook_handler($hook, $type, $return, $params) {
 		return elgg_view('tagdashboards/media/content_teaser', $params['vars']);	
 	}
 	return $value;
+}
+
+/**
+ * Handler for typeahead tags 'default' tags exceptions
+ *
+ * @param sting  $hook   view
+ * @param string $type   type
+ * @param mixed  $return value
+ * @param mixed  $params params
+ *
+ * @return array
+ */
+function tagdashboards_tags_exceptions_handler($hook, $type, $return, $params) {
+	$return[] = 'search';
+	return $return;
 }
