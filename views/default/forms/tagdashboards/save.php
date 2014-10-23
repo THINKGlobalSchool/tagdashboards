@@ -14,6 +14,7 @@
 $title 			= elgg_extract('title', $vars);
 $description 	= elgg_extract('description', $vars);
 $tags 			= elgg_extract('tags', $vars);
+$default_view   = elgg_extract('default_view', $vars);
 $access_id 		= elgg_extract('access_id', $vars);
 $search			= elgg_extract('search', $vars);
 $custom_tags	= elgg_extract('custom_tags', $vars);
@@ -92,6 +93,20 @@ if (elgg_is_logged_in()) {
 		'name' => 'description',
 		'value' => $description
 	));
+
+	$default_view_label =  elgg_echo('tagdashboards:label:default_view');
+	$default_view_input = elgg_view('input/dropdown', array(
+		'id' => 'tagdashboard-default-view',
+		'name' => 'default_view',
+		'value' => $default_view,
+		'options_values' => array(
+			'content' => elgg_echo('tagdashboards:label:contentview'),
+			'timeline' => elgg_echo('tagdashboards:label:timelineview'),
+			'media' => elgg_echo('tagdashboards:label:mediaview'),
+			'activity' => elgg_echo('tagdashboards:label:activityview'),
+		)
+	));
+
 
 	$tags_label =  elgg_echo('tagdashboards:label:tags');
 	$tags_input = elgg_view('input/tags', array(
@@ -273,6 +288,10 @@ if (elgg_is_logged_in()) {
 			</p>
 			<div style='clear: both;'></div>
 			<br />
+			<p>
+				<label>$default_view_label</label>
+				$default_view_input
+			</p>
 			<p>
 				<label>$tags_label</label>
 				$tags_input

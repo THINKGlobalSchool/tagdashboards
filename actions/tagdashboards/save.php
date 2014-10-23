@@ -25,6 +25,7 @@ $lower_date 		= strtotime(get_input('lower_date', null));
 $upper_date 		= strtotime(get_input('upper_date', null));
 $column_count		= get_input('columns');
 $group_content      = get_input('group_content', null);
+$default_view       = get_input('default_view', 'content');
 
 // Trim any trailing commas from search tag
 $search = rtrim($search, ',');
@@ -62,6 +63,7 @@ $tagdashboard->custom_tags = $custom_tags;
 $tagdashboard->lower_date = $lower_date;
 $tagdashboard->upper_date = $upper_date;
 $tagdashboard->group_content = $group_content == 'on' ? 1 : 0;
+$tagdashboard->default_view = $default_view;
 
 // If we're grouping by users, the 'members' input will be user guids instead of owner guids
 if ($groupby == 'users') {

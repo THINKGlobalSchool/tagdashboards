@@ -371,6 +371,12 @@ span.portfolio-recommended-text {
 	color: #EEEEEE;
 }
 
+/** Activity View **/
+
+.tagdashboard-activity-container .spiffyactivity-list-item {
+	width: 49%;
+}
+
 /** Group select lightbox **/
 #tagdashboards-group-select-container {
 	width: 450px;

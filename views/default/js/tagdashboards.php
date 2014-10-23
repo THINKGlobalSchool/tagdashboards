@@ -82,6 +82,7 @@ elgg.tagdashboards.init = function () {
 
 		$(".tagdashboard-container").hide();
 		$(".tagdashboard-media-container").hide();
+		$(".tagdashboard-activity-container").hide();
 
 		if (params.href === '#content') {
 			$(".tagdashboard-container").show();
@@ -98,12 +99,24 @@ elgg.tagdashboards.init = function () {
 			}
 		}
 
+		if (params.href === "#activity") {
+			$(".tagdashboard-activity-container").show();
+			window.location.hash = "activity";
+			elgg.tagdashboards.init_activity();
+		}
+
 		elgg.trigger_hook('toggle_view', 'tagdashboards', params);
 		event.preventDefault();
 	});
 
 	// Register modules populated hook for simplekaltura videos
 	elgg.register_hook_handler('populated', 'modules', elgg.simplekaltura_utility.lightbox_init);
+}
+
+elgg.tagdashboards.init_activity = function (hook, type, params, value) {
+	if (!params || params.container.closest('.tagdashboard-activity-container').length) {
+		elgg.spiffyactivity.filtrate_init();
+	}
 }
 
 /**	
@@ -332,7 +345,7 @@ elgg.tagdashboards.display = function (options) {
  */
 elgg.tagdashboards.handle_hash = function() {
 	// If we have a hash up in the address, search automatically
-	if (window.location.hash && window.location.hash != '#comments' && window.location.hash != "#timeline" && window.location.hash != '#media') {
+	if (window.location.hash && window.location.hash != '#comments' && window.location.hash != "#timeline" && window.location.hash != '#media' && window.location.hash != '#activity') {
 		$('a#tagdashboards-options-toggle').show();
 		$('#tagdashboards-save-input-container').show();
 		
@@ -348,6 +361,12 @@ elgg.tagdashboards.handle_hash = function() {
 		// Display from form
 		elgg.tagdashboards.display_from_form(false);
 	} 
+
+	if (window.location.hash === '#activity') {
+		$(".tagdashboard-container").hide();
+		$(".tagdashboard-activity-container").show();
+		elgg.tagdashboards.init_activity();
+	}
 
 	if (window.location.hash === '#media') {
 		$(".tagdashboard-container").hide();
@@ -617,3 +636,5 @@ elgg.tagdashboards.fixUserPickers = function(event) {
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.init);
+elgg.register_hook_handler('generic_populated', 'modules', elgg.tagdashboards.init_activity);
+elgg.register_hook_handler('pagination_content_loaded', 'modules', elgg.tagdashboards.init_activity);

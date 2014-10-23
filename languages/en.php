@@ -50,6 +50,7 @@ $english = array(
 	'tagdashboards:label:contentview' => 'Content View',
 	'tagdashboards:label:timelineview' => 'Timeline View',
 	'tagdashboards:label:mediaview' => 'Media View',
+	'tagdashboards:label:activityview' => 'Activity View',
 	'tagdashboards:label:groupbyactivity' => 'View by activity',
 	'tagdashboards:label:customtags' => 'Group by tags',
 	'tagdashboards:label:activity' => 'Group by role',
@@ -83,6 +84,7 @@ $english = array(
 	'tagdashboards:label:selectusersthisgroup' => 'Select users from this group?',
 	'tagdashboards:label:selectgroup' => 'Select group',
 	'tagdashboards:label:select' => 'Select',
+	'tagdashboards:label:default_view' => 'Default View',
 
 	// Descriptions
 	'tagdashboards:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',

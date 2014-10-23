@@ -171,15 +171,12 @@ function tagdashboards_init() {
 	
 	// Register Ajax Views
 	elgg_register_ajax_view('tagdashboards/module/recommended');
-
 	elgg_register_ajax_view('tagdashboards/portfolio/content');
-
 	elgg_register_ajax_view('tagdashboards/media/modules/blogs');
-
 	elgg_register_ajax_view('tagdashboards/media/modules/albums');
-
 	elgg_register_ajax_view('tagdashboards/group_select');
 	elgg_register_ajax_view('forms/tagdashboards/group_list');
+	elgg_register_ajax_view('tagdashboards/activity/list');
 
 	return true;
 }

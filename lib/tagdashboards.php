@@ -311,6 +311,7 @@ function tagdashboards_prepare_form_vars($tagdashboard = NULL) {
 		'description' => NULL,
 		'tags' => NULL,
 		'access_id' => NULL,
+		'default_view' => 'content',
 		'search' => NULL,
 		'custom_tags' => NULL,
 		'owner_guids' => NULL,
@@ -671,6 +672,21 @@ function tagdashboards_get_blog_preview_image($blog) {
 		'href' => $blog->getURL(),
 		'target' => '_blank',
 	));
+}
+
+/**
+ * Return entity guids
+ */
+function tagdashboards_row_to_guid($row) {
+	if (!($row instanceof stdClass)) {
+		return $row;
+	}
+
+	if ((!isset($row->guid)) || (!isset($row->subtype))) {
+		return $row;
+	}
+
+	return $row->guid;
 }
 
 /** HOOK EXAMPLES */

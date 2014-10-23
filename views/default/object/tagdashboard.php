@@ -20,12 +20,10 @@ if (!$tagdashboard) {
 
 // Get entity info
 $owner = $tagdashboard->getOwnerEntity();
-
 $container = $tagdashboard->getContainerEntity();
-
 $title = $tagdashboard->title;
-
 $description = $tagdashboard->description;
+$default_view = $tagdashboard->default_view ? $tagdashboard->default_view : 'content';
 
 $owner_icon = elgg_view_entity_icon($owner, 'tiny');
 $owner_link = elgg_view('output/url', array(
@@ -34,9 +32,7 @@ $owner_link = elgg_view('output/url', array(
 ));
 
 $author_text = elgg_echo('byline', array($owner_link));
-
 $tags = elgg_view('output/tags', array('tags' => $tagdashboard->tags));
-
 $date = elgg_view_friendly_time($tagdashboard->time_created);
 
 $comments_count = $tagdashboard->countComments();
@@ -71,6 +67,7 @@ if ($full) { // Full view
 	$content_link_label = elgg_echo('tagdashboards:label:contentview');
 	$timeline_link_label = elgg_echo('tagdashboards:label:timelineview');
 	$media_link_label = elgg_echo('tagdashboards:label:mediaview');
+	$activity_link_label = elgg_echo('tagdashboards:label:activityview');
 			
 	// Display tag dashboard depending on the tag dashboards groupby option
 	$subtypes = unserialize($tagdashboard->subtypes);
@@ -146,15 +143,18 @@ if ($full) { // Full view
 	}
 
 	$media_view = elgg_view('tagdashboards/media/content', array('dashboard_guid' => $tagdashboard->guid));
+
+	$activity_view = elgg_view('tagdashboards/activity/content', array('dashboard_guid' => $tagdashboard->guid));
 	
 	$content = <<<HTML
 		<div class='tagdashboard-description'>
 			$description
 		</div>
 		<div class='tagdashboard-view-block'>
-			<a class='switch-tagdashboards' href='#content'>$content_link_label</a> / 
-			<a class='switch-tagdashboards' href='#timeline'>$timeline_link_label</a> /
-			<a class='switch-tagdashboards' href='#media'>$media_link_label</a>
+			<a class='switch-tagdashboards switch-content' href='#content'>$content_link_label</a> / 
+			<a class='switch-tagdashboards switch-timeline' href='#timeline'>$timeline_link_label</a> /
+			<a class='switch-tagdashboards switch-media' href='#media'>$media_link_label</a> /
+			<a class='switch-tagdashboards switch-activity' href='#activity'>$activity_link_label</a>
 		</div>
 		<div style='clear:both;'></div>
 		$timeline
@@ -176,6 +176,9 @@ if ($full) { // Full view
 		<div class='tagdashboard-media-container hidden'>
 			$media_view
 		</div>
+		<div class='tagdashboard-activity-container hidden'>
+			$activity_view
+		</div>
 		<a name='annotations'></a>
 		$td_hidden_guid
 HTML;
@@ -194,6 +197,17 @@ HTML;
 	$list_body = elgg_view('object/elements/summary', $params);
 
 	echo elgg_view_image_block($owner_icon, $list_body);
+
+	echo <<<JAVASCRIPT
+		<script type='text/javascript'>
+			$(document).ready(function(event) {
+				// Switch to default view
+				if ("$default_view" != 'content') {
+					$('a.switch-$default_view').trigger('click');
+				}
+			});
+		</script>
+JAVASCRIPT;
 	
 } else { // Listing 
 	
