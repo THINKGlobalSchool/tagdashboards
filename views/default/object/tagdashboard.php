@@ -201,10 +201,10 @@ HTML;
 	echo <<<JAVASCRIPT
 		<script type='text/javascript'>
 			$(document).ready(function(event) {
-				// Switch to default view
-				if ("$default_view" != 'content') {
+				// Switch to default view on elgg system ready
+				elgg.register_hook_handler('init', 'system', function() {
 					$('a.switch-$default_view').trigger('click');
-				}
+				}); 
 			});
 		</script>
 JAVASCRIPT;
