@@ -16,7 +16,12 @@ $dashboard_guid = elgg_extract('dashboard_guid', $vars);
 
 elgg_register_plugin_hook_handler('view', 'river/elements/layout', 'spiffyactivity_river_layout_view_handler');
 
-echo elgg_view('modules/genericmodule', array(
-	'view' => 'tagdashboards/activity/list',
-	'view_vars' => array('dashboard_guid' => $dashboard_guid),
+echo elgg_view('filtrate/dashboard', array(
+	'menu_name' => '',
+	'infinite_scroll' => true,
+	'default_params' => array(
+		'type' => 0
+	),
+	'list_url' => elgg_get_site_url() . 'ajax/view/tagdashboards/activity/list?dashboard_guid=' . $dashboard_guid,
+	'id' => 'activity-filtrate'
 ));

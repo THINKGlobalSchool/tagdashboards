@@ -5,7 +5,7 @@
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
+ * @copyright THINK Global School 2010 - 2014
  * @link http://www.thinkglobalschool.com/
  */ 
 ?>
@@ -102,7 +102,6 @@ elgg.tagdashboards.init = function () {
 		if (params.href === "#activity") {
 			$(".tagdashboard-activity-container").show();
 			window.location.hash = "activity";
-			elgg.tagdashboards.init_activity();
 		}
 
 		elgg.trigger_hook('toggle_view', 'tagdashboards', params);
@@ -111,12 +110,6 @@ elgg.tagdashboards.init = function () {
 
 	// Register modules populated hook for simplekaltura videos
 	elgg.register_hook_handler('populated', 'modules', elgg.simplekaltura_utility.lightbox_init);
-}
-
-elgg.tagdashboards.init_activity = function (hook, type, params, value) {
-	if (!params || params.container.closest('.tagdashboard-activity-container').length) {
-		elgg.spiffyactivity.filtrate_init();
-	}
 }
 
 /**	
@@ -365,7 +358,6 @@ elgg.tagdashboards.handle_hash = function() {
 	if (window.location.hash === '#activity') {
 		$(".tagdashboard-container").hide();
 		$(".tagdashboard-activity-container").show();
-		elgg.tagdashboards.init_activity();
 	}
 
 	if (window.location.hash === '#media') {
@@ -636,5 +628,3 @@ elgg.tagdashboards.fixUserPickers = function(event) {
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.init);
-elgg.register_hook_handler('generic_populated', 'modules', elgg.tagdashboards.init_activity);
-elgg.register_hook_handler('pagination_content_loaded', 'modules', elgg.tagdashboards.init_activity);

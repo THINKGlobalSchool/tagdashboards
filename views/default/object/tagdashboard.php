@@ -35,18 +35,6 @@ $author_text = elgg_echo('byline', array($owner_link));
 $tags = elgg_view('output/tags', array('tags' => $tagdashboard->tags));
 $date = elgg_view_friendly_time($tagdashboard->time_created);
 
-$comments_count = $tagdashboard->countComments();
-//only display if there are commments
-if ($comments_count != 0) {
-	$text = elgg_echo("comments") . " ($comments_count)";
-	$comments_link = elgg_view('output/url', array(
-		'href' => $tagdashboard->getURL() . '#comments',
-		'text' => $text,
-	));
-} else {
-	$comments_link = '';
-}
-
 $metadata = elgg_view_menu('entity', array(
 	'entity' => $tagdashboard,
 	'handler' => 'tagdashboards',
@@ -59,7 +47,7 @@ if (elgg_in_context('widgets')) {
 }
 
 if ($full) { // Full view
-	$subtitle = "<p>$author_text $date $comments_link</p>";
+	$subtitle = "<p>$author_text $date </p>";
 	
 	$searchtag_label = elgg_echo('tagdashboards:label:searchtag');
 	$searchtag_content = $tagdashboard->search;
@@ -183,7 +171,7 @@ if ($full) { // Full view
 		$td_hidden_guid
 HTML;
 
-	$subtitle = "<p>$author_text $date $comments_link<br /><strong>$searchtag_label: $searchtag_content</strong></p>";
+	$subtitle = "<p>$author_text $date <br /><strong>$searchtag_label: $searchtag_content</strong></p>";
 
 	$params = array(
 		'entity' => $tagdashboard,
@@ -211,7 +199,7 @@ JAVASCRIPT;
 	
 } else { // Listing 
 	
-	$subtitle = "<p>$author_text $date $comments_link $view_desc</p>";
+	$subtitle = "<p>$author_text $date  $view_desc</p>";
 
 	$params = array(
 		'entity' => $tagdashboard,

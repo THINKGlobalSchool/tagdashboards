@@ -172,7 +172,6 @@ function tagdashboards_get_page_content_view($guid) {
 	elgg_push_breadcrumb($tagdashboard->title, $tagdashboard->getURL());
 	$params['title'] = $tagdashboard->title;
 	$params['content'] .= elgg_view_entity($tagdashboard, array('full_view' => TRUE));	
-	$params['content'] .= "<a name='comments'></a>" . elgg_view_comments($tagdashboard);
 	$params['layout'] = 'content';
 	$params['filter'] = ' ';
 	return $params;
