@@ -15,6 +15,7 @@
 .elgg-menu-item-add-to-portfolio,
 .elgg-menu-item-remove-from-portfolio,
 .elgg-menu-item-recommend-for-portfolio,
-.elgg-menu-item-tag-for-weekly {
+.elgg-menu-item-tag-for-weekly,
+.elgg-menu-item-add-tag {
 	background-position: 0 -1044px !important;
 }

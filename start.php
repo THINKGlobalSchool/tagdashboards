@@ -36,6 +36,12 @@ function tagdashboards_init() {
 	elgg_register_simplecache_view('js/tagdashboards');	
 	elgg_register_js('elgg.tagdashboards', $td_js);
 
+	// Register global tag dashboards JS library
+	$td_js = elgg_get_simplecache_url('js', 'tagdashboards_global');
+	elgg_register_simplecache_view('js/tagdashboards_global');	
+	elgg_register_js('elgg.tagdashboards_global', $td_js);
+	elgg_load_js('elgg.tagdashboards_global');
+
 	// Register portfolio JS library
 	$p_js = elgg_get_simplecache_url('js', 'portfolio');
 	elgg_register_simplecache_view('js/portfolio');	
@@ -177,6 +183,7 @@ function tagdashboards_init() {
 	elgg_register_ajax_view('tagdashboards/group_select');
 	elgg_register_ajax_view('forms/tagdashboards/group_list');
 	elgg_register_ajax_view('tagdashboards/activity/list');
+	elgg_register_ajax_view('tagdashboards/popup/addtag');
 
 	return true;
 }
@@ -806,6 +813,20 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 				);
 				$return[] = ElggMenuItem::factory($options);
 			}
+		}
+
+		if ($entity->canEdit() || elgg_is_admin_logged_in() || roles_is_member(elgg_get_plugin_setting('tagadminrole', 'tagdashboards'), elgg_get_logged_in_user_guid())) {
+			$options = array(
+					'name' => 'add_tag',
+					'text' => elgg_echo('tagdashboards:label:addtag'),
+					'title' => 'Add Tag',
+					'href' => elgg_get_site_url() . 'ajax/view/tagdashboards/popup/addtag?guid=' . $entity->guid,
+					'class' => 'add-tag',
+					'section' => 'actions',
+					'priority' => 103,
+					'id' => "add-tag-{$entity->guid}",
+				);
+			$return[] = ElggMenuItem::factory($options);
 		}
 	} 
 	return $return;

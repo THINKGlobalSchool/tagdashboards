@@ -57,4 +57,20 @@ $content = <<<HTML
 	</div>
 HTML;
 
+if (elgg_is_active_plugin('roles')) {
+	$tag_admin_role_label = elgg_echo('tagdashboards:label:tagadminrole');
+	$tag_admin_role_input = elgg_view('input/roledropdown', array(
+		'name' => 'params[tagadminrole]',
+		'value' => $vars['entity']->tagadminrole,
+		'show_hidden' => TRUE,
+	));
+
+	$content .= <<<HTML
+	<div>
+		<label>$tag_admin_role_label</label>
+		$tag_admin_role_input
+	</div>
+HTML;
+}
+
 echo $content;

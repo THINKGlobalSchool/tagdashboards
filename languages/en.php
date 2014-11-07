@@ -85,6 +85,9 @@ $english = array(
 	'tagdashboards:label:selectgroup' => 'Select group',
 	'tagdashboards:label:select' => 'Select',
 	'tagdashboards:label:default_view' => 'Default View',
+	'tagdashboards:label:tagadminrole' => 'Tag Admin Role',
+	'tagdashboards:label:addtag' => 'Add Tag...',
+	'tagdashboards:label:add' => 'Add',
 
 	// Descriptions
 	'tagdashboards:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',
@@ -138,6 +141,7 @@ $english = array(
 	'tagdashboards:error:invalidtag' => 'Invalid Tag',
 	'tagdashboards:error:selectgroup' => 'Please select a group',
 	'tagdashboards:error:nosearch' => 'Please enter search text',
+	'tagdashboards:error:notag' => 'Please enter a tag',
 	
 	
 	// Other content
