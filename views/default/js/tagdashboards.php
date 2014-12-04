@@ -71,9 +71,6 @@ elgg.tagdashboards.init = function () {
 
 	/** End group select **/
 
-	// Check hashes
-	elgg.tagdashboards.handle_hash();
-
 	// Handle click for timeline/media/content buttons
 	$('.switch-tagdashboards').live('click', function(event) {		
 		var params = {

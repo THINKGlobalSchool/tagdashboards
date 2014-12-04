@@ -192,6 +192,8 @@ HTML;
 				// Switch to default view on elgg system ready
 				elgg.register_hook_handler('init', 'system', function() {
 					$('a.switch-$default_view').trigger('click');
+					// Check hashes
+					elgg.tagdashboards.handle_hash();
 				}); 
 			});
 		</script>
