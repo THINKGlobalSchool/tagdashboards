@@ -329,4 +329,16 @@ $body = <<<HTML
 	</div>
 HTML;
 
+echo <<<JAVASCRIPT
+	<script type='text/javascript'>
+		$(document).ready(function(event) {
+			// Switch to default view on elgg system ready
+			elgg.register_hook_handler('init', 'system', function() {
+				// Check hashes
+				elgg.tagdashboards.handle_hash();
+			}); 
+		});
+	</script>
+JAVASCRIPT;
+
 echo $body;
