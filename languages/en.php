@@ -118,6 +118,9 @@ $english = array(
 	'tagdashboards:notification:recommend_subj' => '%s has recommended content for your Spot Portfolio!',
 	'tagdashboards:notification:recommend_body' => "%s recommends adding: %s\n\nTo view your portfolio and manage your portfolio items, click here: %s",
 	
+	// Widgets
+	'tagdashboards:widget:profile_portfolio_title' => 'Portfolio',
+	'tagdashboards:widget:profile_portfolio_desc' => 'Display User Portfolio',
 
 	// Messages
 	'tagdashboards:success:setenabledsubtypes' => 'Enabled subtypes set',

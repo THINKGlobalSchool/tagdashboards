@@ -175,6 +175,10 @@ function tagdashboards_init() {
 	// Profile block hook	
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'tagdashboards_owner_block_menu');
 	
+	// Role Profile widgets
+	elgg_register_widget_type('profile_portfolio', elgg_echo('tagdashboards:widget:profile_portfolio_title'), elgg_echo('tagdashboards:widget:profile_portfolio_desc'), 'roleprofilewidget');
+
+
 	// Register Ajax Views
 	elgg_register_ajax_view('tagdashboards/module/recommended');
 	elgg_register_ajax_view('tagdashboards/portfolio/content');
