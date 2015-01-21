@@ -5,7 +5,7 @@
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
+ * @copyright THINK Global School 2010 - 2015
  * @link http://www.thinkglobalschool.com/
  * 
  */
@@ -25,58 +25,64 @@ if (elgg_instanceof($user, 'user')) {
 		)
 	));
 
-	$tag_portfolio = "Portfolio";
+	// Check if we have any portfolio content subtypes
+	if (!empty($subtypes)) {
+		$tag_portfolio = "Portfolio";
 
-	// Tag Dashboard Content inputs
-	$td_type_input = elgg_view('input/hidden', array(
-		'name' => 'type', 
-		'id' => 'type', 
-		'value' => 'subtypes',
-	));
+		// Tag Dashboard Content inputs
+		$td_type_input = elgg_view('input/hidden', array(
+			'name' => 'type', 
+			'id' => 'type', 
+			'value' => 'subtypes',
+		));
 
-	$td_subtypes_input = elgg_view('input/hidden', array(
-		'name' => 'subtypes', 
-		'id' => 'subtypes', 
-		'value' => json_encode($subtypes)
-	));
+		$td_subtypes_input = elgg_view('input/hidden', array(
+			'name' => 'subtypes', 
+			'id' => 'subtypes', 
+			'value' => json_encode($subtypes)
+		));
 
-	$td_search_input = elgg_view('input/hidden', array(
-		'name' => 'search', 
-		'id' => 'search', 
-		'value' => $tag_portfolio,
-	));
+		$td_search_input = elgg_view('input/hidden', array(
+			'name' => 'search', 
+			'id' => 'search', 
+			'value' => $tag_portfolio,
+		));
 
-	$td_owner_guids_input = elgg_view('input/hidden', array(
-		'name' => 'owner_guids', 
-		'id' => 'owner_guids', 
-		'value' => json_encode(array($user->guid))
-	));
+		$td_owner_guids_input = elgg_view('input/hidden', array(
+			'name' => 'owner_guids', 
+			'id' => 'owner_guids', 
+			'value' => json_encode(array($user->guid))
+		));
 
-	$td_portfolio_context = elgg_view('input/hidden', array(
-		'name' => 'context', 
-		'id' => 'context', 
-		'value' => 'portfolio_context'
-	));
+		$td_portfolio_context = elgg_view('input/hidden', array(
+			'name' => 'context', 
+			'id' => 'context', 
+			'value' => 'portfolio_context'
+		));
 
-	$content .= <<<HTML
-		<div class='clearfix'></div>
-		<div class='tagdashboard-container portfolio-left'>
-			<div class='tagdashboard-options'>
-				$td_type_input
-				$td_subtypes_input
-				$td_search_input
-				$td_owner_guids_input
-				$td_portfolio_context
+		$content .= <<<HTML
+			<div class='clearfix'></div>
+			<div class='tagdashboard-container portfolio-left'>
+				<div class='tagdashboard-options'>
+					$td_type_input
+					$td_subtypes_input
+					$td_search_input
+					$td_owner_guids_input
+					$td_portfolio_context
+				</div>
+				<div class='tagdashboards-content-container'></div>
 			</div>
-			<div class='tagdashboards-content-container'></div>
-		</div>
-		<script type='text/javascript'>
-			// Init Dashboard
-			elgg.tagdashboards.init();
-		</script>
+			<script type='text/javascript'>
+				// Init Dashboard
+				elgg.tagdashboards.init();
+			</script>
 HTML;
+
+	} else {
+		$content = "<center><strong>" . elgg_echo('tagdashboards:label:noresults') . "</strong></center>";
+	}
 } else {
-	elgg_echo('tagdashboards:error:invaliduser');
+	$content = elgg_echo('tagdashboards:error:invaliduser');
 }
 
 echo $content;

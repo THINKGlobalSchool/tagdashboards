@@ -31,7 +31,7 @@ $user_input = elgg_view('input/hidden', array(
 $content = <<<HTML
 	$recommended
 	$user_input
-	<div id='tagdashboards-portfolio-container'></div>
+	<div id='tagdashboards-portfolio-container'><div class='elgg-ajax-loader'></div></div>
 HTML;
 
 echo $content;

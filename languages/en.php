@@ -88,6 +88,7 @@ $english = array(
 	'tagdashboards:label:tagadminrole' => 'Tag Admin Role',
 	'tagdashboards:label:addtag' => 'Add Tag...',
 	'tagdashboards:label:add' => 'Add',
+	'tagdashboards:label:noresults' => 'No Results',
 
 	// Descriptions
 	'tagdashboards:description:subtype' => 'Grouping by subtype will group content matching your search term by the subtypes selected above.',
