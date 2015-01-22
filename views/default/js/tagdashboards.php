@@ -355,6 +355,7 @@ elgg.tagdashboards.handle_hash = function() {
 	if (window.location.hash === '#activity') {
 		$(".tagdashboard-container").hide();
 		$(".tagdashboard-activity-container").show();
+		return true;
 	}
 
 	if (window.location.hash === '#media') {
@@ -364,13 +365,15 @@ elgg.tagdashboards.handle_hash = function() {
 		if (typeof init_coverflow == 'function') {
 			init_coverflow(playlist, mid);
 		}
+		return true;
 	} 
 
 	if (window.location.hash === '#timeline') {
 		$(".tagdashboard-media-container").hide();
 		$(".tagdashboard-container").hide();
+		return true;
 	}
-	return;
+	return false;
 }
 
 /**
