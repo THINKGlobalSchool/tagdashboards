@@ -2,29 +2,24 @@
 <plugin_manifest xmlns="http://www.elgg.org/plugin_manifest/1.8">
 	<name>Tag Dashboards</name>
 	<author>Jeff Tilson</author>
-	<version>1.8</version>
+	<version>1.10</version>
+	<id>tagdashboards</id>
 	<category>content</category>
 	<category>enhancement</category>
 	<category>tgs</category>
 	<blurb>Tag Dashboards</blurb>
 	<description>Allows users to organize and group content by tags</description>
 	<website>http://www.thinkglobalschool.org/</website>
-	<copyright>THINK Global School 2010 - 2014</copyright>
+	<copyright>THINK Global School 2010 - 2015</copyright>
 	<license>GNU Public License version 2</license>
 	<requires>
 		<type>elgg_release</type>
-		<version>1.8</version>
+		<version>1.10</version>
 	</requires>
 	<requires>
 		<type>plugin</type>
 		<name>modules</name>
-		<version>1.8</version>
+		<version>1.10</version>
 		<comparison>ge</comparison>
 	</requires>
-	<suggests>
-		<type>plugin</type>
-		<name>tabbed_profile</name>
-		<version>1.8</version>
-	</suggests>
-	<activate_on_install>true</activate_on_install>
 </plugin_manifest>

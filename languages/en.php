@@ -5,11 +5,11 @@
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
+ * @copyright THINK Global School 2010 - 2015
  * @link http://www.thinkglobalschool.com/
  * 
  */
-$english = array(
+return array(
 	// Generic
 	'tagdashboards' => 'Tag Dashboards',
 	'tagdashboard' => 'Tag Dashboard',
@@ -113,6 +113,7 @@ $english = array(
 
 	// Notifications
 	'tagdashboards:notification:subject' => 'New Tag Dashboard',
+	'tagdashboards:notification:summary' => 'New Tag Dashboard: %s',
 	'tagdashboards:notification:body' => "%s created a new Tag Dashboard titled: %s\n\n%s\n\nTo view the tag dashboard click here:\n%s
 ",
 	
@@ -151,5 +152,3 @@ $english = array(
 	// Other content
 	'item:object:document' => 'Documents', // Documents will be disabled, but including the language string just in case
 );
-
-add_translation('en',$english);

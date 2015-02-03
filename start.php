@@ -5,7 +5,7 @@
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
+ * @copyright THINK Global School 2010 - 2015
  * @link http://www.thinkglobalschool.com/
  * 
  */
@@ -20,7 +20,6 @@ function tagdashboards_init() {
 	
 	// Register CSS
 	$td_css = elgg_get_simplecache_url('css', 'tagdashboards/css');
-	elgg_register_simplecache_view('css/tagdashboards/css');	
 	elgg_register_css('elgg.tagdashboards', $td_css);
 
 	// Register custom theme CSS
@@ -33,24 +32,20 @@ function tagdashboards_init() {
 
 	// Register tag dashboards JS library
 	$td_js = elgg_get_simplecache_url('js', 'tagdashboards');
-	elgg_register_simplecache_view('js/tagdashboards');	
 	elgg_register_js('elgg.tagdashboards', $td_js);
 
 	// Register global tag dashboards JS library
 	$td_js = elgg_get_simplecache_url('js', 'tagdashboards_global');
-	elgg_register_simplecache_view('js/tagdashboards_global');	
 	elgg_register_js('elgg.tagdashboards_global', $td_js);
 	elgg_load_js('elgg.tagdashboards_global');
 
 	// Register portfolio JS library
 	$p_js = elgg_get_simplecache_url('js', 'portfolio');
-	elgg_register_simplecache_view('js/portfolio');	
 	elgg_register_js('elgg.portfolio', $p_js);
 	elgg_load_js('elgg.portfolio');
 
 	// Register daterange JS library
 	$dr_js = elgg_get_simplecache_url('js', 'tddaterange');
-	elgg_register_simplecache_view('js/tddaterange');	
 	elgg_register_js('elgg.tddaterange', $dr_js);
 
 	// Register timeline JS library
@@ -59,7 +54,6 @@ function tagdashboards_init() {
 
 	// Register local timeline JS library
 	$timeline_js = elgg_get_simplecache_url('js', 'timeline');
-	elgg_register_simplecache_view('js/timeline');
 	elgg_register_js('elgg.tagdashboards.timeline', $timeline_js);
 
 	// Register datepicker JS
@@ -72,7 +66,6 @@ function tagdashboards_init() {
 
 	// Register js coverflow library
 	$cf_js = elgg_get_simplecache_url('js', 'jscoverflow');
-	elgg_register_simplecache_view('js/jscoverflow');
 	elgg_register_js('jscoverflow', $cf_js);
 
 	// Extend Groups profile page
@@ -99,8 +92,9 @@ function tagdashboards_init() {
 	elgg_register_event_handler('tagdashboard_url','object', 'tagdashboard');
 
 	// notifications
-	register_notification_object('object', 'tagdashboard', elgg_echo('tagdashboards:notification:subject'));
-	elgg_register_plugin_hook_handler('notify:entity:message', 'object', 'tagdashboards_notify_message');
+	elgg_register_notification_event('object', 'tagdashboard', array('create'));
+	elgg_register_plugin_hook_handler('prepare', 'notification:publish:object:tagdashboard', 'forum_prepare_notification');
+
 
 	// Register actions
 	$action_base = elgg_get_plugins_path() . 'tagdashboards/actions/tagdashboards';
@@ -119,7 +113,7 @@ function tagdashboards_init() {
 	elgg_register_action('portfolio/recommend', "$action_base/recommend.php");
 
 	// Setup url handler for tag dashboards
-	elgg_register_entity_url_handler('object', 'tagdashboard', 'tagdashboards_url_handler');
+	elgg_register_plugin_hook_handler('entity:url', 'object', 'tagdashboards_url_handler');
 
 	// Add a new tab to the tabbed profile
 	elgg_register_plugin_hook_handler('tabs', 'profile', 'tagdashboards_profile_tab_hander');	
@@ -542,19 +536,27 @@ function tagdashboards_subtype_album_handler($hook, $type, $value, $params) {
 	}
 }
 
-	
 /**
- * Populates the ->getUrl() method for an tagdashboard
+ * Returns the URL from a tagdashboard entity
  *
- * @param ElggEntity entity
- * @return string request url
+ * @param string $hook   'entity:url'
+ * @param string $type   'object'
+ * @param string $url    The current URL
+ * @param array  $params Hook parameters
+ * @return string
  */
-function tagdashboards_url_handler($entity) {
-	
+function tagdashboards_url_handler($hook, $type, $url, $params) {
+	$entity = $params['entity'];
+
+	// Check that the entity is a photo object
+	if (!elgg_instanceof($entity, 'object', 'tagdashboard')) {
+		return;
+	}
+
 	$friendly_title = elgg_get_friendly_title($entity->title);
-	
-	return elgg_get_site_url() . "tagdashboards/view/{$entity->guid}/$friendly_title";
+	return "tagdashboards/view/{$entity->guid}/$friendly_title";
 }
+
 
 /**
  * Plugin hook to add tagdashboards to the profile block
@@ -920,30 +922,36 @@ function tagdashboards_run_upgrades() {
 }
 
 /**
- * Set the notification message for tag dashboards
- * 
- * @param string $hook    Hook name
- * @param string $type    Hook type
- * @param string $message The current message body
- * @param array  $params  Parameters about the blog posted
- * @return string
+ * Prepare a notification message about a new tagdashboard
+ *
+ * @param string                          $hook         Hook name
+ * @param string                          $type         Hook type
+ * @param Elgg_Notifications_Notification $notification The notification to prepare
+ * @param array                           $params       Hook parameters
+ * @return Elgg_Notifications_Notification
  */
-function tagdashboards_notify_message($hook, $type, $message, $params) {
-	$entity = $params['entity'];
-	$to_entity = $params['to_entity'];
+function tagdashboards_prepare_notification($hook, $type, $notification, $params) {
+	$entity = $params['event']->getObject();
+	$owner = $params['event']->getActor();
+	$recipient = $params['recipient'];
+	$language = $params['language'];
 	$method = $params['method'];
-	if (elgg_instanceof($entity, 'object', 'tagdashboard')) {
-		$descr = $entity->description;
-		$title = $entity->title;
-		$owner = $entity->getOwnerEntity();
-		return elgg_echo('tagdashboards:notification:body', array(
+
+	// Title for the notification
+	$notification->subject = elgg_echo('tagdashboards:notification:subject');
+
+    // Message body for the notification
+	$notification->body = elgg_echo('tagdashboards:notification:body', array(
 			$owner->name,
-			$title,
-			$descr,
+			$entity->title,
+			$entity->description,
 			$entity->getURL()
-		));
-	}
-	return null;
+	), $language);
+
+    // The summary text is used e.g. by the site_notifications plugin
+    $notification->summary = elgg_echo('tagdashboards:notification:summary', array($entity->title), $language);
+
+    return $notification;
 }
 
 /**
