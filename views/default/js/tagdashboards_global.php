@@ -72,3 +72,4 @@ elgg.tagdashboards_global.addTagClick = function(event) {
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards_global.init);
 elgg.register_hook_handler('content_loaded', 'filtrate', elgg.tagdashboards_global.initAddTagLightbox);
+elgg.register_hook_handler('photoLightboxAfterShow', 'tidypics', elgg.tagdashboards_global.initAddTagLightbox);
