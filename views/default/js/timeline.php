@@ -5,8 +5,8 @@
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
- * @link http://www.thinkglobalschool.com/
+ * @copyright THINK Global School 2010 - 2015
+ * @link http://www.thinkglobalschool.org/
  */ 
 ?>
 //<script>
@@ -145,7 +145,9 @@ elgg.tagdashboards.timeline.on_resize = function() {
 }
 
 elgg.tagdashboards.timeline.initVideoLightbox = function(guid) {
-	$(".simplekaltura-lightbox-" + guid).fancybox(elgg.simplekaltura_utility.get_lightbox_init());
+	if (elgg.simplekaltura_utility) {
+		$(".simplekaltura-lightbox-" + guid).colorbox(elgg.simplekaltura_utility.get_lightbox_init());
+	}
 }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.timeline.init);

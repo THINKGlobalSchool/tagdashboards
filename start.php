@@ -6,7 +6,7 @@
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
  * @copyright THINK Global School 2010 - 2015
- * @link http://www.thinkglobalschool.com/
+ * @link http://www.thinkglobalschool.org/
  * 
  */
 
@@ -21,14 +21,6 @@ function tagdashboards_init() {
 	// Register CSS
 	$td_css = elgg_get_simplecache_url('css', 'tagdashboards/css');
 	elgg_register_css('elgg.tagdashboards', $td_css);
-
-	// Register custom theme CSS
-	$ui_url = elgg_get_site_url() . 'mod/tagdashboards/vendors/smoothness/jquery-ui-1.7.3.custom.css';
-	elgg_register_css('jquery.ui.smoothness', $ui_url);
-
-	// Register datepicker css
-	$daterange_css = elgg_get_site_url(). 'mod/tagdashboards/vendors/ui.daterangepicker.css';
-	elgg_register_css('jquery.daterangepicker', $daterange_css);
 
 	// Register tag dashboards JS library
 	$td_js = elgg_get_simplecache_url('js', 'tagdashboards');
@@ -170,7 +162,7 @@ function tagdashboards_init() {
 	elgg_register_plugin_hook_handler('register', 'menu:owner_block', 'tagdashboards_owner_block_menu');
 	
 	// Role Profile widgets
-	elgg_register_widget_type('profile_portfolio', elgg_echo('tagdashboards:widget:profile_portfolio_title'), elgg_echo('tagdashboards:widget:profile_portfolio_desc'), 'roleprofilewidget');
+	elgg_register_widget_type('profile_portfolio', elgg_echo('tagdashboards:widget:profile_portfolio_title'), elgg_echo('tagdashboards:widget:profile_portfolio_desc'), array('roleprofilewidget'));
 
 
 	// Register Ajax Views
@@ -285,16 +277,16 @@ function tagdashboards_page_handler($page) {
 		elgg_load_js('jquery.resize');
 
 		// Load tidypics related JS
-		if (elgg_is_active_plugin('tidypics')) {
-			elgg_load_js('tidypics');
-			elgg_load_js('tidypics:lightbox');
-			elgg_load_js('tidypics:tagging');
-			elgg_load_js('jquery.imgareaselect');
-			elgg_load_js('jquery-fancybox2');
-			elgg_load_css('jquery-fancybox2');
-			elgg_load_js('elgg.autocomplete');
-			elgg_load_js('jquery.ui.autocomplete.html');
-		}
+		// if (elgg_is_active_plugin('tidypics')) {
+		// 	elgg_load_js('tidypics');
+		// 	elgg_load_js('tidypics:lightbox');
+		// 	elgg_load_js('tidypics:tagging');
+		// 	elgg_load_js('jquery.imgareaselect');
+		// 	elgg_load_js('jquery-fancybox2');
+		// 	elgg_load_css('jquery-fancybox2');
+		// 	elgg_load_js('elgg.autocomplete');
+		// 	elgg_load_js('jquery.ui.autocomplete.html');
+		// }
 		
 		// 'All' breadcrumb
 		elgg_push_breadcrumb(elgg_echo('tagdashboards:menu:alltagdashboards'), elgg_get_site_url() . 'tagdashboards');
@@ -332,10 +324,12 @@ function tagdashboards_page_handler($page) {
 				elgg_load_js('lightbox');
 				elgg_load_css('lightbox');
 
-				elgg_load_js('simplekaltura:html5');
-				elgg_load_js('simplekaltura:utility');
+				if (elgg_is_active_plugin('simplekaltura')) {
+					elgg_load_js('simplekaltura:html5');
+					elgg_load_js('simplekaltura:utility');
+					elgg_load_library('KalturaClient');
+				}
 
-				elgg_load_library('KalturaClient');
 				$params = tagdashboards_get_page_content_view($page[1]);
 				break;
 			case 'group_activity':
@@ -660,7 +654,7 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'text' => elgg_echo('tagdashboards:label:addtoportfolio'),
 					'title' => 'add_to_portfolio',
 					'href' => "#{$entity->guid}",
-					'class' => 'portfolio-add',
+					'link_class' => 'portfolio-add',
 					'section' => 'actions',
 					'priority' => 102,
 					'id' => "portfolio-add-{$entity->guid}",
@@ -672,7 +666,7 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'text' => elgg_echo('tagdashboards:label:removeportfolio'),
 					'title' => 'remove_fromportfolio',
 					'href' => "#{$entity->guid}",
-					'class' => 'portfolio-remove',
+					'link_class' => 'portfolio-remove',
 					'section' => 'actions',
 					'priority' => 102,
 					'id' => "portfolio-remove-{$entity->guid}",
@@ -687,7 +681,7 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'text' => elgg_echo('tagdashboards:label:recommendforportfolio'),
 					'title' => 'recommend_for_portfolio',
 					'href' => "#{$entity->guid}",
-					'class' => 'portfolio-recommend',
+					'link_class' => 'portfolio-recommend',
 					'section' => 'actions',
 					'priority' => 102,
 					'id' => "portfolio-recommend-{$entity->guid}",
@@ -761,7 +755,7 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 				'text' => elgg_echo('tagdashboards:label:tagforyearbook'),
 				'title' => 'tag_for_yearbook',
 				'href' => "#{$entity->guid}",
-				'class' => 'yearbook-tag',
+				'link_class' => 'yearbook-tag',
 				'section' => 'actions',
 				'priority' => 100,
 				'id' => "yearbook-tag-{$entity->guid}",
@@ -786,7 +780,7 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 					'text' => elgg_echo('tagdashboards:label:tagforemag'),
 					'title' => 'tag_for_emag',
 					'href' => "#{$entity->guid}",
-					'class' => 'emag-tag',
+					'link_class' => 'emag-tag',
 					'section' => 'actions',
 					'priority' => 101,
 					'id' => "emag-tag-{$entity->guid}",
@@ -812,7 +806,7 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 					'text' => elgg_echo('tagdashboards:label:tagforweekly'),
 					'title' => 'tag_for_weekly',
 					'href' => "#{$entity->guid}",
-					'class' => 'weekly-tag',
+					'link_class' => 'weekly-tag',
 					'section' => 'actions',
 					'priority' => 102,
 					'id' => "weekly-tag-{$entity->guid}",
@@ -827,7 +821,7 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 					'text' => elgg_echo('tagdashboards:label:addtag'),
 					'title' => 'Add Tag',
 					'href' => elgg_get_site_url() . 'ajax/view/tagdashboards/popup/addtag?guid=' . $entity->guid,
-					'class' => 'add-tag',
+					'link_class' => 'add-tag',
 					'section' => 'actions',
 					'priority' => 103,
 					'id' => "add-tag-{$entity->guid}",
@@ -857,7 +851,7 @@ function portfolio_setup_simpleicon_entity_menu($hook, $type, $return, $params) 
 			'text' => elgg_echo('tagdashboards:label:remove'),
 			'title' => 'remove_fromportfolio',
 			'href' => "#{$entity->guid}",
-			'class' => 'portfolio-remove portfolio-remove-module',
+			'link_class' => 'portfolio-remove portfolio-remove-module',
 			'section' => 'info',
 		);
 		$return[] = ElggMenuItem::factory($options);
@@ -874,7 +868,7 @@ function portfolio_setup_simpleicon_entity_menu($hook, $type, $return, $params) 
 				'text' => elgg_echo('tagdashboards:label:addtoportfolio'),
 				'title' => 'add_to_portfolio',
 				'href' => "#{$entity->guid}",
-				'class' => 'portfolio-add-profile',
+				'link_class' => 'portfolio-add-profile',
 				'section' => 'info',
 			);
 			$return[] = ElggMenuItem::factory($options);
@@ -885,7 +879,7 @@ function portfolio_setup_simpleicon_entity_menu($hook, $type, $return, $params) 
 				'text' => elgg_echo('tagdashboards:label:ignoreportfolio'),
 				'title' => 'ignore_portfolio',
 				'href' => "#{$entity->guid}",
-				'class' => 'portfolio-ignore-profile',
+				'link_class' => 'portfolio-ignore-profile',
 				'section' => 'info',
 				'priority' => 600,
 			);

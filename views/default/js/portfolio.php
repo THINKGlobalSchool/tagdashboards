@@ -400,15 +400,21 @@ elgg.portfolio.recommendedHandler = function(hook, type, params, options) {
  */
 elgg.portfolio.repositionMenu = function(entity_guid) {
 	var $entity_anchor = $(document).find('#entity-anchor-' + entity_guid);
-	var $toggler = $entity_anchor.closest('.elgg-menu-entity').find('.entity-action-toggler');
-	var $menu = $_this.closest('.tgstheme-entity-menu-actions');
-	
-	$menu.position({
-		of: $toggler,
-		my: 'right top',
-		at: 'right bottom',
-		offset: '0 15'
-	});
+	if ($entity_anchor.length != 0) {
+		var $toggler = $entity_anchor.closest('.elgg-menu-entity').find('.entity-action-toggler');
+		var $menu = $entity_anchor.parent().find('.tgstheme-entity-menu-actions');
+		
+		if ($menu) {
+
+		}
+
+		$menu.position({
+			of: $toggler,
+			my: 'right top',
+			at: 'right bottom',
+			offset: '0 15'
+		});
+	}
 }
 
 elgg.register_hook_handler('getOptions', 'ui.popup', elgg.portfolio.recommendedHandler);

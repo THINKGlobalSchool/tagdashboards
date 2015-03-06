@@ -5,8 +5,8 @@
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010 - 2014
- * @link http://www.thinkglobalschool.com/
+ * @copyright THINK Global School 2010 - 2015
+ * @link http://www.thinkglobalschool.org/
  */ 
 ?>
 //<script>
@@ -30,10 +30,10 @@ elgg.tagdashboards.init = function () {
 	// Arrow toggler
 	$('.tagdashboards-arrow-toggler').each(elgg.tagdashboards.init_togglers);
 	
-	$('.tagdashboards-check-column').live('click', elgg.tagdashboards.toggle_column);
+	$(document).on('click', '.tagdashboards-check-column', elgg.tagdashboards.toggle_column);
 
 	// Group select
-	$('.tagdashboards-group-select-link').fancybox({
+	$('.tagdashboards-group-select-link').colorbox({
 		'onClosed' : function() {
 			// Uncheck the group select toggle if no group was selected
 			if (!elgg.tagdashboards.group_selected) {
@@ -43,16 +43,16 @@ elgg.tagdashboards.init = function () {
 	});
 
 	// Toggle group select
-	$('.tagdashboards-toggle-group-select').live('click', elgg.tagdashboards.toggle_group_select);
+	$(document).on('click', '.tagdashboards-toggle-group-select', elgg.tagdashboards.toggle_group_select);
 	
 	// Toggle 'this' group select
-	$('.tagdashboards-toggle-this-group-select').live('click', elgg.tagdashboards.toggle_this_group_select);
+	$(document).on('click', '.tagdashboards-toggle-this-group-select', elgg.tagdashboards.toggle_this_group_select);
 
 	// Fix userpickers.. 
 	elgg.tagdashboards.fixUserPickers();
 
 	// Make group pagination load in the container 
-	$(document).delegate('#tagdashboards-group-select-container .elgg-pagination a','click', function(event) {
+	$(document).on('click', '#tagdashboards-group-select-container .elgg-pagination a', function(event) {
 		$container = $(this).closest('#tagdashboards-group-select-list');
 
 		var height = $container.height();
@@ -67,12 +67,12 @@ elgg.tagdashboards.init = function () {
 		event.preventDefault();
 	});
 
-	$(document).delegate('#tagdashboards-group-select-submit', 'click', elgg.tagdashboards.group_select_click);
+	$(document).on('click', '#tagdashboards-group-select-submit', elgg.tagdashboards.group_select_click);
 
 	/** End group select **/
 
 	// Handle click for timeline/media/content buttons
-	$('.switch-tagdashboards').live('click', function(event) {		
+	$(document).on('click', '.switch-tagdashboards', function(event) {		
 		var params = {
 			href: $(this).attr('href'),
 		}
@@ -106,7 +106,9 @@ elgg.tagdashboards.init = function () {
 	});
 
 	// Register modules populated hook for simplekaltura videos
-	elgg.register_hook_handler('populated', 'modules', elgg.simplekaltura_utility.lightbox_init);
+	if (elgg.simplekaltura_utility) {
+		elgg.register_hook_handler('populated', 'modules', elgg.simplekaltura_utility.lightbox_init);
+	}
 }
 
 /**	
@@ -178,7 +180,7 @@ elgg.tagdashboards.init_save_form = function() {
 	
 	
 	// Submit handler for search submit
-	$('#tagdashboards-search-submit').live('click', function(event){
+	$(document).on('click', '#tagdashboards-search-submit', function(event){
 		elgg.tagdashboards.validate_search();
 		event.preventDefault();
 	});
@@ -192,7 +194,7 @@ elgg.tagdashboards.init_save_form = function() {
 	// });
 	
 	// Refresh handler
-	$('#tagdashboards-refresh-input').live('click', elgg.tagdashboards.display_from_form);
+	$(document).on('click', '#tagdashboards-refresh-input', elgg.tagdashboards.display_from_form);
 }
 
 /**
@@ -244,7 +246,7 @@ elgg.tagdashboards.display_from_form = function(event) {
 	// Set up options
 	var options = new Array();
 	options['search'] = search;
-	options['type'] = $('#tagdashboard-groupby-input:checked').val();
+	options['type'] = $('#tagdashboard-groupby-input input:checked').val();
 	options['subtypes'] = selected_subtypes;
 	options['custom_tags'] = $('input[name=custom]').val();
 	options['owner_guids'] = owner_guids;
@@ -342,9 +344,14 @@ elgg.tagdashboards.handle_hash = function() {
 		var hash = decodeURI(window.location.hash.substring(1));
 		var input = $('#tagdashboards-search-container input[name=search]');
 		tags = hash.split(',');
-		$.each(tags, function(idx, value){
-			elgg.typeaheadtags.addTag(value, input);
-		});
+
+		if (elgg.typeaheadtags) {
+			$.each(tags, function(idx, value){
+				elgg.typeaheadtags.addTag(value, input);
+			});
+		} else {
+			input.val(tags);
+		}
 
 		elgg.tagdashboards.set_dashboard_title();
 		
@@ -412,7 +419,7 @@ elgg.tagdashboards.get_search = function () {
 	var value = $('#tagdashboards-search-container input[name=search]').val();
 	if (value) {
 		value = value.toLowerCase();
-		value = value.substring(0, value.lastIndexOf(','));
+		value = value.replace(/(^,)|(,$)/g, "");
 		value = encodeURI(value);
 		return value;
 	}
@@ -535,7 +542,7 @@ elgg.tagdashboards.toggle_this_group_select = function(event) {
 				} else {
 					// Error..
 				}
-				$.fancybox.close();
+				$.colorbox.close();
 			}
 		});
 	} else {
@@ -580,7 +587,7 @@ elgg.tagdashboards.group_select_click = function(event) {
 				} else {
 					// Error..
 				}
-				$.fancybox.close();
+				$.colorbox.close();
 			}
 		});
 	}

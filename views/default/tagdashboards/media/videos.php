@@ -5,8 +5,8 @@
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010 - 2013
- * @link http://www.thinkglobalschool.com/
+ * @copyright THINK Global School 2010 - 2015
+ * @link http://www.thinkglobalschool.org/
  * 
  * @uses $vars['dashboard_guid']
  */
@@ -72,12 +72,14 @@ if (count($video_playlist)) {
 				// Focus
 				this.on('focus', function(index) {});
 
-				// Click event
-				this.on('click', function(index, link) {
-					var lightbox = $(document.createElement('a'));
-					lightbox.attr('href', link);
-					lightbox.fancybox(elgg.simplekaltura_utility.get_lightbox_init()).trigger('click');
-				});
+				if (elgg.simplekaltura_utility) {
+					// Click event
+					this.on('click', function(index, link) {
+						var lightbox = $(document.createElement('a'));
+						lightbox.attr('href', link);
+						lightbox.colorbox(elgg.simplekaltura_utility.get_lightbox_init()).trigger('click');
+					});
+				}
 			});
 			setTimeout(function() {coverflow().to(mid -1)}, 1000);
 		}
