@@ -75,9 +75,7 @@ if (count($video_playlist)) {
 				if (elgg.simplekaltura_utility) {
 					// Click event
 					this.on('click', function(index, link) {
-						var lightbox = $(document.createElement('a'));
-						lightbox.attr('href', link);
-						lightbox.colorbox(elgg.simplekaltura_utility.get_lightbox_init()).trigger('click');
+						$.colorbox(elgg.simplekaltura_utility.get_lightbox_init(link));
 					});
 				}
 			});
