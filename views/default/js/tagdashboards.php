@@ -98,6 +98,7 @@ elgg.tagdashboards.init = function () {
 
 		if (params.href === "#activity") {
 			$(".tagdashboard-activity-container").show();
+			elgg.spiffyactivity.filtrate_init();
 			window.location.hash = "activity";
 		}
 
