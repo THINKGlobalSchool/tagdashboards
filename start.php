@@ -140,6 +140,11 @@ function tagdashboards_init() {
 	// Modify general entity menu items
 	elgg_register_plugin_hook_handler('register', 'menu:entity', 'tagdashboards_setup_entity_menu', 999);
 
+	// Put menu items into action menu sections if tgsutilies is enabled
+	if (elgg_is_active_plugin('tgsutilities')) {
+		elgg_register_plugin_hook_handler('sectionmap', 'actionmenu', 'tagdashboards_action_menu_setup');		
+	}
+
 	// Register simpleicon menu items
 	elgg_register_plugin_hook_handler('register', 'menu:simpleicon-entity', 'portfolio_setup_simpleicon_entity_menu');
 
@@ -655,7 +660,6 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'title' => 'add_to_portfolio',
 					'href' => "#{$entity->guid}",
 					'link_class' => 'portfolio-add',
-					'section' => 'actions',
 					'priority' => 102,
 					'id' => "portfolio-add-{$entity->guid}",
 				);
@@ -667,7 +671,6 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'title' => 'remove_fromportfolio',
 					'href' => "#{$entity->guid}",
 					'link_class' => 'portfolio-remove',
-					'section' => 'actions',
 					'priority' => 102,
 					'id' => "portfolio-remove-{$entity->guid}",
 				);
@@ -682,7 +685,6 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 					'title' => 'recommend_for_portfolio',
 					'href' => "#{$entity->guid}",
 					'link_class' => 'portfolio-recommend',
-					'section' => 'actions',
 					'priority' => 102,
 					'id' => "portfolio-recommend-{$entity->guid}",
 				);
@@ -705,8 +707,7 @@ function portfolio_setup_entity_menu($hook, $type, $return, $params) {
 			'text' => $wording,
 			'href' => $url,
 			'priority' => 300,
-			'is_action' => true,
-			'section' => 'info'
+			'is_action' => true
 		);
 		$return[] = ElggMenuItem::factory($options);
 	}
@@ -756,7 +757,6 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 				'title' => 'tag_for_yearbook',
 				'href' => "#{$entity->guid}",
 				'link_class' => 'yearbook-tag',
-				'section' => 'actions',
 				'priority' => 100,
 				'id' => "yearbook-tag-{$entity->guid}",
 			);
@@ -781,7 +781,6 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 					'title' => 'tag_for_emag',
 					'href' => "#{$entity->guid}",
 					'link_class' => 'emag-tag',
-					'section' => 'actions',
 					'priority' => 101,
 					'id' => "emag-tag-{$entity->guid}",
 				);
@@ -807,7 +806,6 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 					'title' => 'tag_for_weekly',
 					'href' => "#{$entity->guid}",
 					'link_class' => 'weekly-tag',
-					'section' => 'actions',
 					'priority' => 102,
 					'id' => "weekly-tag-{$entity->guid}",
 				);
@@ -822,7 +820,6 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 					'title' => 'Add Tag',
 					'href' => elgg_get_site_url() . 'ajax/view/tagdashboards/popup/addtag?guid=' . $entity->guid,
 					'link_class' => 'add-tag',
-					'section' => 'actions',
 					'priority' => 103,
 					'id' => "add-tag-{$entity->guid}",
 				);
@@ -830,6 +827,29 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 		}
 	} 
 	return $return;
+}
+
+/**
+ * Place todo related entity menu items into action menu sections
+ *
+ * @param string $hook
+ * @param string $type
+ * @param array  $value
+ * @param array  $params
+ * @return array
+ */
+function tagdashboards_action_menu_setup($hook, $type, $value, $params) {
+	// Define which sections items should be in
+	$value['add_to_portfolio'] = 'actions';
+	$value['remove_from_portfolio'] = 'info';
+	$value['recommend_for_portfolio'] = 'actions';
+	$value['feature'] = 'info';
+	$value['tag_for_yearbook'] = 'actions';
+	$value['tag_for_emag'] = 'actions';
+	$value['tag_for_weekly'] = 'actions';
+	$value['add_tag'] = 'actions';
+
+	return $value;
 }
 
 /**
