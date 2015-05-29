@@ -97,11 +97,16 @@ foreach ($subtypes as $subtype) {
 	}
 }
 
-$options = array(
-	'guids' => $entities,
-	'limit' => 20,
-	//'action_type' => 'create',
-	'offset' => get_input('offset', 0)
-);
-$activity = elgg_list_entities($options);
-echo $activity;
+// Check for entities
+if (count($entities)) {
+	$options = array(
+		'guids' => $entities,
+		'limit' => 20,
+		//'action_type' => 'create',
+		'offset' => get_input('offset', 0)
+	);
+	$activity = elgg_list_entities($options);
+	echo $activity;
+} else {
+	echo "<br /><center><strong>" . elgg_echo('tagdashboards:label:noresults') . "</strong></center>";
+}
