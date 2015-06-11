@@ -5,8 +5,8 @@
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010
- * @link http://www.thinkglobalschool.com/
+ * @copyright THINK Global School 2010 - 2015
+ * @link http://www.thinkglobalschool.org/
  */ 
 ?>
 //<script>
@@ -24,7 +24,7 @@ elgg.tddaterange.init = function() {
 		onOpen: 		function() {
 			//$('input.tagdashboards-daterange').val('');
 		},
-		defaultDate: 	Date.today(),
+		defaultDate: 	(new Date()).getDate(),
 	}); 
 }
 

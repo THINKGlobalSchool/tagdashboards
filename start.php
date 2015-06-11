@@ -48,10 +48,6 @@ function tagdashboards_init() {
 	$timeline_js = elgg_get_simplecache_url('js', 'timeline');
 	elgg_register_js('elgg.tagdashboards.timeline', $timeline_js);
 
-	// Register datepicker JS
-	$daterange_js = elgg_get_site_url(). 'mod/tagdashboards/vendors/daterangepicker.jQuery.js';
-	elgg_register_js('jquery.daterangepicker', $daterange_js);
-
 	// Provide the jquery resize plugin
 	$resize_js = elgg_get_site_url() . 'mod/tagdashboards/vendors/jquery.resize.js';
 	elgg_register_js($resize_js, 'jquery.resize');
