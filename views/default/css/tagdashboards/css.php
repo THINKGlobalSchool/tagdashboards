@@ -38,20 +38,17 @@ span#tagdashboards-search-error {
 }
 
 .tagdashboard-module {
-	display: inline-block;
+	display: inline;
 	margin: 4px;
+	width: 48%;
+    float: left;
 }
 
 .tagdashboards-content-container {
-	-moz-column-count: 2;
-	-webkit-column-count: 2;
-	column-count: 2;
 }
 
-div.no-float {
-	column-count: 1;
-	-moz-column-count: 1;
-	-webkit-column-count: 1;
+div.no-float > .tagdashboard-module {
+	width: auto !important;
 }
 
 .tagdashboards-groupby-div {
