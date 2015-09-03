@@ -19,9 +19,11 @@ if (!elgg_instanceof($group, 'group')) {
 	forward(REFERER);
 }
 
-$members = $group->getMembers(0);
+$members = $group->getMembers(array('limit' => 0));
 
 $members_info = array();
+
+$input_name = get_input('name', 'users');
 
 foreach ($members as $member) {
 	$output = elgg_view_list_item($member, array(
@@ -42,6 +44,10 @@ foreach ($members as $member) {
 		'value' => $member->username,
 		'icon' => $icon,
 		'url' => $member->getURL(),
+		'html' => elgg_view('input/userpicker/item', array(
+			'entity' => $member,
+			'input_name' => $input_name,
+		))
 	);
 
 	$members_info[] = $info;

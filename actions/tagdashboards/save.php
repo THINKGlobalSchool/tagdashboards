@@ -30,6 +30,8 @@ $default_view       = get_input('default_view', 'content');
 // Trim any trailing commas from search tag
 $search = rtrim($search, ',');
 
+
+
 // Sticky form
 elgg_make_sticky_form('tagdashboards-save-form');
 if (!$title) {
@@ -67,10 +69,10 @@ $tagdashboard->default_view = $default_view;
 
 // If we're grouping by users, the 'members' input will be user guids instead of owner guids
 if ($groupby == 'users') {
-	$user_guids = get_input('members');
+	$user_guids = get_input('users');
 	$tagdashboard->user_guids = $user_guids;
 } else {
-	$owner_guids = get_input('members');
+	$owner_guids = get_input('users');
 	$tagdashboard->owner_guids = $owner_guids;
 }
 

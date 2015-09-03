@@ -49,7 +49,7 @@ elgg.tagdashboards.init = function () {
 	$(document).on('click', '.tagdashboards-toggle-this-group-select', elgg.tagdashboards.toggle_this_group_select);
 
 	// Fix userpickers.. 
-	elgg.tagdashboards.fixUserPickers();
+	//elgg.tagdashboards.fixUserPickers();
 
 	// Make group pagination load in the container 
 	$(document).on('click', '#tagdashboards-group-select-container .elgg-pagination a', function(event) {
@@ -170,12 +170,12 @@ elgg.tagdashboards.init_dashboards_with_container = function(container) {
 /**	
  * Helper function to setup events and init the save form
  */
-elgg.tagdashboards.init_save_form = function() {
-	
+elgg.tagdashboards.init_save_form = function() {	
 	// Groupby radio buttons show/hide
 	$('.tagdashboards-groupby-radio li label input').click(elgg.tagdashboards.groupby_switcher);
-	$('#tagdashboards-groupby-div-' + $('#tagdashboard-groupby-input:checked').val()).show();
-	
+
+	$('#tagdashboards-groupby-div-' + $('#tagdashboard-groupby-input input:checked').val()).show();
+
 	// Hide container by default
 	$('#tagdashboards-save-container').hide();
 	
@@ -234,7 +234,7 @@ elgg.tagdashboards.display_from_form = function(event) {
 	});
 
 	// Get user guids for users group option
-	var user_guids_input =  $('#tagdashboards-groupby-div-users input[name="members[]"]');
+	var user_guids_input =  $('#tagdashboards-groupby-div-users input[name="users[]"]');
 
 	var user_guids = [];
 
@@ -330,6 +330,7 @@ elgg.tagdashboards.display = function (options) {
 			$('.tagdashboards-content-container').fadeIn('fast');
 		}
 	);
+
 	$('#tagdashboards-save-input-container').show();
 }
 
@@ -505,7 +506,9 @@ elgg.tagdashboards.toggle_group_select = function(event) {
 		$('.tagdashboards-group-select-link').trigger('click');
 	} else {
 		// Clear userpicker data
-		elgg.userpicker.userList = [];
+		//elgg.userpicker.userList = [];
+		var $picker = $(this).parent().find('.elgg-user-picker');
+		console.log($picker);
 		$('.tagdashboards-groupby-description .elgg-user-picker-list').children().remove();
 	}
 }
@@ -529,12 +532,11 @@ elgg.tagdashboards.toggle_this_group_select = function(event) {
 					// Clear any user pickers
 					$('ul.elgg-user-picker-list').children().remove();
 
-					// Rebuild the user list
-					elgg.userpicker.userList = {};
+					
 					var picker_list = _this.parent().find('div.elgg-user-picker').find('ul.elgg-user-picker-list');
-					picker_list.children().each(function() {
-						elgg.userpicker.userList[$(this).find('input').val()] = true;
-					});
+					// picker_list.children().each(function() {
+					// 	//elgg.userpicker.userList[$(this).find('input').val()] = true;
+					// });
 
 					elgg.tagdashboards.group_selected = true;
 					for (idx in response.output) {
@@ -548,7 +550,7 @@ elgg.tagdashboards.toggle_this_group_select = function(event) {
 		});
 	} else {
 		// Clear userpicker data
-		elgg.userpicker.userList = [];
+		//elgg.userpicker.userList = [];
 		$('.tagdashboards-groupby-description .elgg-user-picker-list').children().remove();
 	}
 }
@@ -575,10 +577,10 @@ elgg.tagdashboards.group_select_click = function(event) {
 					$('ul.elgg-user-picker-list').children().remove();
 
 					// Rebuild the user list
-					elgg.userpicker.userList = {};
+					//elgg.userpicker.userList = {};
 					var picker_list = checkbox.parent().find('div.elgg-user-picker').find('ul.elgg-user-picker-list');
 					picker_list.children().each(function() {
-						elgg.userpicker.userList[$(this).find('input').val()] = true;
+						//elgg.userpicker.userList[$(this).find('input').val()] = true;
 					});
 
 					elgg.tagdashboards.group_selected = true;
@@ -599,13 +601,10 @@ elgg.tagdashboards.group_select_click = function(event) {
  * Helper function to reproduce the userpicker addUser function
  */
 elgg.tagdashboards.addUserToPicker = function(user_info) {
-	if (!(user_info.guid in elgg.userpicker.userList)) {
-		elgg.userpicker.userList[user_info.guid] = true;
-		var users = $('.tagdashboards-groupby-description .elgg-user-picker-list');
-		var li = '<input type="hidden" name="members[]" value="' + user_info.guid + '" />';
-		li += elgg.userpicker.viewUser(user_info);
-		$('<li>').html(li).appendTo(users);
-	}
+	var users = $('.tagdashboards-groupby-description .elgg-user-picker-list');
+	var li = '<input type="hidden" name="users[]" data-guid="' + user_info.guid + '" />';
+	li += user_info.html;
+	$('<li>').html(li).appendTo(users);
 }
 
 /** 
@@ -617,22 +616,22 @@ elgg.tagdashboards.groupby_switcher = function(event) {
 }
 
 // Temporary fix for multiple user pickers on tag dashboard edit form 
-elgg.tagdashboards.fixUserPickers = function(event) {
-	var pickers = $('#tagdashboards-save-container').find('.elgg-input-user-picker').bind('mousedown', function(event){
-		var _this = $(this);
-		$('#tagdashboards-save-container').find('.elgg-input-user-picker').each(function(idx, value) {
-			// Clear the OTHER userpicker
-			if (!$(this).is(_this)) {
-				$(this).parent().find('ul.elgg-user-picker-list').children().remove();
-			} else {
-				// Rebuild the user list
-				elgg.userpicker.userList = {};
-				$(this).parent().find('ul.elgg-user-picker-list').children().each(function() {
-					elgg.userpicker.userList[$(this).find('input').val()] = true;
-				});
-			}
-		});
-	});
-}
+// elgg.tagdashboards.fixUserPickers = function(event) {
+// 	var pickers = $('#tagdashboards-save-container').find('.elgg-input-user-picker').bind('mousedown', function(event){
+// 		var _this = $(this);
+// 		$('#tagdashboards-save-container').find('.elgg-input-user-picker').each(function(idx, value) {
+// 			// Clear the OTHER userpicker
+// 			if (!$(this).is(_this)) {
+// 				$(this).parent().find('ul.elgg-user-picker-list').children().remove();
+// 			} else {
+// 				// Rebuild the user list
+// 				//elgg.userpicker.userList = {};
+// 				$(this).parent().find('ul.elgg-user-picker-list').children().each(function() {
+// 					elgg.userpicker.userList[$(this).find('input').val()] = true;
+// 				});
+// 			}
+// 		});
+// 	});
+// }
 
 elgg.register_hook_handler('init', 'system', elgg.tagdashboards.init);

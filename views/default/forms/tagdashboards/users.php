@@ -22,7 +22,7 @@ if (elgg_is_sticky_form('tagdashboards-save-form')) {
 $users_input = elgg_view('input/userpicker', array(
 	'name' => 'users',
 	'id' => 'tagdashboards-users-input',
-	'value' => $users,
+	'values' => $users,
 ));
 
 if (elgg_instanceof($page_owner, 'group')) {

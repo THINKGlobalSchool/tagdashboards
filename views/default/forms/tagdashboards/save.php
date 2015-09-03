@@ -178,7 +178,6 @@ if (elgg_is_logged_in()) {
 		'form' => elgg_view('forms/tagdashboards/users', array('value' => $user_guids))
 	));
 
-
 	$groupby_input = elgg_view('input/radio', array(
 		'id' => 'tagdashboard-groupby-input',
 		'name' => 'groupby',
