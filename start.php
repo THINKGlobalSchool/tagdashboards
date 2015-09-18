@@ -81,7 +81,7 @@ function tagdashboards_init() {
 
 	// notifications
 	elgg_register_notification_event('object', 'tagdashboard', array('create'));
-	elgg_register_plugin_hook_handler('prepare', 'notification:publish:object:tagdashboard', 'forum_prepare_notification');
+	elgg_register_plugin_hook_handler('prepare', 'notification:create:object:tagdashboard', 'forum_prepare_notification');
 
 
 	// Register actions
