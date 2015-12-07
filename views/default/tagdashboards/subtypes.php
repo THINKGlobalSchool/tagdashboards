@@ -31,7 +31,7 @@ if (!is_array($subtypes)) {
 	$subtypes = tagdashboards_get_enabled_subtypes();
 }
 
-$search = rawurldecode($search);
+$search = urldecode($search);
 
 // Support for matching on multiple tags
 if (is_array($tags = string_to_tag_array($search)) && count($tags) > 1) {
