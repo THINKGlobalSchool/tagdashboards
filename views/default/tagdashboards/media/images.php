@@ -19,7 +19,7 @@ $entity_options = tagdashboards_get_media_entities_options($dashboard_guid, arra
 
 unset($entity_options['metadata_name_value_pairs']);
 
-$search = rawurldecode($dashboard->search);
+$search = urldecode($dashboard->search);
 
 // Support for matching on multiple tags
 if (is_array($tags = string_to_tag_array($search)) && count($tags) > 1) {

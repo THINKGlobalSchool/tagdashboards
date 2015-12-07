@@ -36,7 +36,9 @@ $search = urldecode($search);
 // Support for matching on multiple tags
 if (is_array($tags = string_to_tag_array($search)) && count($tags) > 1) {
 	$param = 'tags';
+
 	$search = $tags;
+
 } else {
 	$param = 'tag';
 }

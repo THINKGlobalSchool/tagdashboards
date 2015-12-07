@@ -231,7 +231,7 @@ function tagdashboards_get_page_content_static_media($guid) {
 function tagdashboards_get_media_entities_options($dashboard_guid, $options = array()) {
 	$dashboard = get_entity($dashboard_guid);
 
-	$search = $dashboard->search;
+	$search = urldecode($dashboard->search);
 
 	$defaults = array(
 		'created_time_upper' => $dashboard->upper_date,

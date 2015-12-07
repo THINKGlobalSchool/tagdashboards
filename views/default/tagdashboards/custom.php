@@ -33,7 +33,7 @@ $container_guid = $vars['container_guid'];
 $lower_date = $vars['lower_date'];
 $upper_date = $vars['upper_date'];
 
-$search = rawurldecode($search);
+$search = urldecode($search);
 
 foreach($custom as $idx => $tag) {
 	$title = $custom_titles ? $custom_titles[$idx] : ucfirst($tag);

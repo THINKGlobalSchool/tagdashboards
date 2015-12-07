@@ -24,7 +24,7 @@ $owner_guids = $vars['owner_guids'];
 $lower_date = $vars['lower_date'];
 $upper_date = $vars['upper_date'];
 
-$search = rawurldecode($search);
+$search = urldecode($search);
 
 // Loop over each activity and build content
 foreach($activities as $activity) {
