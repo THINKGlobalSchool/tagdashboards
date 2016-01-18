@@ -97,11 +97,15 @@ foreach ($subtypes as $subtype) {
 	}
 }
 
-$options = array(
-	'guids' => $entities,
-	'limit' => 20,
-	//'action_type' => 'create',
-	'offset' => get_input('offset', 0)
-);
-$activity = elgg_list_entities($options);
+if ($entities) {
+	$options = array(
+		'guids' => $entities,
+		'limit' => 20,
+		//'action_type' => 'create',
+		'offset' => get_input('offset', 0)
+	);
+
+	$activity = elgg_list_entities($options);
+}
+
 echo $activity;
