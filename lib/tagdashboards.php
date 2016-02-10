@@ -160,7 +160,7 @@ function tagdashboards_get_page_content_view($guid) {
 	}
 
 	$container = get_entity($tagdashboard->container_guid);
-	elgg_set_page_owner_guid($container->getGUID());
+	elgg_set_page_owner_guid($container->guid);
 	
 	if (elgg_instanceof($container, 'group')) {
 		$url = elgg_get_site_url() . "tagdashboards/group/{$container->guid}/all";
