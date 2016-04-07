@@ -5,7 +5,7 @@
  * @package Tag Dashboards
  * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU Public License version 2
  * @author Jeff Tilson
- * @copyright THINK Global School 2010 - 2014
+ * @copyright THINK Global School 2010 - 2016
  * @link http://www.thinkglobalschool.com/
  */ 
 ?>
@@ -32,9 +32,6 @@ elgg.tagdashboards_global.initAddTagLightbox = function() {
 	$('.add-tag').colorbox({
 		'initialWidth' : '50',
 		'initialHeight' : '50',
-		'title' : function() {
-			return "<h2>" + $(this).attr('title') + "</h2>";
-		},
 		'onComplete' : function() {
 			$(this).colorbox.resize();
 		},
@@ -47,7 +44,7 @@ elgg.tagdashboards_global.initAddTagLightbox = function() {
 	});	
 }
 
-// Click handler for move to group submit button
+// Click handler for add tag 
 elgg.tagdashboards_global.addTagClick = function(event) {	
 	var $_this = $(this);
 	

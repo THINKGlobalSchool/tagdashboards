@@ -811,14 +811,14 @@ function tagdashboards_setup_entity_menu($hook, $type, $return, $params) {
 
 		if ($entity->canEdit() || elgg_is_admin_logged_in() || roles_is_member(elgg_get_plugin_setting('tagadminrole', 'tagdashboards'), elgg_get_logged_in_user_guid())) {
 			$options = array(
-					'name' => 'add_tag',
-					'text' => elgg_echo('tagdashboards:label:addtag'),
-					'title' => 'Add Tag',
-					'href' => elgg_get_site_url() . 'ajax/view/tagdashboards/popup/addtag?guid=' . $entity->guid,
-					'link_class' => 'add-tag',
-					'priority' => 103,
-					'id' => "add-tag-{$entity->guid}",
-				);
+				'name' => 'add_tag',
+				'text' => elgg_echo('tagdashboards:label:addtag'),
+				'title' => '',
+				'href' => elgg_get_site_url() . 'ajax/view/tagdashboards/popup/addtag?guid=' . $entity->guid,
+				'link_class' => 'add-tag',
+				'priority' => 103,
+				'id' => "add-tag-{$entity->guid}",
+			);
 			$return[] = ElggMenuItem::factory($options);
 		}
 	} 
