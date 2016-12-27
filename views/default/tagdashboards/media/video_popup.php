@@ -17,6 +17,10 @@ if ($vars['entity']) {
 	$video = get_entity($vars['entity_guid']);	
 }
 
+if (!elgg_instanceof($video, 'object')) {
+	return false;
+}
+
 echo elgg_view('output/url', array(
 	'text' => elgg_echo('tagdashboards:label:viewvideo'),
 	'href' => $video->getURL(),
